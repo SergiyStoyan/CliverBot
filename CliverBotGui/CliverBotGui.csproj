@@ -1,0 +1,270 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CCD9744F-AA5D-4D39-BD63-0451C3E1E16A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Cliver.BotGui</RootNamespace>
+    <AssemblyName>CliverBotGui</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>ManagedMinimumRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaseForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BaseForm.designer.cs">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BotThreadControls\BotThreadControl.Api.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BotThreadControls\IeRoutineBotThreadControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BotThreadControls\IeRoutineBotThreadControl.designer.cs">
+      <DependentUpon>IeRoutineBotThreadControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Config\BrowserConfigControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Config\BrowserConfigControl.designer.cs">
+      <DependentUpon>BrowserConfigControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Config\OutputConfigControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Config\OutputConfigControl.designer.cs">
+      <DependentUpon>OutputConfigControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Config\InputConfigControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Config\InputConfigControl.designer.cs">
+      <DependentUpon>InputConfigControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Config\LogConfigControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Config\LogConfigControl.designer.cs">
+      <DependentUpon>LogConfigControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Config\GeneralConfigControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Config\GeneralConfigControl.designer.cs">
+      <DependentUpon>GeneralConfigControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Config\DatabaseConfigControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Config\DatabaseConfigControl.designer.cs">
+      <DependentUpon>DatabaseConfigControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Config\ProxyConfigControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Config\ProxyConfigControl.designer.cs">
+      <DependentUpon>ProxyConfigControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Config\WebConfigControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Config\WebConfigControl.designer.cs">
+      <DependentUpon>WebConfigControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BotThreadControls\WebRoutineBotThreadControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BotThreadControls\WebRoutineBotThreadControl.designer.cs">
+      <DependentUpon>WebRoutineBotThreadControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BotThreadControls\BotThreadControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BotThreadControls\BotThreadControl.designer.cs">
+      <DependentUpon>BotThreadControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BotThreadManagerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BotThreadManagerForm.designer.cs">
+      <DependentUpon>BotThreadManagerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Config\ConfigControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Config\ConfigControl.designer.cs">
+      <DependentUpon>ConfigControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Config\ConfigForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Config\ConfigForm.designer.cs">
+      <DependentUpon>ConfigForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Config\SpiderConfigControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Config\SpiderConfigControl.designer.cs">
+      <DependentUpon>SpiderConfigControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="BotGui.cs" />
+    <Compile Include="CustomizationApi.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BaseForm.resx">
+      <DependentUpon>BaseForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BotThreadControls\IeRoutineBotThreadControl.resx">
+      <DependentUpon>IeRoutineBotThreadControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\BrowserConfigControl.resx">
+      <DependentUpon>BrowserConfigControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\OutputConfigControl.resx">
+      <DependentUpon>OutputConfigControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\InputConfigControl.resx">
+      <DependentUpon>InputConfigControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\LogConfigControl.resx">
+      <DependentUpon>LogConfigControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\GeneralConfigControl.resx">
+      <DependentUpon>GeneralConfigControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\DatabaseConfigControl.resx">
+      <DependentUpon>DatabaseConfigControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\ProxyConfigControl.resx">
+      <DependentUpon>ProxyConfigControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\WebConfigControl.resx">
+      <DependentUpon>WebConfigControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BotThreadControls\WebRoutineBotThreadControl.resx">
+      <DependentUpon>WebRoutineBotThreadControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BotThreadControls\BotThreadControl.resx">
+      <DependentUpon>BotThreadControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="BotThreadManagerForm.resx">
+      <DependentUpon>BotThreadManagerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\ConfigControl.resx">
+      <DependentUpon>ConfigControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\ConfigForm.resx">
+      <DependentUpon>ConfigForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\SpiderConfigControl.resx">
+      <DependentUpon>SpiderConfigControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CliverBot.csproj">
+      <Project>{5283EEA1-5F94-4379-BDF3-975CA4ADBBF4}</Project>
+      <Name>CliverBot</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="computers308.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

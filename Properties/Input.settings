@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Cliver.Bot.Properties" GeneratedClassName="Input">
+  <Profiles />
+  <Settings>
+    <Setting Name="InputFile" Type="System.String" Scope="User">
+      <Value Profile="(Default)">input.txt</Value>
+    </Setting>
+    <Setting Name="InputFieldSeparator" Type="System.String" Scope="User">
+      <Value Profile="(Default)">,</Value>
+    </Setting>
+    <Setting Name="EscapedInputFieldSeparator" Type="System.String" Scope="User">
+      <Value Profile="(Default)">','</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

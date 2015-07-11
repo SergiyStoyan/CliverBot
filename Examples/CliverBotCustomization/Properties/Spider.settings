@@ -1,0 +1,24 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Cliver.Properties" GeneratedClassName="Spider">
+  <Profiles />
+  <Settings>
+    <Setting Name="DownloadedContentTypePattern" Type="System.Byte" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="ComplyRobotProtocol" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="MaxOpenLinkDepth" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">3</Value>
+    </Setting>
+    <Setting Name="MaxPageCountPerSite" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">1000</Value>
+    </Setting>
+    <Setting Name="NonSpideredExtensions" Type="System.String" Scope="User">
+      <Value Profile="(Default)">pdf|msi|exe|gif|jpg|jpeg|bmp|rtf|ps|arj|zip|z|gzip|rar|gz|tar|tgz|bz|bz2|wav|mp3|au|aiff|bin|mpg|mpeg|mov|qt|tif|tiff|avi|ram|ra|arc|hqx|sit|sea|uu|png|css|ico|cl|jar</Value>
+    </Setting>
+    <Setting Name="UnchangableDomainPartNumber" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

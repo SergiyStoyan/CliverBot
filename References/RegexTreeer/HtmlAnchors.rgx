@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Regex Tree file. Produced by RegexTreeer2.6, http://www.cliversoft.com-->
+<RegexTree format="2.1" engine=".NET">
+  <Regex input_group="" pattern="&lt;(?'Tag'(?'TagName'a)\s.*?)&lt;/\k'TagName'\s*&gt;" options="IgnoreCase, Compiled, Singleline" comment="">
+    <Regex input_group="Tag" pattern="(?'Html'.*?)&gt;(?'Content'.*)" options="IgnoreCase, Compiled, Singleline" comment="">
+      <Regex input_group="Html" pattern="\shref\s*=\s*(?'quotation2'[\'\&quot;&quot;])?(?'Url'.*?)(?:\k'quotation2'|&gt;)" options="IgnoreCase, Compiled, Singleline" comment="" />
+      <Regex input_group="Html" pattern="\stitle\s*=\s*(?'quotation'[\'\&quot;&quot;])?(?'Title'.*?)(?:\k'quotation'|$)" options="IgnoreCase, Compiled, Singleline" comment="" />
+    </Regex>
+  </Regex>
+</RegexTree>

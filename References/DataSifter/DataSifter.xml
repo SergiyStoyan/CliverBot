@@ -1,0 +1,1475 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DataSifter</name>
+    </assembly>
+    <members>
+        <member name="F:Cliver.DataSifter.BaseControl.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.BaseControl.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Cliver.DataSifter.BaseControl.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:Cliver.DataSifter.BaseForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.BaseForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Cliver.DataSifter.BaseForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:Cliver.DataSifter.AgileControl">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="F:Cliver.DataSifter.FilterControl.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterControl.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterControl.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.AgileControl.#ctor">
+            <summary>
+            needed for VS designer
+            </summary>
+        </member>
+        <member name="F:Cliver.DataSifter.AgileControl.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.AgileControl.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Cliver.DataSifter.AgileControl.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:Cliver.DataSifter.RegexControl.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.RegexControl.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Cliver.DataSifter.RegexControl.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:Cliver.DataSifter.NameForm">
+            <summary>
+            asks for name for the newly saved prepared filter tree
+            </summary>
+        </member>
+        <member name="F:Cliver.DataSifter.NameForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.NameForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Cliver.DataSifter.NameForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:Cliver.DataSifter.OutputForm">
+            <summary>
+            lists group names used in the current filter tree
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.OutputForm.get_data">
+            <summary>
+            constructs the output string
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cliver.DataSifter.OutputForm.get_captures_for_selected_group(Cliver.DataSifter.OutputGroup[],System.String)">
+            <summary>
+            output the parse resutls
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:Cliver.DataSifter.OutputForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.OutputForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Cliver.DataSifter.OutputForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.OutputGroup.GetPath(System.String)">
+            <summary>
+            return standard path used for comparison
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cliver.DataSifter.Filter.fill_group_index2raw_group_names">
+            <summary>
+            must be invoked by constructor of inheriting class
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.Filter.GetGroupRawNames">
+            <summary>
+            If group has no name, its name is its index
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cliver.DataSifter.Filter.GetGroupNameByIndex(System.Int32)">
+            <summary>
+            If no name, return null
+            </summary>
+            <param name="group_index"></param>
+            <returns></returns>
+        </member>
+        <member name="F:Cliver.DataSifter.Filter.group_index2group_raw_names">
+            <summary>
+            Keys are indexes of named groups. 
+            i => output_group_name
+            </summary>
+        </member>
+        <member name="F:Cliver.DataSifter.Filter.group_name2child_filters_group_names">
+            <summary>
+            Keys are names of named groups.
+            output_group_name => List
+            </summary>
+        </member>
+        <member name="T:Cliver.DataSifter.Capture">
+            <summary>
+            Node of tree of captures being a node of a data parsed tree (result of parsing data with a filter tree).
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.Capture.LengthOf(System.String)">
+            <summary>
+            Length of array of child Capture's for the key. 
+            It is the same like [key].Length but more efficient.
+            </summary>
+            <param name="key">group name of child filter</param>
+            <returns>length of array of child Capture's</returns>
+        </member>
+        <member name="F:Cliver.DataSifter.Capture.Value">
+            <summary>
+            Capture string of this Capture.
+            </summary>
+        </member>
+        <member name="F:Cliver.DataSifter.Capture.Index">
+            <summary>
+            Text position of the capture string of this Capture.
+            </summary>
+        </member>
+        <member name="F:Cliver.DataSifter.Capture.Length">
+            <summary>
+            Length of the capture string of this Capture.
+            </summary>
+        </member>
+        <member name="F:Cliver.DataSifter.Capture.Key">
+            <summary>
+            Key of this Capture. (Group name in the filter.)
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.Capture.ValueOf(System.String,System.Int32)">
+            <summary>
+            Value of child Capture's for the key and the index. It is captured string of named group of child filter.
+            </summary>
+            <param name="key">group name of child filter</param>
+            <param name="index">index within array of captures</param>
+            <returns>value of child Capture</returns>
+        </member>
+        <member name="M:Cliver.DataSifter.Capture.ValuesOf(System.String)">
+            <summary>
+            Values of last descendant GroupCaptures for the path. These are captured strings of named group of last descendant filter.
+            It is almost the same like this.[key][index]...[key] but more efficient and safe.
+            It is safe: ignores if some key is empty or some index is out of range in the path.
+            </summary>
+            <param name="path">path specified in the following manner: "key[, index][/ key[, index]]...", 
+            where key is a group name of child filter, index is integer or '*'</param>
+            <returns>values of last-descendant Capture's</returns>
+        </member>
+        <member name="M:Cliver.DataSifter.Capture.FirstValueOf(System.String)">
+            <summary>
+            First value of last-descendant Capture for the path. It is captured string of named group of last descendant filter.
+            Used when an only value needed. If the path specifies array of values, the first one is returned.
+            It is almost the same like this.[key][index]....Value but more efficient and safe.
+            It returns null if some key is empty or some index is out of range.
+            </summary>
+            <param name="path">path specified in the following manner: "key[, index][/ key[, index]]...", 
+            where key is a group name of child filter, index is integer or '*'</param>
+            <returns>first value of last-descendant GroupCaptures</returns>
+        </member>
+        <member name="M:Cliver.DataSifter.Capture.LastValueOf(System.String)">
+            <summary>
+            Last value of last-descendant Capture for the path. It is captured string of named group of last descendant filter.
+            Used when an only value needed. If the path specifies array of values, the first one is returned.
+            It is almost the same like this.[key][index]....Value but more efficient and safe.
+            It returns null if some key is empty or some index is out of range.
+            </summary>
+            <param name="path">path specified in the following manner: "key[, index][/ key[, index]]...", 
+            where key is a group name of child filter, index is integer or '*'</param>
+            <returns>last value of last-descendant GroupCaptures</returns>
+        </member>
+        <member name="M:Cliver.DataSifter.Capture.CapturesOf(System.String)">
+            <summary>
+            Array of last descendant GroupCaptures for the path. These are captures of named group of last descendant filter.
+            It is almost the same like this.[key][index]...[key] but more efficient and safe.
+            It is safe: ignores if some key is empty or some index is out of range in the path.
+            </summary>
+            <param name="path">path specified in the following manner: "key[, index][/ key[, index]]...", 
+            where key is a group name of child filter, index is integer or '*'</param>
+            <returns>values of last-descendant Capture's</returns>
+        </member>
+        <member name="M:Cliver.DataSifter.Capture.FirstOf(System.String)">
+            <summary>
+            Alias for [key, 0]
+            </summary>
+            <param name="key">group name of child filter</param>
+            <returns>first child Capture</returns>
+        </member>
+        <member name="M:Cliver.DataSifter.Capture.LastOf(System.String)">
+            <summary>
+            Alias for [key, LengthOf(key) - 1]
+            </summary>
+            <param name="key">group name of child filter</param>
+            <returns>last child Capture</returns>
+        </member>
+        <member name="M:Cliver.DataSifter.Capture.ValueOf(System.String)">
+            <summary>
+            Alias for FirstValueOf(path)
+            </summary>
+            <param name="path">path specified in the following manner: "key[, index][/ key[, index]]...", 
+            where key is a group name of child filter, index is integer or '*'</param>
+            <returns>first value of last-descendant GroupCaptures</returns>
+        </member>
+        <member name="P:Cliver.DataSifter.Capture.Item(System.String)">
+            <summary>
+            Child Capture's for the key. 
+            </summary>
+            <param name="key">group name of child filter</param>
+            <returns>child Capture's</returns>
+        </member>
+        <member name="P:Cliver.DataSifter.Capture.Item(System.String,System.Int32)">
+            <summary>
+            Child Capture for the key and the index. 
+            It is almost the same like [key][index] 
+            but more efficient since does not build an array of strings.
+            Also it is more safe in index use: returns null if index is out of range.
+            </summary>
+            <param name="key">group name of child filter</param>
+            <param name="index">index within array of captures</param>
+            <returns>child Capture</returns>
+        </member>
+        <member name="P:Cliver.DataSifter.Capture.Keys">
+            <summary>
+            Keys of child Capture's. (Group names of child filters.)
+            </summary>
+        </member>
+        <member name="T:Cliver.DataSifter.Parser">
+            <summary>
+            Engine for parsing text with filter tree.
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.Parser.#ctor(System.String)">
+            <summary>
+            Create Parser for the filter tree file.
+            </summary>
+            <param name="filter_file">filter tree file</param>
+        </member>
+        <member name="M:Cliver.DataSifter.Parser.#ctor(Cliver.DataSifter.Filter[])">
+            <summary>
+            used by DataSifter
+            </summary>
+            <param name="root_filters"></param>
+        </member>
+        <member name="M:Cliver.DataSifter.Parser.build_node_name_tree">
+            <summary>
+            Creates a tree of named groups so that each Capture to have a complete name collection 
+            independently on parse results.
+            ALSO(!) it checks filter tree for group name uniquness within the same branch-level.
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.Parser.get_next_level_group_names(Cliver.DataSifter.Filter[],System.String,System.Collections.Generic.List{System.String})">
+            <summary>
+            Create a tree of named groups so that each Capture to have a complete name collection independently on parse results. 
+            ALSO(!) it checks the filter tree for group name uniquness within the same branch-level.
+            </summary>
+        </member>
+        <member name="F:Cliver.DataSifter.Parser.RootFilters">
+            <summary>
+            Start level TlNodes collection.
+            (!)Changes in this data will bring to error or incorrect parsing.
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.Parser.Parse(System.String)">
+            <summary>
+            Perform parsing.
+            </summary>
+            <param name="text">text that is to be parsed with the tree</param>
+            <returns>Zero Capture that the tree of CroupCapture's starts from</returns>
+        </member>
+        <member name="T:vbAccelerator.Components.Win32.GroupIconResources">
+            <summary>
+            Enumerates Group Icon resources for the specified library
+            </summary>
+        </member>
+        <member name="M:vbAccelerator.Components.Win32.GroupIconResources.#ctor">
+            <summary>
+            Creates an instance of the class but doesn't
+            enumerate any resources
+            </summary>
+        </member>
+        <member name="M:vbAccelerator.Components.Win32.GroupIconResources.#ctor(System.String)">
+            <summary>
+            Creates an instance of the class and enumerates
+            icon resources for the specified file.
+            </summary>
+            <param name="libraryFile">File to get resources
+            for</param>
+        </member>
+        <member name="P:vbAccelerator.Components.Win32.GroupIconResources.Item(System.Int32)">
+            <summary>
+            Gets the GroupIconResource with the specified index
+            </summary>
+        </member>
+        <member name="P:vbAccelerator.Components.Win32.GroupIconResources.LibraryFile">
+            <summary>
+            Gets/sets the library file to load resources from
+            </summary>
+        </member>
+        <member name="T:vbAccelerator.Components.Win32.GroupIconResource">
+            <summary>
+            Stores the identifier for a single group
+            icon resource.
+            </summary>
+        </member>
+        <member name="T:vbAccelerator.Components.Win32.IconExException">
+            <summary>
+            Exception thrown for unreadable icons
+            </summary>
+        </member>
+        <member name="T:vbAccelerator.Components.Win32.IconEx">
+            <summary>
+            Manages a true Windows Icon with multiple images
+            (colour depths and sizes)
+            </summary>
+        </member>
+        <member name="M:vbAccelerator.Components.Win32.IconEx.FromFile(System.String)">
+            <summary>
+            Loads an icon from the specified file
+            </summary>
+            <param name="iconFile">File containing icon</param>
+        </member>
+        <member name="M:vbAccelerator.Components.Win32.IconEx.FromLibrary(System.String,System.Int32)">
+            <summary>
+            Loads an icon from an executable or library
+            with the specified integer resource id
+            </summary>
+            <param name="libraryFile">Executable or DLL 
+            containing icon</param>
+            <param name="resourceId">Integer resource identifier</param>
+        </member>
+        <member name="M:vbAccelerator.Components.Win32.IconEx.FromLibrary(System.String,System.String)">
+            <summary>
+            Loads an icon from an executable or library
+            with the specified string resource id
+            </summary>
+            <param name="libraryFile">Executable or DLL 
+            containing icon</param>
+            <param name="resourceName">String resource identifier</param>
+        </member>
+        <member name="M:vbAccelerator.Components.Win32.IconEx.Save(System.String)">
+            <summary>
+            Saves the icon to the specified file
+            </summary>
+            <param name="iconFile">File to save to</param>
+        </member>
+        <member name="M:vbAccelerator.Components.Win32.IconEx.GetIcon">
+            <summary>
+            Convert this IconEx to Icon
+            </summary>
+            <returns>icon</returns>
+        </member>
+        <member name="M:vbAccelerator.Components.Win32.IconEx.#ctor">
+            <summary>
+            Constructs a new, empty instance of the IconEx
+            object
+            </summary>
+        </member>
+        <member name="M:vbAccelerator.Components.Win32.IconEx.#ctor(System.String)">
+            <summary>
+            Constructs an IconEx instance and opens the icon
+            file specified.
+            </summary>
+            <param name="iconFile">Icon file to read</param>
+        </member>
+        <member name="M:vbAccelerator.Components.Win32.IconEx.#ctor(System.String,System.Int32)">
+            <summary>
+            Constructs an IconEx instance and opens the icon
+            from the specified library (Executable or DLL)
+            with the specified integer resource identifier
+            </summary>
+            <param name="libraryFile">Executable or DLL to extract
+            icon from</param>
+            <param name="resourceId">Integer resource Id</param>
+        </member>
+        <member name="M:vbAccelerator.Components.Win32.IconEx.#ctor(System.String,System.String)">
+            <summary>
+            Constructs an IconEx instance and opens the icon
+            from the specified library (Executable or DLL)
+            with the specified string resource identifier
+            </summary>
+            <param name="libraryFile">Executable or DLL to extract
+            icon from</param>
+            <param name="resourceName">String resource Id</param>
+        </member>
+        <member name="P:vbAccelerator.Components.Win32.IconEx.Items">
+            <summary>
+            Returns the collection of device images
+            within this icon 
+            </summary>
+        </member>
+        <member name="P:vbAccelerator.Components.Win32.IconEx.IconFile">
+            <summary>
+            Gets the file the icon was loaded from
+            </summary>
+        </member>
+        <member name="P:vbAccelerator.Components.Win32.IconEx.LibraryFile">
+            <summary>
+            Gets the library this icon was loaded from
+            or a blank string if the icon was not sourced
+            from a library.
+            </summary>
+        </member>
+        <member name="P:vbAccelerator.Components.Win32.IconEx.ResourceId">
+            <summary>
+            Gets the integer resource id of this icon if it
+            was loaded from a library
+            </summary>
+        </member>
+        <member name="P:vbAccelerator.Components.Win32.IconEx.ResourceName">
+            <summary>
+            Gets the string resource id of this icon if it
+            was loaded from a library
+            </summary>
+        </member>
+        <member name="T:vbAccelerator.Components.Win32.IconDeviceImageCollection">
+            <summary>
+            Manages a read/write collection of icon resources
+            within an Icon file
+            </summary>
+        </member>
+        <member name="M:vbAccelerator.Components.Win32.IconDeviceImageCollection.Add(vbAccelerator.Components.Win32.IconDeviceImage)">
+            <summary>
+            Add a new icon device image
+            </summary>
+            <param name="icon">Icon to add</param>
+        </member>
+        <member name="M:vbAccelerator.Components.Win32.IconDeviceImageCollection.#ctor">
+            <summary>
+             Constructs a new, empty collection of device
+             images.
+            </summary>
+        </member>
+        <member name="M:vbAccelerator.Components.Win32.IconDeviceImageCollection.#ctor(vbAccelerator.Components.Win32.IconDeviceImage[])">
+            <summary>
+            Constructs a new collection of device images
+            </summary>
+            <param name="icons">Icons to add</param>
+        </member>
+        <member name="P:vbAccelerator.Components.Win32.IconDeviceImageCollection.Item(System.Int32)">
+            <summary>
+            Gets the IconDevice Image at the specified
+            index
+            </summary>
+        </member>
+        <member name="T:vbAccelerator.Components.Win32.IconDeviceImage">
+            <summary>
+            Manages a single icon device image within an
+            Icon file
+            </summary>
+        </member>
+        <member name="M:vbAccelerator.Components.Win32.IconDeviceImage.IconImageDataBytes">
+            <summary>
+            Internal method.  Returns the number of bytes in the
+            icon data.  Not intended for public use.
+            </summary>
+            <returns>Number of bytes of icon data</returns>
+        </member>
+        <member name="M:vbAccelerator.Components.Win32.IconDeviceImage.SaveIconBitmapData(System.IO.BinaryWriter)">
+            <summary>
+            Internal method.  Writes the icon bitmap data to
+            the specified BinaryWriter.  Not intended for 
+            public use.
+            </summary>
+            <param name="bw">BinaryWriter to write to</param>
+        </member>
+        <member name="M:vbAccelerator.Components.Win32.IconDeviceImage.#ctor(System.Drawing.Size,System.Windows.Forms.ColorDepth)">
+            <summary>
+            Constructs a new IconDeviceImage with the specified
+            size and colour depth.
+            </summary>
+            <param name="size">Size of device image</param>
+            <param name="colorDepth">Colour depth of device image</param>
+        </member>
+        <member name="M:vbAccelerator.Components.Win32.IconDeviceImage.#ctor(System.Drawing.Icon)">
+            <summary>
+            Constructs a new IconDeviceImage from a Managed Icon
+            </summary>
+            <param name="icon">Icon to construct from</param>		
+        </member>
+        <member name="M:vbAccelerator.Components.Win32.IconDeviceImage.#ctor(System.Byte[])">
+            <summary>
+            Constructs a new icon device image from an array of
+            bytes in the Icon file format
+            </summary>
+            <param name="b">Array of bytes</param>
+        </member>
+        <member name="M:vbAccelerator.Components.Win32.IconDeviceImage.Dispose">
+            <summary>
+            Clears up any resources associated with this
+            Icon Device Image.
+            </summary>
+        </member>
+        <member name="P:vbAccelerator.Components.Win32.IconDeviceImage.Handle">
+            <summary>
+            Gets the Icon handle for this device image
+            </summary>
+        </member>
+        <member name="P:vbAccelerator.Components.Win32.IconDeviceImage.IconSize">
+            <summary>
+            Gets the size of this device image
+            </summary>
+        </member>
+        <member name="P:vbAccelerator.Components.Win32.IconDeviceImage.ColorDepth">
+            <summary>
+            Gets the colour depth of this device image
+            </summary>
+        </member>
+        <member name="P:vbAccelerator.Components.Win32.IconDeviceImage.MaskImage">
+            <summary>
+            Gets/sets the Mask Image of the icon as a bitmap
+            </summary>
+        </member>
+        <member name="P:vbAccelerator.Components.Win32.IconDeviceImage.IconImage">
+            <summary>
+            Gets/sets the image portion of the icon as a bitmap
+            </summary>
+        </member>
+        <member name="P:vbAccelerator.Components.Win32.IconDeviceImage.Icon">
+            <summary>
+            Gets the device image as a managed icon
+            Note that you should clone the icon if you want to keep it
+            after this class has been disposed.		
+            </summary>
+        </member>
+        <member name="T:Cliver.IconRoutines">
+            <summary>
+            Routines to extract icon from the binary (.NET ExtractAssociatedIcon does not get 16x16 icons)
+            </summary>
+        </member>
+        <member name="M:Cliver.IconRoutines.ExtractIconEx(System.String,System.Int32,System.IntPtr[],System.IntPtr[],System.Int32)">
+            <summary>
+            Extracts the specified icon from the file.
+            </summary>
+            <param name="lpszFile">path of the icon file</param>
+            <param name="nIconIndex">index of the icon with the file</param>
+            <param name="phIconLarge">32x32 icon</param>
+            <param name="phIconSmall">16x16 icon</param>
+            <param name="nIcons">number of icons to extract</param>
+            <returns>number of icons within the file</returns>
+        </member>
+        <member name="M:Cliver.IconRoutines.ExtractIconFromLibrary(System.String,Cliver.IconRoutines.IconSize)">
+            <summary>
+            Extracts icon from the binary file like .exe, .dll, etc. (because of .NET ExtractAssociatedIcon does not get 16x16 icons)
+            </summary>
+            <param name="file">fiel path from where icon is to be extracted</param>
+            <param name="size">size of the icon</param>
+            <returns>extracted icon</returns>
+        </member>
+        <member name="M:Cliver.IconRoutines.ExtractIconFromLibrary(System.String)">
+            <summary>
+            Extract all icon images from the library file like .exe, .dll, etc. 
+            </summary>
+            <param name="file">file where icon is extracted from</param>
+            <returns>extracted icon</returns>
+        </member>
+        <member name="P:Cliver.IconRoutines.HostIcon">
+            <summary>
+            Icon of the hosting application.
+            </summary>
+        </member>
+        <member name="T:Cliver.IconRoutines.IconSize">
+            <summary>
+            Used as a parameter type for ExtractIconFromFile
+            </summary>
+        </member>
+        <member name="F:Cliver.IconRoutines.IconSize.Large">
+            <summary>
+            32x32
+            </summary>
+        </member>
+        <member name="F:Cliver.IconRoutines.IconSize.Small">
+            <summary>
+            16x16
+            </summary>
+        </member>
+        <member name="T:Cliver.Message">
+            <summary>
+            Show MessageForm with predefined features
+            </summary>
+        </member>
+        <member name="F:Cliver.Message.ShowMessagesInTurn">
+            <summary>
+            Defines how message boxes will be showed in multithreaded environment:
+            TRUE: strongly in turn one after another even if sent from different threads;
+            FALSE: simultaneously if sent from different threads - like .NET MessageBox does;
+            </summary>
+        </member>
+        <member name="F:Cliver.Message.WindowIcon">
+            <summary>
+            Icon in the window title bar. By default it is the icon of the application.
+            </summary>
+        </member>
+        <member name="F:Cliver.Message.Caption">
+            <summary>
+            Caption that will be used by default. By default it is the application's product name.
+            </summary>
+        </member>
+        <member name="F:Cliver.Message.ShowInTaskbar">
+            <summary>
+            Whether the message box must be displayed in the Windows taskbar.
+            </summary>
+        </member>
+        <member name="F:Cliver.Message.SilentBoxText">
+            <summary>
+            Text for repeat-my-answer-in-the future checkbox
+            </summary>
+        </member>
+        <member name="F:Cliver.Message.ButtonColors">
+            <summary>
+            Default colors that buttons will be colored to.
+            </summary>
+        </member>
+        <member name="F:Cliver.Message.Sounds">
+            <summary>
+            Sounds for each message icon that you will use. 
+            By default it contains sounds for SystemIcons
+            To suppress sounds set it to null or delete sound files.
+            </summary>
+        </member>
+        <member name="F:Cliver.Message.NextTime_Owner">
+            <summary>
+            Owner of the first next message.
+            Not thread-safe!
+            </summary>
+        </member>
+        <member name="M:Cliver.Message.Ok(System.String,System.Drawing.Icon,System.String)">
+            <summary>
+            Show information message box.
+            </summary>
+            <param name="caption">box caption</param>
+            <param name="icon">icon to be displayed beside message</param>
+            <param name="message">message</param>
+        </member>
+        <member name="M:Cliver.Message.Ok(System.Drawing.Icon,System.String)">
+            <summary>
+            Show information message box with predefined caption.
+            </summary>
+            <param name="icon">icon to be displayed beside message</param>
+            <param name="message">message</param>
+        </member>
+        <member name="M:Cliver.Message.Error(System.Exception)">
+            <summary>
+            Show error message box.
+            </summary>
+            <param name="e">exception</param>
+        </member>
+        <member name="M:Cliver.Message.Error(System.String)">
+            <summary>
+            Show error message box.
+            </summary>
+            <param name="message">message</param>
+        </member>
+        <member name="M:Cliver.Message.Inform(System.String)">
+            <summary>
+            Show inform message box.
+            </summary>
+            <param name="message">message</param>
+        </member>
+        <member name="M:Cliver.Message.YesNo(System.String,System.Drawing.Icon,System.String,System.Boolean)">
+            <summary>
+            Show "Yes|No" question box. 
+            </summary>
+            <param name="caption">box caption</param>
+            <param name="icon">icon to be displayed beside message</param>
+            <param name="question">question</param>
+            <param name="default_yes">whether 'yes' button is selected</param>
+            <returns>zero-based index of chosen answer</returns>
+        </member>
+        <member name="M:Cliver.Message.YesNo(System.Drawing.Icon,System.String)">
+            <summary>
+            Show "YesNo" question box with predefined caption. 
+            </summary>
+            <param name="icon">icon to be displayed beside message</param>
+            <param name="question">question</param>
+            <returns>zero-based index of chosen answer</returns>
+        </member>
+        <member name="M:Cliver.Message.YesNo(System.String,System.String,System.Boolean)">
+            <summary>
+            Show "Yes|No" question box with the question icon. 
+            </summary>
+            <param name="caption">box caption</param>
+            <param name="question">question</param>
+            <param name="default_yes">whether 'yes' button is selected</param>
+            <returns>zero-based index of chosen answer</returns>
+        </member>
+        <member name="M:Cliver.Message.YesNo(System.String)">
+            <summary>
+            Show "YesNo" question box with predefined caption and the question icon. 
+            </summary>
+            <param name="question">question</param>
+            <returns>zero-based index of chosen answer</returns>
+        </member>
+        <member name="M:Cliver.Message.YesNo(System.String,System.Boolean)">
+            <summary>
+            Show "YesNo" question box with predefined caption and the question icon. 
+            </summary>
+            <param name="question">question</param>
+            <param name="default_yes">whether 'yes' button is selected</param>
+            <returns>zero-based index of chosen answer</returns>
+        </member>
+        <member name="M:Cliver.Message.Ask(System.String,System.Int32,System.String[])">
+            <summary>
+            Show a question box with many answer cases and predefined caption.
+            </summary>
+            <param name="message">message</param>
+            <param name="default_answer">zero-based index of default button</param>
+            <param name="answers">possible answers</param>
+            <returns>zero-based index of chosen answer</returns>
+        </member>
+        <member name="M:Cliver.Message.Ask(System.Boolean@,System.String,System.Int32,System.String[])">
+            <summary>
+            Show a question box with many answer cases, silent checkbox and predefined caption.
+            </summary>
+            <param name="silent_box">Whether this answer should be repeated automatically</param>
+            <param name="message">message</param>
+            <param name="default_answer">zero-based index of default button</param>
+            <param name="answers">possible answers</param>
+            <returns>zero-based index of chosen answer</returns>
+        </member>
+        <member name="M:Cliver.Message.Show(System.String,System.Drawing.Icon,System.String,System.Int32,System.String[])">
+            <summary>
+            Show a dialog box with many answer cases and default button colors.
+            </summary>
+            <param name="caption">box caption</param>
+            <param name="icon">icon to be displayed beside message</param>
+            <param name="message">message</param>
+            <param name="default_answer">zero-based index of default button</param>
+            <param name="answers">possible answers</param>
+            <returns>zero-based index of chosen answer</returns>
+        </member>
+        <member name="M:Cliver.Message.Show(System.Drawing.Icon,System.String,System.Int32,System.String[])">
+            <summary>
+            Show a dialog box with many answer cases, default caption and button colors.
+            </summary>
+            <param name="icon">icon to be displayed beside message</param>
+            <param name="message">message</param>
+            <param name="default_answer">zero-based index of default button</param>
+            <param name="answers">possible answers</param>
+            <returns>zero-based index of chosen answer</returns>
+        </member>
+        <member name="M:Cliver.Message.Show(System.String,System.Drawing.Icon,System.Boolean@,System.String,System.Int32,System.String[])">
+            <summary>
+            Show a dialog box with many answer cases, silent-answer checkbox and default button colors.
+            </summary>
+            <param name="caption">box caption</param>
+            <param name="icon">icon to be displayed beside message</param>
+            <param name="silent_box">whether this answer should be repeated automatically</param>
+            <param name="message">message</param>
+            <param name="default_answer">zero-based index of default button</param>
+            <param name="answers">possible answers</param>
+            <returns>zero-based index of chosen answer</returns>
+        </member>
+        <member name="M:Cliver.Message.Show(System.Drawing.Icon,System.Boolean@,System.String,System.Int32,System.String[])">
+            <summary>
+            Show a dialog box with many answer cases, silent-answer checkbox, default caption and button colors.
+            </summary>
+            <param name="icon">icon to be displayed beside message</param>
+            <param name="silent_box">Whether this answer should be repeated automatically</param>
+            <param name="message">message</param>
+            <param name="default_answer">zero-based index of default button</param>
+            <param name="answers">possible answers</param>
+            <returns>zero-based index of chosen answer</returns>
+        </member>
+        <member name="P:Cliver.Message.NextTime_ButtonColors">
+            <summary>
+            Colors that buttons will be colored to in the first next message. If no need color, must be set to null. 
+            Not thread-safe!
+            </summary>
+        </member>
+        <member name="T:Cliver.Message.SoundList">
+            <summary>
+            Manage the list of sounds for each icon.
+            </summary>
+        </member>
+        <member name="M:Cliver.Message.SoundList.Set(System.Drawing.Icon,System.String,System.Boolean)">
+            <summary>
+            Set sound file for the icon.
+            </summary>
+            <param name="icon">icon for that the sound will be played</param>
+            <param name="sound_file">sound file that will be palyed</param>
+            <param name="sound_repeat">whether sound will be repeated endlessly until the window is closed</param>
+        </member>
+        <member name="T:Cliver.MessageForm">
+            <summary>
+            Dynamic dialog box with many answer cases
+            </summary>
+        </member>
+        <member name="F:Cliver.MessageForm.SpanY">
+            <summary>
+            Vertical span in pixels between controls 
+            </summary>
+        </member>
+        <member name="F:Cliver.MessageForm.SpanX">
+            <summary>
+            Horizontal span in pixels between controls 
+            </summary>
+        </member>
+        <member name="F:Cliver.MessageForm.ButtonInternalMarginX">
+            <summary>
+            Span between button horizontal bound and its text
+            </summary>
+        </member>
+        <member name="F:Cliver.MessageForm.ButtonInternalMarginY">
+            <summary>
+            Span between button vertical bound and its text
+            </summary>
+        </member>
+        <member name="F:Cliver.MessageForm.MessageBoxWidth2HeightDesiredRegard">
+            <summary>
+            Desired proportion of the message label (not dialog window!) sides
+            </summary>
+        </member>
+        <member name="F:Cliver.MessageForm.MaxWindowSize">
+            <summary>
+            Max size of window.
+            </summary>
+        </member>
+        <member name="F:Cliver.MessageForm.SoundFile">
+            <summary>
+            Sound file to be played as the message window is showed.
+            </summary>
+        </member>
+        <member name="F:Cliver.MessageForm.SoundRepeat">
+            <summary>
+            Whether sound will be repeated endlessly until the window is closed.
+            </summary>
+        </member>
+        <member name="M:Cliver.MessageForm.#ctor(System.String,System.String,System.Drawing.Color[],System.String[],System.Int32,System.String,System.Drawing.Icon)">
+            <summary>
+            Construct dynamic dialog box with many answer cases
+            </summary>
+            <param name="caption">window caption</param>
+            <param name="message">message information</param>
+            <param name="button_colors">button colors</param>
+            <param name="answers">array of possible answers</param>
+            <param name="default_answer">default answer zero-based index</param>
+            <param name="silent_box_text">silent check box text; if null then check box will not be displayed</param>
+            <param name="icon">icon to be displayed</param>
+        </member>
+        <member name="M:Cliver.MessageForm.#ctor(System.String,System.String,System.Drawing.Color[],System.String[],System.Int32,System.String,System.Drawing.Image)">
+            <summary>
+            Construct dynamic dialog box with many answer cases
+            </summary>
+            <param name="caption">window caption</param>
+            <param name="message">message information</param>
+            <param name="button_colors">button colors</param>
+            <param name="answers">array of possible answers</param>
+            <param name="default_answer">default answer zero-based index</param>
+            <param name="silent_box_text">silent check box text; if null then check box will not be displayed</param>
+            <param name="image">image to be displayed as the message icon</param>
+        </member>
+        <member name="F:Cliver.MessageForm.Answer">
+            <summary>
+            Zero-based index of chosen answer. Cancel = -1
+            </summary>
+        </member>
+        <member name="M:Cliver.MessageForm.GetAnswer">
+            <summary>
+            Show MessageForm as a dialog box and get user's answer
+            </summary>
+            <returns>zero-based index of chosen answer. Cancel = -1</returns>
+        </member>
+        <member name="F:Cliver.MessageForm.Silent">
+            <summary>
+            Whether this answer should be repeated automatically
+            </summary>
+        </member>
+        <member name="F:Cliver.MessageForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Cliver.MessageForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+        </member>
+        <member name="M:Cliver.MessageForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:Cliver.DataSifter.FilterTreeForm">
+            <summary>
+            Control (or Form) that provides creating/editing filter tree.
+            This part provides the main functionality that includes inserting/deleting filter nodes.
+            </summary>
+            <summary>
+            fanctionality of FilterTreeForm concerning to visibilty and external methods
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.LoadFilterTree(System.String)">
+            <summary>
+            Load filter tree from xml file
+            </summary>
+            <param name="filter_tree_xml_file"></param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.fill_InputGroupName">
+            <summary>
+            fill the group drop down menu after selected filter tree node was changed
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.set_tree_node_color(System.Windows.Forms.TreeNode)">
+            <summary>
+            used when inserting/removing node
+            </summary>
+            <param name="tn"></param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.FilterTree_AfterSelect(System.Object,System.Windows.Forms.TreeViewEventArgs)">
+            <summary>
+            on new filter tree node was selected
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.Remove_Click(System.Object,System.EventArgs)">
+            <summary>
+            on remove filter tree node
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.Insert_Click(System.Object,System.EventArgs)">
+            <summary>
+            on insert new filter tree node
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.Add_Click(System.Object,System.EventArgs)">
+            <summary>
+            on add new filter tree node
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.bUp_Click(System.Object,System.EventArgs)">
+            <summary>
+            Moves filter node up among siblings
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.bDown_Click(System.Object,System.EventArgs)">
+            <summary>
+            Moves filter node down among siblings
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.bRemoveBranch_Click(System.Object,System.EventArgs)">
+            <summary>
+            remove complete branch from the selected node
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.FilterComment_Leave(System.Object,System.EventArgs)">
+            <summary>
+            sets the filter name to the selected filter tree node
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.FilterBox_Leave(System.Object,System.EventArgs)">
+            <summary>
+            on filter edit box lost focus
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.FilterTree_AfterCheck(System.Object,System.Windows.Forms.TreeViewEventArgs)">
+            <summary>
+            defines the current debug filter chain after checking filter node
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.GetCheckedNodesChain">
+            <summary>
+            Create checked filter chain by highest_checked_node
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.GetFilterChainParser">
+            <summary>
+            Create a chain of checked filteres to test it within DataSifter
+            </summary>
+            <returns>Parser, or null if error</returns>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.is_tree_node_within_checked_path(System.Windows.Forms.TreeNode)">
+            <summary>
+            used while building the current debug filter chain 
+            </summary>
+            <param name="tree_node"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.FilterTree_DrawNode(System.Object,System.Windows.Forms.DrawTreeNodeEventArgs)">
+            <summary>
+            draws filter tree item in a customized manner with several colors
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.FilterBox_TextChanged(System.Object,System.EventArgs)">
+            <summary>
+            tints filter syntax in FilterBox
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="F:Cliver.DataSifter.FilterTreeForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.SaveAsPrepared_Click(System.Object,System.EventArgs)">
+            <summary>
+            saves the current filter tree as a prepared filter tree
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.DeletePrepared_Click(System.Object,System.EventArgs)">
+            <summary>
+            deletes the selected prepared filter tree
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.AddPrepared_Click(System.Object,System.EventArgs)">
+            <summary>
+            adds the selected prepared filter to the selected filter tree node
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.GetFilterTreeParser">
+            <summary>
+            Create a tree of Filter's currently edited in the form
+            </summary>
+            <returns>filter tree Parser, if error then NULL</returns>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.Save_Click(System.Object,System.EventArgs)">
+            <summary>
+            saves current filter collection into file
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.OpenFilterTree_Click(System.Object,System.EventArgs)">
+            <summary>
+            on opening filter tree from file
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.ToSavePreviousFilterTree">
+            <summary>
+            ask if previous filter tree must be saved
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.NewFilterTree_Click(System.Object,System.EventArgs)">
+            <summary>
+            clear tegex tree before starting editing a new
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.OutputData_Click(System.Object,System.EventArgs)">
+            <summary>
+            outputs parse data
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.GetOutputGroupNames(Cliver.DataSifter.Filter[],Cliver.DataSifter.OutputGroup,System.String,System.Collections.Generic.List{Cliver.DataSifter.OutputGroup},System.Boolean)">
+            <summary>
+            Return output group names as an array
+            </summary>
+            <param name="rns">root filter nodes</param>
+            <param name="parent_og"></param>
+            <param name="parent_group_name"></param>
+            <param name="ogs">List</param>
+            <param name="named_only"></param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.buttonParse_CheckedChanged(System.Object,System.EventArgs)">
+            <summary>
+            start/break parsing thread
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterTreeForm.FilterTree_Enter(System.Object,System.EventArgs)">
+            <summary>
+            shows number of named groups
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="P:Cliver.DataSifter.FilterTreeForm.FilterTreeChanged">
+            <summary>
+            shows if the current filter tree was modified after saving
+            </summary>
+        </member>
+        <member name="T:Cliver.RtfEditor">
+            <summary>
+            Edit rtf text
+            </summary>
+        </member>
+        <member name="M:Cliver.RtfEditor.IndexOf(System.Text.StringBuilder,System.String)">
+            <summary>
+            Analog string.IndexOf for StringBuilder
+            </summary>
+            <param name="str">string where to search</param>
+            <param name="value">string what to search</param>
+            <returns>-1 if not found or value is empty</returns>
+        </member>
+        <member name="M:Cliver.RtfEditor.IndexOf(System.Text.StringBuilder,System.String,System.Int32)">
+            <summary>
+            Analog string.IndexOf for StringBuilder
+            </summary>
+            <param name="str">string where to search</param>
+            <param name="value">string what to search</param>
+            <param name="start_index">where to start serch within str</param>
+            <returns>-1 if not found or value is empty</returns>
+        </member>
+        <member name="M:Cliver.RtfEditor.IndexOf(System.Text.StringBuilder,System.String,System.Int32,System.Int32)">
+            <summary>
+            Analog string.IndexOf for StringBuilder
+            </summary>
+            <param name="str">string where to search</param>
+            <param name="value">string what to search</param>
+            <param name="start_index">where to start serch within str</param>
+            <param name="count">the number of charakter positions to examine</param>
+            <returns>-1 if not found or value is empty</returns>
+        </member>
+        <member name="F:Cliver.DataSifter.Document.uri">
+            <summary>
+            uri of the document
+            </summary>
+        </member>
+        <member name="P:Cliver.DataSifter.Document.Text">
+            <summary>
+            initial text string that is to be parsed in DataSifter
+            </summary>
+        </member>
+        <member name="T:Cliver.DataSifter.AboutForm">
+            <summary>
+            Summary description for About.
+            </summary>
+        </member>
+        <member name="F:Cliver.DataSifter.AboutForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.AboutForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.AboutForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:Cliver.DataSifter.SettingsForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.SettingsForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Cliver.DataSifter.SettingsForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.Program.Main">
+            <summary>
+            The main entry point for the application.
+            </summary>
+        </member>
+        <member name="T:Cliver.DataSifter.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:Cliver.DataSifter.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:Cliver.DataSifter.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.Settings.GetFilterBackColor(System.Int32)">
+            <summary>
+            safely returns Color
+            </summary>
+            <param name="level"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Cliver.DataSifter.SourceForm">
+            <summary>
+            Form that hosts parsed text and filter tree editor control
+            </summary>
+            <summary>
+            CaptureLabel routines
+            </summary>
+            <summary>
+            This part contains navigation routines
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.SourceForm.count_positions_ignored_by_rich_text_box">
+            <summary>
+            RichTextBox takes '\r\n' as a single char so it counts them to restore a correct position
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.SourceForm.RunParse">
+            <summary>
+            start parsing by the current debug regex chain
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Cliver.DataSifter.SourceForm.StopParse">
+            <summary>
+            breaks parsing thread and stops parsing
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.SourceForm.TextBox_DoubleClick(System.Object,System.EventArgs)">
+            <summary>
+            selects the complete captured group within the parsed text box by double click
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="F:Cliver.DataSifter.SourceForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.SourceForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Cliver.DataSifter.SourceForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="F:Cliver.DataSifter.SourceForm.CaptureLabels">
+            <summary>
+            List of parse labels to be inserted in text
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.SourceForm.shift_on_positions_ignored_by_rich_text_box(System.Int32@,System.Int32@)">
+            <summary>
+            shift position on positions ignored by RichTextBox
+            </summary>
+            <param name="position">position in source</param>
+            <param name="length"></param>
+            <returns>position in RichTextBox</returns>
+        </member>
+        <member name="M:Cliver.DataSifter.SourceForm.set_status_by_position(System.Int32,System.Int32)">
+            <summary>
+            Sets status bar text along the current cursor position in the parsed text box.
+            Finds the selected capture, determines its filter tree path and constructs from them status text.
+            </summary>
+            <param name="start"></param>
+            <param name="length"></param>
+        </member>
+        <member name="T:Cliver.DataSifter.SourceForm.CaptureLabel">
+            <summary>
+            Defines label for each parse capture
+            </summary>
+        </member>
+        <member name="F:Cliver.DataSifter.SourceForm.CaptureLabel.start">
+            <summary>
+            start position of capture as it is in Document.Source
+            </summary>
+        </member>
+        <member name="F:Cliver.DataSifter.SourceForm.CaptureLabel.end">
+            <summary>
+            end position of capture as it is in Document.Source 
+            </summary>
+        </member>
+        <member name="F:Cliver.DataSifter.SourceForm.CaptureLabel.start2">
+            <summary>
+            start position of capture shifted on carriage_returns
+            </summary>
+        </member>
+        <member name="F:Cliver.DataSifter.SourceForm.CaptureLabel.end2">
+            <summary>
+            end position of capture shifted on carriage_returns
+            </summary>
+        </member>
+        <member name="F:Cliver.DataSifter.SourceForm.CaptureLabel.start3">
+            <summary>
+            start position of capture shifted on carriage_returns + if set, label's length
+            </summary>
+        </member>
+        <member name="F:Cliver.DataSifter.SourceForm.CaptureLabel.end3">
+            <summary>
+            end position of capture shifted on carriage_returns + if set, label's length
+            </summary>
+        </member>
+        <member name="F:Cliver.DataSifter.SourceForm.CaptureLabel.visible">
+            <summary>
+            is this capture highlighted
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.SourceForm.CaptureLabel.get_path">
+            <summary>
+            return standard path used for comparison
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Cliver.ThreadRunner">
+            <summary>
+            Run a function as another thread, polls if it is working too long and then asks to break it.
+            Used in GUI when a potentially time consuming operation is invoked.
+            </summary>
+        </member>
+        <member name="M:Cliver.ThreadRunner.#ctor(System.Int32,System.Windows.Forms.Control,System.String)">
+            <summary>
+            ThreadRunner constructor
+            </summary>
+            <param name="check_period">time period in ms when ask to abort the thread</param>
+            <param name="owner">control whose mouse cursor will be changed to busy during running. Can be null</param>
+            <param name="message">Can be null</param>
+        </member>
+        <member name="M:Cliver.ThreadRunner.Run(System.Object,System.String,System.Object[])">
+            <summary>
+            Run a function as another thread.
+            (!)Function must be public.
+            </summary>
+            <param name="target">instance of class hosting the function</param>
+            <param name="function_name">name of the function</param>
+            <param name="parameters">list of function parameters</param>
+            <returns>any return from the fuction. If it is void then = null</returns>
+        </member>
+        <member name="M:Cliver.ThreadRunner.Run(System.Object,System.Object[])">
+            <summary>
+            Run delegate of a function as another thread.
+            (!)Delegate must be public.
+            </summary>
+            <param name="target_function">delegate of the function</param>
+            <param name="parameters">list of function parameters</param>
+            <returns>any return from the fuction. If it is void then = null</returns>
+        </member>
+    </members>
+</doc>
