@@ -27,7 +27,7 @@ namespace Cliver.Bot
         /// </summary>
         public static bool ShowMessages = Program.Mode == ProgramMode.DIALOG;
 
-        public static bool Output2Console = !string.IsNullOrEmpty(Console.Title);
+        public static bool Output2Console = false;
 
         public static bool EmailErrors = false;
 

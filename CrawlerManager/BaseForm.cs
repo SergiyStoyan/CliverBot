@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Cliver.CrawlerManager
+namespace Cliver.CrawlerHost
 {
-    internal partial class BaseForm : Form
+    public partial class BaseForm : Form
     {
         public BaseForm()
         {

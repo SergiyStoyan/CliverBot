@@ -15,11 +15,11 @@ using System.Windows.Forms;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
-using Settings = Cliver.CrawlerManager.Properties.Settings;
+using Settings = Cliver.CrawlerHost.Properties.Settings;
 using System.Reflection;
 using Cliver.Bot;
 
-namespace Cliver.CrawlerManager
+namespace Cliver.CrawlerHost
 {
     public static class Program
     {
@@ -34,7 +34,7 @@ namespace Cliver.CrawlerManager
 
             Config.Initialize();
 
-            if (Regex.IsMatch(Environment.CommandLine, "-silently", RegexOptions.IgnoreCase) || Config.General.RunSilently)
+            if (Regex.IsMatch(Environment.CommandLine, "-silently", RegexOptions.IgnoreCase) || Properties.Settings.Default.RunSilently)
                 Mode = ProgramMode.SILENT;
             else
                 Mode = ProgramMode.DIALOG;
@@ -49,7 +49,7 @@ namespace Cliver.CrawlerManager
         static public readonly string Version;
 
         [STAThreadAttribute]
-        static void Main()
+        public static void Main()
         {
             try
             {

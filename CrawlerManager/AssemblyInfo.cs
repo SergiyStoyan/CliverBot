@@ -6,12 +6,12 @@ using System.Runtime.CompilerServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 //
-[assembly: AssemblyTitle("")]
-[assembly: AssemblyDescription("Crawler Manager")]
+[assembly: AssemblyTitle("Crawler Manager")]
+[assembly: AssemblyDescription("Crawler Manager, by Sergey Stoyan")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CliverSoft")]
 [assembly: AssemblyProduct("CliverBot Manager")]
-[assembly: AssemblyCopyright("Copyright © 2007-2013, CliverSoft")]
+[assembly: AssemblyCopyright("Copyright © 2007-2015, CliverSoft")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 

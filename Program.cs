@@ -16,6 +16,11 @@ namespace Cliver.Bot
         SILENT
     }
 
+    public class CommandLineParameters
+    {
+        public const string SILENTLY = "-silently";
+    }
+
     public static class Program
     {
         static public void Initialize()
@@ -27,7 +32,7 @@ namespace Cliver.Bot
         {
             Config.Initialize();
 
-            if (Regex.IsMatch(Environment.CommandLine, "-silently", RegexOptions.IgnoreCase) || Properties.General.Default.RunSilently)
+            if (Regex.IsMatch(Environment.CommandLine, CommandLineParameters.SILENTLY, RegexOptions.IgnoreCase) || Properties.General.Default.RunSilently)
                 Mode = ProgramMode.SILENT;
             else
                 Mode = ProgramMode.DIALOG;
@@ -55,7 +60,7 @@ namespace Cliver.Bot
         static public readonly string Title;
         //static public readonly DateTime CustomizationModificationTime = File.GetLastWriteTime(Application.ExecutablePath);
         static readonly public string AppName = Application.ProductName;
-        
+
         public static DateTime GetCustomizationCompiledTime()
         {
             string filePath = CustomizationApi.CustomAssembly.Location;
@@ -91,7 +96,7 @@ namespace Cliver.Bot
             try
             {
                 Initialize();
-                if(Properties.App.Default.SingleProcessOnly)
+                if (Properties.App.Default.SingleProcessOnly)
                     ProcessRoutines.RunSingleProcessOnly();
                 Session.Start();
                 //         MainForm.This.Text = Program.Title;
@@ -102,7 +107,7 @@ namespace Cliver.Bot
                 LogMessage.Exit(e);
             }
         }
-        
+
         static internal void Help()
         {
             try
@@ -113,6 +118,15 @@ namespace Cliver.Bot
             {
                 LogMessage.Error(ex);
             }
+        }
+    }
+
+    public class TerminatingException : Exception
+    {
+        public TerminatingException(string message)
+            : base(message)
+        {
+            LogMessage.Exit(message);
         }
     }
 }

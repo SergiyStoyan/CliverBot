@@ -20,15 +20,13 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Threading;
-using Settings = Cliver.CrawlerManager.Properties.Settings;
+using Settings = Cliver.CrawlerHost.Properties.Settings;
 using Cliver.Bot;
 
-
-namespace Cliver.CrawlerManager
+namespace Cliver.CrawlerHost
 {
     internal partial class SysTrayForm : BaseForm
     {
-
         SysTrayForm()
         {
             InitializeComponent();
@@ -75,14 +73,14 @@ namespace Cliver.CrawlerManager
 
         public void ToggleService()
         {
-            if (!CrawlerManager.Started)
-                CrawlerManager.Start();
+            if (!Manager.Started)
+                Manager.Start();
             else
             {
                 StopService.Text = "Stopping...";
                 if (crawlers_form != null)
                     crawlers_form.SetControlText(crawlers_form.bStop, "Stopping...");
-                CrawlerManager.Stop();
+                Manager.Stop();
             }
         }
 
@@ -99,7 +97,7 @@ namespace Cliver.CrawlerManager
         internal void CheckNow()
         {
             //CrawlerManager.RunManager.Set();
-            CrawlerManager.CheckNow();
+            Manager.CheckNow();
         }
 
         internal bool Started

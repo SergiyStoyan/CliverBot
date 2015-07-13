@@ -17,7 +17,7 @@ using System.Collections.Generic;
 
 namespace Cliver.Bot
 {
-    public class RegexSpider
+    public class Spider2
     {
         /// <summary>
         /// Return anchor/area links found within the passed page string. Links are filtered by their text with name_filter_regexes.
@@ -135,14 +135,14 @@ namespace Cliver.Bot
 
         static object static_lock_object = new object();
 
-        static void find_links(List<WebLink> links, WebLinkType link_type, Parser parser, string url, string page)
+        static void find_links(List<WebLink> links, WebLinkType link_type, Cliver.DataSifter.Parser parser, string url, string page)
         {
             lock (static_lock_object)
             {
-                GroupCapture gc = parser.Parse(page); 
-                foreach (GroupCapture tag in gc["Tag"])
+                Cliver.DataSifter.Capture gc = parser.Parse(page);
+                foreach (Cliver.DataSifter.Capture tag in gc["Tag"])
                 {
-                    GroupCapture html = tag.FirstOf("Html");
+                    Cliver.DataSifter.Capture html = tag.FirstOf("Html");
                     if (html == null)
                         continue;
                     string u = html.ValueOf("Url");
@@ -156,10 +156,10 @@ namespace Cliver.Bot
             }
         }
 
-        static Cliver.Parser HtmlAnchors = new Parser("HtmlAnchors.rgx");
-        static Cliver.Parser HtmlAreas = new Parser("HtmlAreas.rgx");
-        static Cliver.Parser HtmlFrames = new Parser("HtmlFrames.rgx");
-        static Cliver.Parser HtmlForms = new Parser("HtmlForms.rgx");
+        static Cliver.DataSifter.Parser HtmlAnchors = new DataSifter.Parser("HtmlAnchors.rgx");
+        static Cliver.DataSifter.Parser HtmlAreas = new DataSifter.Parser("HtmlAreas.rgx");
+        static Cliver.DataSifter.Parser HtmlFrames = new DataSifter.Parser("HtmlFrames.rgx");
+        static Cliver.DataSifter.Parser HtmlForms = new DataSifter.Parser("HtmlForms.rgx");
 
         /// <summary>
         /// Checks whether url remains within host

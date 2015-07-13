@@ -1,4 +1,4 @@
-namespace Cliver.CrawlerManager
+namespace Cliver.CrawlerHost
 {
     partial class SysTrayForm
     {

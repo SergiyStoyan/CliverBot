@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Cliver.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Cliver.FhrCrawlerManager.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="PollIntervalInSecs" Type="System.Int32" Scope="Application">
@@ -17,25 +17,25 @@
     <Setting Name="DbConnectionString" Type="(Connection string)" Scope="Application">
       <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=.\SQLEXPRESS;AttachDbFilename=C:\_d\_PROJECTS\Christian\Assortmento_CrawlerHost\bin\CliverCrawlers.mdf;Integrated Security=True;MultipleActiveResultSets=True;Connect Timeout=90;Application Name=EntityFramework;User Instance=True&lt;/ConnectionString&gt;
+  &lt;ConnectionString&gt;Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename="D:\_d\_PROJECTS\FHR(for Andreas Chermak)\CliverHost\CliverCrawlerHost\CliverCrawlerHost.mdf";Integrated Security=True;Connect Timeout=30&lt;/ConnectionString&gt;
   &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=.\SQLEXPRESS;AttachDbFilename=C:\_d\_PROJECTS\Christian\Assortmento_CrawlerHost\bin\CliverCrawlers.mdf;Integrated Security=True;MultipleActiveResultSets=True;Connect Timeout=90;Application Name=EntityFramework;User Instance=True</Value>
+      <Value Profile="(Default)">Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename="D:\_d\_PROJECTS\FHR(for Andreas Chermak)\CliverHost\CliverCrawlerHost\CliverCrawlerHost.mdf";Integrated Security=True;Connect Timeout=30</Value>
     </Setting>
     <Setting Name="EmailSender" Type="System.String" Scope="User">
-      <Value Profile="(Default)">test@cliversoft.com</Value>
+      <Value Profile="(Default)">crawler_manager@cliversoft.com</Value>
     </Setting>
     <Setting Name="SmtpHost" Type="System.String" Scope="User">
-      <Value Profile="(Default)">smtp.gmail.com</Value>
+      <Value Profile="(Default)">mail.cliversoft.com</Value>
     </Setting>
     <Setting Name="SmtpPort" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">587</Value>
+      <Value Profile="(Default)">25</Value>
     </Setting>
     <Setting Name="SmtpLogin" Type="System.String" Scope="User">
-      <Value Profile="(Default)">assortmento@gmail.com</Value>
+      <Value Profile="(Default)">crawler_manager@cliversoft.com</Value>
     </Setting>
     <Setting Name="SmtpPassword" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Crawler1012</Value>
+      <Value Profile="(Default)">123456</Value>
     </Setting>
     <Setting Name="DefaultAdminEmails" Type="System.String" Scope="User">
       <Value Profile="(Default)">sergey.stoyan@gmail.com</Value>
@@ -43,11 +43,8 @@
     <Setting Name="HelpUri" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://cliversoft.com/articles/manual_to_crawlerhost.php</Value>
     </Setting>
-    <Setting Name="DbConnectionString_" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">Data Source=.\SQLEXPRESS;AttachDbFilename=|DbPath|;Integrated Security=True;Connect Timeout=90;User Instance=True;multipleactiveresultsets=True;App=EntityFramework</Value>
-    </Setting>
-    <Setting Name="DbRelativePath_" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">..\..\CliverCrawlers.mdf</Value>
+    <Setting Name="RunSilently" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

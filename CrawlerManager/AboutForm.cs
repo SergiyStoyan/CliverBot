@@ -13,7 +13,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 using System.Diagnostics;
 
-namespace Cliver.CrawlerManager
+namespace Cliver.CrawlerHost
 {
 	/// <summary>
 	/// Summary description for About.

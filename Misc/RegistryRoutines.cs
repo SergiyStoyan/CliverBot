@@ -47,6 +47,8 @@ namespace Cliver.Bot
         readonly static RegistryKey base_registry_key = Registry.CurrentUser;
         static object lock_object = new object();
 
+        readonly static public string DefaultRegistryKey = base_registry_key.ToString() + "/" + Properties.App.Default.RegistrySubkey;
+
         /// <summary>
         /// Set string value to windows registry.
         /// </summary>

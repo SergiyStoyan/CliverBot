@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using Cliver.Bot;
 
-namespace Cliver.CrawlerManager
+namespace Cliver.CrawlerHost
 {
     internal partial class SettingsForm : BaseForm
     {

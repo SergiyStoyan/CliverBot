@@ -62,6 +62,7 @@ namespace Cliver.BotGui
             // 
             this.Settings.BackColor = System.Drawing.SystemColors.Control;
             this.Settings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.Settings.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.Settings.Location = new System.Drawing.Point(375, 0);
             this.Settings.Margin = new System.Windows.Forms.Padding(0);
             this.Settings.Name = "Settings";
@@ -74,6 +75,7 @@ namespace Cliver.BotGui
             // bAbout
             // 
             this.bAbout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bAbout.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.bAbout.Location = new System.Drawing.Point(0, 0);
             this.bAbout.Margin = new System.Windows.Forms.Padding(0);
             this.bAbout.Name = "bAbout";
@@ -85,6 +87,8 @@ namespace Cliver.BotGui
             // buttonStart
             // 
             this.buttonStart.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonStart.ForeColor = System.Drawing.Color.MidnightBlue;
+            this.buttonStart.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonStart.Location = new System.Drawing.Point(525, 0);
             this.buttonStart.Margin = new System.Windows.Forms.Padding(0);
             this.buttonStart.Name = "buttonStart";
@@ -178,6 +182,7 @@ namespace Cliver.BotGui
             // bTools
             // 
             this.bTools.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bTools.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.bTools.Location = new System.Drawing.Point(150, 0);
             this.bTools.Margin = new System.Windows.Forms.Padding(0);
             this.bTools.Name = "bTools";
@@ -198,8 +203,8 @@ namespace Cliver.BotGui
             this.MinimumSize = new System.Drawing.Size(608, 210);
             this.Name = "MainForm";
             this.Text = "CliverBot";
-            this.Load += new System.EventHandler(this.MainForm_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.groupBox2.ResumeLayout(false);
             this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);

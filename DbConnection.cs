@@ -21,10 +21,10 @@ namespace Cliver.Bot
 {
     public class DbConnection
     {
-        static DbConnection()
-        {
-            This = Create();
-        }
+        //static DbConnection()
+        //{
+        //    This = Create();
+        //}
 
         DbConnection()
         {

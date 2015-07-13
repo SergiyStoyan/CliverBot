@@ -164,7 +164,7 @@
     <Compile Include="WebRoutines\Cache.put.cs" />
     <Compile Include="WebRoutines\AgileSpider.cs" />
     <Compile Include="WebRoutines\IeEmulation.cs" />
-    <Compile Include="WebRoutines\RegexSpider.cs" />
+    <Compile Include="WebRoutines\Spider2.cs" />
     <Compile Include="WebRoutines\FtpRoutine.cs" />
     <Compile Include="WebRoutines\HtmlRoutines.cs" />
     <Compile Include="WebRoutines\HttpRoutine.cs" />

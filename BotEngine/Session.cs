@@ -64,17 +64,6 @@ namespace Cliver.Bot
                 items_xtw.WriteStartElement("Items");
             }
 
-            try
-            {
-                CustomizationApi.SessionCreating();
-            }
-            catch (Exception e)
-            {
-                LogMessage.Error("SessionCreating: " + Log.GetExceptionMessage(e));
-                Close();
-                return;
-            }
-
             Restored = false;
             if (Properties.General.Default.RestoreBrokenSession)
             {
@@ -87,6 +76,17 @@ namespace Cliver.Bot
                 StartTime = DateTime.Now;
                 Log.Main.Write("No session was restored so reading input Items from the input file");
                 read_input_file();
+            }
+
+            try
+            {
+                CustomizationApi.SessionCreating();
+            }
+            catch (Exception e)
+            {
+                LogMessage.Error("SessionCreating: " + Log.GetExceptionMessage(e));
+                Close();
+                return;
             }
 
             set_session_state(SessionState.STARTED, "session_start_time", StartTime.ToString("yyyy-MM-dd HH:mm:ss"));

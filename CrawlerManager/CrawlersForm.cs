@@ -7,8 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Cliver.Bot;
+using Cliver.CrawlerHost;
 
-namespace Cliver.CrawlerManager
+namespace Cliver.CrawlerHost
 {
     internal partial class CrawlersForm : BaseForm
     {
@@ -59,15 +60,15 @@ namespace Cliver.CrawlerManager
                 //        c.AllowDBNull = true;
 
                 DataGridViewComboBoxColumn c_ = (DataGridViewComboBoxColumn)dataGridView1.Columns["command_"];
-                c_.DataSource = Enum.GetValues(typeof(CrawlerHost.CrawlerCommand));
-                c_.ValueType = typeof(CrawlerHost.CrawlerCommand);
+                c_.DataSource = Enum.GetValues(typeof(DbApi.CrawlerCommand));
+                c_.ValueType = typeof(DbApi.CrawlerCommand);
                 //c_.ValueMember = "Value";
                 //c_.DisplayMember = "Display";
                 foreach (DataGridViewRow r in dataGridView1.Rows)
                 {
                     try
                     {
-                        r.Cells[command_i_].Value = (CrawlerHost.CrawlerCommand)r.Cells[command_i].Value;
+                        r.Cells[command_i_].Value = (DbApi.CrawlerCommand)r.Cells[command_i].Value;
                     }
                     catch
                     {
@@ -76,13 +77,13 @@ namespace Cliver.CrawlerManager
                 }
 
                 c_ = (DataGridViewComboBoxColumn)dataGridView1.Columns["state_"];
-                c_.DataSource = Enum.GetValues(typeof(CrawlerHost.CrawlerState));
-                c_.ValueType = typeof(CrawlerHost.CrawlerState);
+                c_.DataSource = Enum.GetValues(typeof(DbApi.CrawlerState));
+                c_.ValueType = typeof(DbApi.CrawlerState);
                 foreach (DataGridViewRow r in dataGridView1.Rows)
                 {
                     try
                     {
-                        r.Cells[state_i_].Value = (CrawlerHost.CrawlerState)r.Cells[state_i].Value;
+                        r.Cells[state_i_].Value = (DbApi.CrawlerState)r.Cells[state_i].Value;
                     }
                     catch
                     {
@@ -92,13 +93,13 @@ namespace Cliver.CrawlerManager
 
                 c_ = (DataGridViewComboBoxColumn)dataGridView1.Columns["_last_session_state_"];
                 c_.DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing;
-                c_.DataSource = Enum.GetValues(typeof(CrawlerHost.SessionState));
-                c_.ValueType = typeof(CrawlerHost.SessionState);
+                c_.DataSource = Enum.GetValues(typeof(DbApi.SessionState));
+                c_.ValueType = typeof(DbApi.SessionState);
                 foreach (DataGridViewRow r in dataGridView1.Rows)
                 {
                     try
                     {
-                        r.Cells[_last_session_state_i_].Value = (CrawlerHost.SessionState)r.Cells[_last_session_state_i].Value;
+                        r.Cells[_last_session_state_i_].Value = (DbApi.SessionState)r.Cells[_last_session_state_i].Value;
                     }
                     catch
                     {
@@ -130,12 +131,12 @@ namespace Cliver.CrawlerManager
 
                 try
                 {
-                    r.Cells[command_i].Value = (byte)(CrawlerHost.CrawlerCommand)r.Cells[command_i_].Value;
+                    r.Cells[command_i].Value = (byte)(DbApi.CrawlerCommand)r.Cells[command_i_].Value;
                 }
                 catch { }
                 try
                 {
-                    r.Cells[state_i].Value = (byte)(CrawlerHost.CrawlerState)r.Cells[state_i_].Value;
+                    r.Cells[state_i].Value = (byte)(DbApi.CrawlerState)r.Cells[state_i_].Value;
                 }
                 catch { }
             }
@@ -200,9 +201,9 @@ namespace Cliver.CrawlerManager
             try
             {
                 //e.Row.Cells["id"].Value = 
-                e.Row.Cells["state_"].Value = CrawlerHost.CrawlerState.DISABLED;
+                e.Row.Cells["state_"].Value = DbApi.CrawlerState.DISABLED;
                 //e.Row.Cells["site"].Value = 
-                e.Row.Cells["command_"].Value = CrawlerHost.CrawlerCommand.EMPTY;
+                e.Row.Cells["command_"].Value = DbApi.CrawlerCommand.EMPTY;
                 //e.Row.Cells["admin_emails"].Value = 
                 e.Row.Cells["run_time_span"].Value = 86400;
                 e.Row.Cells["crawl_product_timeout"].Value = 600;

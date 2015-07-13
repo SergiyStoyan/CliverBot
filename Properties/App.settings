@@ -1,5 +1,5 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Cliver.Properties" GeneratedClassName="App">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Cliver.Bot.Properties" GeneratedClassName="App">
   <Profiles />
   <Settings>
     <Setting Name="FiddlerPort" Type="System.Int32" Scope="Application">
@@ -12,7 +12,7 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="RegistrySubkey" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">@"SOFTWARE\CliverSoft\CliverBot"</Value>
+      <Value Profile="(Default)">SOFTWARE\CliverSoft\CliverBot</Value>
     </Setting>
     <Setting Name="HelpUri" Type="System.String" Scope="Application">
       <Value Profile="(Default)">http://cliversoft.com/articles/manual_to_cliverbot_based_applications.php</Value>

@@ -10,7 +10,7 @@
 
 #pragma warning disable 1591
 
-namespace Cliver.CrawlerManager {
+namespace Cliver.CrawlerHost {
     
     
     /// <summary>
@@ -1229,7 +1229,7 @@ namespace Cliver.CrawlerManager {
         }
     }
 }
-namespace Cliver.CrawlerManager.CliverCrawlersDataSetTableAdapters {
+namespace Cliver.CrawlerHost.CliverCrawlersDataSetTableAdapters {
     
     
     /// <summary>
@@ -1419,7 +1419,7 @@ WHERE        (id = @Original_id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitConnection() {
             this._connection = new global::System.Data.SqlClient.SqlConnection();
-            this._connection.ConnectionString = global::Cliver.Properties.Settings.Default.DbConnectionString;
+            this._connection.ConnectionString = global::Cliver.CrawlerHost.Properties.Settings.Default.DbConnectionString;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
