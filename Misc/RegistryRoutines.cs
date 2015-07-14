@@ -18,7 +18,6 @@ using System.Diagnostics;
 using System.Security.AccessControl;
 using System.Security.Principal;
 
-
 namespace Cliver.Bot
 {
     public static class RegistryRoutines

@@ -42,7 +42,7 @@ namespace Cliver.Bot.Properties
                         }
                     }
                     else
-                        LogMessage.Inform("A folder where the application will store log data is: " + PreWorkDir + ".\nIt is set and can be changed in the registry key " + RegistryRoutines.DefaultRegistryKey + @"\GeneralWorkDir");
+                        LogMessage.Inform("A folder where the application will store log data is: " + PreWorkDir + ".\nIt can be changed in the registry key " + RegistryRoutines.DefaultRegistryKey + @"\GeneralWorkDir");
                     Save();
                     RegistryRoutines.SetValue(GeneralWorkDir_registry_name, PreWorkDir);
                 }
