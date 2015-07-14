@@ -20,6 +20,8 @@ namespace Cliver.CrawlerHost
 
         public readonly string Id;
         public readonly string Url;
+        public readonly DateTime CrawlTime; //filled when restoring from db
+        public readonly DateTime ChangeTime;//filled when restoring from db
 
         public Product(string id, string url)
         {

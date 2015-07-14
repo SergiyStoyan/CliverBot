@@ -25,7 +25,7 @@ namespace Cliver.Bot
         /// <summary>
         /// Defines whether message boxes will be showed (run in manual mode) 
         /// </summary>
-        public static bool ShowMessages = Program.Mode == ProgramMode.DIALOG;
+        public static bool ShowStumblingMessages = Program.Mode == ProgramMode.DIALOG;
 
         public static bool Output2Console = false;
 
@@ -60,7 +60,7 @@ namespace Cliver.Bot
                 if (write2log)
                     Log.Main.Write(message);
 
-                if (ShowMessages)
+                if (ShowStumblingMessages)
                 {
                     if (!Output2Console)
                     {
@@ -95,6 +95,12 @@ namespace Cliver.Bot
                 }
                 else
                 {
+                    if (Output2Console)
+                    {
+                        Console.WriteLine(message);
+                        Console.WriteLine("Enter Y[es] or N[o]:");
+                        Console.WriteLine("Choosen default: " + (silent_yes ? "Y[es]" : "N[o]"));
+                    }
                     return silent_yes;
                 }
             }
@@ -107,7 +113,7 @@ namespace Cliver.Bot
                 email(message);
             lock (lock_variable)
             {
-                if (ShowMessages)
+                if (ShowStumblingMessages)
                 {
                     if (!Output2Console)
                     {
@@ -117,6 +123,13 @@ namespace Cliver.Bot
                             MessageBoxIcon.Error);
                     }
                     else
+                    {
+                        Console.WriteLine("ERROR: " + message);
+                    }
+                }
+                else
+                {
+                    if (Output2Console)
                     {
                         Console.WriteLine("ERROR: " + message);
                     }
@@ -135,7 +148,7 @@ namespace Cliver.Bot
                 email(message);
             lock (lock_variable)
             {
-                if (ShowMessages)
+                if (ShowStumblingMessages)
                 {
                     if (!Output2Console)
                     {
@@ -148,6 +161,13 @@ namespace Cliver.Bot
                     {
                         Console.WriteLine("EXIT: " + message);
                         Console.ReadKey();
+                    }
+                }
+                else
+                {
+                    if (Output2Console)
+                    {
+                        Console.WriteLine("EXIT: " + message);
                     }
                 }
             }
@@ -175,7 +195,7 @@ namespace Cliver.Bot
             Log.Main.Write(message);
             lock (lock_variable)
             {
-                if (ShowMessages)
+                if (ShowStumblingMessages)
                 {
                     if (!Output2Console)
                     {
@@ -185,6 +205,13 @@ namespace Cliver.Bot
                             MessageBoxIcon.Information);
                     }
                     else
+                    {
+                        Console.WriteLine(message);
+                    }
+                }
+                else
+                {
+                    if (Output2Console)
                     {
                         Console.WriteLine(message);
                     }

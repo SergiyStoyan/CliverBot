@@ -43,6 +43,17 @@ namespace Cliver.Bot
                 throw new Exception("Could not detect an appropriate wrapper class for " + connection_string);
         }
 
+        public static DbConnection CreateFromNativeConnection(object connection)
+        {
+            if (connection == null)
+                throw new Exception("Connection is null.");
+
+            if (connection is System.Data.SqlClient.SqlConnection)
+                return new MsSqlConnection((System.Data.SqlClient.SqlConnection)connection);
+
+            throw new Exception("Could not detect an appropriate wrapper class for " + ((System.Data.SqlClient.SqlConnection)connection).ConnectionString);
+        }
+
         /// <summary>
         /// Substitutes macros and canonizes db path.
         /// </summary>
@@ -61,6 +72,11 @@ namespace Cliver.Bot
         protected DbConnection(string connection_string = null)
         {
             this.ConnectionString = connection_string;
+        }
+
+        protected DbConnection(System.Data.Common.DbConnection connection)
+        {
+            this.native_connection = connection;
         }
 
         public readonly string ConnectionString;
@@ -134,6 +150,11 @@ namespace Cliver.Bot
             : base(connection_string)
         {
         }
+
+        internal MsSqlConnection(System.Data.SqlClient.SqlConnection connection)
+            : base(connection)
+        {
+        }        
 
         override protected object get_refreshed_native_connection()
         {

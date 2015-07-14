@@ -53,6 +53,7 @@ namespace Cliver.CrawlerHost
             try
             {
                 Dbc = DbConnection.Create(Settings.Default.DbConnectionString);
+                create_crawler_tables();
             }
             catch(Exception e)
             {
@@ -61,13 +62,10 @@ namespace Cliver.CrawlerHost
         }
         static internal readonly DbConnection Dbc;
 
-        public static void CreateCrawlersTable()
+        static void create_crawler_tables()
         {
             lock (Dbc)
             {
-                if (Dbc.Get("SELECT * FROM sysobjects WHERE name='crawlers' and xtype='U'").GetFirstRecord() != null)
-                    return;
-
                 //if (LogMessage.AskYesNo("Crawlers table does not exist in the database " + Dbc.Database + ". Do you want to create it?", true))
                 //CREATE TABLE IF NOT EXISTS `crawlers` (
                 //  `id` varchar(32) NOT NULL,
@@ -91,28 +89,42 @@ namespace Cliver.CrawlerHost
                 //  PRIMARY KEY (`id`)
                 //) ENGINE=MyISAM DEFAULT CHARSET=latin1; 		
                 Dbc.Get(@"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='crawlers' and xtype='U') 
-CREATE TABLE crawlers
-(id nvarchar(50) PRIMARY KEY,
-state tinyint DEFAULT (2) NOT NULL,
-site nvarchar(50) NOT NULL,
-command tinyint  DEFAULT (0) NOT NULL,
-run_time_span int DEFAULT (86400) NOT NULL,
-crawl_product_timeout int DEFAULT (600) NOT NULL,
-yield_product_timeout int DEFAULT (259200) NOT NULL, 
-admin_emails nvarchar(300) NOT NULL,
-comment nvarchar(1000),
-restart_delay_if_broken int DEFAULT (1800) NOT NULL,
-_session_start_time datetime,
-_last_session_state tinyint,
-_next_start_time datetime DEFAULT (0) NOT NULL,
-_last_start_time datetime,
-_last_end_time datetime,
-_last_process_id int,
-_last_log nvarchar(500),
-_archive ntext,
-_products_table nvarchar(60) DEFAULT ('') NOT NULL,
-_last_product_time datetime)"
-            ).Execute();
+CREATE TABLE crawlers (
+    id nvarchar(50) PRIMARY KEY,
+    state tinyint DEFAULT (2) NOT NULL,
+    site nvarchar(50) NOT NULL,
+    command tinyint  DEFAULT (0) NOT NULL,
+    run_time_span int DEFAULT (86400) NOT NULL,
+    crawl_product_timeout int DEFAULT (600) NOT NULL,
+    yield_product_timeout int DEFAULT (259200) NOT NULL, 
+    admin_emails nvarchar(300) NOT NULL,
+    comment nvarchar(1000),
+    restart_delay_if_broken int DEFAULT (1800) NOT NULL,
+    _session_start_time datetime,
+    _last_session_state tinyint,
+    _next_start_time datetime DEFAULT (0) NOT NULL,
+    _last_start_time datetime,
+    _last_end_time datetime,
+    _last_process_id int,
+    _last_log nvarchar(500),
+    _archive ntext,
+    _products_table nvarchar(60) DEFAULT ('') NOT NULL,
+    _last_product_time datetime
+)"
+                    ).Execute();
+
+                Dbc.Get(@"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='messages' and xtype='U')
+CREATE TABLE [dbo].[messages] (
+    [id]         INT             IDENTITY (1, 1) NOT NULL,
+    [crawler_id] NVARCHAR (50)   NOT NULL,
+    [type]       TINYINT         NOT NULL,
+    [message]    NVARCHAR (1000) NOT NULL,
+    [time]       DATETIME        NOT NULL,
+    [source] NCHAR(200) NOT NULL, 
+    PRIMARY KEY NONCLUSTERED ([id] ASC),
+    CONSTRAINT [FK_messages_To_crawlers] FOREIGN KEY ([crawler_id]) REFERENCES [dbo].[crawlers] ([id])
+);"
+                    ).Execute();
             }
         }
 
@@ -143,6 +155,23 @@ state tinyint NOT NULL)"
 
                 return products_table;
             }
+        }
+
+        public enum MessageType
+        {
+            INFORM = 1,
+            WARNING = 2,
+            ERROR = 3
+        }
+        
+        static public void Message(MessageType type, string crawler_id, string message)
+        {
+            System.Diagnostics.StackTrace st = new StackTrace(true);
+            StackFrame sf = st.GetFrame(1);
+            var m = sf.GetMethod();
+            string source = m.DeclaringType.ToString() + "\nmethod: " + m.Name + "\nfile: " + sf.GetFileName() + "\nline: " + sf.GetFileLineNumber().ToString();
+            if (1 > Dbc["INSERT INTO messages (crawler_id,type,message,time,source) VALUES (@crawler_id,@type,@message, GETDATE(),@source)"].Execute("@crawler_id", crawler_id, "@type", (int)type, "@message", message, "@source", source))
+                throw new Exception("Cannot add to 'crawler_messages': " + message);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Cliver.CrawlerHost
     public class SessionApi
     {
         public enum CrawlerMode : byte { IDLE, PRODUCTION }
-
+        
         static SessionApi()
         {
             lock (DbApi.Dbc)
@@ -27,8 +27,6 @@ namespace Cliver.CrawlerHost
                 try
                 {        
                     CrawlerId = Log.ProcessName;
-
-                    DbApi.CreateCrawlersTable();
 
                     Record r = DbApi.Dbc.Get("SELECT _products_table FROM crawlers WHERE id=@id").GetFirstRecord("@id", CrawlerId);
                     if (r == null)
