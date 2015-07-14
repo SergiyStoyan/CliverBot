@@ -16,24 +16,25 @@ using Cliver.Bot;
 
 namespace Cliver.CrawlerHost
 {
-    public class Api
+    public class SessionApi
     {
         public enum CrawlerMode : byte { IDLE, PRODUCTION }
 
-        static Api()
+        static SessionApi()
         {
-            CrawlerId = Log.ProcessName;
-            lock (CrawlerId)
-            {
+            lock (DbApi.Dbc)
+            { 
                 try
                 {        
+                    CrawlerId = Log.ProcessName;
+
                     DbApi.CreateCrawlersTable();
 
                     Record r = DbApi.Dbc.Get("SELECT _products_table FROM crawlers WHERE id=@id").GetFirstRecord("@id", CrawlerId);
                     if (r == null)
                         LogMessage.Exit("Crawler id '" + CrawlerId + "' does not exist in [crawlers] table.");
 
-                    ProductsTable = DbApi.GetProductsTableForCrawler(CrawlerId);
+                    ProductsTable = DbApi.CreateProductsTableForCrawler(CrawlerId);
 
                     Session.Closing += session_Closing;
 
@@ -51,8 +52,8 @@ namespace Cliver.CrawlerHost
         
         public static void InitSession()
         {
-            lock (CrawlerId)
-            {
+            lock (DbApi.Dbc)
+            { 
                 try
                 {
                     if (mode != CrawlerMode.IDLE)
@@ -92,8 +93,8 @@ namespace Cliver.CrawlerHost
 
         internal static void stop(bool completed)
         {
-            lock (CrawlerId)
-            {
+            lock (DbApi.Dbc)
+            { 
                 switch (mode)
                 {
                     case CrawlerMode.PRODUCTION:
@@ -124,34 +125,37 @@ namespace Cliver.CrawlerHost
         
         public static void SaveProduct(string id, string url, string data)
         {
-            //InitSession();
-
-            if (id == null)
-                throw (new Exception("id cannot be NULL"));
-
-            if (data == null)
-                data = "";
-
-            if (url == null)
-                throw (new Exception("url cannot be NULL"));
-
-            if (DbApi.Dbc["SELECT id FROM " + ProductsTable + " WHERE id=@id"].GetFirstRecord("@id", id) != null)
+            lock (DbApi.Dbc)
             {
-                if (DbApi.Dbc["UPDATE " + ProductsTable + " SET data=@data WHERE id=@id"].Execute("@data", data, "@id", id) > 0)
-                    DbApi.Dbc["UPDATE " + ProductsTable + " SET crawl_time=GETDATE(), change_time=GETDATE(), state=@state WHERE id=@id"].Execute("@state", DbApi.ProductState.NEW, "@id", id);
+                //InitSession();
+
+                if (id == null)
+                    throw (new Exception("id cannot be NULL"));
+
+                if (data == null)
+                    data = "";
+
+                if (url == null)
+                    throw (new Exception("url cannot be NULL"));
+
+                if (DbApi.Dbc["SELECT id FROM " + ProductsTable + " WHERE id=@id"].GetFirstRecord("@id", id) != null)
+                {
+                    if (DbApi.Dbc["UPDATE " + ProductsTable + " SET data=@data WHERE id=@id"].Execute("@data", data, "@id", id) > 0)
+                        DbApi.Dbc["UPDATE " + ProductsTable + " SET crawl_time=GETDATE(), change_time=GETDATE(), state=@state WHERE id=@id"].Execute("@state", DbApi.ProductState.NEW, "@id", id);
+                    else
+                        DbApi.Dbc["UPDATE " + ProductsTable + " SET crawl_time=GETDATE() WHERE id=@id"].Execute("@id", id);
+                }
                 else
-                    DbApi.Dbc["UPDATE " + ProductsTable + " SET crawl_time=GETDATE() WHERE id=@id"].Execute("@id", id);
-            }
-            else
-            {
-                DbApi.Dbc["INSERT INTO " + ProductsTable + " (id, crawl_time, change_time, url, data, state) VALUES (@id, GETDATE(), GETDATE(), @url, @data, @state)"].Execute("@id", id, "@url", url, "@data", data, "@state", DbApi.ProductState.NEW);
-            }
+                {
+                    DbApi.Dbc["INSERT INTO " + ProductsTable + " (id, crawl_time, change_time, url, data, state) VALUES (@id, GETDATE(), GETDATE(), @url, @data, @state)"].Execute("@id", id, "@url", url, "@data", data, "@state", DbApi.ProductState.NEW);
+                }
 
-            if (DateTime.Now > time_2_update_last_product_time)
-            {//it is used because getting MIN() from products table is very slow when the table is large
-                if (DbApi.Dbc["UPDATE crawlers SET _last_product_time=GETDATE() WHERE id=@id"].Execute("@id", CrawlerId) < 1)
-                    throw new Exception("Could not update _last_product_time.");
-                time_2_update_last_product_time = DateTime.Now.AddSeconds(UPDATE_LAST_PRODUCT_TIME_SPAN_IN_SECS);
+                if (DateTime.Now > time_2_update_last_product_time)
+                {//it is used because getting MIN() from products table is very slow when the table is large
+                    if (DbApi.Dbc["UPDATE crawlers SET _last_product_time=GETDATE() WHERE id=@id"].Execute("@id", CrawlerId) < 1)
+                        throw new Exception("Could not update _last_product_time.");
+                    time_2_update_last_product_time = DateTime.Now.AddSeconds(UPDATE_LAST_PRODUCT_TIME_SPAN_IN_SECS);
+                }
             }
         }
         static DateTime time_2_update_last_product_time = DateTime.Now;

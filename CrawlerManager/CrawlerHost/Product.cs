@@ -16,6 +16,8 @@ namespace Cliver.CrawlerHost
 {
     public abstract class Product
     {
+        public Product(){}
+
         public readonly string Id;
         public readonly string Url;
 

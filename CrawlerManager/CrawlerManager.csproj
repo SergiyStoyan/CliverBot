@@ -133,9 +133,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CliverCrawlersDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="CrawlerHost\SessionApi.cs" />
     <Compile Include="CrawlerHost\DbApi.cs" />
-    <Compile Include="CrawlerHost\Api.cs" />
+    <Compile Include="CrawlerHost\Misc.cs" />
     <Compile Include="CrawlerHost\Product.cs" />
+    <Compile Include="EmailRoutines.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <DependentUpon>Settings.settings</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -195,7 +197,7 @@
       <DependentUpon>CliverCrawlersDataSet.xsd</DependentUpon>
     </None>
     <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
