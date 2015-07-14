@@ -50,22 +50,44 @@ namespace Cliver.CrawlerHost
         
         static DbApi()
         {
+            AGAIN:
             try
             {
-                Dbc = DbConnection.Create(Settings.Default.DbConnectionString);
+                Dbc = DbConnection.Create(DbApi.DbConnectionString);
                 create_crawler_tables();
             }
             catch(Exception e)
             {
-                Log.Exit(e);
+                if (LogMessage.ShowStumblingMessages)
+                {
+                    LogMessage.Error("The app could not connect the database. Please create an empty database or locate an existing one and save the respective connection string in settings.");
+                    SettingsForm f = new SettingsForm();
+                    f.ShowDialog();
+                    goto AGAIN;
+                }
+                LogMessage.Exit(e);
             }
         }
-        static internal readonly DbConnection Dbc;
+        static public readonly DbConnection Dbc;
 
         static void create_crawler_tables()
         {
             lock (Dbc)
             {
+                //var scsb = new SqlConnectionStringBuilder(Settings.Default.DbConnectionString);
+                //var database = scsb.InitialCatalog;
+                //if(database == null)
+                //{
+                //   //Match m = Regex.Match(scsb.AttachDBFilename, @"[\\\/](?'Name'.*)\.mdf\s*$", System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Singleline);
+                //   //if (!m.Success)
+                //   //    throw new TerminatingException("Cannot parser database name.");
+                //   //database = m.Groups["Name"].Value;
+                //   database = scsb.AttachDBFilename;
+                //}
+                //if(null == Dbc.Get(string.Format("select * from master.dbo.sysdatabases where name='{0}'", database)).GetSingleValue())
+                //    Dbc.Get(string.Format("CREATE DATABASE {0}", database)).Execute();
+              
+
                 //if (LogMessage.AskYesNo("Crawlers table does not exist in the database " + Dbc.Database + ". Do you want to create it?", true))
                 //CREATE TABLE IF NOT EXISTS `crawlers` (
                 //  `id` varchar(32) NOT NULL,
@@ -173,6 +195,19 @@ state tinyint NOT NULL)"
             if (1 > Dbc["INSERT INTO messages (crawler_id,type,message,time,source) VALUES (@crawler_id,@type,@message, GETDATE(),@source)"].Execute("@crawler_id", crawler_id, "@type", (int)type, "@message", message, "@source", source))
                 throw new Exception("Cannot add to 'crawler_messages': " + message);
         }
+
+        public static string DbConnectionString
+        {
+            get
+            {
+                return RegistryRoutines.GetString(DbConnectionString_registry_name);
+            }
+            internal set 
+            {
+                RegistryRoutines.SetValue(DbConnectionString_registry_name, value);
+            }
+        }
+        const string DbConnectionString_registry_name = @"CrawlerHostDbConnectionString";
     }
 }
 

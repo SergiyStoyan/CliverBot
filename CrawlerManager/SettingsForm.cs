@@ -23,6 +23,9 @@ namespace Cliver.CrawlerHost
             SmtpPort.Text = Properties.Settings.Default.SmtpPort.ToString();
             AdminEmailSender.Text = Properties.Settings.Default.EmailSender;
             DefaultAdminEmails.Text = Properties.Settings.Default.DefaultAdminEmails;
+            DbConnectionString.Text = DbApi.DbConnectionString;
+            if (string.IsNullOrWhiteSpace(DbConnectionString.Text))
+                DbConnectionString.Text = Properties.Settings.Default.DbConnectionString;
         }
 
         private void bOK_Click(object sender, EventArgs e)
@@ -37,6 +40,7 @@ namespace Cliver.CrawlerHost
                 Properties.Settings.Default.EmailSender = AdminEmailSender.Text;
                 Properties.Settings.Default.DefaultAdminEmails = DefaultAdminEmails.Text;
                 Properties.Settings.Default.Save();
+                DbApi.DbConnectionString = DbConnectionString.Text;
                 Close();
             }
             catch (Exception ex)

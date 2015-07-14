@@ -1,11 +1,11 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Cliver.FhrCrawlerManager.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Cliver.CrawlerHost.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="PollIntervalInSecs" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">60</Value>
     </Setting>
-    <Setting Name="CrawlersDirectory" Type="System.String" Scope="Application">
+    <Setting Name="CrawlersDirectory" Type="System.String" Scope="User">
       <Value Profile="(Default)">..\..\crawlers</Value>
     </Setting>
     <Setting Name="CrawlerProcessMaxNumber" Type="System.Int32" Scope="User">

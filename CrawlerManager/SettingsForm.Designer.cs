@@ -44,13 +44,15 @@
             this.label2 = new System.Windows.Forms.Label();
             this.DefaultAdminEmails = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.DbConnectionString = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // bCancel
             // 
             this.bCancel.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.bCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.bCancel.Location = new System.Drawing.Point(453, 257);
+            this.bCancel.Location = new System.Drawing.Point(817, 366);
             this.bCancel.Name = "bCancel";
             this.bCancel.Size = new System.Drawing.Size(75, 23);
             this.bCancel.TabIndex = 2;
@@ -62,7 +64,7 @@
             // 
             this.bOK.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.bOK.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.bOK.Location = new System.Drawing.Point(357, 257);
+            this.bOK.Location = new System.Drawing.Point(721, 366);
             this.bOK.Name = "bOK";
             this.bOK.Size = new System.Drawing.Size(75, 23);
             this.bOK.TabIndex = 1;
@@ -82,17 +84,17 @@
             // SmtpHost
             // 
             this.SmtpHost.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.SmtpHost.Location = new System.Drawing.Point(242, 53);
+            this.SmtpHost.Location = new System.Drawing.Point(227, 56);
             this.SmtpHost.Name = "SmtpHost";
-            this.SmtpHost.Size = new System.Drawing.Size(286, 20);
+            this.SmtpHost.Size = new System.Drawing.Size(665, 20);
             this.SmtpHost.TabIndex = 3;
             // 
             // SmtpPort
             // 
             this.SmtpPort.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.SmtpPort.Location = new System.Drawing.Point(242, 86);
+            this.SmtpPort.Location = new System.Drawing.Point(227, 89);
             this.SmtpPort.Name = "SmtpPort";
-            this.SmtpPort.Size = new System.Drawing.Size(286, 20);
+            this.SmtpPort.Size = new System.Drawing.Size(665, 20);
             this.SmtpPort.TabIndex = 6;
             // 
             // label3
@@ -107,9 +109,9 @@
             // SmtpLogin
             // 
             this.SmtpLogin.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.SmtpLogin.Location = new System.Drawing.Point(242, 119);
+            this.SmtpLogin.Location = new System.Drawing.Point(227, 122);
             this.SmtpLogin.Name = "SmtpLogin";
-            this.SmtpLogin.Size = new System.Drawing.Size(286, 20);
+            this.SmtpLogin.Size = new System.Drawing.Size(665, 20);
             this.SmtpLogin.TabIndex = 8;
             // 
             // label4
@@ -124,10 +126,10 @@
             // SmtpPassword
             // 
             this.SmtpPassword.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.SmtpPassword.Location = new System.Drawing.Point(242, 152);
+            this.SmtpPassword.Location = new System.Drawing.Point(227, 155);
             this.SmtpPassword.Name = "SmtpPassword";
             this.SmtpPassword.PasswordChar = '#';
-            this.SmtpPassword.Size = new System.Drawing.Size(286, 20);
+            this.SmtpPassword.Size = new System.Drawing.Size(665, 20);
             this.SmtpPassword.TabIndex = 10;
             this.SmtpPassword.UseSystemPasswordChar = true;
             // 
@@ -143,9 +145,9 @@
             // CrawlerProcessMaxNumber
             // 
             this.CrawlerProcessMaxNumber.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.CrawlerProcessMaxNumber.Location = new System.Drawing.Point(242, 20);
+            this.CrawlerProcessMaxNumber.Location = new System.Drawing.Point(227, 23);
             this.CrawlerProcessMaxNumber.Name = "CrawlerProcessMaxNumber";
-            this.CrawlerProcessMaxNumber.Size = new System.Drawing.Size(286, 20);
+            this.CrawlerProcessMaxNumber.Size = new System.Drawing.Size(665, 20);
             this.CrawlerProcessMaxNumber.TabIndex = 12;
             // 
             // label6
@@ -160,9 +162,9 @@
             // AdminEmailSender
             // 
             this.AdminEmailSender.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.AdminEmailSender.Location = new System.Drawing.Point(242, 185);
+            this.AdminEmailSender.Location = new System.Drawing.Point(227, 188);
             this.AdminEmailSender.Name = "AdminEmailSender";
-            this.AdminEmailSender.Size = new System.Drawing.Size(286, 20);
+            this.AdminEmailSender.Size = new System.Drawing.Size(665, 20);
             this.AdminEmailSender.TabIndex = 14;
             // 
             // label2
@@ -177,9 +179,9 @@
             // DefaultAdminEmails
             // 
             this.DefaultAdminEmails.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.DefaultAdminEmails.Location = new System.Drawing.Point(242, 218);
+            this.DefaultAdminEmails.Location = new System.Drawing.Point(227, 221);
             this.DefaultAdminEmails.Name = "DefaultAdminEmails";
-            this.DefaultAdminEmails.Size = new System.Drawing.Size(286, 20);
+            this.DefaultAdminEmails.Size = new System.Drawing.Size(665, 20);
             this.DefaultAdminEmails.TabIndex = 16;
             // 
             // label7
@@ -191,11 +193,31 @@
             this.label7.Text = "Default Admin Email Addresses:";
             this.label7.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
+            // DbConnectionString
+            // 
+            this.DbConnectionString.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.DbConnectionString.Location = new System.Drawing.Point(227, 259);
+            this.DbConnectionString.Multiline = true;
+            this.DbConnectionString.Name = "DbConnectionString";
+            this.DbConnectionString.Size = new System.Drawing.Size(665, 91);
+            this.DbConnectionString.TabIndex = 18;
+            // 
+            // label8
+            // 
+            this.label8.Location = new System.Drawing.Point(24, 260);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(197, 13);
+            this.label8.TabIndex = 17;
+            this.label8.Text = "Database Connection String:";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(561, 309);
+            this.ClientSize = new System.Drawing.Size(925, 424);
+            this.Controls.Add(this.DbConnectionString);
+            this.Controls.Add(this.label8);
             this.Controls.Add(this.DefaultAdminEmails);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.AdminEmailSender);
@@ -239,5 +261,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox DefaultAdminEmails;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox DbConnectionString;
+        private System.Windows.Forms.Label label8;
     }
 }

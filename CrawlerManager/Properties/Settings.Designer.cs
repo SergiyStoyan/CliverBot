@@ -32,12 +32,15 @@ namespace Cliver.CrawlerHost.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("..\\..\\crawlers")]
         public string CrawlersDirectory {
             get {
                 return ((string)(this["CrawlersDirectory"]));
+            }
+            set {
+                this["CrawlersDirectory"] = value;
             }
         }
         
