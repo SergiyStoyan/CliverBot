@@ -152,12 +152,21 @@ namespace Cliver.CrawlerHost
 
             List<string> parameters = new List<string>();
             DbApi.CrawlerState state = (DbApi.CrawlerState)(byte)r["state"];
-            if (state != DbApi.CrawlerState.ENABLED)
+            switch (state)
             {
-                LogMessage.Error("Crawler '" + crawler_id + "' is not enabled.");
-                return false;
+                case DbApi.CrawlerState.DISABLED:
+                    LogMessage.Error("Crawler '" + crawler_id + "' is disabled.");
+                    return false;
+                case DbApi.CrawlerState.ENABLED:
+                    parameters.Add(Cliver.Bot.CommandLineParameters.PRODUCTION.ToString());
+                    parameters.Add(Cliver.Bot.CommandLineParameters.AUTOMATIC.ToString());
+                    break;
+                case DbApi.CrawlerState.DEBUG:
+                    parameters.Add(Cliver.Bot.CommandLineParameters.AUTOMATIC.ToString());
+                    break;
+                default:
+                    throw new Exception("Some case is absent.");
             }
-            parameters.Add(Cliver.Bot.CommandLineParameters.AUTOMATIC.ToString());
 
             string crawler_directory;
             crawler_directory = Log.GetAbsolutePath( Settings.Default.CrawlersDirectory);

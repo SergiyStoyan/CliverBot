@@ -13,6 +13,7 @@ namespace Cliver.Bot
     public class CommandLineParameters : ProgramRoutines.CommandLineParameters
     {
         public static readonly CommandLineParameters AUTOMATIC = new CommandLineParameters("-automatic");
+        public static readonly CommandLineParameters PRODUCTION = new CommandLineParameters("-production");
 
         public CommandLineParameters(string value) : base(value) { }
     }
@@ -38,6 +39,15 @@ namespace Cliver.Bot
 
             Mode = (ProgramRoutines.IsParameterSet(CommandLineParameters.AUTOMATIC) || Properties.General.Default.RunSilently) ? ProgramMode.AUTOMATIC : ProgramMode.DIALOG;
             LogMessage.DisableStumblingDialogs = Mode == ProgramMode.AUTOMATIC;
+
+            if(ProgramRoutines.IsParameterSet(CommandLineParameters.PRODUCTION))
+            {
+                Properties.General.Default.RestoreBrokenSession = true;
+                //Properties.General.Default.RestoreErrorItemsAsNew = true;
+                Properties.General.Default.WriteSessionRestoringLog = true;
+                Properties.Log.Default.LogDownloadedFiles = false;
+                Properties.General.Default.UseFilesFromCache = false;
+            }
             
             AssemblyName ean = Assembly.GetEntryAssembly().GetName();
             string customization_title = ean.Name;
