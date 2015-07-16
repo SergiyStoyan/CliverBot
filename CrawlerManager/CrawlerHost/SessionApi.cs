@@ -22,13 +22,13 @@ namespace Cliver.CrawlerHost
         
         static SessionApi()
         {
-            lock (DbApi.Dbc)
+            lock (DbApi.Connection)
             { 
                 try
                 {        
                     CrawlerId = Log.ProcessName;
 
-                    Record r = DbApi.Dbc.Get("SELECT _products_table FROM crawlers WHERE id=@id").GetFirstRecord("@id", CrawlerId);
+                    Record r = DbApi.Connection.Get("SELECT _products_table FROM crawlers WHERE id=@id").GetFirstRecord("@id", CrawlerId);
                     if (r == null)
                         LogMessage.Exit("Crawler id '" + CrawlerId + "' does not exist in [crawlers] table.");
 
@@ -50,7 +50,7 @@ namespace Cliver.CrawlerHost
         
         public static void InitSession()
         {
-            lock (DbApi.Dbc)
+            lock (DbApi.Connection)
             { 
                 try
                 {
@@ -58,7 +58,7 @@ namespace Cliver.CrawlerHost
                         return;
                     mode = CrawlerMode.PRODUCTION;
 
-                    Record r = DbApi.Dbc.Get("SELECT * FROM crawlers WHERE id=@id").GetFirstRecord("@id", CrawlerId);
+                    Record r = DbApi.Connection.Get("SELECT * FROM crawlers WHERE id=@id").GetFirstRecord("@id", CrawlerId);
                     if (r == null)
                         LogMessage.Exit("Crawler id '" + CrawlerId + "' does not exist in [crawlers] table");
 
@@ -70,10 +70,12 @@ namespace Cliver.CrawlerHost
                         + " log=" + r["_last_log"] + "\n" + r["_archive"];
                     const int MAX_ARCHIVE_LENGTH = 10000;
                     archive = archive.Substring(0, archive.Length < MAX_ARCHIVE_LENGTH ? archive.Length : MAX_ARCHIVE_LENGTH);
-                    if (DbApi.Dbc.Get("UPDATE crawlers SET _session_start_time=@session_start_time, _last_process_id=@process_id, _last_start_time=GETDATE(), _last_end_time=NULL, _last_session_state=" + (byte)DbApi.SessionState.STARTED + ", _last_log=@Log, _archive=@archive WHERE id=@id").Execute(
+                    if (DbApi.Connection.Get("UPDATE crawlers SET _session_start_time=@session_start_time, _last_process_id=@process_id, _last_start_time=GETDATE(), _last_end_time=NULL, _last_session_state=" + (byte)DbApi.SessionState.STARTED + ", _last_log=@Log, _archive=@archive WHERE id=@id").Execute(
                         "@session_start_time", Session.This.StartTime, "@process_id", Process.GetCurrentProcess().Id, "@Log", Log.SessionDir, "@archive", archive, "@id", CrawlerId) < 1
                         )
                         throw new Exception("Could not update crawlers table.");
+
+                    DbApi.Message(DbApi.MessageType.INFORM, CrawlerId, "STARTED");
                 }
                 catch (Exception e)
                 {
@@ -91,25 +93,27 @@ namespace Cliver.CrawlerHost
 
         internal static void stop(bool completed)
         {
-            lock (DbApi.Dbc)
+            lock (DbApi.Connection)
             { 
                 switch (mode)
                 {
                     case CrawlerMode.PRODUCTION:
                         if (completed)
                         {
-                            Log.Main.Inform("Deleted marked old products: " + DbApi.Dbc["DELETE FROM " + ProductsTable + " WHERE state=" + (byte)DbApi.ProductState.DELETED].Execute());
-                            Log.Main.Inform("Marked as deleted old products: " + DbApi.Dbc["UPDATE " + ProductsTable + " SET state=" + (byte)DbApi.ProductState.DELETED + " WHERE crawl_time<@session_start_time"].Execute("@session_start_time", Session.This.StartTime));
+                            Log.Main.Inform("Deleted marked old products: " + DbApi.Connection["DELETE FROM " + ProductsTable + " WHERE state=" + (byte)DbApi.ProductState.DELETED].Execute());
+                            Log.Main.Inform("Marked as deleted old products: " + DbApi.Connection["UPDATE " + ProductsTable + " SET state=" + (byte)DbApi.ProductState.DELETED + " WHERE crawl_time<@session_start_time"].Execute("@session_start_time", Session.This.StartTime));
 
-                            if (DbApi.Dbc["UPDATE crawlers SET _last_end_time=GETDATE(), _last_session_state=" + (byte)DbApi.SessionState._COMPLETED + ", _next_start_time=DATEADD(ss, run_time_span, _last_start_time) WHERE id=@id"].Execute("@id", CrawlerId) < 1)
+                            if (DbApi.Connection["UPDATE crawlers SET _last_end_time=GETDATE(), _last_session_state=" + (byte)DbApi.SessionState._COMPLETED + ", _next_start_time=DATEADD(ss, run_time_span, _last_start_time) WHERE id=@id"].Execute("@id", CrawlerId) < 1)
                                 throw new Exception("Could not update crawlers table.");
 
+                            DbApi.Message(DbApi.MessageType.INFORM, CrawlerId, "COMPLETED");
                             break;
                         }
 
-                        if (DbApi.Dbc["UPDATE crawlers SET _last_end_time=GETDATE(), _last_session_state=" + (byte)DbApi.SessionState._ERROR + ", _next_start_time=DATEADD(ss, restart_delay_if_broken, _last_start_time) WHERE id=@id"].Execute("@id", CrawlerId) < 1)
+                        if (DbApi.Connection["UPDATE crawlers SET _last_end_time=GETDATE(), _last_session_state=" + (byte)DbApi.SessionState._ERROR + ", _next_start_time=DATEADD(ss, restart_delay_if_broken, _last_start_time) WHERE id=@id"].Execute("@id", CrawlerId) < 1)
                             throw new Exception("Could not update crawlers table.");
 
+                            DbApi.Message(DbApi.MessageType.INFORM, CrawlerId, "QUITED");
                         break;
                     case CrawlerMode.IDLE:
                         break;
@@ -123,7 +127,7 @@ namespace Cliver.CrawlerHost
         
         public static void SaveProduct(string id, string url, string data)
         {
-            lock (DbApi.Dbc)
+            lock (DbApi.Connection)
             {
                 //InitSession();
 
@@ -136,21 +140,21 @@ namespace Cliver.CrawlerHost
                 if (url == null)
                     throw (new Exception("url cannot be NULL"));
 
-                if (DbApi.Dbc["SELECT id FROM " + ProductsTable + " WHERE id=@id"].GetFirstRecord("@id", id) != null)
+                if (DbApi.Connection["SELECT id FROM " + ProductsTable + " WHERE id=@id"].GetFirstRecord("@id", id) != null)
                 {
-                    if (DbApi.Dbc["UPDATE " + ProductsTable + " SET data=@data WHERE id=@id"].Execute("@data", data, "@id", id) > 0)
-                        DbApi.Dbc["UPDATE " + ProductsTable + " SET crawl_time=GETDATE(), change_time=GETDATE(), state=@state WHERE id=@id"].Execute("@state", DbApi.ProductState.NEW, "@id", id);
+                    if (DbApi.Connection["UPDATE " + ProductsTable + " SET data=@data WHERE id=@id"].Execute("@data", data, "@id", id) > 0)
+                        DbApi.Connection["UPDATE " + ProductsTable + " SET crawl_time=GETDATE(), change_time=GETDATE(), state=@state WHERE id=@id"].Execute("@state", DbApi.ProductState.NEW, "@id", id);
                     else
-                        DbApi.Dbc["UPDATE " + ProductsTable + " SET crawl_time=GETDATE() WHERE id=@id"].Execute("@id", id);
+                        DbApi.Connection["UPDATE " + ProductsTable + " SET crawl_time=GETDATE() WHERE id=@id"].Execute("@id", id);
                 }
                 else
                 {
-                    DbApi.Dbc["INSERT INTO " + ProductsTable + " (id, crawl_time, change_time, url, data, state) VALUES (@id, GETDATE(), GETDATE(), @url, @data, @state)"].Execute("@id", id, "@url", url, "@data", data, "@state", DbApi.ProductState.NEW);
+                    DbApi.Connection["INSERT INTO " + ProductsTable + " (id, crawl_time, change_time, url, data, state) VALUES (@id, GETDATE(), GETDATE(), @url, @data, @state)"].Execute("@id", id, "@url", url, "@data", data, "@state", DbApi.ProductState.NEW);
                 }
 
                 if (DateTime.Now > time_2_update_last_product_time)
                 {//it is used because getting MIN() from products table is very slow when the table is large
-                    if (DbApi.Dbc["UPDATE crawlers SET _last_product_time=GETDATE() WHERE id=@id"].Execute("@id", CrawlerId) < 1)
+                    if (DbApi.Connection["UPDATE crawlers SET _last_product_time=GETDATE() WHERE id=@id"].Execute("@id", CrawlerId) < 1)
                         throw new Exception("Could not update _last_product_time.");
                     time_2_update_last_product_time = DateTime.Now.AddSeconds(UPDATE_LAST_PRODUCT_TIME_SPAN_IN_SECS);
                 }

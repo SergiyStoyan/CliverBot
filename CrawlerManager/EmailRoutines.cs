@@ -42,7 +42,7 @@ namespace Cliver.CrawlerHost
 
                 string admin_emails = null;
                 if (crawler_id != null)
-                    admin_emails = (string)DbApi.Dbc["SELECT admin_emails FROM crawlers WHERE id=@id"].GetSingleValue("@id", crawler_id);
+                    admin_emails = (string)DbApi.Connection["SELECT admin_emails FROM crawlers WHERE id=@id"].GetSingleValue("@id", crawler_id);
                 if (admin_emails == null)
                     admin_emails = Settings.Default.DefaultAdminEmails;
                 if (admin_emails != null)

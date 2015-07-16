@@ -53,7 +53,7 @@ namespace Cliver.CrawlerHost
             AGAIN:
             try
             {
-                Dbc = DbConnection.Create(DbApi.ConnectionString);
+                Connection = DbConnection.Create(DbApi.ConnectionString);
                 create_crawler_tables();
             }
             catch(Exception e)
@@ -68,11 +68,11 @@ namespace Cliver.CrawlerHost
                 LogMessage.Exit(e);
             }
         }
-        static public readonly DbConnection Dbc;
+        static public readonly DbConnection Connection;
 
         static void create_crawler_tables()
         {
-            lock (Dbc)
+            lock (Connection)
             {
                 //var scsb = new SqlConnectionStringBuilder(Settings.Default.DbConnectionString);
                 //var database = scsb.InitialCatalog;
@@ -84,11 +84,11 @@ namespace Cliver.CrawlerHost
                 //   //database = m.Groups["Name"].Value;
                 //   database = scsb.AttachDBFilename;
                 //}
-                //if(null == Dbc.Get(string.Format("select * from master.dbo.sysdatabases where name='{0}'", database)).GetSingleValue())
-                //    Dbc.Get(string.Format("CREATE DATABASE {0}", database)).Execute();
+                //if(null == Connection.Get(string.Format("select * from master.dbo.sysdatabases where name='{0}'", database)).GetSingleValue())
+                //    Connection.Get(string.Format("CREATE DATABASE {0}", database)).Execute();
               
 
-                //if (LogMessage.AskYesNo("Crawlers table does not exist in the database " + Dbc.Database + ". Do you want to create it?", true))
+                //if (LogMessage.AskYesNo("Crawlers table does not exist in the database " + Connection.Database + ". Do you want to create it?", true))
                 //CREATE TABLE IF NOT EXISTS `crawlers` (
                 //  `id` varchar(32) NOT NULL,
                 //  `state` enum('enabled','disabled','debug') NOT NULL DEFAULT 'debug',
@@ -110,7 +110,7 @@ namespace Cliver.CrawlerHost
                 //  `_last_product_time` datetime NOT NULL COMMENT 'used to monitor crawler activity by manager',
                 //  PRIMARY KEY (`id`)
                 //) ENGINE=MyISAM DEFAULT CHARSET=latin1; 		
-                Dbc.Get(@"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='crawlers' and xtype='U') 
+                Connection.Get(@"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='crawlers' and xtype='U') 
 CREATE TABLE crawlers (
     id nvarchar(50) PRIMARY KEY,
     state tinyint DEFAULT (2) NOT NULL,
@@ -135,14 +135,14 @@ CREATE TABLE crawlers (
 )"
                     ).Execute();
 
-                Dbc.Get(@"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='messages' and xtype='U')
+                Connection.Get(@"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='messages' and xtype='U')
 CREATE TABLE [dbo].[messages] (
     [id]         INT             IDENTITY (1, 1) NOT NULL,
     [crawler_id] NVARCHAR (50)   NOT NULL,
     [type]       TINYINT         NOT NULL,
-    [message]    NVARCHAR (1000) NOT NULL,
+    [message]    NVARCHAR (MAX) NOT NULL,
     [time]       DATETIME        NOT NULL,
-    [source] NCHAR(200) NOT NULL, 
+    [source]     NVARCHAR(MAX) NOT NULL, 
     PRIMARY KEY NONCLUSTERED ([id] ASC),
     CONSTRAINT [FK_messages_To_crawlers] FOREIGN KEY ([crawler_id]) REFERENCES [dbo].[crawlers] ([id])
 );"
@@ -152,19 +152,19 @@ CREATE TABLE [dbo].[messages] (
 
         internal static string CreateProductsTableForCrawler(string crawler_id)
         {
-            lock (Dbc)
+            lock (Connection)
             {
                 string products_table = Regex.Replace(Log.ProcessName, @"\.vshost$", "", RegexOptions.Compiled | RegexOptions.Singleline);
                 products_table = Regex.Replace(products_table, @"[^a-z\d]", "_", RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
                 products_table = "products_" + products_table;
 
-                string crawler_id2 = (string)Dbc.Get("SELECT id FROM crawlers WHERE _products_table=@products_table").GetSingleValue("@products_table", products_table);
+                string crawler_id2 = (string)Connection.Get("SELECT id FROM crawlers WHERE _products_table=@products_table").GetSingleValue("@products_table", products_table);
                 if (crawler_id2 != null && crawler_id2 != crawler_id)
                     LogMessage.Exit("Products table '" + products_table + "' is already owned by crawler '" + crawler_id2 + "'");
-                if (Dbc.Get("UPDATE crawlers SET _products_table=@products_table WHERE id=@id").Execute("@products_table", products_table, "@id", crawler_id) < 1)
+                if (Connection.Get("UPDATE crawlers SET _products_table=@products_table WHERE id=@id").Execute("@products_table", products_table, "@id", crawler_id) < 1)
                     throw new Exception("Could not update crawlers table.");
 
-                Dbc.Get(
+                Connection.Get(
     @"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='" + products_table + @"' and xtype='U') 
 CREATE TABLE " + products_table + @"
 (id nvarchar(256) PRIMARY KEY NONCLUSTERED,	
@@ -186,13 +186,16 @@ state tinyint NOT NULL)"
             ERROR = 3
         }
         
-        static public void Message(MessageType type, string crawler_id, string message)
+        static public void Message(MessageType type, string crawler_id, string message, string source = null)
         {
-            System.Diagnostics.StackTrace st = new StackTrace(true);
-            StackFrame sf = st.GetFrame(1);
-            var m = sf.GetMethod();
-            string source = m.DeclaringType.ToString() + "\nmethod: " + m.Name + "\nfile: " + sf.GetFileName() + "\nline: " + sf.GetFileLineNumber().ToString();
-            if (1 > Dbc["INSERT INTO messages (crawler_id,type,message,time,source) VALUES (@crawler_id,@type,LEFT(@message, 1000), GETDATE(),LEFT(@source, 200))"].Execute("@crawler_id", crawler_id, "@type", (int)type, "@message", message, "@source", source))
+            if (source == null)
+            {
+                System.Diagnostics.StackTrace st = new StackTrace(true);
+                StackFrame sf = st.GetFrame(1);
+                var m = sf.GetMethod();
+                source = m.DeclaringType.ToString() + "\nmethod: " + m.Name + "\nfile: " + sf.GetFileName() + "\nline: " + sf.GetFileLineNumber().ToString();
+            }
+            if (1 > Connection["INSERT INTO messages (crawler_id,type,message,time,source) VALUES (@crawler_id,@type,CAST(@message AS nvarchar(MAX), GETDATE(),CAST(@source AS nvarchar(MAX)))"].Execute("@crawler_id", crawler_id, "@type", (int)type, "@message", message, "@source", source))
                 throw new Exception("Cannot add to 'crawler_messages': " + message);
         }
 

@@ -15,7 +15,7 @@ namespace Cliver.CrawlerHost
         public DbConnectionSettingsForm(string message)
         {
             InitializeComponent();
-            
+
             this.message = message;
 
             DbConnectionString.Text = DbApi.ConnectionString;
@@ -53,8 +53,12 @@ namespace Cliver.CrawlerHost
 
         private void DbConnectionSettingsForm_Shown(object sender, EventArgs e)
         {
-            if (message != null)
-                LogMessage.Inform(message);
+            if (message == null)
+                return;
+            bool o2c = LogMessage.Output2Console;
+            LogMessage.Output2Console = false;
+            LogMessage.Inform(message);
+            LogMessage.Output2Console = o2c;
         }
     }
 }
