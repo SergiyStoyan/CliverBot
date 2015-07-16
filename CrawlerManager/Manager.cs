@@ -157,7 +157,7 @@ namespace Cliver.CrawlerHost
                 LogMessage.Error("Crawler '" + crawler_id + "' is not enabled.");
                 return false;
             }
-            parameters.Add(Cliver.Bot.CommandLineParameters.SILENTLY);
+            parameters.Add(LogMessage.CommandLineParameter_SILENTLY);
 
             string crawler_directory;
             crawler_directory = Log.GetAbsolutePath( Settings.Default.CrawlersDirectory);

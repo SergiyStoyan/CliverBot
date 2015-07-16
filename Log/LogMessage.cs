@@ -7,7 +7,6 @@
 //Copyright: (C) 2006, Sergey Stoyan
 //********************************************************************************************
 
-
 using System;
 using System.Windows.Forms;
 using System.Diagnostics;
@@ -15,6 +14,7 @@ using System.IO;
 using System.Text;
 //using System.Configuration;
 using Cliver.Bot;
+using System.Text.RegularExpressions;
 
 namespace Cliver.Bot
 {
@@ -22,10 +22,45 @@ namespace Cliver.Bot
     {
         static object lock_variable = new object();
 
+        public const string CommandLineParameter_SILENTLY = "-silently";
+
+        static LogMessage()
+        {
+            if (Regex.IsMatch(Environment.CommandLine, CommandLineParameter_SILENTLY, RegexOptions.IgnoreCase))
+            {
+                state = Mode.AUTOMATIC;
+                return;
+            }
+
+            if (state != Mode.NOT_SET)
+                return;
+            state = Mode.SHOW_DIALOGS;
+        }
+
         /// <summary>
         /// Defines whether message boxes will be showed (run in manual mode) 
         /// </summary>
-        public static bool ShowStumblingMessages = Program.Mode == ProgramMode.DIALOG;
+        static public Mode State
+        {
+            get
+            {
+                return state;
+            }
+            set
+            {
+                if (state == Mode.AUTOMATIC)
+                    return;
+                state = value;
+            }
+        }
+        static Mode state;
+
+        public enum Mode
+        {
+            NOT_SET,
+            SHOW_DIALOGS,
+            AUTOMATIC
+        }
 
         public static bool Output2Console = false;
 
@@ -60,7 +95,7 @@ namespace Cliver.Bot
                 if (write2log)
                     Log.Main.Write(message);
 
-                if (ShowStumblingMessages)
+                if (State == Mode.SHOW_DIALOGS)
                 {
                     if (!Output2Console)
                     {
@@ -113,7 +148,7 @@ namespace Cliver.Bot
                 email(message);
             lock (lock_variable)
             {
-                if (ShowStumblingMessages)
+                if (State == Mode.SHOW_DIALOGS)
                 {
                     if (!Output2Console)
                     {
@@ -148,7 +183,7 @@ namespace Cliver.Bot
                 email(message);
             lock (lock_variable)
             {
-                if (ShowStumblingMessages)
+                if (State == Mode.SHOW_DIALOGS)
                 {
                     if (!Output2Console)
                     {
@@ -195,7 +230,7 @@ namespace Cliver.Bot
             Log.Main.Write(message);
             lock (lock_variable)
             {
-                if (ShowStumblingMessages)
+                if (State == Mode.SHOW_DIALOGS)
                 {
                     if (!Output2Console)
                     {

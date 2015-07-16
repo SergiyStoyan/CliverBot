@@ -155,6 +155,7 @@
     <Compile Include="DbCommand.cs" />
     <Compile Include="DbConnection.cs" />
     <Compile Include="InternetDateTime.cs" />
+    <Compile Include="Misc\ProgramRoutines.cs" />
     <Compile Include="Misc\SerializationRoutines.cs" />
     <Compile Include="Properties\Input.cs" />
     <Compile Include="Properties\Log.cs" />

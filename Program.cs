@@ -10,33 +10,12 @@ using System.Threading;
 
 namespace Cliver.Bot
 {
-    public enum ProgramMode
-    {
-        DIALOG,
-        SILENT
-    }
-
-    public class CommandLineParameters
-    {
-        public const string SILENTLY = "-silently";
-    }
-
     public static class Program
     {
-        static public void Initialize()
-        {
-            ProgramMode m = Program.Mode;//to force initiating Program members
-        }
-
         static Program()
         {
             Config.Initialize();
-
-            if (Regex.IsMatch(Environment.CommandLine, CommandLineParameters.SILENTLY, RegexOptions.IgnoreCase) || Properties.General.Default.RunSilently)
-                Mode = ProgramMode.SILENT;
-            else
-                Mode = ProgramMode.DIALOG;
-
+            
             AssemblyName ean = Assembly.GetEntryAssembly().GetName();
             string customization_title = ean.Name;
             if (ean.Version.Major > 0 || ean.Version.Minor > 0)
@@ -56,7 +35,6 @@ namespace Cliver.Bot
             LogMessage.Exit("Unhandled exception: " + e.ExceptionObject.ToString());
         }
 
-        public readonly static ProgramMode Mode;
         static public readonly string Title;
         //static public readonly DateTime CustomizationModificationTime = File.GetLastWriteTime(Application.ExecutablePath);
         static readonly public string AppName = Application.ProductName;
@@ -95,7 +73,6 @@ namespace Cliver.Bot
         {
             try
             {
-                Initialize();
                 if (Properties.App.Default.SingleProcessOnly)
                     ProcessRoutines.RunSingleProcessOnly();
                 Session.Start();

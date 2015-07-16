@@ -23,28 +23,17 @@ namespace Cliver.CrawlerHost
 {
     public static class Program
     {
-        static public void Init()
-        {
-            ProgramMode m = Mode;//to force initiating Program members
-        }
-
         static Program()
         {
             Log.LOGGING_MODE = Log.LoggingMode.ONLY_LOG;
 
             Config.Initialize();
-
-            if (Regex.IsMatch(Environment.CommandLine, "-silently", RegexOptions.IgnoreCase) || Properties.Settings.Default.RunSilently)
-                Mode = ProgramMode.SILENT;
-            else
-                Mode = ProgramMode.DIALOG;
-
+            
             AssemblyName ean = Assembly.GetEntryAssembly().GetName();
             Version = ean.Version.Major + "." + ean.Version.Minor;
             Title = ean.Name + Version;
         }
 
-        public readonly static ProgramMode Mode;
         static public readonly string Title;
         static public readonly string Version;
 
@@ -53,7 +42,6 @@ namespace Cliver.CrawlerHost
         {
             try
             {
-                Init();
                 ProcessRoutines.RunSingleProcessOnly();             
                 
                 SysTrayForm.This.Hide();

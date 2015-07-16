@@ -58,7 +58,7 @@ namespace Cliver.CrawlerHost
             }
             catch(Exception e)
             {
-                if (LogMessage.ShowStumblingMessages)
+                if (LogMessage.State == LogMessage.Mode.SHOW_DIALOGS)
                 {
                     LogMessage.Error("The app could not connect the database. Please create an empty database or locate an existing one and save the respective connection string in settings.");
                     SettingsForm f = new SettingsForm();

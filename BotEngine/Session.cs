@@ -110,6 +110,7 @@ namespace Cliver.Bot
         public static void Start()
         {
             Log.Main.Inform("Version compiled: " + Cliver.Bot.Program.GetCustomizationCompiledTime().ToString());
+            Log.Main.Inform("Command line parameters: " + string.Join("|", Environment.GetCommandLineArgs()));
 
             if (This != null)
                 throw new Exception("Previous session was not closed.");
