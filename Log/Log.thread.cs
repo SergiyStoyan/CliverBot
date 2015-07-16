@@ -37,46 +37,53 @@ namespace Cliver.Bot
                 ThreadLog tl;
                 if (!thread2tls.TryGetValue(thread, out tl))
                 {
-                    //cleanup for dead thread logs
-                    List<Thread> old_log_keys = (from t in thread2tls.Keys where !t.IsAlive select t).ToList();
-                    foreach (Thread t in old_log_keys)
+                    try
                     {
-                        t.Abort();
-                        thread2tls[t].Error("This thread was detected to be not alive. Aborting it...");
-                        thread2tls[t].Close();
-                        thread2tls.Remove(t);
-                    }
+                        //cleanup for dead thread logs
+                        List<Thread> old_log_keys = (from t in thread2tls.Keys where !t.IsAlive select t).ToList();
+                        foreach (Thread t in old_log_keys)
+                        {
+                            t.Abort();
+                            thread2tls[t].Error("This thread was detected to be not alive. Aborting it...");
+                            thread2tls[t].Close();
+                            thread2tls.Remove(t);
+                        }
 
-                    int log_id;
-                    if (thread == Log.MainThread)
-                        log_id = MAIN_THREAD_LOG_ID;
-                    else
+                        int log_id;
+                        if (thread == Log.MainThread)
+                            log_id = MAIN_THREAD_LOG_ID;
+                        else
+                        {
+                            log_id = 1;
+                            var ids = from x in thread2tls.Keys orderby thread2tls[x].Id select thread2tls[x].Id;
+                            foreach (int id in ids)
+                                if (log_id == id) log_id++;
+                        }
+
+                        string log_file;
+                        switch (Log.LOGGING_MODE)
+                        {
+                            case Log.LoggingMode.ONLY_LOG:
+                                log_file = Log.WorkDir + @"\" + Log.ProcessName;
+                                break;
+                            case Log.LoggingMode.SESSIONS:
+                                log_file = Log.SessionDir + @"\" + Log.ProcessName;
+                                break;
+                            default:
+                                throw new Exception("Unknown LOGGING_MODE:" + Log.LOGGING_MODE);
+                        }
+                        if (log_id < 0)
+                            log_file += "_" + Log.TimeMark + ".log";
+                        else
+                            log_file += "_" + log_id.ToString() + "_" + Log.TimeMark + ".log";
+
+                        tl = new ThreadLog(log_id, log_file);
+                        thread2tls.Add(thread, tl);
+                    }
+                    catch (Exception e)
                     {
-                        log_id = 1;
-                        var ids = from x in thread2tls.Keys orderby thread2tls[x].Id select thread2tls[x].Id;
-                        foreach (int id in ids)
-                            if (log_id == id) log_id++;
+                        Log.Main.Error(e);
                     }
-
-                    string log_file;
-                    switch (Log.LOGGING_MODE)
-                    {
-                        case Log.LoggingMode.ONLY_LOG:
-                            log_file = Log.WorkDir + @"\" + Log.ProcessName;
-                            break;
-                        case Log.LoggingMode.SESSIONS:
-                            log_file = Log.SessionDir + @"\" + Log.ProcessName;
-                            break;
-                        default:
-                            throw new Exception("Unknown LOGGING_MODE:" + Log.LOGGING_MODE);
-                    }
-                    if (log_id < 0)
-                        log_file += "_" + Log.TimeMark + ".log";
-                    else
-                        log_file += "_" + log_id.ToString() + "_" + Log.TimeMark + ".log";
-
-                    tl = new ThreadLog(log_id, log_file);
-                    thread2tls.Add(thread, tl);
                 }
                 return tl;
             }

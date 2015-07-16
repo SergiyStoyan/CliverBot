@@ -97,13 +97,4 @@ namespace Cliver.Bot
             }
         }
     }
-
-    public class TerminatingException : Exception
-    {
-        public TerminatingException(string message)
-            : base(message)
-        {
-            LogMessage.Exit(message);
-        }
-    }
 }
