@@ -86,7 +86,7 @@ namespace Cliver.BotGui
             // Progress.Enabled = false; 
             progressBar.Value = 0;
 
-            if (Cliver.Bot.Program.Mode == ProgramMode.SILENT)
+            if (Cliver.Bot.Program.Mode == Bot.Program.ProgramMode.AUTOMATIC)
             {
                 this.WindowState = FormWindowState.Minimized;
                 start_session();
@@ -167,7 +167,7 @@ namespace Cliver.BotGui
             catch (Exception e)
             {
                 Session.Close();
-                if (Cliver.Bot.Program.Mode == ProgramMode.SILENT)
+                if (Cliver.Bot.Program.Mode == Bot.Program.ProgramMode.AUTOMATIC)
                     LogMessage.Exit(e);
                 else
                     LogMessage.Error(e);
@@ -192,7 +192,7 @@ namespace Cliver.BotGui
             {
                 if (!(e is ThreadAbortException))
                 {
-                    if (Cliver.Bot.Program.Mode == ProgramMode.SILENT)
+                    if (Cliver.Bot.Program.Mode == Bot.Program.ProgramMode.AUTOMATIC)
                         LogMessage.Exit(e);
                     else
                         LogMessage.Error(e);
@@ -249,7 +249,7 @@ namespace Cliver.BotGui
             set_start_button(false);
             GC.Collect();
 
-            if (Cliver.Bot.Program.Mode == ProgramMode.SILENT)
+            if (Cliver.Bot.Program.Mode == Bot.Program.ProgramMode.AUTOMATIC)
             {
                 try
                 {

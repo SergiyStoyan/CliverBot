@@ -10,11 +10,34 @@ using System.Threading;
 
 namespace Cliver.Bot
 {
+    public class CommandLineParameters : ProgramRoutines.CommandLineParameters
+    {
+        public static readonly CommandLineParameters AUTOMATIC = new CommandLineParameters("-automatic");
+
+        public CommandLineParameters(string value) : base(value) { }
+    }
+    
     public static class Program
     {
+        public enum ProgramMode
+        {
+            AUTOMATIC,
+            DIALOG
+        }
+
+        static readonly public ProgramMode Mode;
+
+        public static void Initialize()
+        {
+            ProgramMode m = Mode;
+        }
+
         static Program()
         {
             Config.Initialize();
+
+            Mode = (ProgramRoutines.IsParameterSet(CommandLineParameters.AUTOMATIC) || Properties.General.Default.RunSilently) ? ProgramMode.AUTOMATIC : ProgramMode.DIALOG;
+            LogMessage.DisableStumblingDialogs = Mode == ProgramMode.AUTOMATIC;
             
             AssemblyName ean = Assembly.GetEntryAssembly().GetName();
             string customization_title = ean.Name;

@@ -1,49 +1,54 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Windows.Forms;
-//using System.Diagnostics;
-//using System.Reflection;
-//using System.Configuration;
-//using System.IO;
-//using System.Text.RegularExpressions;
-//using System.Threading;
+﻿//********************************************************************************************
+//Author: Sergey Stoyan
+//        sergey.stoyan@gmail.com
+//        sergey_stoyan@yahoo.com
+//        http://www.cliversoft.com
+//        26 September 2006
+//Copyright: (C) 2006, Sergey Stoyan
+//********************************************************************************************
+using System;
+using System.Windows.Forms;
+using System.Diagnostics;
+using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Linq;
+using System.Threading;
+using System.Configuration;
+using System.Media;
+using System.Web;
+using System.Net.NetworkInformation;
+using System.Runtime.InteropServices;
 
-//namespace Cliver.Bot
-//{
-//    public class BaseProgram
-//    {
-//        public class CommandLineParameters
-//        {
-//            public const string SILENTLY = "-silently";
-//        }
 
-//        static List<string> GetParameters<T>() where T:CommandLineParameters
-//        {
-//           List<string> parameters = new List<string>();
-//            foreach(FieldInfo fi in typeof(T).GetFields(BindingFlags.Public | BindingFlags.Static))
-//                if (Regex.IsMatch(Environment.CommandLine, (string)fi.GetValue(null), RegexOptions.IgnoreCase))
-//                    parameters.Add(fi.Name);
-//            return parameters;
-//        }
+namespace Cliver.Bot
+{
+    public static class ProgramRoutines
+    {
+        public class CommandLineParameters
+        {
+            public static readonly CommandLineParameters NOT_SET = new CommandLineParameters(null);
 
-//        static BaseProgram()
-//        {
-//            AssemblyName ean = Assembly.GetEntryAssembly().GetName();
-//            Title = ean.Name;
-//            if (ean.Version.Major > 0 || ean.Version.Minor > 0)
-//                Title += ean.Version.Major + "." + ean.Version.Minor;
-//        }
+            public override string ToString()
+            {
+                return Value;
+            }
 
-//        static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-//        {
-//            LogMessage.Exit("Unhandled exception: " + e.ExceptionObject.ToString());
-//        }
+            protected CommandLineParameters(string value)
+            {
+                this.Value = value;
+            }
 
-//        static public readonly string Title;
-//        static readonly public string AppName = Application.ProductName;
+            public string Value { get; private set; }
+        }
 
-//        abstract static internal void Help();
-//    }
-//}
-
+        static public bool IsParameterSet<T>(T parameter) where T : CommandLineParameters
+        {
+            return Regex.IsMatch(Environment.CommandLine, @"\s" + parameter.Value, RegexOptions.IgnoreCase);
+        }
+    }
+}
 

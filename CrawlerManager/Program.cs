@@ -26,16 +26,21 @@ namespace Cliver.CrawlerHost
         static Program()
         {
             Log.LOGGING_MODE = Log.LoggingMode.ONLY_LOG;
-
             Config.Initialize();
-            
-            AssemblyName ean = Assembly.GetEntryAssembly().GetName();
-            Version = ean.Version.Major + "." + ean.Version.Minor;
-            Title = ean.Name + Version;
+            SetTitle();
         }
 
         static public readonly string Title;
         static public readonly string Version;
+
+        public static void SetTitle(Assembly assembly = null)
+        {
+            if(assembly == null)
+                assembly = Assembly.GetEntryAssembly();
+            AssemblyName ean = assembly.GetName();
+            typeof(Program).GetField("Version").SetValue(null, ean.Version.Major + "." + ean.Version.Minor);
+            typeof(Program).GetField("Title").SetValue(null, ean.Name + Version);
+        }
 
         [STAThreadAttribute]
         public static void Main()

@@ -22,40 +22,25 @@ namespace Cliver.Bot
     {
         static object lock_variable = new object();
 
-        public const string CommandLineParameter_SILENTLY = "-silently";
-
-        static LogMessage()
-        {
-            if (Regex.IsMatch(Environment.CommandLine, CommandLineParameter_SILENTLY, RegexOptions.IgnoreCase))
-            {
-                state = Mode.AUTOMATIC;
-                return;
-            }
-
-            if (state != Mode.NOT_SET)
-                return;
-            state = Mode.SHOW_DIALOGS;
-        }
-
         /// <summary>
         /// Defines whether message boxes will be showed (run in manual mode) 
         /// </summary>
-        static public Mode State
+        static public bool DisableStumblingDialogs
         {
             get
             {
-                return state;
+                return _DisableStumblingDialogs;
             }
             set
             {
-                if (state == Mode.AUTOMATIC)
+                if (_DisableStumblingDialogs)
                     return;
-                state = value;
+                _DisableStumblingDialogs = value;
             }
         }
-        static Mode state;
+        static bool _DisableStumblingDialogs;
 
-        public enum Mode
+        public enum LogMode
         {
             NOT_SET,
             SHOW_DIALOGS,
@@ -95,7 +80,7 @@ namespace Cliver.Bot
                 if (write2log)
                     Log.Main.Write(message);
 
-                if (State == Mode.SHOW_DIALOGS)
+                if (!DisableStumblingDialogs)
                 {
                     if (!Output2Console)
                     {
@@ -148,7 +133,7 @@ namespace Cliver.Bot
                 email(message);
             lock (lock_variable)
             {
-                if (State == Mode.SHOW_DIALOGS)
+                if (!DisableStumblingDialogs)
                 {
                     if (!Output2Console)
                     {
@@ -183,7 +168,7 @@ namespace Cliver.Bot
                 email(message);
             lock (lock_variable)
             {
-                if (State == Mode.SHOW_DIALOGS)
+                if (!DisableStumblingDialogs)
                 {
                     if (!Output2Console)
                     {
@@ -230,7 +215,7 @@ namespace Cliver.Bot
             Log.Main.Write(message);
             lock (lock_variable)
             {
-                if (State == Mode.SHOW_DIALOGS)
+                if (!DisableStumblingDialogs)
                 {
                     if (!Output2Console)
                     {

@@ -54,11 +54,11 @@ namespace Cliver.CrawlerHost
             try
             {
                 Connection = DbConnection.Create(DbApi.ConnectionString);
-                create_crawler_tables();
+                create_tables();
             }
             catch(Exception e)
             {
-                if (LogMessage.State == LogMessage.Mode.SHOW_DIALOGS)
+                if (!LogMessage.DisableStumblingDialogs)
                 {
                     LogMessage.Error("The app could not connect the database. Please create an empty database or locate an existing one and save the respective connection string in settings.");
                     SettingsForm f = new SettingsForm();
@@ -70,7 +70,7 @@ namespace Cliver.CrawlerHost
         }
         static public readonly DbConnection Connection;
 
-        static void create_crawler_tables()
+        static void create_tables()
         {
             lock (Connection)
             {

@@ -11,13 +11,15 @@ using Cliver.Bot;
 
 namespace Cliver.BotGui
 {
+    public class CommandLineParameters : ProgramRoutines.CommandLineParameters
+    {
+        public static readonly CommandLineParameters WINDOWLESS = new CommandLineParameters("-windowless");
+
+        public CommandLineParameters(string value) : base(value) { }
+    }
+
     public static class Program
     {
-        //public static void SetProgressInputItemQueue(string input_item_queue_name)
-        //{
-        //    MainForm.SetProgressInputItemQueue(input_item_queue_name);
-        //}
-
         /// <summary>
         /// By deafult each item type has its own queue. But independed named queues can be created during session.
         /// </summary>
@@ -31,7 +33,7 @@ namespace Cliver.BotGui
         {
             try
             {
-                if (Regex.IsMatch(Environment.CommandLine, "-windowless", RegexOptions.IgnoreCase) || Bot.Properties.General.Default.RunSilently)
+                if (ProgramRoutines.IsParameterSet(CommandLineParameters.WINDOWLESS))
                 {
                     Cliver.Bot.Program.Run();
                     return;
