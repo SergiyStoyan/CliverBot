@@ -72,8 +72,8 @@ namespace Cliver.CrawlerHost.Properties {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
         [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"D:\\_d\\_PROJECTS\\FHR(for Andr" +
-            "eas Chermak)\\CliverHost\\CliverCrawlerHost\\CliverCrawlerHost.mdf\";Integrated Secu" +
-            "rity=True;Connect Timeout=30")]
+            "eas Chermak)\\CliverHost\\CliverCrawlerHost\\CliverCrawlerHost.mdf1\";Integrated Sec" +
+            "urity=True;Connect Timeout=30")]
         public string DbConnectionString {
             get {
                 return ((string)(this["DbConnectionString"]));

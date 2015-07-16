@@ -53,7 +53,7 @@ namespace Cliver.CrawlerHost
             AGAIN:
             try
             {
-                Dbc = DbConnection.Create(DbApi.DbConnectionString);
+                Dbc = DbConnection.Create(DbApi.ConnectionString);
                 create_crawler_tables();
             }
             catch(Exception e)
@@ -192,11 +192,11 @@ state tinyint NOT NULL)"
             StackFrame sf = st.GetFrame(1);
             var m = sf.GetMethod();
             string source = m.DeclaringType.ToString() + "\nmethod: " + m.Name + "\nfile: " + sf.GetFileName() + "\nline: " + sf.GetFileLineNumber().ToString();
-            if (1 > Dbc["INSERT INTO messages (crawler_id,type,message,time,source) VALUES (@crawler_id,@type,@message, GETDATE(),@source)"].Execute("@crawler_id", crawler_id, "@type", (int)type, "@message", message, "@source", source))
+            if (1 > Dbc["INSERT INTO messages (crawler_id,type,message,time,source) VALUES (@crawler_id,@type,LEFT(@message, 1000), GETDATE(),LEFT(@source, 200))"].Execute("@crawler_id", crawler_id, "@type", (int)type, "@message", message, "@source", source))
                 throw new Exception("Cannot add to 'crawler_messages': " + message);
         }
 
-        public static string DbConnectionString
+        public static string ConnectionString
         {
             get
             {

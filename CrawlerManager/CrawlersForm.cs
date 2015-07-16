@@ -52,6 +52,7 @@ namespace Cliver.CrawlerHost
         {
             try
             {
+                this.crawlersTableAdapter1.Connection.ConnectionString = DbApi.ConnectionString;
                 this.crawlersTableAdapter1.Fill(this.cliverCrawlersDataSet1.crawlers);
                 //dataGridView1.AutoResizeColumns();
                 

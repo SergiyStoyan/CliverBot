@@ -34,6 +34,8 @@ namespace Cliver.Bot
 
         public static DbConnection Create(string connection_string = null)
         {
+            Log.Inform("connection_string: " + connection_string + "\n\n" + Log.GetStackString());
+
             if (connection_string == null)
                 connection_string = GetPreparedDbConnectionString();
 
