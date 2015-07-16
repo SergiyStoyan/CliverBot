@@ -175,22 +175,23 @@ namespace Cliver.Bot
                     LogMessage.Error(e);
                 }
 
-                try
-                {
-                    if (Closing2 != null)
-                        Closing2.Invoke();
-                }
-                catch (Exception e)
-                {
-                    LogMessage.Error(e);
-                }
-
                 InputItemQueue.Close();
                 Log.ClearSession();
                 FileWriter.ClearSession();
                 Cache.ClearSession();
                 Proxies.ClearSession();
                 WebRoutine.ClearSession();
+                
+                if (Cliver.Bot.Program.Mode == Cliver.Bot.Program.ProgramMode.AUTOMATIC)
+                {
+                    try
+                    {
+                        Environment.Exit(0);
+                    }
+                    catch
+                    { }
+                }
+
                 This_ = null;
             }
         }
