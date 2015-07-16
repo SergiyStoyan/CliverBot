@@ -15,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Threading;
+using System.Reflection;
 
 namespace Cliver
 {
@@ -23,6 +24,7 @@ namespace Cliver
         public BaseForm()
         {
             InitializeComponent();
+            this.Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
         }
     }
 

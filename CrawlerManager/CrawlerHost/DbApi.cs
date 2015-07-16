@@ -195,7 +195,7 @@ state tinyint NOT NULL)"
                 var m = sf.GetMethod();
                 source = m.DeclaringType.ToString() + "\nmethod: " + m.Name + "\nfile: " + sf.GetFileName() + "\nline: " + sf.GetFileLineNumber().ToString();
             }
-            if (1 > Connection["INSERT INTO messages (crawler_id,type,message,time,source) VALUES (@crawler_id,@type,CAST(@message AS nvarchar(MAX), GETDATE(),CAST(@source AS nvarchar(MAX)))"].Execute("@crawler_id", crawler_id, "@type", (int)type, "@message", message, "@source", source))
+            if (1 > Connection["INSERT INTO messages (crawler_id,type,message,time,source) VALUES (@crawler_id,@type,CAST(@message AS nvarchar(MAX)),GETDATE(),CAST(@source AS nvarchar(MAX)))"].Execute("@crawler_id", crawler_id, "@type", (int)type, "@message", message, "@source", source))
                 throw new Exception("Cannot add to 'crawler_messages': " + message);
         }
 

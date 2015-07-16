@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace Cliver.CrawlerHost
 {
@@ -14,6 +15,7 @@ namespace Cliver.CrawlerHost
         public BaseForm()
         {
             InitializeComponent();
+            this.Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
         }
 
         delegate void _set_control_text(Control c, string m);
