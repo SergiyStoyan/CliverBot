@@ -167,6 +167,12 @@ namespace Cliver.Bot
         public delegate void OnClosing();
         static public event OnClosing Closing = null;
 
+        /// <summary>
+        /// Desinged for MainForm operation as it must be called last - after onClosing handlers
+        /// </summary>
+        //public delegate void OnClosing();
+        static public event OnClosing Closing2 = null;
+
         static public Type GetFirstDeclaredInputItemType()
         {
             return (from t in Assembly.GetEntryAssembly().GetTypes() where t.BaseType == typeof(InputItem) select t).FirstOrDefault();

@@ -26,7 +26,7 @@ namespace Cliver.BotGui
         /// <param name="input_item_type"></param>
         public static void BindProgressBar2InputItemQueue(Type input_item_type)
         {
-            MainForm.ProgressBarInputItemQueueName = input_item_type.Name;
+            MainForm.This.ProgressBarInputItemQueueName = input_item_type.Name;
         }
 
         public static void Run()

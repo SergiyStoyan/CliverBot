@@ -28,36 +28,40 @@ namespace Cliver.BotGui
 {
     internal partial class MainForm : BaseForm
     {
-        static MainForm()
+        internal MainForm()
         {
+            InitializeComponent();
+            this.Text = Cliver.Bot.Program.Title;
+
             ProgressBarInputItemQueueName = Session.GetFirstDeclaredInputItemType().Name;
-            Session.Closing += new Session.OnClosing(Session_Closing);
+            Session.Closing2 += Session_Closing;
             InputItemQueue.Progress += new InputItemQueue.OnProgress(Session_InputItemQueueProgress);
         }
 
-        static void Session_InputItemQueueProgress(InputItemQueue input_item_queue, int total_item_count, int processed_item_count)
+        void Session_Closing()
+        {
+            try
+            {
+                this.Invoke(() => { on_session_closing(); });
+            }
+            catch (Exception e)
+            {
+                LogMessage.Error(e);
+            }
+        }
+
+        void Session_InputItemQueueProgress(InputItemQueue input_item_queue, int total_item_count, int processed_item_count)
         {
             This.DisplayStatus(input_item_queue.Name, "taken " + processed_item_count.ToString() + " /remain " + (total_item_count - processed_item_count).ToString());
             if (ProgressBarInputItemQueueName == input_item_queue.Name)
                 This.display_progress(total_item_count, processed_item_count);
         }
 
-        internal static string ProgressBarInputItemQueueName;
-
-        static void Session_Closing()
-        {
-            This.on_session_closing();
-        }
+        internal string ProgressBarInputItemQueueName;
 
         internal readonly static MainForm This = new MainForm();
         internal readonly BotThreadManagerForm BotThreadManagerForm = new BotThreadManagerForm();
-
-        MainForm()
-        {
-            InitializeComponent();
-            this.Text = Cliver.Bot.Program.Title;
-        }
-
+        
         private void MainForm_Load(object sender, EventArgs e)
         {
             tools_form = CustomizationGuiApi.BotGui.GetToolsForm();
@@ -203,21 +207,9 @@ namespace Cliver.BotGui
 
         System.Drawing.Font SDF;
         System.Drawing.Color SDC;
-        //System.Drawing.Color SDC2;        
+        //System.Drawing.Color SDC2;  
 
         void on_session_closing()
-        {
-            try
-            {
-                this.Invoke(() => { _on_session_closing(); });
-            }
-            catch (Exception e)
-            {
-                LogMessage.Error(e);
-            }
-        }
-
-        void _on_session_closing()
         {
             TimeSpan duration = DateTime.Now - Session.This.RestoreTime;
             string session_duration = Regex.Replace(duration.ToString(), @"(.*)\..*", "$1", RegexOptions.Compiled);

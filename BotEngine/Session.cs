@@ -175,6 +175,16 @@ namespace Cliver.Bot
                     LogMessage.Error(e);
                 }
 
+                try
+                {
+                    if (Closing2 != null)
+                        Closing2.Invoke();
+                }
+                catch (Exception e)
+                {
+                    LogMessage.Error(e);
+                }
+
                 InputItemQueue.Close();
                 Log.ClearSession();
                 FileWriter.ClearSession();

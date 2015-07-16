@@ -92,7 +92,7 @@ namespace Cliver.CrawlerHost
         }
 
         internal static void stop(bool completed)
-        {
+        {            
             lock (DbApi.Connection)
             { 
                 switch (mode)
