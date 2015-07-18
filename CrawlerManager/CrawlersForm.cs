@@ -27,12 +27,12 @@ namespace Cliver.CrawlerHost
                     c.DefaultCellStyle.ForeColor = Color.FromArgb(255, 255, 255, 0);
                 }
 
-            command_i_ = dataGridView1.Columns["command_"].Index;
-            command_i = dataGridView1.Columns["command"].Index;
-            state_i_ = dataGridView1.Columns["state_"].Index;
-            state_i = dataGridView1.Columns["state"].Index;
-            _last_session_state_i_ = dataGridView1.Columns["_last_session_state_"].Index;
-            _last_session_state_i = dataGridView1.Columns["_last_session_state"].Index;
+            command_i_ = dataGridView1.Columns["Command_"].Index;
+            command_i = dataGridView1.Columns["Command"].Index;
+            state_i_ = dataGridView1.Columns["State_"].Index;
+            state_i = dataGridView1.Columns["State"].Index;
+            _last_session_state_i_ = dataGridView1.Columns["_LastSessionState_"].Index;
+            _last_session_state_i = dataGridView1.Columns["_LastSessionState"].Index;
         }
         int command_i_;
         int command_i;
@@ -44,7 +44,7 @@ namespace Cliver.CrawlerHost
         private void DbForm_Load(object sender, EventArgs e)
         {
             load_table();
-            //this.crawlersTableAdapter1.Fill(this.cliverCrawlersDataSet1.crawlers);
+            //this.CrawlersTableAdapter1.Fill(this.cliverCrawlersDataSet1.Crawlers);
             Activate();
         }
 
@@ -53,14 +53,14 @@ namespace Cliver.CrawlerHost
             try
             {
                 this.crawlersTableAdapter1.Connection.ConnectionString = DbApi.ConnectionString;
-                this.crawlersTableAdapter1.Fill(this.cliverCrawlersDataSet1.crawlers);
+                this.crawlersTableAdapter1.Fill(this.cliverCrawlersDataSet1.Crawlers);
                 //dataGridView1.AutoResizeColumns();
                 
-                //foreach (DataColumn c in crawlersTableAdapter1.GetData().Columns)
+                //foreach (DataColumn c in CrawlersTableAdapter1.GetData().Columns)
                 //    if (c.ColumnName.StartsWith("_"))
                 //        c.AllowDBNull = true;
 
-                DataGridViewComboBoxColumn c_ = (DataGridViewComboBoxColumn)dataGridView1.Columns["command_"];
+                DataGridViewComboBoxColumn c_ = (DataGridViewComboBoxColumn)dataGridView1.Columns["Command_"];
                 c_.DataSource = Enum.GetValues(typeof(DbApi.CrawlerCommand));
                 c_.ValueType = typeof(DbApi.CrawlerCommand);
                 //c_.ValueMember = "Value";
@@ -77,7 +77,7 @@ namespace Cliver.CrawlerHost
                     }
                 }
 
-                c_ = (DataGridViewComboBoxColumn)dataGridView1.Columns["state_"];
+                c_ = (DataGridViewComboBoxColumn)dataGridView1.Columns["State_"];
                 c_.DataSource = Enum.GetValues(typeof(DbApi.CrawlerState));
                 c_.ValueType = typeof(DbApi.CrawlerState);
                 foreach (DataGridViewRow r in dataGridView1.Rows)
@@ -92,7 +92,7 @@ namespace Cliver.CrawlerHost
                     }
                 }
 
-                c_ = (DataGridViewComboBoxColumn)dataGridView1.Columns["_last_session_state_"];
+                c_ = (DataGridViewComboBoxColumn)dataGridView1.Columns["_LastSessionState_"];
                 c_.DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing;
                 c_.DataSource = Enum.GetValues(typeof(DbApi.SessionState));
                 c_.ValueType = typeof(DbApi.SessionState);
@@ -201,34 +201,34 @@ namespace Cliver.CrawlerHost
         {
             try
             {
-                //e.Row.Cells["id"].Value = 
-                e.Row.Cells["state_"].Value = DbApi.CrawlerState.DISABLED;
-                //e.Row.Cells["site"].Value = 
-                e.Row.Cells["command_"].Value = DbApi.CrawlerCommand.EMPTY;
-                //e.Row.Cells["admin_emails"].Value = 
-                e.Row.Cells["run_time_span"].Value = 86400;
-                e.Row.Cells["crawl_product_timeout"].Value = 600;
-                e.Row.Cells["restart_delay_if_broken"].Value = 600;
-                //e.Row.Cells["comment"].Value = 
-                e.Row.Cells["_next_start_time"].Value = "2000-01-01 00:00:00";
-                //e.Row.Cells["_last_start_time"].Value = (new DateTime(1, 1, 1)).ToString(); 
-                //e.Row.Cells["_last_end_time"].Value = (new DateTime(1, 1, 1)).ToString(); 
-                //e.Row.Cells["_last_process_id"].Value = 0;
-                //e.Row.Cells["_last_session_state"].Value = 0;
-                e.Row.Cells["_products_table"].Value = DateTime.Now.Ticks.ToString();
-                //_last_log, , _archive
+                //e.Row.Cells["Id"].Value = 
+                e.Row.Cells["State_"].Value = DbApi.CrawlerState.DISABLED;
+                //e.Row.Cells["Site"].Value = 
+                e.Row.Cells["Command_"].Value = DbApi.CrawlerCommand.EMPTY;
+                //e.Row.Cells["AdminEmails"].Value = 
+                e.Row.Cells["RunTimeSpan"].Value = 86400;
+                e.Row.Cells["CrawlProductTimeout"].Value = 600;
+                e.Row.Cells["RestartDelayIfBroken"].Value = 600;
+                //e.Row.Cells["Comment"].Value = 
+                e.Row.Cells["_NextStartTime"].Value = "2000-01-01 00:00:00";
+                //e.Row.Cells["_LastStartTime"].Value = (new DateTime(1, 1, 1)).ToString(); 
+                //e.Row.Cells["_LastEndTime"].Value = (new DateTime(1, 1, 1)).ToString(); 
+                //e.Row.Cells["_LastProcessId"].Value = 0;
+                //e.Row.Cells["_LastSessionState"].Value = 0;
+                e.Row.Cells["_ProductsTable"].Value = DateTime.Now.Ticks.ToString();
+                //_LastLog, , _Archive
                 if (e.Row.Index > 0)
                 {
                     DataGridViewRow previous_row = dataGridView1.Rows[e.Row.Index - 1];
-                    //e.Row.Cells["id"].Value = previous_row.Cells["id"].Value;
-                    //e.Row.Cells["state_"].Value = previous_row.Cells["state_"].Value;
-                    //e.Row.Cells["site"].Value = previous_row.Cells["site"].Value;
-                    //e.Row.Cells["command_"].Value = previous_row.Cells["command_"].Value;
-                    e.Row.Cells["admin_emails"].Value = previous_row.Cells["admin_emails"].Value;
-                    e.Row.Cells["run_time_span"].Value = previous_row.Cells["run_time_span"].Value;
-                    e.Row.Cells["crawl_product_timeout"].Value = previous_row.Cells["crawl_product_timeout"].Value;
-                    e.Row.Cells["restart_delay_if_broken"].Value = previous_row.Cells["restart_delay_if_broken"].Value;
-                    //e.Row.Cells["comment"].Value = previous_row.Cells["comment"].Value;
+                    //e.Row.Cells["Id"].Value = previous_row.Cells["Id"].Value;
+                    //e.Row.Cells["State_"].Value = previous_row.Cells["State_"].Value;
+                    //e.Row.Cells["Site"].Value = previous_row.Cells["Site"].Value;
+                    //e.Row.Cells["Command_"].Value = previous_row.Cells["Command_"].Value;
+                    e.Row.Cells["AdminEmails"].Value = previous_row.Cells["AdminEmails"].Value;
+                    e.Row.Cells["RunTimeSpan"].Value = previous_row.Cells["RunTimeSpan"].Value;
+                    e.Row.Cells["CrawlProductTimeout"].Value = previous_row.Cells["CrawlProductTimeout"].Value;
+                    e.Row.Cells["RestartDelayIfBroken"].Value = previous_row.Cells["RestartDelayIfBroken"].Value;
+                    //e.Row.Cells["Comment"].Value = previous_row.Cells["Comment"].Value;
                 }
             }
             catch (Exception ex)

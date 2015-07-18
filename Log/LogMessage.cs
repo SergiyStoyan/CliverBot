@@ -180,6 +180,7 @@ namespace Cliver.Bot
                     else
                     {
                         Console.WriteLine("EXIT: " + message);
+                        Console.WriteLine("Press any key to quit...");
                         Console.ReadKey();
                     }
                 }

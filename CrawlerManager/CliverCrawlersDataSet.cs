@@ -2,8 +2,15 @@
     
     
     public partial class CliverCrawlersDataSet {
-        partial class crawlersDataTable
+        partial class CrawlersDataTable
         {
         }
+    }
+}
+
+namespace Cliver.CrawlerHost.CliverCrawlersDataSetTableAdapters {
+    
+    
+    public partial class CrawlersTableAdapter {
     }
 }

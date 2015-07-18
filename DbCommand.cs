@@ -221,7 +221,7 @@ namespace Cliver.Bot
         }
     }
 
-    public class Recordset
+    public class Recordset : IEnumerable<Record>
     {
         public Recordset(IDataReader dr)
         {
@@ -261,6 +261,11 @@ namespace Cliver.Bot
             {
                 return rows.Count;
             }
+        }
+
+        System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
     }
 }

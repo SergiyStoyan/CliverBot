@@ -12,24 +12,29 @@ namespace Cliver.CrawlerHost
 {
     public partial class DbConnectionSettingsForm : BaseForm
     {
-        public DbConnectionSettingsForm(string message)
+        public DbConnectionSettingsForm(string message, string connection_string)
         {
             InitializeComponent();
 
             this.message = message;
 
-            DbConnectionString.Text = DbApi.ConnectionString;
-            if (string.IsNullOrWhiteSpace(DbConnectionString.Text))
-                DbConnectionString.Text = Properties.Settings.Default.DbConnectionString;
+            DbConnectionString.Text = connection_string;
         }
 
         string message = null;
+
+        public string ConnectionString
+        {
+            get
+            {
+                return string.IsNullOrWhiteSpace(DbConnectionString.Text) ? null : DbConnectionString.Text;
+            }
+        }
 
         private void bOK_Click(object sender, EventArgs e)
         {
             try
             {
-                DbApi.ConnectionString = DbConnectionString.Text;
                 Close();
             }
             catch (Exception ex)
@@ -40,6 +45,7 @@ namespace Cliver.CrawlerHost
 
         private void bCancel_Click(object sender, EventArgs e)
         {
+            DbConnectionString.Text = null;
             Close();
         }
 
@@ -57,7 +63,7 @@ namespace Cliver.CrawlerHost
                 return;
             bool o2c = LogMessage.Output2Console;
             LogMessage.Output2Console = false;
-            LogMessage.Inform(message);
+            LogMessage.Error(message);
             LogMessage.Output2Console = o2c;
         }
     }

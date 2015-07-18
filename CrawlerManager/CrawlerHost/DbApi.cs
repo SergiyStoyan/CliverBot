@@ -18,41 +18,37 @@ namespace Cliver.CrawlerHost
 {
     public class DbApi
     {
-        public enum CrawlerState : byte { ENABLED = 1, DISABLED = 2, DEBUG = 3 }
-
-        public enum CrawlerCommand : byte { EMPTY = 0, STOP = 1, RESTART = 2, FORCE = 3 }
-
-        public enum SessionState : byte { STARTED = 1, _COMPLETED = 25, COMPLETED = 2, _ERROR = 35, ERROR = 3, BROKEN = 4, KILLED = 5 }
-
-        //public class ProductState
+        //public class CrawlerState : Enum<int>
         //{
-        //    public const byte NEW = 1;
-        //    //PARSED = 2,
-        //    //INVALID = 3,
-        //    public const byte DELETED = 4;
+        //    public static readonly CrawlerState ENABLED = new CrawlerState(1);
+        //    public static readonly CrawlerState DISABLED = new CrawlerState(2);
+        //    public static readonly CrawlerState DEBUG = new CrawlerState(3);
+
+        //    public CrawlerState(int value) : base(value) { }
         //}
-        
-        //public class ProductState2 :ProductState
+        public enum CrawlerState : int { ENABLED = 1, DISABLED = 2, DEBUG = 3 }
+
+        public enum CrawlerCommand : int { EMPTY = 0, STOP = 1, RESTART = 2, FORCE = 3 }
+
+        public enum SessionState : int { STARTED = 1, _COMPLETED = 25, COMPLETED = 2, _ERROR = 35, ERROR = 3, BROKEN = 4, KILLED = 5 }
+
+        //public class ProductState : Enum<byte>
         //{
-        //    public const byte REPLICATED = 5;
-        //    //public const byte INVALID = 6;
+        //    public static readonly ProductState NEW = new ProductState(1);
+        //    public static readonly ProductState DELETED = new ProductState(4);
+
+        //    protected ProductState(byte value) : base(value) { }
         //}
+        public enum ProductState : int { NEW = 1, DELETED = 4 }
 
-        public enum ProductState : byte
-        {
-            NEW = 1,
-            //    //PARSED = 2,
-            //    //INVALID = 3,
-            DELETED = 4
-        }
-
-        public enum CrawlerMode : byte { IDLE, PRODUCTION }
+        public enum CrawlerMode : int { IDLE, PRODUCTION }
         
         static DbApi()
         {
             AGAIN:
             try
             {
+                //Database = new CliverCrawlerHostEntities(DbApi.ConnectionString);
                 Connection = DbConnection.Create(DbApi.ConnectionString);
                 create_tables();
             }
@@ -60,15 +56,25 @@ namespace Cliver.CrawlerHost
             {
                 if (!LogMessage.DisableStumblingDialogs)
                 {
-                    LogMessage.Error("The app could not connect the database. Please create an empty database or locate an existing one and save the respective connection string in settings.");
-                    SettingsForm f = new SettingsForm();
+                    string connection_string = DbApi.ConnectionString;
+                    if (string.IsNullOrWhiteSpace(connection_string))
+                        connection_string = Properties.Settings.Default.DbConnectionString;
+                    string message = e.Message + "\r\n\r\nThe app could not connect the database. Please create an empty database or locate an existing one and save the respective connection string in settings.";
+                    DbConnectionSettingsForm f = new DbConnectionSettingsForm(message, connection_string);
                     f.ShowDialog();
+                    if (f.ConnectionString == null)
+                    {
+                        Log.Error(e);
+                        LogMessage.Exit("The app cannot work and will exit.");
+                    }
+                    DbApi.ConnectionString = f.ConnectionString;
                     goto AGAIN;
                 }
                 LogMessage.Exit(e);
             }
         }
         static public readonly DbConnection Connection;
+        //static public readonly CliverCrawlerHostEntities Database = new CliverCrawlerHostEntities();
 
         static void create_tables()
         {
@@ -89,62 +95,62 @@ namespace Cliver.CrawlerHost
               
 
                 //if (LogMessage.AskYesNo("Crawlers table does not exist in the database " + Connection.Database + ". Do you want to create it?", true))
-                //CREATE TABLE IF NOT EXISTS `crawlers` (
-                //  `id` varchar(32) NOT NULL,
-                //  `state` enum('enabled','disabled','debug') NOT NULL DEFAULT 'debug',
-                //  `site` varchar(64) NOT NULL,
-                //  `command` enum('stop','restart') DEFAULT NULL COMMENT 'used while debugging/updating crawler',
-                //  `run_time_span` int(11) NOT NULL DEFAULT '86400' COMMENT 'in seconds',
-                //  `crawl_product_timeout` int(11) NOT NULL DEFAULT '600' COMMENT 'if no product was crawled for the last specified number of seconds, an error is arisen',
-                //  `yield_product_timeout` int(11) NOT NULL DEFAULT '259200' COMMENT 'if no new product was added for the last specified number of seconds, an error is arisen',
-                //  `admin_emails` varchar(300) NOT NULL COMMENT 'emails going by  '','' or new line',
-                //  `comment` varchar(1000) NOT NULL,
-                //  `restart_delay_if_broken` int(11) NOT NULL DEFAULT '1800' COMMENT 'in seconds',
-                //  `_last_session_state` enum('started','_completed','completed','_error','error','broken','killed','debug_completed') DEFAULT NULL,
-                //  `_next_start_time` datetime NOT NULL,
-                //  `_last_start_time` datetime NOT NULL,
-                //  `_last_end_time` datetime NOT NULL,
-                //  `_last_process_id` int(11) NOT NULL,
-                //  `_last_log` varchar(500) NOT NULL,
-                //  `_archive` text NOT NULL,
-                //  `_last_product_time` datetime NOT NULL COMMENT 'used to monitor crawler activity by manager',
-                //  PRIMARY KEY (`id`)
+                //CREATE TABLE IF NOT EXISTS `Crawlers` (
+                //  `Id` varchar(32) NOT NULL,
+                //  `State` enum('enabled','disabled','debug') NOT NULL DEFAULT 'debug',
+                //  `Site` varchar(64) NOT NULL,
+                //  `Command` enum('stop','restart') DEFAULT NULL COMMENT 'used while debugging/updating crawler',
+                //  `RunTimeSpan` int(11) NOT NULL DEFAULT '86400' COMMENT 'in seconds',
+                //  `CrawlProductTimeout` int(11) NOT NULL DEFAULT '600' COMMENT 'if no product was crawled for the last specified number of seconds, an error is arisen',
+                //  `YieldProductTimeout` int(11) NOT NULL DEFAULT '259200' COMMENT 'if no new product was added for the last specified number of seconds, an error is arisen',
+                //  `AdminEmails` varchar(300) NOT NULL COMMENT 'emails going by  '','' or new line',
+                //  `Comment` varchar(1000) NOT NULL,
+                //  `RestartDelayIfBroken` int(11) NOT NULL DEFAULT '1800' COMMENT 'in seconds',
+                //  `_LastSessionState` enum('started','_completed','completed','_error','error','broken','killed','debug_completed') DEFAULT NULL,
+                //  `_NextStartTime` datetime NOT NULL,
+                //  `_LastStartTime` datetime NOT NULL,
+                //  `_LastEndTime` datetime NOT NULL,
+                //  `_LastProcessId` int(11) NOT NULL,
+                //  `_LastLog` varchar(500) NOT NULL,
+                //  `_Archive` text NOT NULL,
+                //  `_LastProductTime` datetime NOT NULL COMMENT 'used to monitor crawler activity by manager',
+                //  PRIMARY KEY (`Id`)
                 //) ENGINE=MyISAM DEFAULT CHARSET=latin1; 		
-                Connection.Get(@"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='crawlers' and xtype='U') 
-CREATE TABLE crawlers (
-    id nvarchar(50) PRIMARY KEY,
-    state tinyint DEFAULT (2) NOT NULL,
-    site nvarchar(50) NOT NULL,
-    command tinyint  DEFAULT (0) NOT NULL,
-    run_time_span int DEFAULT (86400) NOT NULL,
-    crawl_product_timeout int DEFAULT (600) NOT NULL,
-    yield_product_timeout int DEFAULT (259200) NOT NULL, 
-    admin_emails nvarchar(300) NOT NULL,
-    comment nvarchar(1000),
-    restart_delay_if_broken int DEFAULT (1800) NOT NULL,
-    _session_start_time datetime,
-    _last_session_state tinyint,
-    _next_start_time datetime DEFAULT (0) NOT NULL,
-    _last_start_time datetime,
-    _last_end_time datetime,
-    _last_process_id int,
-    _last_log nvarchar(500),
-    _archive ntext,
-    _products_table nvarchar(60) DEFAULT ('') NOT NULL,
-    _last_product_time datetime
+                Connection.Get(@"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Crawlers' and xtype='U') 
+CREATE TABLE Crawlers (
+    Id nvarchar(50) PRIMARY KEY,
+    State int DEFAULT (2) NOT NULL,
+    Site nvarchar(50) NOT NULL,
+    Command int  DEFAULT (0) NOT NULL,
+    RunTimeSpan int DEFAULT (86400) NOT NULL,
+    CrawlProductTimeout int DEFAULT (600) NOT NULL,
+    YieldProductTimeout int DEFAULT (259200) NOT NULL, 
+    AdminEmails nvarchar(300) NOT NULL,
+    Comment nvarchar(1000),
+    RestartDelayIfBroken int DEFAULT (1800) NOT NULL,
+    _SessionStartTime datetime,
+    _LastSessionState int,
+    _NextStartTime datetime DEFAULT (0) NOT NULL,
+    _LastStartTime datetime,
+    _LastEndTime datetime,
+    _LastProcessId int,
+    _LastLog nvarchar(500),
+    _Archive ntext,
+    _ProductsTable nvarchar(100) DEFAULT ('') NOT NULL,
+    _LastProductTime datetime
 )"
                     ).Execute();
 
                 Connection.Get(@"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='messages' and xtype='U')
-CREATE TABLE [dbo].[messages] (
-    [id]         INT             IDENTITY (1, 1) NOT NULL,
-    [crawler_id] NVARCHAR (50)   NOT NULL,
-    [type]       TINYINT         NOT NULL,
-    [message]    NVARCHAR (MAX) NOT NULL,
-    [time]       DATETIME        NOT NULL,
-    [source]     NVARCHAR(MAX) NOT NULL, 
-    PRIMARY KEY NONCLUSTERED ([id] ASC),
-    CONSTRAINT [FK_messages_To_crawlers] FOREIGN KEY ([crawler_id]) REFERENCES [dbo].[crawlers] ([id])
+CREATE TABLE [dbo].[Messages] (
+    [Id]         INT             IDENTITY (1, 1) NOT NULL,
+    [CrawlerId] NVARCHAR (50)   NOT NULL,
+    [Type]       INT         NOT NULL,
+    [Message]    NVARCHAR (MAX) NOT NULL,
+    [Time]       DATETIME        NOT NULL,
+    [Source]     NVARCHAR(MAX) NOT NULL, 
+    PRIMARY KEY NONCLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_messages_To_crawlers] FOREIGN KEY ([CrawlerId]) REFERENCES [dbo].[Crawlers] ([Id])
 );"
                     ).Execute();
             }
@@ -156,23 +162,23 @@ CREATE TABLE [dbo].[messages] (
             {
                 string products_table = Regex.Replace(Log.ProcessName, @"\.vshost$", "", RegexOptions.Compiled | RegexOptions.Singleline);
                 products_table = Regex.Replace(products_table, @"[^a-z\d]", "_", RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
-                products_table = "products_" + products_table;
+                products_table = "Products_" + products_table;
 
-                string crawler_id2 = (string)Connection.Get("SELECT id FROM crawlers WHERE _products_table=@products_table").GetSingleValue("@products_table", products_table);
+                string crawler_id2 = (string)Connection.Get("SELECT Id FROM Crawlers WHERE _ProductsTable=@products_table").GetSingleValue("@products_table", products_table);
                 if (crawler_id2 != null && crawler_id2 != crawler_id)
                     LogMessage.Exit("Products table '" + products_table + "' is already owned by crawler '" + crawler_id2 + "'");
-                if (Connection.Get("UPDATE crawlers SET _products_table=@products_table WHERE id=@id").Execute("@products_table", products_table, "@id", crawler_id) < 1)
-                    throw new Exception("Could not update crawlers table.");
+                if (Connection.Get("UPDATE Crawlers SET _ProductsTable=@products_table WHERE Id=@Id").Execute("@products_table", products_table, "@Id", crawler_id) < 1)
+                    throw new Exception("Could not update Crawlers table.");
 
                 Connection.Get(
     @"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='" + products_table + @"' and xtype='U') 
 CREATE TABLE " + products_table + @"
-(id nvarchar(256) PRIMARY KEY NONCLUSTERED,	
-crawl_time datetime NOT NULL,	
-change_time datetime NOT NULL,	
-url nvarchar(512) NOT NULL,	
-data ntext NOT NULL,
-state tinyint NOT NULL)"
+(Id nvarchar(256) PRIMARY KEY NONCLUSTERED,	
+CrawlTime datetime NOT NULL,	
+ChangeTime datetime NOT NULL,	
+Url nvarchar(512) NOT NULL,	
+Data ntext NOT NULL,
+State tinyint NOT NULL)"
                     ).Execute();
 
                 return products_table;
@@ -185,7 +191,7 @@ state tinyint NOT NULL)"
             WARNING = 2,
             ERROR = 3
         }
-        
+
         static public void Message(MessageType type, string crawler_id, string message, string source = null)
         {
             if (source == null)
@@ -195,8 +201,18 @@ state tinyint NOT NULL)"
                 var m = sf.GetMethod();
                 source = m.DeclaringType.ToString() + "\nmethod: " + m.Name + "\nfile: " + sf.GetFileName() + "\nline: " + sf.GetFileLineNumber().ToString();
             }
-            if (1 > Connection["INSERT INTO messages (crawler_id,type,message,time,source) VALUES (@crawler_id,@type,CAST(@message AS nvarchar(MAX)),GETDATE(),CAST(@source AS nvarchar(MAX)))"].Execute("@crawler_id", crawler_id, "@type", (int)type, "@message", message, "@source", source))
-                throw new Exception("Cannot add to 'crawler_messages': " + message);
+            //{
+            //    Message m = new CrawlerHost.Message();
+            //    m.CrawlerId = crawler_id;
+            //    m.Source = source;
+            //    m.Time = DateTime.Now;
+            //    m.Type = (int)type;
+            //    m.Value = message;
+            //    Database.Messages.Add(m);
+            //}
+            //if (1 > Database.SaveChanges())
+            //    throw new Exception("Cannot add to 'crawler_messages': " + message);
+            Connection["INSERT INTO Messages (Type,CrawlerId,Value,Time,Source) VALUES(@Type,@CrawlerId,@Value, GETDATE(),@Source)"].Execute("@Type", (int)type, "@CrawlerId", crawler_id, "@Value", message, "@Source", source);
         }
 
         public static string ConnectionString

@@ -6,7 +6,7 @@
       <Value Profile="(Default)">60</Value>
     </Setting>
     <Setting Name="CrawlersDirectory" Type="System.String" Scope="User">
-      <Value Profile="(Default)">..\..\crawlers</Value>
+      <Value Profile="(Default)">..\..\Crawlers</Value>
     </Setting>
     <Setting Name="CrawlerProcessMaxNumber" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">5</Value>
@@ -17,10 +17,10 @@
     <Setting Name="DbConnectionString" Type="(Connection string)" Scope="Application">
       <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename="D:\_d\_PROJECTS\FHR(for Andreas Chermak)\CliverHost\CliverCrawlerHost\CliverCrawlerHost.mdf1";Integrated Security=True;Connect Timeout=30&lt;/ConnectionString&gt;
+  &lt;ConnectionString&gt;Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename="D:\_d\_PROJECTS\FHR(for Andreas Chermak)\CliverHost\CliverCrawlerHost\CliverCrawlerHost.mdf";Integrated Security=True;Connect Timeout=30&lt;/ConnectionString&gt;
   &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename="D:\_d\_PROJECTS\FHR(for Andreas Chermak)\CliverHost\CliverCrawlerHost\CliverCrawlerHost.mdf1";Integrated Security=True;Connect Timeout=30</Value>
+      <Value Profile="(Default)">Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename="D:\_d\_PROJECTS\FHR(for Andreas Chermak)\CliverHost\CliverCrawlerHost\CliverCrawlerHost.mdf";Integrated Security=True;Connect Timeout=30</Value>
     </Setting>
     <Setting Name="EmailSender" Type="System.String" Scope="User">
       <Value Profile="(Default)">crawler_manager@cliversoft.com</Value>
@@ -45,6 +45,14 @@
     </Setting>
     <Setting Name="RunSilently" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="CliverCrawlerHostConnectionString" Type="(Connection string)" Scope="Application">
+      <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;ConnectionString&gt;Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename="D:\_d\_PROJECTS\FHR(for Andreas Chermak)\CliverHost\CliverCrawlerHost\CliverCrawlerHost.mdf";Integrated Security=True;Connect Timeout=30&lt;/ConnectionString&gt;
+  &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
+&lt;/SerializableConnectionString&gt;</DesignTimeValue>
+      <Value Profile="(Default)">Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename="D:\_d\_PROJECTS\FHR(for Andreas Chermak)\CliverHost\CliverCrawlerHost\CliverCrawlerHost.mdf";Integrated Security=True;Connect Timeout=30</Value>
     </Setting>
   </Settings>
 </SettingsFile>

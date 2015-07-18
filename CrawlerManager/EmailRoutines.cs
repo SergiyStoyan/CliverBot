@@ -40,19 +40,19 @@ namespace Cliver.CrawlerHost
                 else
                     Log.Main.Inform(message);
 
-                string admin_emails = null;
+                string AdminEmails = null;
                 if (crawler_id != null)
-                    admin_emails = (string)DbApi.Connection["SELECT admin_emails FROM crawlers WHERE id=@id"].GetSingleValue("@id", crawler_id);
-                if (admin_emails == null)
-                    admin_emails = Settings.Default.DefaultAdminEmails;
-                if (admin_emails != null)
-                    admin_emails = Regex.Replace(admin_emails.Trim(), @"[\s+\,]+", ",", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                    AdminEmails = (string)DbApi.Connection["SELECT AdminEmails FROM Crawlers WHERE Id=@Id"].GetSingleValue("@Id", crawler_id);
+                if (AdminEmails == null)
+                    AdminEmails = Settings.Default.DefaultAdminEmails;
+                if (AdminEmails != null)
+                    AdminEmails = Regex.Replace(AdminEmails.Trim(), @"[\s+\,]+", ",", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
                 else
                     Log.Main.Error("No email is defined to send messages.");
 
                 MailMessage m = new MailMessage();
                 m.From = new MailAddress(Settings.Default.EmailSender);
-                m.To.Add(admin_emails);
+                m.To.Add(AdminEmails);
                 string subject = "Crawler Manager:";
                 if (crawler_id != null) subject += " " + crawler_id;
                 if (error) subject += " error";

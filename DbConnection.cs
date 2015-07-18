@@ -34,10 +34,8 @@ namespace Cliver.Bot
 
         public static DbConnection Create(string connection_string = null)
         {
-            Log.Inform("connection_string: " + connection_string + "\n\n" + Log.GetStackString());
-
             if (connection_string == null)
-                connection_string = GetPreparedDbConnectionString();
+                throw new Exception("connection_string is null.");
 
             if (Regex.IsMatch(connection_string, @"\.mdf|\.sdf  \s*=\s*System\.Data\.SqlClient", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline))
                 return new MsSqlConnection(connection_string);
@@ -54,21 +52,6 @@ namespace Cliver.Bot
                 return new MsSqlConnection((System.Data.SqlClient.SqlConnection)connection);
 
             throw new Exception("Could not detect an appropriate wrapper class for " + ((System.Data.SqlClient.SqlConnection)connection).ConnectionString);
-        }
-
-        /// <summary>
-        /// Substitutes macros and canonizes db path.
-        /// </summary>
-        /// <returns></returns>
-        public static string GetPreparedDbConnectionString(string db_connection_string = null, string db_path = null)
-        {
-            if (db_path == null)
-                db_path = ConfigurationManager.AppSettings["DbPath"];
-            if (Regex.IsMatch(db_path, @"^\s*[\.\\]"))
-                db_path = Log.GetAbsolutePath(db_path);
-            if (db_connection_string == null)
-                db_connection_string = ConfigurationManager.AppSettings["DbConnectionString"];
-            return Regex.Replace(db_connection_string, @"\|DbPath\|", db_path, RegexOptions.Singleline | RegexOptions.IgnoreCase);
         }
 
         protected DbConnection(string connection_string = null)
@@ -170,7 +153,7 @@ namespace Cliver.Bot
             if (c.State != ConnectionState.Open)
             {
                 c.Dispose();
-                c = new SqlConnection(ConnectionString);
+                c = new SqlConnection(c.ConnectionString);
                 native_connection = c;
                 c.Open();
                 Dictionary<string, DbCommand> s2cs = new Dictionary<string, DbCommand>();

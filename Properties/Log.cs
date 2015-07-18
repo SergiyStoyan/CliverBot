@@ -16,9 +16,10 @@ namespace Cliver.Bot.Properties
     //  The SettingsSaving event is raised before the setting values are saved.
     public sealed partial class Log 
     {        
-        public Log() 
+        new public void Reload()
         {
-            this.SettingsLoaded += Log_SettingsLoaded;
+            base.Reload();
+            Log_SettingsLoaded(null, null);
         }
 
         void Log_SettingsLoaded(object sender, System.Configuration.SettingsLoadedEventArgs e)

@@ -15,7 +15,7 @@ namespace Cliver.CrawlerHost
         public BaseForm()
         {
             InitializeComponent();
-            this.Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
+            this.Icon = Icon.ExtractAssociatedIcon(Assembly.GetEntryAssembly().Location);
         }
 
         delegate void _set_control_text(Control c, string m);

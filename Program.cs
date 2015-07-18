@@ -40,7 +40,7 @@ namespace Cliver.Bot
             Mode = (ProgramRoutines.IsParameterSet(CommandLineParameters.AUTOMATIC) || Properties.General.Default.RunSilently) ? ProgramMode.AUTOMATIC : ProgramMode.DIALOG;
             LogMessage.DisableStumblingDialogs = Mode == ProgramMode.AUTOMATIC;
 
-            if(ProgramRoutines.IsParameterSet(CommandLineParameters.PRODUCTION))
+            if (ProgramRoutines.IsParameterSet(CommandLineParameters.PRODUCTION))
             {
                 Properties.General.Default.RestoreBrokenSession = true;
                 //Properties.General.Default.RestoreErrorItemsAsNew = true;

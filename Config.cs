@@ -22,10 +22,6 @@ namespace Cliver.Bot
     {
         static Config()
         {
-#if DEBUG
-            Properties.General.Default.RunSilently = false;
-#endif  
-            
             Reload();
         }
 
@@ -95,34 +91,74 @@ namespace Cliver.Bot
         //    return (T)((global::System.Configuration.ApplicationSettingsBase)typeof(Config).GetField(section).GetValue(null))[parameter];
         //}
 
-        public static void Save()
+        static void invoke(Type settings_type, string method)
         {
-            FieldInfo[] default_settings_section_fis = (from x in Assembly.GetExecutingAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x.GetField("defaultInstance", BindingFlags.NonPublic | BindingFlags.Static)).ToArray();
-            foreach (FieldInfo fi in default_settings_section_fis)
-                ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null)).Save();
-            FieldInfo[] custom_settings_section_fis = (from x in Assembly.GetEntryAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x.GetField("defaultInstance", BindingFlags.NonPublic | BindingFlags.Static)).ToArray();
-            foreach (FieldInfo fi in custom_settings_section_fis)
-                ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null)).Save();
+            object di = settings_type.GetField("defaultInstance", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
+            settings_type.GetMethod(method).Invoke(di, null);
         }
 
         public static void Reload()
         {
-            FieldInfo[] default_settings_section_fis = (from x in Assembly.GetExecutingAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x.GetField("defaultInstance", BindingFlags.NonPublic | BindingFlags.Static)).ToArray();
-            foreach (FieldInfo fi in default_settings_section_fis)
-                ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null)).Reload();
-            FieldInfo[] custom_settings_section_fis = (from x in Assembly.GetEntryAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x.GetField("defaultInstance", BindingFlags.NonPublic | BindingFlags.Static)).ToArray();
-            foreach (FieldInfo fi in custom_settings_section_fis)
-                ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null)).Reload();
+            Type[] settings_types = (from x in Assembly.GetExecutingAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x).ToArray();
+            foreach (Type t in settings_types)
+                invoke(t, "Reload");
+
+            Type[] custom_settings_types = (from x in Assembly.GetEntryAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x).ToArray();
+            foreach (Type t in settings_types)
+                invoke(t, "Reload");
+        }
+
+        public static void Save()
+        {
+            Type[] settings_types = (from x in Assembly.GetExecutingAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x).ToArray();
+            foreach (Type t in settings_types)
+                invoke(t, "Save");
+
+            Type[] custom_settings_types = (from x in Assembly.GetEntryAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x).ToArray();
+            foreach (Type t in settings_types)
+                invoke(t, "Save");
         }
 
         public static void Reset()
         {
-            FieldInfo[] default_settings_section_fis = (from x in Assembly.GetExecutingAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x.GetField("defaultInstance", BindingFlags.NonPublic | BindingFlags.Static)).ToArray();
-            foreach (FieldInfo fi in default_settings_section_fis)
-                ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null)).Reset();
-            FieldInfo[] custom_settings_section_fis = (from x in Assembly.GetEntryAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x.GetField("defaultInstance", BindingFlags.NonPublic | BindingFlags.Static)).ToArray();
-            foreach (FieldInfo fi in custom_settings_section_fis)
-                ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null)).Reset();
+            Type[] settings_types = (from x in Assembly.GetExecutingAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x).ToArray();
+            foreach (Type t in settings_types)
+                invoke(t, "Reset");
+
+            Type[] custom_settings_types = (from x in Assembly.GetEntryAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x).ToArray();
+            foreach (Type t in settings_types)
+                invoke(t, "Reset");
         }
+
+        //public static void Save()
+        //{
+        //    FieldInfo[] default_settings_section_fis = (from x in Assembly.GetExecutingAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x.GetField("defaultInstance", BindingFlags.NonPublic | BindingFlags.Static)).ToArray();
+        //    foreach (FieldInfo fi in default_settings_section_fis)
+        //        ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null)).Save();
+        //    FieldInfo[] custom_settings_section_fis = (from x in Assembly.GetEntryAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x.GetField("defaultInstance", BindingFlags.NonPublic | BindingFlags.Static)).ToArray();
+        //    foreach (FieldInfo fi in custom_settings_section_fis)
+        //        ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null)).Save();
+        //}
+
+        //public static void Reload()
+        //{
+        //    FieldInfo[] default_settings_section_fis = (from x in Assembly.GetExecutingAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x.GetField("defaultInstance", BindingFlags.NonPublic | BindingFlags.Static)).ToArray();
+        //    foreach (FieldInfo fi in default_settings_section_fis)
+        //        ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null)).Reload();
+        //    //Properties.Log.Default.Reload();
+        //    FieldInfo[] custom_settings_section_fis = (from x in Assembly.GetEntryAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x.GetField("defaultInstance", BindingFlags.NonPublic | BindingFlags.Static)).ToArray();
+        //    foreach (FieldInfo fi in custom_settings_section_fis)
+        //        ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null)).Reload();
+        //}
+
+        //public static void Reset()
+        //{
+        //    FieldInfo[] default_settings_section_fis = (from x in Assembly.GetExecutingAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x.GetField("defaultInstance", BindingFlags.NonPublic | BindingFlags.Static)).ToArray();
+        //    foreach (FieldInfo fi in default_settings_section_fis)
+        //        ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null)).Reset();
+        //    FieldInfo[] custom_settings_section_fis = (from x in Assembly.GetEntryAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x.GetField("defaultInstance", BindingFlags.NonPublic | BindingFlags.Static)).ToArray();
+        //    foreach (FieldInfo fi in custom_settings_section_fis)
+        //        ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null)).Reset();
+        //}
     }
 }

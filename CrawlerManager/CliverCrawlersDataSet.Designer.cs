@@ -24,7 +24,7 @@ namespace Cliver.CrawlerHost {
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
     public partial class CliverCrawlersDataSet : global::System.Data.DataSet {
         
-        private crawlersDataTable tablecrawlers;
+        private CrawlersDataTable tableCrawlers;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
@@ -54,8 +54,8 @@ namespace Cliver.CrawlerHost {
             if ((this.DetermineSchemaSerializationMode(info, context) == global::System.Data.SchemaSerializationMode.IncludeSchema)) {
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXmlSchema(new global::System.Xml.XmlTextReader(new global::System.IO.StringReader(strSchema)));
-                if ((ds.Tables["crawlers"] != null)) {
-                    base.Tables.Add(new crawlersDataTable(ds.Tables["crawlers"]));
+                if ((ds.Tables["Crawlers"] != null)) {
+                    base.Tables.Add(new CrawlersDataTable(ds.Tables["Crawlers"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -79,9 +79,9 @@ namespace Cliver.CrawlerHost {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public crawlersDataTable crawlers {
+        public CrawlersDataTable Crawlers {
             get {
-                return this.tablecrawlers;
+                return this.tableCrawlers;
             }
         }
         
@@ -152,8 +152,8 @@ namespace Cliver.CrawlerHost {
                 this.Reset();
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXml(reader);
-                if ((ds.Tables["crawlers"] != null)) {
-                    base.Tables.Add(new crawlersDataTable(ds.Tables["crawlers"]));
+                if ((ds.Tables["Crawlers"] != null)) {
+                    base.Tables.Add(new CrawlersDataTable(ds.Tables["Crawlers"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -188,10 +188,10 @@ namespace Cliver.CrawlerHost {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         internal void InitVars(bool initTable) {
-            this.tablecrawlers = ((crawlersDataTable)(base.Tables["crawlers"]));
+            this.tableCrawlers = ((CrawlersDataTable)(base.Tables["Crawlers"]));
             if ((initTable == true)) {
-                if ((this.tablecrawlers != null)) {
-                    this.tablecrawlers.InitVars();
+                if ((this.tableCrawlers != null)) {
+                    this.tableCrawlers.InitVars();
                 }
             }
         }
@@ -204,13 +204,13 @@ namespace Cliver.CrawlerHost {
             this.Namespace = "http://tempuri.org/CliverCrawlersDataSet1.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
-            this.tablecrawlers = new crawlersDataTable();
-            base.Tables.Add(this.tablecrawlers);
+            this.tableCrawlers = new CrawlersDataTable();
+            base.Tables.Add(this.tableCrawlers);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        private bool ShouldSerializecrawlers() {
+        private bool ShouldSerializeCrawlers() {
             return false;
         }
         
@@ -270,57 +270,59 @@ namespace Cliver.CrawlerHost {
         }
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public delegate void crawlersRowChangeEventHandler(object sender, crawlersRowChangeEvent e);
+        public delegate void CrawlersRowChangeEventHandler(object sender, CrawlersRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class crawlersDataTable : global::System.Data.TypedTableBase<crawlersRow> {
+        public partial class CrawlersDataTable : global::System.Data.TypedTableBase<CrawlersRow> {
             
-            private global::System.Data.DataColumn columnid;
+            private global::System.Data.DataColumn columnId;
             
-            private global::System.Data.DataColumn columnstate;
+            private global::System.Data.DataColumn columnState;
             
-            private global::System.Data.DataColumn columnsite;
+            private global::System.Data.DataColumn columnSite;
             
-            private global::System.Data.DataColumn columncommand;
+            private global::System.Data.DataColumn columnCommand;
             
-            private global::System.Data.DataColumn columnrun_time_span;
+            private global::System.Data.DataColumn columnRunTimeSpan;
             
-            private global::System.Data.DataColumn columncrawl_product_timeout;
+            private global::System.Data.DataColumn columnCrawlProductTimeout;
             
-            private global::System.Data.DataColumn columnadmin_emails;
+            private global::System.Data.DataColumn columnYieldProductTimeout;
             
-            private global::System.Data.DataColumn columncomment;
+            private global::System.Data.DataColumn columnAdminEmails;
             
-            private global::System.Data.DataColumn column_next_start_time;
+            private global::System.Data.DataColumn columnComment;
             
-            private global::System.Data.DataColumn column_session_start_time;
+            private global::System.Data.DataColumn columnRestartDelayIfBroken;
             
-            private global::System.Data.DataColumn column_last_start_time;
+            private global::System.Data.DataColumn column_SessionStartTime;
             
-            private global::System.Data.DataColumn column_last_end_time;
+            private global::System.Data.DataColumn column_LastSessionState;
             
-            private global::System.Data.DataColumn column_last_process_id;
+            private global::System.Data.DataColumn column_NextStartTime;
             
-            private global::System.Data.DataColumn column_last_log;
+            private global::System.Data.DataColumn column_LastStartTime;
             
-            private global::System.Data.DataColumn column_last_session_state;
+            private global::System.Data.DataColumn column_LastEndTime;
             
-            private global::System.Data.DataColumn column_archive;
+            private global::System.Data.DataColumn column_LastProcessId;
             
-            private global::System.Data.DataColumn columnrestart_delay_if_broken;
+            private global::System.Data.DataColumn column_LastLog;
             
-            private global::System.Data.DataColumn column_products_table;
+            private global::System.Data.DataColumn column_Archive;
             
-            private global::System.Data.DataColumn column_last_product_time;
+            private global::System.Data.DataColumn column_ProductsTable;
+            
+            private global::System.Data.DataColumn column_LastProductTime;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public crawlersDataTable() {
-                this.TableName = "crawlers";
+            public CrawlersDataTable() {
+                this.TableName = "Crawlers";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -328,7 +330,7 @@ namespace Cliver.CrawlerHost {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal crawlersDataTable(global::System.Data.DataTable table) {
+            internal CrawlersDataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -345,160 +347,168 @@ namespace Cliver.CrawlerHost {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            protected crawlersDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected CrawlersDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn idColumn {
+            public global::System.Data.DataColumn IdColumn {
                 get {
-                    return this.columnid;
+                    return this.columnId;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn stateColumn {
+            public global::System.Data.DataColumn StateColumn {
                 get {
-                    return this.columnstate;
+                    return this.columnState;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn siteColumn {
+            public global::System.Data.DataColumn SiteColumn {
                 get {
-                    return this.columnsite;
+                    return this.columnSite;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn commandColumn {
+            public global::System.Data.DataColumn CommandColumn {
                 get {
-                    return this.columncommand;
+                    return this.columnCommand;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn run_time_spanColumn {
+            public global::System.Data.DataColumn RunTimeSpanColumn {
                 get {
-                    return this.columnrun_time_span;
+                    return this.columnRunTimeSpan;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn crawl_product_timeoutColumn {
+            public global::System.Data.DataColumn CrawlProductTimeoutColumn {
                 get {
-                    return this.columncrawl_product_timeout;
+                    return this.columnCrawlProductTimeout;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn admin_emailsColumn {
+            public global::System.Data.DataColumn YieldProductTimeoutColumn {
                 get {
-                    return this.columnadmin_emails;
+                    return this.columnYieldProductTimeout;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn commentColumn {
+            public global::System.Data.DataColumn AdminEmailsColumn {
                 get {
-                    return this.columncomment;
+                    return this.columnAdminEmails;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn _next_start_timeColumn {
+            public global::System.Data.DataColumn CommentColumn {
                 get {
-                    return this.column_next_start_time;
+                    return this.columnComment;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn _session_start_timeColumn {
+            public global::System.Data.DataColumn RestartDelayIfBrokenColumn {
                 get {
-                    return this.column_session_start_time;
+                    return this.columnRestartDelayIfBroken;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn _last_start_timeColumn {
+            public global::System.Data.DataColumn _SessionStartTimeColumn {
                 get {
-                    return this.column_last_start_time;
+                    return this.column_SessionStartTime;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn _last_end_timeColumn {
+            public global::System.Data.DataColumn _LastSessionStateColumn {
                 get {
-                    return this.column_last_end_time;
+                    return this.column_LastSessionState;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn _last_process_idColumn {
+            public global::System.Data.DataColumn _NextStartTimeColumn {
                 get {
-                    return this.column_last_process_id;
+                    return this.column_NextStartTime;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn _last_logColumn {
+            public global::System.Data.DataColumn _LastStartTimeColumn {
                 get {
-                    return this.column_last_log;
+                    return this.column_LastStartTime;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn _last_session_stateColumn {
+            public global::System.Data.DataColumn _LastEndTimeColumn {
                 get {
-                    return this.column_last_session_state;
+                    return this.column_LastEndTime;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn _archiveColumn {
+            public global::System.Data.DataColumn _LastProcessIdColumn {
                 get {
-                    return this.column_archive;
+                    return this.column_LastProcessId;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn restart_delay_if_brokenColumn {
+            public global::System.Data.DataColumn _LastLogColumn {
                 get {
-                    return this.columnrestart_delay_if_broken;
+                    return this.column_LastLog;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn _products_tableColumn {
+            public global::System.Data.DataColumn _ArchiveColumn {
                 get {
-                    return this.column_products_table;
+                    return this.column_Archive;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public global::System.Data.DataColumn _last_product_timeColumn {
+            public global::System.Data.DataColumn _ProductsTableColumn {
                 get {
-                    return this.column_last_product_time;
+                    return this.column_ProductsTable;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn _LastProductTimeColumn {
+                get {
+                    return this.column_LastProductTime;
                 }
             }
             
@@ -513,89 +523,91 @@ namespace Cliver.CrawlerHost {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public crawlersRow this[int index] {
+            public CrawlersRow this[int index] {
                 get {
-                    return ((crawlersRow)(this.Rows[index]));
+                    return ((CrawlersRow)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event crawlersRowChangeEventHandler crawlersRowChanging;
+            public event CrawlersRowChangeEventHandler CrawlersRowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event crawlersRowChangeEventHandler crawlersRowChanged;
+            public event CrawlersRowChangeEventHandler CrawlersRowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event crawlersRowChangeEventHandler crawlersRowDeleting;
+            public event CrawlersRowChangeEventHandler CrawlersRowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public event crawlersRowChangeEventHandler crawlersRowDeleted;
+            public event CrawlersRowChangeEventHandler CrawlersRowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void AddcrawlersRow(crawlersRow row) {
+            public void AddCrawlersRow(CrawlersRow row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public crawlersRow AddcrawlersRow(
-                        string id, 
-                        byte state, 
-                        string site, 
-                        byte command, 
-                        int run_time_span, 
-                        int crawl_product_timeout, 
-                        string admin_emails, 
-                        string comment, 
-                        System.DateTime _next_start_time, 
-                        System.DateTime _session_start_time, 
-                        System.DateTime _last_start_time, 
-                        System.DateTime _last_end_time, 
-                        int _last_process_id, 
-                        string _last_log, 
-                        byte _last_session_state, 
-                        string _archive, 
-                        int restart_delay_if_broken, 
-                        string _products_table, 
-                        System.DateTime _last_product_time) {
-                crawlersRow rowcrawlersRow = ((crawlersRow)(this.NewRow()));
+            public CrawlersRow AddCrawlersRow(
+                        string Id, 
+                        int State, 
+                        string Site, 
+                        int Command, 
+                        int RunTimeSpan, 
+                        int CrawlProductTimeout, 
+                        int YieldProductTimeout, 
+                        string AdminEmails, 
+                        string Comment, 
+                        int RestartDelayIfBroken, 
+                        System.DateTime _SessionStartTime, 
+                        int _LastSessionState, 
+                        System.DateTime _NextStartTime, 
+                        System.DateTime _LastStartTime, 
+                        System.DateTime _LastEndTime, 
+                        int _LastProcessId, 
+                        string _LastLog, 
+                        string _Archive, 
+                        string _ProductsTable, 
+                        System.DateTime _LastProductTime) {
+                CrawlersRow rowCrawlersRow = ((CrawlersRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
-                        id,
-                        state,
-                        site,
-                        command,
-                        run_time_span,
-                        crawl_product_timeout,
-                        admin_emails,
-                        comment,
-                        _next_start_time,
-                        _session_start_time,
-                        _last_start_time,
-                        _last_end_time,
-                        _last_process_id,
-                        _last_log,
-                        _last_session_state,
-                        _archive,
-                        restart_delay_if_broken,
-                        _products_table,
-                        _last_product_time};
-                rowcrawlersRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowcrawlersRow);
-                return rowcrawlersRow;
+                        Id,
+                        State,
+                        Site,
+                        Command,
+                        RunTimeSpan,
+                        CrawlProductTimeout,
+                        YieldProductTimeout,
+                        AdminEmails,
+                        Comment,
+                        RestartDelayIfBroken,
+                        _SessionStartTime,
+                        _LastSessionState,
+                        _NextStartTime,
+                        _LastStartTime,
+                        _LastEndTime,
+                        _LastProcessId,
+                        _LastLog,
+                        _Archive,
+                        _ProductsTable,
+                        _LastProductTime};
+                rowCrawlersRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowCrawlersRow);
+                return rowCrawlersRow;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public crawlersRow FindByid(string id) {
-                return ((crawlersRow)(this.Rows.Find(new object[] {
-                            id})));
+            public CrawlersRow FindById(string Id) {
+                return ((CrawlersRow)(this.Rows.Find(new object[] {
+                            Id})));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                crawlersDataTable cln = ((crawlersDataTable)(base.Clone()));
+                CrawlersDataTable cln = ((CrawlersDataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -603,120 +615,124 @@ namespace Cliver.CrawlerHost {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new crawlersDataTable();
+                return new CrawlersDataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             internal void InitVars() {
-                this.columnid = base.Columns["id"];
-                this.columnstate = base.Columns["state"];
-                this.columnsite = base.Columns["site"];
-                this.columncommand = base.Columns["command"];
-                this.columnrun_time_span = base.Columns["run_time_span"];
-                this.columncrawl_product_timeout = base.Columns["crawl_product_timeout"];
-                this.columnadmin_emails = base.Columns["admin_emails"];
-                this.columncomment = base.Columns["comment"];
-                this.column_next_start_time = base.Columns["_next_start_time"];
-                this.column_session_start_time = base.Columns["_session_start_time"];
-                this.column_last_start_time = base.Columns["_last_start_time"];
-                this.column_last_end_time = base.Columns["_last_end_time"];
-                this.column_last_process_id = base.Columns["_last_process_id"];
-                this.column_last_log = base.Columns["_last_log"];
-                this.column_last_session_state = base.Columns["_last_session_state"];
-                this.column_archive = base.Columns["_archive"];
-                this.columnrestart_delay_if_broken = base.Columns["restart_delay_if_broken"];
-                this.column_products_table = base.Columns["_products_table"];
-                this.column_last_product_time = base.Columns["_last_product_time"];
+                this.columnId = base.Columns["Id"];
+                this.columnState = base.Columns["State"];
+                this.columnSite = base.Columns["Site"];
+                this.columnCommand = base.Columns["Command"];
+                this.columnRunTimeSpan = base.Columns["RunTimeSpan"];
+                this.columnCrawlProductTimeout = base.Columns["CrawlProductTimeout"];
+                this.columnYieldProductTimeout = base.Columns["YieldProductTimeout"];
+                this.columnAdminEmails = base.Columns["AdminEmails"];
+                this.columnComment = base.Columns["Comment"];
+                this.columnRestartDelayIfBroken = base.Columns["RestartDelayIfBroken"];
+                this.column_SessionStartTime = base.Columns["_SessionStartTime"];
+                this.column_LastSessionState = base.Columns["_LastSessionState"];
+                this.column_NextStartTime = base.Columns["_NextStartTime"];
+                this.column_LastStartTime = base.Columns["_LastStartTime"];
+                this.column_LastEndTime = base.Columns["_LastEndTime"];
+                this.column_LastProcessId = base.Columns["_LastProcessId"];
+                this.column_LastLog = base.Columns["_LastLog"];
+                this.column_Archive = base.Columns["_Archive"];
+                this.column_ProductsTable = base.Columns["_ProductsTable"];
+                this.column_LastProductTime = base.Columns["_LastProductTime"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             private void InitClass() {
-                this.columnid = new global::System.Data.DataColumn("id", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnid);
-                this.columnstate = new global::System.Data.DataColumn("state", typeof(byte), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnstate);
-                this.columnsite = new global::System.Data.DataColumn("site", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnsite);
-                this.columncommand = new global::System.Data.DataColumn("command", typeof(byte), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columncommand);
-                this.columnrun_time_span = new global::System.Data.DataColumn("run_time_span", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnrun_time_span);
-                this.columncrawl_product_timeout = new global::System.Data.DataColumn("crawl_product_timeout", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columncrawl_product_timeout);
-                this.columnadmin_emails = new global::System.Data.DataColumn("admin_emails", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnadmin_emails);
-                this.columncomment = new global::System.Data.DataColumn("comment", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columncomment);
-                this.column_next_start_time = new global::System.Data.DataColumn("_next_start_time", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.column_next_start_time);
-                this.column_session_start_time = new global::System.Data.DataColumn("_session_start_time", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.column_session_start_time);
-                this.column_last_start_time = new global::System.Data.DataColumn("_last_start_time", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.column_last_start_time);
-                this.column_last_end_time = new global::System.Data.DataColumn("_last_end_time", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.column_last_end_time);
-                this.column_last_process_id = new global::System.Data.DataColumn("_last_process_id", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.column_last_process_id);
-                this.column_last_log = new global::System.Data.DataColumn("_last_log", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.column_last_log);
-                this.column_last_session_state = new global::System.Data.DataColumn("_last_session_state", typeof(byte), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.column_last_session_state);
-                this.column_archive = new global::System.Data.DataColumn("_archive", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.column_archive);
-                this.columnrestart_delay_if_broken = new global::System.Data.DataColumn("restart_delay_if_broken", typeof(int), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnrestart_delay_if_broken);
-                this.column_products_table = new global::System.Data.DataColumn("_products_table", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.column_products_table);
-                this.column_last_product_time = new global::System.Data.DataColumn("_last_product_time", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.column_last_product_time);
+                this.columnId = new global::System.Data.DataColumn("Id", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnId);
+                this.columnState = new global::System.Data.DataColumn("State", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnState);
+                this.columnSite = new global::System.Data.DataColumn("Site", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnSite);
+                this.columnCommand = new global::System.Data.DataColumn("Command", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCommand);
+                this.columnRunTimeSpan = new global::System.Data.DataColumn("RunTimeSpan", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRunTimeSpan);
+                this.columnCrawlProductTimeout = new global::System.Data.DataColumn("CrawlProductTimeout", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCrawlProductTimeout);
+                this.columnYieldProductTimeout = new global::System.Data.DataColumn("YieldProductTimeout", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnYieldProductTimeout);
+                this.columnAdminEmails = new global::System.Data.DataColumn("AdminEmails", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnAdminEmails);
+                this.columnComment = new global::System.Data.DataColumn("Comment", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnComment);
+                this.columnRestartDelayIfBroken = new global::System.Data.DataColumn("RestartDelayIfBroken", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnRestartDelayIfBroken);
+                this.column_SessionStartTime = new global::System.Data.DataColumn("_SessionStartTime", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.column_SessionStartTime);
+                this.column_LastSessionState = new global::System.Data.DataColumn("_LastSessionState", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.column_LastSessionState);
+                this.column_NextStartTime = new global::System.Data.DataColumn("_NextStartTime", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.column_NextStartTime);
+                this.column_LastStartTime = new global::System.Data.DataColumn("_LastStartTime", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.column_LastStartTime);
+                this.column_LastEndTime = new global::System.Data.DataColumn("_LastEndTime", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.column_LastEndTime);
+                this.column_LastProcessId = new global::System.Data.DataColumn("_LastProcessId", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.column_LastProcessId);
+                this.column_LastLog = new global::System.Data.DataColumn("_LastLog", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.column_LastLog);
+                this.column_Archive = new global::System.Data.DataColumn("_Archive", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.column_Archive);
+                this.column_ProductsTable = new global::System.Data.DataColumn("_ProductsTable", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.column_ProductsTable);
+                this.column_LastProductTime = new global::System.Data.DataColumn("_LastProductTime", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.column_LastProductTime);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
-                                this.columnid}, true));
-                this.columnid.AllowDBNull = false;
-                this.columnid.Unique = true;
-                this.columnid.MaxLength = 50;
-                this.columnstate.AllowDBNull = false;
-                this.columnsite.AllowDBNull = false;
-                this.columnsite.MaxLength = 50;
-                this.columncommand.AllowDBNull = false;
-                this.columnrun_time_span.AllowDBNull = false;
-                this.columncrawl_product_timeout.AllowDBNull = false;
-                this.columnadmin_emails.AllowDBNull = false;
-                this.columnadmin_emails.MaxLength = 300;
-                this.columncomment.MaxLength = 1000;
-                this.column_next_start_time.AllowDBNull = false;
-                this.column_last_log.MaxLength = 500;
-                this.column_archive.MaxLength = 2147483647;
-                this.columnrestart_delay_if_broken.AllowDBNull = false;
-                this.column_products_table.AllowDBNull = false;
-                this.column_products_table.MaxLength = 60;
+                                this.columnId}, true));
+                this.columnId.AllowDBNull = false;
+                this.columnId.Unique = true;
+                this.columnId.MaxLength = 50;
+                this.columnState.AllowDBNull = false;
+                this.columnSite.AllowDBNull = false;
+                this.columnSite.MaxLength = 50;
+                this.columnCommand.AllowDBNull = false;
+                this.columnRunTimeSpan.AllowDBNull = false;
+                this.columnCrawlProductTimeout.AllowDBNull = false;
+                this.columnYieldProductTimeout.AllowDBNull = false;
+                this.columnAdminEmails.AllowDBNull = false;
+                this.columnAdminEmails.MaxLength = 300;
+                this.columnComment.MaxLength = 1000;
+                this.columnRestartDelayIfBroken.AllowDBNull = false;
+                this.column_NextStartTime.AllowDBNull = false;
+                this.column_LastLog.MaxLength = 500;
+                this.column_Archive.MaxLength = 1073741823;
+                this.column_ProductsTable.AllowDBNull = false;
+                this.column_ProductsTable.MaxLength = 100;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public crawlersRow NewcrawlersRow() {
-                return ((crawlersRow)(this.NewRow()));
+            public CrawlersRow NewCrawlersRow() {
+                return ((CrawlersRow)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new crawlersRow(builder);
+                return new CrawlersRow(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(crawlersRow);
+                return typeof(CrawlersRow);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.crawlersRowChanged != null)) {
-                    this.crawlersRowChanged(this, new crawlersRowChangeEvent(((crawlersRow)(e.Row)), e.Action));
+                if ((this.CrawlersRowChanged != null)) {
+                    this.CrawlersRowChanged(this, new CrawlersRowChangeEvent(((CrawlersRow)(e.Row)), e.Action));
                 }
             }
             
@@ -724,8 +740,8 @@ namespace Cliver.CrawlerHost {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.crawlersRowChanging != null)) {
-                    this.crawlersRowChanging(this, new crawlersRowChangeEvent(((crawlersRow)(e.Row)), e.Action));
+                if ((this.CrawlersRowChanging != null)) {
+                    this.CrawlersRowChanging(this, new CrawlersRowChangeEvent(((CrawlersRow)(e.Row)), e.Action));
                 }
             }
             
@@ -733,8 +749,8 @@ namespace Cliver.CrawlerHost {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.crawlersRowDeleted != null)) {
-                    this.crawlersRowDeleted(this, new crawlersRowChangeEvent(((crawlersRow)(e.Row)), e.Action));
+                if ((this.CrawlersRowDeleted != null)) {
+                    this.CrawlersRowDeleted(this, new CrawlersRowChangeEvent(((CrawlersRow)(e.Row)), e.Action));
                 }
             }
             
@@ -742,14 +758,14 @@ namespace Cliver.CrawlerHost {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.crawlersRowDeleting != null)) {
-                    this.crawlersRowDeleting(this, new crawlersRowChangeEvent(((crawlersRow)(e.Row)), e.Action));
+                if ((this.CrawlersRowDeleting != null)) {
+                    this.CrawlersRowDeleting(this, new CrawlersRowChangeEvent(((CrawlersRow)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void RemovecrawlersRow(crawlersRow row) {
+            public void RemoveCrawlersRow(CrawlersRow row) {
                 this.Rows.Remove(row);
             }
             
@@ -776,7 +792,7 @@ namespace Cliver.CrawlerHost {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "crawlersDataTable";
+                attribute2.FixedValue = "CrawlersDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -820,377 +836,388 @@ namespace Cliver.CrawlerHost {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class crawlersRow : global::System.Data.DataRow {
+        public partial class CrawlersRow : global::System.Data.DataRow {
             
-            private crawlersDataTable tablecrawlers;
+            private CrawlersDataTable tableCrawlers;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            internal crawlersRow(global::System.Data.DataRowBuilder rb) : 
+            internal CrawlersRow(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tablecrawlers = ((crawlersDataTable)(this.Table));
+                this.tableCrawlers = ((CrawlersDataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string id {
+            public string Id {
                 get {
-                    return ((string)(this[this.tablecrawlers.idColumn]));
+                    return ((string)(this[this.tableCrawlers.IdColumn]));
                 }
                 set {
-                    this[this.tablecrawlers.idColumn] = value;
+                    this[this.tableCrawlers.IdColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public byte state {
+            public int State {
                 get {
-                    return ((byte)(this[this.tablecrawlers.stateColumn]));
+                    return ((int)(this[this.tableCrawlers.StateColumn]));
                 }
                 set {
-                    this[this.tablecrawlers.stateColumn] = value;
+                    this[this.tableCrawlers.StateColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string site {
+            public string Site {
                 get {
-                    return ((string)(this[this.tablecrawlers.siteColumn]));
+                    return ((string)(this[this.tableCrawlers.SiteColumn]));
                 }
                 set {
-                    this[this.tablecrawlers.siteColumn] = value;
+                    this[this.tableCrawlers.SiteColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public byte command {
+            public int Command {
                 get {
-                    return ((byte)(this[this.tablecrawlers.commandColumn]));
+                    return ((int)(this[this.tableCrawlers.CommandColumn]));
                 }
                 set {
-                    this[this.tablecrawlers.commandColumn] = value;
+                    this[this.tableCrawlers.CommandColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int run_time_span {
+            public int RunTimeSpan {
                 get {
-                    return ((int)(this[this.tablecrawlers.run_time_spanColumn]));
+                    return ((int)(this[this.tableCrawlers.RunTimeSpanColumn]));
                 }
                 set {
-                    this[this.tablecrawlers.run_time_spanColumn] = value;
+                    this[this.tableCrawlers.RunTimeSpanColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int crawl_product_timeout {
+            public int CrawlProductTimeout {
                 get {
-                    return ((int)(this[this.tablecrawlers.crawl_product_timeoutColumn]));
+                    return ((int)(this[this.tableCrawlers.CrawlProductTimeoutColumn]));
                 }
                 set {
-                    this[this.tablecrawlers.crawl_product_timeoutColumn] = value;
+                    this[this.tableCrawlers.CrawlProductTimeoutColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string admin_emails {
+            public int YieldProductTimeout {
                 get {
-                    return ((string)(this[this.tablecrawlers.admin_emailsColumn]));
+                    return ((int)(this[this.tableCrawlers.YieldProductTimeoutColumn]));
                 }
                 set {
-                    this[this.tablecrawlers.admin_emailsColumn] = value;
+                    this[this.tableCrawlers.YieldProductTimeoutColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string comment {
+            public string AdminEmails {
                 get {
-                    try {
-                        return ((string)(this[this.tablecrawlers.commentColumn]));
-                    }
-                    catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'comment\' in table \'crawlers\' is DBNull.", e);
-                    }
+                    return ((string)(this[this.tableCrawlers.AdminEmailsColumn]));
                 }
                 set {
-                    this[this.tablecrawlers.commentColumn] = value;
+                    this[this.tableCrawlers.AdminEmailsColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime _next_start_time {
-                get {
-                    return ((global::System.DateTime)(this[this.tablecrawlers._next_start_timeColumn]));
-                }
-                set {
-                    this[this.tablecrawlers._next_start_timeColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime _session_start_time {
+            public string Comment {
                 get {
                     try {
-                        return ((global::System.DateTime)(this[this.tablecrawlers._session_start_timeColumn]));
+                        return ((string)(this[this.tableCrawlers.CommentColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'_session_start_time\' in table \'crawlers\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'Comment\' in table \'Crawlers\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecrawlers._session_start_timeColumn] = value;
+                    this[this.tableCrawlers.CommentColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime _last_start_time {
+            public int RestartDelayIfBroken {
+                get {
+                    return ((int)(this[this.tableCrawlers.RestartDelayIfBrokenColumn]));
+                }
+                set {
+                    this[this.tableCrawlers.RestartDelayIfBrokenColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public System.DateTime _SessionStartTime {
                 get {
                     try {
-                        return ((global::System.DateTime)(this[this.tablecrawlers._last_start_timeColumn]));
+                        return ((global::System.DateTime)(this[this.tableCrawlers._SessionStartTimeColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'_last_start_time\' in table \'crawlers\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'_SessionStartTime\' in table \'Crawlers\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecrawlers._last_start_timeColumn] = value;
+                    this[this.tableCrawlers._SessionStartTimeColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime _last_end_time {
+            public int _LastSessionState {
                 get {
                     try {
-                        return ((global::System.DateTime)(this[this.tablecrawlers._last_end_timeColumn]));
+                        return ((int)(this[this.tableCrawlers._LastSessionStateColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'_last_end_time\' in table \'crawlers\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'_LastSessionState\' in table \'Crawlers\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecrawlers._last_end_timeColumn] = value;
+                    this[this.tableCrawlers._LastSessionStateColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int _last_process_id {
+            public System.DateTime _NextStartTime {
+                get {
+                    return ((global::System.DateTime)(this[this.tableCrawlers._NextStartTimeColumn]));
+                }
+                set {
+                    this[this.tableCrawlers._NextStartTimeColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public System.DateTime _LastStartTime {
                 get {
                     try {
-                        return ((int)(this[this.tablecrawlers._last_process_idColumn]));
+                        return ((global::System.DateTime)(this[this.tableCrawlers._LastStartTimeColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'_last_process_id\' in table \'crawlers\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'_LastStartTime\' in table \'Crawlers\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecrawlers._last_process_idColumn] = value;
+                    this[this.tableCrawlers._LastStartTimeColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string _last_log {
+            public System.DateTime _LastEndTime {
                 get {
                     try {
-                        return ((string)(this[this.tablecrawlers._last_logColumn]));
+                        return ((global::System.DateTime)(this[this.tableCrawlers._LastEndTimeColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'_last_log\' in table \'crawlers\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'_LastEndTime\' in table \'Crawlers\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecrawlers._last_logColumn] = value;
+                    this[this.tableCrawlers._LastEndTimeColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public byte _last_session_state {
+            public int _LastProcessId {
                 get {
                     try {
-                        return ((byte)(this[this.tablecrawlers._last_session_stateColumn]));
+                        return ((int)(this[this.tableCrawlers._LastProcessIdColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'_last_session_state\' in table \'crawlers\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'_LastProcessId\' in table \'Crawlers\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecrawlers._last_session_stateColumn] = value;
+                    this[this.tableCrawlers._LastProcessIdColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string _archive {
+            public string _LastLog {
                 get {
                     try {
-                        return ((string)(this[this.tablecrawlers._archiveColumn]));
+                        return ((string)(this[this.tableCrawlers._LastLogColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'_archive\' in table \'crawlers\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'_LastLog\' in table \'Crawlers\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecrawlers._archiveColumn] = value;
+                    this[this.tableCrawlers._LastLogColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public int restart_delay_if_broken {
-                get {
-                    return ((int)(this[this.tablecrawlers.restart_delay_if_brokenColumn]));
-                }
-                set {
-                    this[this.tablecrawlers.restart_delay_if_brokenColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public string _products_table {
-                get {
-                    return ((string)(this[this.tablecrawlers._products_tableColumn]));
-                }
-                set {
-                    this[this.tablecrawlers._products_tableColumn] = value;
-                }
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public System.DateTime _last_product_time {
+            public string _Archive {
                 get {
                     try {
-                        return ((global::System.DateTime)(this[this.tablecrawlers._last_product_timeColumn]));
+                        return ((string)(this[this.tableCrawlers._ArchiveColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'_last_product_time\' in table \'crawlers\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'_Archive\' in table \'Crawlers\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablecrawlers._last_product_timeColumn] = value;
+                    this[this.tableCrawlers._ArchiveColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool IscommentNull() {
-                return this.IsNull(this.tablecrawlers.commentColumn);
+            public string _ProductsTable {
+                get {
+                    return ((string)(this[this.tableCrawlers._ProductsTableColumn]));
+                }
+                set {
+                    this[this.tableCrawlers._ProductsTableColumn] = value;
+                }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void SetcommentNull() {
-                this[this.tablecrawlers.commentColumn] = global::System.Convert.DBNull;
+            public System.DateTime _LastProductTime {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableCrawlers._LastProductTimeColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'_LastProductTime\' in table \'Crawlers\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableCrawlers._LastProductTimeColumn] = value;
+                }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Is_session_start_timeNull() {
-                return this.IsNull(this.tablecrawlers._session_start_timeColumn);
+            public bool IsCommentNull() {
+                return this.IsNull(this.tableCrawlers.CommentColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Set_session_start_timeNull() {
-                this[this.tablecrawlers._session_start_timeColumn] = global::System.Convert.DBNull;
+            public void SetCommentNull() {
+                this[this.tableCrawlers.CommentColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Is_last_start_timeNull() {
-                return this.IsNull(this.tablecrawlers._last_start_timeColumn);
+            public bool Is_SessionStartTimeNull() {
+                return this.IsNull(this.tableCrawlers._SessionStartTimeColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Set_last_start_timeNull() {
-                this[this.tablecrawlers._last_start_timeColumn] = global::System.Convert.DBNull;
+            public void Set_SessionStartTimeNull() {
+                this[this.tableCrawlers._SessionStartTimeColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Is_last_end_timeNull() {
-                return this.IsNull(this.tablecrawlers._last_end_timeColumn);
+            public bool Is_LastSessionStateNull() {
+                return this.IsNull(this.tableCrawlers._LastSessionStateColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Set_last_end_timeNull() {
-                this[this.tablecrawlers._last_end_timeColumn] = global::System.Convert.DBNull;
+            public void Set_LastSessionStateNull() {
+                this[this.tableCrawlers._LastSessionStateColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Is_last_process_idNull() {
-                return this.IsNull(this.tablecrawlers._last_process_idColumn);
+            public bool Is_LastStartTimeNull() {
+                return this.IsNull(this.tableCrawlers._LastStartTimeColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Set_last_process_idNull() {
-                this[this.tablecrawlers._last_process_idColumn] = global::System.Convert.DBNull;
+            public void Set_LastStartTimeNull() {
+                this[this.tableCrawlers._LastStartTimeColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Is_last_logNull() {
-                return this.IsNull(this.tablecrawlers._last_logColumn);
+            public bool Is_LastEndTimeNull() {
+                return this.IsNull(this.tableCrawlers._LastEndTimeColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Set_last_logNull() {
-                this[this.tablecrawlers._last_logColumn] = global::System.Convert.DBNull;
+            public void Set_LastEndTimeNull() {
+                this[this.tableCrawlers._LastEndTimeColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Is_last_session_stateNull() {
-                return this.IsNull(this.tablecrawlers._last_session_stateColumn);
+            public bool Is_LastProcessIdNull() {
+                return this.IsNull(this.tableCrawlers._LastProcessIdColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Set_last_session_stateNull() {
-                this[this.tablecrawlers._last_session_stateColumn] = global::System.Convert.DBNull;
+            public void Set_LastProcessIdNull() {
+                this[this.tableCrawlers._LastProcessIdColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Is_archiveNull() {
-                return this.IsNull(this.tablecrawlers._archiveColumn);
+            public bool Is_LastLogNull() {
+                return this.IsNull(this.tableCrawlers._LastLogColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Set_archiveNull() {
-                this[this.tablecrawlers._archiveColumn] = global::System.Convert.DBNull;
+            public void Set_LastLogNull() {
+                this[this.tableCrawlers._LastLogColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public bool Is_last_product_timeNull() {
-                return this.IsNull(this.tablecrawlers._last_product_timeColumn);
+            public bool Is_ArchiveNull() {
+                return this.IsNull(this.tableCrawlers._ArchiveColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public void Set_last_product_timeNull() {
-                this[this.tablecrawlers._last_product_timeColumn] = global::System.Convert.DBNull;
+            public void Set_ArchiveNull() {
+                this[this.tableCrawlers._ArchiveColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool Is_LastProductTimeNull() {
+                return this.IsNull(this.tableCrawlers._LastProductTimeColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void Set_LastProductTimeNull() {
+                this[this.tableCrawlers._LastProductTimeColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -1198,22 +1225,22 @@ namespace Cliver.CrawlerHost {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public class crawlersRowChangeEvent : global::System.EventArgs {
+        public class CrawlersRowChangeEvent : global::System.EventArgs {
             
-            private crawlersRow eventRow;
+            private CrawlersRow eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public crawlersRowChangeEvent(crawlersRow row, global::System.Data.DataRowAction action) {
+            public CrawlersRowChangeEvent(CrawlersRow row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public crawlersRow Row {
+            public CrawlersRow Row {
                 get {
                     return this.eventRow;
                 }
@@ -1241,7 +1268,7 @@ namespace Cliver.CrawlerHost.CliverCrawlersDataSetTableAdapters {
     [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
         ", Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-    public partial class crawlersTableAdapter : global::System.ComponentModel.Component {
+    public partial class CrawlersTableAdapter : global::System.ComponentModel.Component {
         
         private global::System.Data.SqlClient.SqlDataAdapter _adapter;
         
@@ -1255,7 +1282,7 @@ namespace Cliver.CrawlerHost.CliverCrawlersDataSetTableAdapters {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-        public crawlersTableAdapter() {
+        public CrawlersTableAdapter() {
             this.ClearBeforeFill = true;
         }
         
@@ -1352,74 +1379,171 @@ namespace Cliver.CrawlerHost.CliverCrawlersDataSetTableAdapters {
             this._adapter = new global::System.Data.SqlClient.SqlDataAdapter();
             global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
             tableMapping.SourceTable = "Table";
-            tableMapping.DataSetTable = "crawlers";
-            tableMapping.ColumnMappings.Add("id", "id");
-            tableMapping.ColumnMappings.Add("state", "state");
-            tableMapping.ColumnMappings.Add("site", "site");
-            tableMapping.ColumnMappings.Add("command", "command");
-            tableMapping.ColumnMappings.Add("run_time_span", "run_time_span");
-            tableMapping.ColumnMappings.Add("crawl_product_timeout", "crawl_product_timeout");
-            tableMapping.ColumnMappings.Add("admin_emails", "admin_emails");
-            tableMapping.ColumnMappings.Add("comment", "comment");
-            tableMapping.ColumnMappings.Add("_next_start_time", "_next_start_time");
-            tableMapping.ColumnMappings.Add("_session_start_time", "_session_start_time");
-            tableMapping.ColumnMappings.Add("_last_start_time", "_last_start_time");
-            tableMapping.ColumnMappings.Add("_last_end_time", "_last_end_time");
-            tableMapping.ColumnMappings.Add("_last_process_id", "_last_process_id");
-            tableMapping.ColumnMappings.Add("_last_log", "_last_log");
-            tableMapping.ColumnMappings.Add("_last_session_state", "_last_session_state");
-            tableMapping.ColumnMappings.Add("_archive", "_archive");
-            tableMapping.ColumnMappings.Add("restart_delay_if_broken", "restart_delay_if_broken");
-            tableMapping.ColumnMappings.Add("_products_table", "_products_table");
-            tableMapping.ColumnMappings.Add("_last_product_time", "_last_product_time");
+            tableMapping.DataSetTable = "Crawlers";
+            tableMapping.ColumnMappings.Add("Id", "Id");
+            tableMapping.ColumnMappings.Add("State", "State");
+            tableMapping.ColumnMappings.Add("Site", "Site");
+            tableMapping.ColumnMappings.Add("Command", "Command");
+            tableMapping.ColumnMappings.Add("RunTimeSpan", "RunTimeSpan");
+            tableMapping.ColumnMappings.Add("CrawlProductTimeout", "CrawlProductTimeout");
+            tableMapping.ColumnMappings.Add("YieldProductTimeout", "YieldProductTimeout");
+            tableMapping.ColumnMappings.Add("AdminEmails", "AdminEmails");
+            tableMapping.ColumnMappings.Add("Comment", "Comment");
+            tableMapping.ColumnMappings.Add("RestartDelayIfBroken", "RestartDelayIfBroken");
+            tableMapping.ColumnMappings.Add("_SessionStartTime", "_SessionStartTime");
+            tableMapping.ColumnMappings.Add("_LastSessionState", "_LastSessionState");
+            tableMapping.ColumnMappings.Add("_NextStartTime", "_NextStartTime");
+            tableMapping.ColumnMappings.Add("_LastStartTime", "_LastStartTime");
+            tableMapping.ColumnMappings.Add("_LastEndTime", "_LastEndTime");
+            tableMapping.ColumnMappings.Add("_LastProcessId", "_LastProcessId");
+            tableMapping.ColumnMappings.Add("_LastLog", "_LastLog");
+            tableMapping.ColumnMappings.Add("_Archive", "_Archive");
+            tableMapping.ColumnMappings.Add("_ProductsTable", "_ProductsTable");
+            tableMapping.ColumnMappings.Add("_LastProductTime", "_LastProductTime");
             this._adapter.TableMappings.Add(tableMapping);
             this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = "DELETE FROM crawlers\r\nWHERE        (id = @Original_id)";
+            this._adapter.DeleteCommand.CommandText = @"DELETE FROM [dbo].[Crawlers] WHERE (([Id] = @Original_Id) AND ([State] = @Original_State) AND ([Site] = @Original_Site) AND ([Command] = @Original_Command) AND ([RunTimeSpan] = @Original_RunTimeSpan) AND ([CrawlProductTimeout] = @Original_CrawlProductTimeout) AND ([YieldProductTimeout] = @Original_YieldProductTimeout) AND ([AdminEmails] = @Original_AdminEmails) AND ((@IsNull_Comment = 1 AND [Comment] IS NULL) OR ([Comment] = @Original_Comment)) AND ([RestartDelayIfBroken] = @Original_RestartDelayIfBroken) AND ((@IsNull__SessionStartTime = 1 AND [_SessionStartTime] IS NULL) OR ([_SessionStartTime] = @Original__SessionStartTime)) AND ((@IsNull__LastSessionState = 1 AND [_LastSessionState] IS NULL) OR ([_LastSessionState] = @Original__LastSessionState)) AND ([_NextStartTime] = @Original__NextStartTime) AND ((@IsNull__LastStartTime = 1 AND [_LastStartTime] IS NULL) OR ([_LastStartTime] = @Original__LastStartTime)) AND ((@IsNull__LastEndTime = 1 AND [_LastEndTime] IS NULL) OR ([_LastEndTime] = @Original__LastEndTime)) AND ((@IsNull__LastProcessId = 1 AND [_LastProcessId] IS NULL) OR ([_LastProcessId] = @Original__LastProcessId)) AND ((@IsNull__LastLog = 1 AND [_LastLog] IS NULL) OR ([_LastLog] = @Original__LastLog)) AND ([_ProductsTable] = @Original__ProductsTable) AND ((@IsNull__LastProductTime = 1 AND [_LastProductTime] IS NULL) OR ([_LastProductTime] = @Original__LastProductTime)))";
             this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_id", global::System.Data.SqlDbType.VarChar, 50, global::System.Data.ParameterDirection.Input, 0, 0, "id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Id", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_State", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "State", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Site", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Site", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Command", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Command", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RunTimeSpan", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RunTimeSpan", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CrawlProductTimeout", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CrawlProductTimeout", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_YieldProductTimeout", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "YieldProductTimeout", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AdminEmails", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AdminEmails", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_Comment", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Comment", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Comment", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Comment", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RestartDelayIfBroken", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RestartDelayIfBroken", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull__SessionStartTime", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_SessionStartTime", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original__SessionStartTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_SessionStartTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull__LastSessionState", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastSessionState", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original__LastSessionState", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastSessionState", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original__NextStartTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_NextStartTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull__LastStartTime", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastStartTime", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original__LastStartTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastStartTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull__LastEndTime", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastEndTime", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original__LastEndTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastEndTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull__LastProcessId", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastProcessId", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original__LastProcessId", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastProcessId", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull__LastLog", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastLog", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original__LastLog", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastLog", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original__ProductsTable", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_ProductsTable", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull__LastProductTime", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastProductTime", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
+            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original__LastProductTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastProductTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = @"
-                      INSERT INTO crawlers
-                      (id, state, site, admin_emails, comment, command, run_time_span, crawl_product_timeout, restart_delay_if_broken, _products_table)
-                      VALUES        (@id,@state,@site,@admin_emails,@comment,@command,@run_time_span,@crawl_product_timeout,@restart_delay_if_broken,@_products_table);
-                      SELECT id, state, site, admin_emails, comment, command, run_time_span, crawl_product_timeout, restart_delay_if_broken, _next_start_time, _session_start_time, _last_start_time, _last_end_time, _last_process_id, _last_log, _last_session_state, _archive, _products_table, _last_product_time FROM crawlers WHERE (id = @id) ORDER BY id";
+            this._adapter.InsertCommand.CommandText = @"INSERT INTO [dbo].[Crawlers] ([Id], [State], [Site], [Command], [RunTimeSpan], [CrawlProductTimeout], [YieldProductTimeout], [AdminEmails], [Comment], [RestartDelayIfBroken], [_SessionStartTime], [_LastSessionState], [_NextStartTime], [_LastStartTime], [_LastEndTime], [_LastProcessId], [_LastLog], [_Archive], [_ProductsTable], [_LastProductTime]) VALUES (@Id, @State, @Site, @Command, @RunTimeSpan, @CrawlProductTimeout, @YieldProductTimeout, @AdminEmails, @Comment, @RestartDelayIfBroken, @_SessionStartTime, @_LastSessionState, @_NextStartTime, @_LastStartTime, @_LastEndTime, @_LastProcessId, @_LastLog, @_Archive, @_ProductsTable, @_LastProductTime);
+SELECT Id, State, Site, Command, RunTimeSpan, CrawlProductTimeout, YieldProductTimeout, AdminEmails, Comment, RestartDelayIfBroken, _SessionStartTime, _LastSessionState, _NextStartTime, _LastStartTime, _LastEndTime, _LastProcessId, _LastLog, _Archive, _ProductsTable, _LastProductTime FROM Crawlers WHERE (Id = @Id)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@id", global::System.Data.SqlDbType.VarChar, 50, global::System.Data.ParameterDirection.Input, 0, 0, "id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@state", global::System.Data.SqlDbType.TinyInt, 1, global::System.Data.ParameterDirection.Input, 0, 0, "state", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@site", global::System.Data.SqlDbType.VarChar, 50, global::System.Data.ParameterDirection.Input, 0, 0, "site", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@admin_emails", global::System.Data.SqlDbType.VarChar, 300, global::System.Data.ParameterDirection.Input, 0, 0, "admin_emails", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@comment", global::System.Data.SqlDbType.VarChar, 1000, global::System.Data.ParameterDirection.Input, 0, 0, "comment", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@command", global::System.Data.SqlDbType.TinyInt, 1, global::System.Data.ParameterDirection.Input, 0, 0, "command", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@run_time_span", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "run_time_span", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@crawl_product_timeout", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "crawl_product_timeout", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@restart_delay_if_broken", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "restart_delay_if_broken", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@_products_table", global::System.Data.SqlDbType.NChar, 60, global::System.Data.ParameterDirection.Input, 0, 0, "_products_table", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Id", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@State", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "State", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Site", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Site", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Command", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Command", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RunTimeSpan", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RunTimeSpan", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CrawlProductTimeout", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CrawlProductTimeout", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@YieldProductTimeout", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "YieldProductTimeout", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AdminEmails", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AdminEmails", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Comment", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Comment", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RestartDelayIfBroken", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RestartDelayIfBroken", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@_SessionStartTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_SessionStartTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@_LastSessionState", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastSessionState", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@_NextStartTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_NextStartTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@_LastStartTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastStartTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@_LastEndTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastEndTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@_LastProcessId", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastProcessId", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@_LastLog", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastLog", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@_Archive", global::System.Data.SqlDbType.NText, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_Archive", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@_ProductsTable", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_ProductsTable", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@_LastProductTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastProductTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = @"UPDATE       crawlers
-SET                id = @id, state = @state, site = @site, admin_emails = @admin_emails, comment = @comment, command = @command, run_time_span = @run_time_span, 
-                         crawl_product_timeout = @crawl_product_timeout, restart_delay_if_broken = @restart_delay_if_broken
-WHERE        (id = @Original_id)";
+            this._adapter.UpdateCommand.CommandText = "UPDATE [dbo].[Crawlers] SET [Id] = @Id, [State] = @State, [Site] = @Site, [Comman" +
+                "d] = @Command, [RunTimeSpan] = @RunTimeSpan, [CrawlProductTimeout] = @CrawlProdu" +
+                "ctTimeout, [YieldProductTimeout] = @YieldProductTimeout, [AdminEmails] = @AdminE" +
+                "mails, [Comment] = @Comment, [RestartDelayIfBroken] = @RestartDelayIfBroken, [_S" +
+                "essionStartTime] = @_SessionStartTime, [_LastSessionState] = @_LastSessionState," +
+                " [_NextStartTime] = @_NextStartTime, [_LastStartTime] = @_LastStartTime, [_LastE" +
+                "ndTime] = @_LastEndTime, [_LastProcessId] = @_LastProcessId, [_LastLog] = @_Last" +
+                "Log, [_Archive] = @_Archive, [_ProductsTable] = @_ProductsTable, [_LastProductTi" +
+                "me] = @_LastProductTime WHERE (([Id] = @Original_Id) AND ([State] = @Original_St" +
+                "ate) AND ([Site] = @Original_Site) AND ([Command] = @Original_Command) AND ([Run" +
+                "TimeSpan] = @Original_RunTimeSpan) AND ([CrawlProductTimeout] = @Original_CrawlP" +
+                "roductTimeout) AND ([YieldProductTimeout] = @Original_YieldProductTimeout) AND (" +
+                "[AdminEmails] = @Original_AdminEmails) AND ((@IsNull_Comment = 1 AND [Comment] I" +
+                "S NULL) OR ([Comment] = @Original_Comment)) AND ([RestartDelayIfBroken] = @Origi" +
+                "nal_RestartDelayIfBroken) AND ((@IsNull__SessionStartTime = 1 AND [_SessionStart" +
+                "Time] IS NULL) OR ([_SessionStartTime] = @Original__SessionStartTime)) AND ((@Is" +
+                "Null__LastSessionState = 1 AND [_LastSessionState] IS NULL) OR ([_LastSessionSta" +
+                "te] = @Original__LastSessionState)) AND ([_NextStartTime] = @Original__NextStart" +
+                "Time) AND ((@IsNull__LastStartTime = 1 AND [_LastStartTime] IS NULL) OR ([_LastS" +
+                "tartTime] = @Original__LastStartTime)) AND ((@IsNull__LastEndTime = 1 AND [_Last" +
+                "EndTime] IS NULL) OR ([_LastEndTime] = @Original__LastEndTime)) AND ((@IsNull__L" +
+                "astProcessId = 1 AND [_LastProcessId] IS NULL) OR ([_LastProcessId] = @Original_" +
+                "_LastProcessId)) AND ((@IsNull__LastLog = 1 AND [_LastLog] IS NULL) OR ([_LastLo" +
+                "g] = @Original__LastLog)) AND ([_ProductsTable] = @Original__ProductsTable) AND " +
+                "((@IsNull__LastProductTime = 1 AND [_LastProductTime] IS NULL) OR ([_LastProduct" +
+                "Time] = @Original__LastProductTime)));\r\nSELECT Id, State, Site, Command, RunTime" +
+                "Span, CrawlProductTimeout, YieldProductTimeout, AdminEmails, Comment, RestartDel" +
+                "ayIfBroken, _SessionStartTime, _LastSessionState, _NextStartTime, _LastStartTime" +
+                ", _LastEndTime, _LastProcessId, _LastLog, _Archive, _ProductsTable, _LastProduct" +
+                "Time FROM Crawlers WHERE (Id = @Id)";
             this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@id", global::System.Data.SqlDbType.VarChar, 50, global::System.Data.ParameterDirection.Input, 0, 0, "id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@state", global::System.Data.SqlDbType.TinyInt, 1, global::System.Data.ParameterDirection.Input, 0, 0, "state", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@site", global::System.Data.SqlDbType.VarChar, 50, global::System.Data.ParameterDirection.Input, 0, 0, "site", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@admin_emails", global::System.Data.SqlDbType.VarChar, 300, global::System.Data.ParameterDirection.Input, 0, 0, "admin_emails", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@comment", global::System.Data.SqlDbType.VarChar, 1000, global::System.Data.ParameterDirection.Input, 0, 0, "comment", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@command", global::System.Data.SqlDbType.TinyInt, 1, global::System.Data.ParameterDirection.Input, 0, 0, "command", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@run_time_span", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "run_time_span", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@crawl_product_timeout", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "crawl_product_timeout", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@restart_delay_if_broken", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 0, 0, "restart_delay_if_broken", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_id", global::System.Data.SqlDbType.VarChar, 50, global::System.Data.ParameterDirection.Input, 0, 0, "id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Id", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Id", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@State", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "State", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Site", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Site", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Command", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Command", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RunTimeSpan", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RunTimeSpan", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CrawlProductTimeout", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CrawlProductTimeout", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@YieldProductTimeout", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "YieldProductTimeout", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@AdminEmails", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AdminEmails", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Comment", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Comment", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@RestartDelayIfBroken", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RestartDelayIfBroken", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@_SessionStartTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_SessionStartTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@_LastSessionState", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastSessionState", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@_NextStartTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_NextStartTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@_LastStartTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastStartTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@_LastEndTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastEndTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@_LastProcessId", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastProcessId", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@_LastLog", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastLog", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@_Archive", global::System.Data.SqlDbType.NText, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_Archive", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@_ProductsTable", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_ProductsTable", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@_LastProductTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastProductTime", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Id", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_State", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "State", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Site", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Site", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Command", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Command", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RunTimeSpan", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RunTimeSpan", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_CrawlProductTimeout", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "CrawlProductTimeout", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_YieldProductTimeout", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "YieldProductTimeout", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_AdminEmails", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "AdminEmails", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull_Comment", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Comment", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_Comment", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "Comment", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_RestartDelayIfBroken", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "RestartDelayIfBroken", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull__SessionStartTime", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_SessionStartTime", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original__SessionStartTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_SessionStartTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull__LastSessionState", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastSessionState", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original__LastSessionState", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastSessionState", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original__NextStartTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_NextStartTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull__LastStartTime", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastStartTime", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original__LastStartTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastStartTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull__LastEndTime", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastEndTime", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original__LastEndTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastEndTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull__LastProcessId", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastProcessId", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original__LastProcessId", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastProcessId", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull__LastLog", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastLog", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original__LastLog", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastLog", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original__ProductsTable", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_ProductsTable", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@IsNull__LastProductTime", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastProductTime", global::System.Data.DataRowVersion.Original, true, null, "", "", ""));
+            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original__LastProductTime", global::System.Data.SqlDbType.DateTime, 0, global::System.Data.ParameterDirection.Input, 0, 0, "_LastProductTime", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitConnection() {
             this._connection = new global::System.Data.SqlClient.SqlConnection();
-            this._connection.ConnectionString = global::Cliver.CrawlerHost.Properties.Settings.Default.DbConnectionString;
+            this._connection.ConnectionString = global::Cliver.CrawlerHost.Properties.Settings.Default.CliverCrawlerHostConnectionString;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1428,11 +1552,7 @@ WHERE        (id = @Original_id)";
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = @"
-                      SELECT        id, state, site, admin_emails, comment, command, run_time_span, crawl_product_timeout, restart_delay_if_broken, _next_start_time, _session_start_time, _last_start_time,
-                      _last_end_time, _last_process_id, _last_log, _last_session_state, _archive, _products_table, _last_product_time
-                      FROM            crawlers
-                      ORDER BY id";
+            this._commandCollection[0].CommandText = @"SELECT Id, State, Site, Command, RunTimeSpan, CrawlProductTimeout, YieldProductTimeout, AdminEmails, Comment, RestartDelayIfBroken, [_SessionStartTime], [_LastSessionState], [_NextStartTime], [_LastStartTime], [_LastEndTime], [_LastProcessId], [_LastLog], [_Archive], [_ProductsTable], [_LastProductTime] FROM dbo.Crawlers";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -1440,7 +1560,7 @@ WHERE        (id = @Original_id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
-        public virtual int Fill(CliverCrawlersDataSet.crawlersDataTable dataTable) {
+        public virtual int Fill(CliverCrawlersDataSet.CrawlersDataTable dataTable) {
             this.Adapter.SelectCommand = this.CommandCollection[0];
             if ((this.ClearBeforeFill == true)) {
                 dataTable.Clear();
@@ -1453,9 +1573,9 @@ WHERE        (id = @Original_id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
-        public virtual CliverCrawlersDataSet.crawlersDataTable GetData() {
+        public virtual CliverCrawlersDataSet.CrawlersDataTable GetData() {
             this.Adapter.SelectCommand = this.CommandCollection[0];
-            CliverCrawlersDataSet.crawlersDataTable dataTable = new CliverCrawlersDataSet.crawlersDataTable();
+            CliverCrawlersDataSet.CrawlersDataTable dataTable = new CliverCrawlersDataSet.CrawlersDataTable();
             this.Adapter.Fill(dataTable);
             return dataTable;
         }
@@ -1463,7 +1583,7 @@ WHERE        (id = @Original_id)";
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(CliverCrawlersDataSet.crawlersDataTable dataTable) {
+        public virtual int Update(CliverCrawlersDataSet.CrawlersDataTable dataTable) {
             return this.Adapter.Update(dataTable);
         }
         
@@ -1471,7 +1591,7 @@ WHERE        (id = @Original_id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         public virtual int Update(CliverCrawlersDataSet dataSet) {
-            return this.Adapter.Update(dataSet, "crawlers");
+            return this.Adapter.Update(dataSet, "Crawlers");
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1493,12 +1613,120 @@ WHERE        (id = @Original_id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(string Original_id) {
-            if ((Original_id == null)) {
-                throw new global::System.ArgumentNullException("Original_id");
+        public virtual int Delete(
+                    string Original_Id, 
+                    int Original_State, 
+                    string Original_Site, 
+                    int Original_Command, 
+                    int Original_RunTimeSpan, 
+                    int Original_CrawlProductTimeout, 
+                    int Original_YieldProductTimeout, 
+                    string Original_AdminEmails, 
+                    string Original_Comment, 
+                    int Original_RestartDelayIfBroken, 
+                    global::System.Nullable<global::System.DateTime> Original__SessionStartTime, 
+                    global::System.Nullable<int> Original__LastSessionState, 
+                    System.DateTime Original__NextStartTime, 
+                    global::System.Nullable<global::System.DateTime> Original__LastStartTime, 
+                    global::System.Nullable<global::System.DateTime> Original__LastEndTime, 
+                    global::System.Nullable<int> Original__LastProcessId, 
+                    string Original__LastLog, 
+                    string Original__ProductsTable, 
+                    global::System.Nullable<global::System.DateTime> Original__LastProductTime) {
+            if ((Original_Id == null)) {
+                throw new global::System.ArgumentNullException("Original_Id");
             }
             else {
-                this.Adapter.DeleteCommand.Parameters[0].Value = ((string)(Original_id));
+                this.Adapter.DeleteCommand.Parameters[0].Value = ((string)(Original_Id));
+            }
+            this.Adapter.DeleteCommand.Parameters[1].Value = ((int)(Original_State));
+            if ((Original_Site == null)) {
+                throw new global::System.ArgumentNullException("Original_Site");
+            }
+            else {
+                this.Adapter.DeleteCommand.Parameters[2].Value = ((string)(Original_Site));
+            }
+            this.Adapter.DeleteCommand.Parameters[3].Value = ((int)(Original_Command));
+            this.Adapter.DeleteCommand.Parameters[4].Value = ((int)(Original_RunTimeSpan));
+            this.Adapter.DeleteCommand.Parameters[5].Value = ((int)(Original_CrawlProductTimeout));
+            this.Adapter.DeleteCommand.Parameters[6].Value = ((int)(Original_YieldProductTimeout));
+            if ((Original_AdminEmails == null)) {
+                throw new global::System.ArgumentNullException("Original_AdminEmails");
+            }
+            else {
+                this.Adapter.DeleteCommand.Parameters[7].Value = ((string)(Original_AdminEmails));
+            }
+            if ((Original_Comment == null)) {
+                this.Adapter.DeleteCommand.Parameters[8].Value = ((object)(1));
+                this.Adapter.DeleteCommand.Parameters[9].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.DeleteCommand.Parameters[8].Value = ((object)(0));
+                this.Adapter.DeleteCommand.Parameters[9].Value = ((string)(Original_Comment));
+            }
+            this.Adapter.DeleteCommand.Parameters[10].Value = ((int)(Original_RestartDelayIfBroken));
+            if ((Original__SessionStartTime.HasValue == true)) {
+                this.Adapter.DeleteCommand.Parameters[11].Value = ((object)(0));
+                this.Adapter.DeleteCommand.Parameters[12].Value = ((System.DateTime)(Original__SessionStartTime.Value));
+            }
+            else {
+                this.Adapter.DeleteCommand.Parameters[11].Value = ((object)(1));
+                this.Adapter.DeleteCommand.Parameters[12].Value = global::System.DBNull.Value;
+            }
+            if ((Original__LastSessionState.HasValue == true)) {
+                this.Adapter.DeleteCommand.Parameters[13].Value = ((object)(0));
+                this.Adapter.DeleteCommand.Parameters[14].Value = ((int)(Original__LastSessionState.Value));
+            }
+            else {
+                this.Adapter.DeleteCommand.Parameters[13].Value = ((object)(1));
+                this.Adapter.DeleteCommand.Parameters[14].Value = global::System.DBNull.Value;
+            }
+            this.Adapter.DeleteCommand.Parameters[15].Value = ((System.DateTime)(Original__NextStartTime));
+            if ((Original__LastStartTime.HasValue == true)) {
+                this.Adapter.DeleteCommand.Parameters[16].Value = ((object)(0));
+                this.Adapter.DeleteCommand.Parameters[17].Value = ((System.DateTime)(Original__LastStartTime.Value));
+            }
+            else {
+                this.Adapter.DeleteCommand.Parameters[16].Value = ((object)(1));
+                this.Adapter.DeleteCommand.Parameters[17].Value = global::System.DBNull.Value;
+            }
+            if ((Original__LastEndTime.HasValue == true)) {
+                this.Adapter.DeleteCommand.Parameters[18].Value = ((object)(0));
+                this.Adapter.DeleteCommand.Parameters[19].Value = ((System.DateTime)(Original__LastEndTime.Value));
+            }
+            else {
+                this.Adapter.DeleteCommand.Parameters[18].Value = ((object)(1));
+                this.Adapter.DeleteCommand.Parameters[19].Value = global::System.DBNull.Value;
+            }
+            if ((Original__LastProcessId.HasValue == true)) {
+                this.Adapter.DeleteCommand.Parameters[20].Value = ((object)(0));
+                this.Adapter.DeleteCommand.Parameters[21].Value = ((int)(Original__LastProcessId.Value));
+            }
+            else {
+                this.Adapter.DeleteCommand.Parameters[20].Value = ((object)(1));
+                this.Adapter.DeleteCommand.Parameters[21].Value = global::System.DBNull.Value;
+            }
+            if ((Original__LastLog == null)) {
+                this.Adapter.DeleteCommand.Parameters[22].Value = ((object)(1));
+                this.Adapter.DeleteCommand.Parameters[23].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.DeleteCommand.Parameters[22].Value = ((object)(0));
+                this.Adapter.DeleteCommand.Parameters[23].Value = ((string)(Original__LastLog));
+            }
+            if ((Original__ProductsTable == null)) {
+                throw new global::System.ArgumentNullException("Original__ProductsTable");
+            }
+            else {
+                this.Adapter.DeleteCommand.Parameters[24].Value = ((string)(Original__ProductsTable));
+            }
+            if ((Original__LastProductTime.HasValue == true)) {
+                this.Adapter.DeleteCommand.Parameters[25].Value = ((object)(0));
+                this.Adapter.DeleteCommand.Parameters[26].Value = ((System.DateTime)(Original__LastProductTime.Value));
+            }
+            else {
+                this.Adapter.DeleteCommand.Parameters[25].Value = ((object)(1));
+                this.Adapter.DeleteCommand.Parameters[26].Value = global::System.DBNull.Value;
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
             if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -1520,41 +1748,111 @@ WHERE        (id = @Original_id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(string id, byte state, string site, string admin_emails, string comment, byte command1, int run_time_span, int crawl_product_timeout, int restart_delay_if_broken, string _products_table) {
-            if ((id == null)) {
-                throw new global::System.ArgumentNullException("id");
+        public virtual int Insert(
+                    string Id, 
+                    int State, 
+                    string Site, 
+                    int Command1, 
+                    int RunTimeSpan, 
+                    int CrawlProductTimeout, 
+                    int YieldProductTimeout, 
+                    string AdminEmails, 
+                    string Comment, 
+                    int RestartDelayIfBroken, 
+                    global::System.Nullable<global::System.DateTime> _SessionStartTime, 
+                    global::System.Nullable<int> _LastSessionState, 
+                    System.DateTime _NextStartTime, 
+                    global::System.Nullable<global::System.DateTime> _LastStartTime, 
+                    global::System.Nullable<global::System.DateTime> _LastEndTime, 
+                    global::System.Nullable<int> _LastProcessId, 
+                    string _LastLog, 
+                    string _Archive, 
+                    string _ProductsTable, 
+                    global::System.Nullable<global::System.DateTime> _LastProductTime) {
+            if ((Id == null)) {
+                throw new global::System.ArgumentNullException("Id");
             }
             else {
-                this.Adapter.InsertCommand.Parameters[0].Value = ((string)(id));
+                this.Adapter.InsertCommand.Parameters[0].Value = ((string)(Id));
             }
-            this.Adapter.InsertCommand.Parameters[1].Value = ((byte)(state));
-            if ((site == null)) {
-                throw new global::System.ArgumentNullException("site");
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[2].Value = ((string)(site));
-            }
-            if ((admin_emails == null)) {
-                throw new global::System.ArgumentNullException("admin_emails");
+            this.Adapter.InsertCommand.Parameters[1].Value = ((int)(State));
+            if ((Site == null)) {
+                throw new global::System.ArgumentNullException("Site");
             }
             else {
-                this.Adapter.InsertCommand.Parameters[3].Value = ((string)(admin_emails));
+                this.Adapter.InsertCommand.Parameters[2].Value = ((string)(Site));
             }
-            if ((comment == null)) {
-                this.Adapter.InsertCommand.Parameters[4].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[4].Value = ((string)(comment));
-            }
-            this.Adapter.InsertCommand.Parameters[5].Value = ((byte)(command1));
-            this.Adapter.InsertCommand.Parameters[6].Value = ((int)(run_time_span));
-            this.Adapter.InsertCommand.Parameters[7].Value = ((int)(crawl_product_timeout));
-            this.Adapter.InsertCommand.Parameters[8].Value = ((int)(restart_delay_if_broken));
-            if ((_products_table == null)) {
-                throw new global::System.ArgumentNullException("_products_table");
+            this.Adapter.InsertCommand.Parameters[3].Value = ((int)(Command1));
+            this.Adapter.InsertCommand.Parameters[4].Value = ((int)(RunTimeSpan));
+            this.Adapter.InsertCommand.Parameters[5].Value = ((int)(CrawlProductTimeout));
+            this.Adapter.InsertCommand.Parameters[6].Value = ((int)(YieldProductTimeout));
+            if ((AdminEmails == null)) {
+                throw new global::System.ArgumentNullException("AdminEmails");
             }
             else {
-                this.Adapter.InsertCommand.Parameters[9].Value = ((string)(_products_table));
+                this.Adapter.InsertCommand.Parameters[7].Value = ((string)(AdminEmails));
+            }
+            if ((Comment == null)) {
+                this.Adapter.InsertCommand.Parameters[8].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[8].Value = ((string)(Comment));
+            }
+            this.Adapter.InsertCommand.Parameters[9].Value = ((int)(RestartDelayIfBroken));
+            if ((_SessionStartTime.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[10].Value = ((System.DateTime)(_SessionStartTime.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[10].Value = global::System.DBNull.Value;
+            }
+            if ((_LastSessionState.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[11].Value = ((int)(_LastSessionState.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[11].Value = global::System.DBNull.Value;
+            }
+            this.Adapter.InsertCommand.Parameters[12].Value = ((System.DateTime)(_NextStartTime));
+            if ((_LastStartTime.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[13].Value = ((System.DateTime)(_LastStartTime.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[13].Value = global::System.DBNull.Value;
+            }
+            if ((_LastEndTime.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[14].Value = ((System.DateTime)(_LastEndTime.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[14].Value = global::System.DBNull.Value;
+            }
+            if ((_LastProcessId.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[15].Value = ((int)(_LastProcessId.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[15].Value = global::System.DBNull.Value;
+            }
+            if ((_LastLog == null)) {
+                this.Adapter.InsertCommand.Parameters[16].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[16].Value = ((string)(_LastLog));
+            }
+            if ((_Archive == null)) {
+                this.Adapter.InsertCommand.Parameters[17].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[17].Value = ((string)(_Archive));
+            }
+            if ((_ProductsTable == null)) {
+                throw new global::System.ArgumentNullException("_ProductsTable");
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[18].Value = ((string)(_ProductsTable));
+            }
+            if ((_LastProductTime.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[19].Value = ((System.DateTime)(_LastProductTime.Value));
+            }
+            else {
+                this.Adapter.InsertCommand.Parameters[19].Value = global::System.DBNull.Value;
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -1576,41 +1874,225 @@ WHERE        (id = @Original_id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(string id, byte state, string site, string admin_emails, string comment, byte command1, int run_time_span, int crawl_product_timeout, int restart_delay_if_broken, string Original_id) {
-            if ((id == null)) {
-                throw new global::System.ArgumentNullException("id");
+        public virtual int Update(
+                    string Id, 
+                    int State, 
+                    string Site, 
+                    int Command1, 
+                    int RunTimeSpan, 
+                    int CrawlProductTimeout, 
+                    int YieldProductTimeout, 
+                    string AdminEmails, 
+                    string Comment, 
+                    int RestartDelayIfBroken, 
+                    global::System.Nullable<global::System.DateTime> _SessionStartTime, 
+                    global::System.Nullable<int> _LastSessionState, 
+                    System.DateTime _NextStartTime, 
+                    global::System.Nullable<global::System.DateTime> _LastStartTime, 
+                    global::System.Nullable<global::System.DateTime> _LastEndTime, 
+                    global::System.Nullable<int> _LastProcessId, 
+                    string _LastLog, 
+                    string _Archive, 
+                    string _ProductsTable, 
+                    global::System.Nullable<global::System.DateTime> _LastProductTime, 
+                    string Original_Id, 
+                    int Original_State, 
+                    string Original_Site, 
+                    int Original_Command, 
+                    int Original_RunTimeSpan, 
+                    int Original_CrawlProductTimeout, 
+                    int Original_YieldProductTimeout, 
+                    string Original_AdminEmails, 
+                    string Original_Comment, 
+                    int Original_RestartDelayIfBroken, 
+                    global::System.Nullable<global::System.DateTime> Original__SessionStartTime, 
+                    global::System.Nullable<int> Original__LastSessionState, 
+                    System.DateTime Original__NextStartTime, 
+                    global::System.Nullable<global::System.DateTime> Original__LastStartTime, 
+                    global::System.Nullable<global::System.DateTime> Original__LastEndTime, 
+                    global::System.Nullable<int> Original__LastProcessId, 
+                    string Original__LastLog, 
+                    string Original__ProductsTable, 
+                    global::System.Nullable<global::System.DateTime> Original__LastProductTime) {
+            if ((Id == null)) {
+                throw new global::System.ArgumentNullException("Id");
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[0].Value = ((string)(id));
+                this.Adapter.UpdateCommand.Parameters[0].Value = ((string)(Id));
             }
-            this.Adapter.UpdateCommand.Parameters[1].Value = ((byte)(state));
-            if ((site == null)) {
-                throw new global::System.ArgumentNullException("site");
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[2].Value = ((string)(site));
-            }
-            if ((admin_emails == null)) {
-                throw new global::System.ArgumentNullException("admin_emails");
+            this.Adapter.UpdateCommand.Parameters[1].Value = ((int)(State));
+            if ((Site == null)) {
+                throw new global::System.ArgumentNullException("Site");
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[3].Value = ((string)(admin_emails));
+                this.Adapter.UpdateCommand.Parameters[2].Value = ((string)(Site));
             }
-            if ((comment == null)) {
-                this.Adapter.UpdateCommand.Parameters[4].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[4].Value = ((string)(comment));
-            }
-            this.Adapter.UpdateCommand.Parameters[5].Value = ((byte)(command1));
-            this.Adapter.UpdateCommand.Parameters[6].Value = ((int)(run_time_span));
-            this.Adapter.UpdateCommand.Parameters[7].Value = ((int)(crawl_product_timeout));
-            this.Adapter.UpdateCommand.Parameters[8].Value = ((int)(restart_delay_if_broken));
-            if ((Original_id == null)) {
-                throw new global::System.ArgumentNullException("Original_id");
+            this.Adapter.UpdateCommand.Parameters[3].Value = ((int)(Command1));
+            this.Adapter.UpdateCommand.Parameters[4].Value = ((int)(RunTimeSpan));
+            this.Adapter.UpdateCommand.Parameters[5].Value = ((int)(CrawlProductTimeout));
+            this.Adapter.UpdateCommand.Parameters[6].Value = ((int)(YieldProductTimeout));
+            if ((AdminEmails == null)) {
+                throw new global::System.ArgumentNullException("AdminEmails");
             }
             else {
-                this.Adapter.UpdateCommand.Parameters[9].Value = ((string)(Original_id));
+                this.Adapter.UpdateCommand.Parameters[7].Value = ((string)(AdminEmails));
+            }
+            if ((Comment == null)) {
+                this.Adapter.UpdateCommand.Parameters[8].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[8].Value = ((string)(Comment));
+            }
+            this.Adapter.UpdateCommand.Parameters[9].Value = ((int)(RestartDelayIfBroken));
+            if ((_SessionStartTime.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[10].Value = ((System.DateTime)(_SessionStartTime.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[10].Value = global::System.DBNull.Value;
+            }
+            if ((_LastSessionState.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[11].Value = ((int)(_LastSessionState.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[11].Value = global::System.DBNull.Value;
+            }
+            this.Adapter.UpdateCommand.Parameters[12].Value = ((System.DateTime)(_NextStartTime));
+            if ((_LastStartTime.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[13].Value = ((System.DateTime)(_LastStartTime.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[13].Value = global::System.DBNull.Value;
+            }
+            if ((_LastEndTime.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[14].Value = ((System.DateTime)(_LastEndTime.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[14].Value = global::System.DBNull.Value;
+            }
+            if ((_LastProcessId.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[15].Value = ((int)(_LastProcessId.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[15].Value = global::System.DBNull.Value;
+            }
+            if ((_LastLog == null)) {
+                this.Adapter.UpdateCommand.Parameters[16].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[16].Value = ((string)(_LastLog));
+            }
+            if ((_Archive == null)) {
+                this.Adapter.UpdateCommand.Parameters[17].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[17].Value = ((string)(_Archive));
+            }
+            if ((_ProductsTable == null)) {
+                throw new global::System.ArgumentNullException("_ProductsTable");
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[18].Value = ((string)(_ProductsTable));
+            }
+            if ((_LastProductTime.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[19].Value = ((System.DateTime)(_LastProductTime.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[19].Value = global::System.DBNull.Value;
+            }
+            if ((Original_Id == null)) {
+                throw new global::System.ArgumentNullException("Original_Id");
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[20].Value = ((string)(Original_Id));
+            }
+            this.Adapter.UpdateCommand.Parameters[21].Value = ((int)(Original_State));
+            if ((Original_Site == null)) {
+                throw new global::System.ArgumentNullException("Original_Site");
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[22].Value = ((string)(Original_Site));
+            }
+            this.Adapter.UpdateCommand.Parameters[23].Value = ((int)(Original_Command));
+            this.Adapter.UpdateCommand.Parameters[24].Value = ((int)(Original_RunTimeSpan));
+            this.Adapter.UpdateCommand.Parameters[25].Value = ((int)(Original_CrawlProductTimeout));
+            this.Adapter.UpdateCommand.Parameters[26].Value = ((int)(Original_YieldProductTimeout));
+            if ((Original_AdminEmails == null)) {
+                throw new global::System.ArgumentNullException("Original_AdminEmails");
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[27].Value = ((string)(Original_AdminEmails));
+            }
+            if ((Original_Comment == null)) {
+                this.Adapter.UpdateCommand.Parameters[28].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[29].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[28].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[29].Value = ((string)(Original_Comment));
+            }
+            this.Adapter.UpdateCommand.Parameters[30].Value = ((int)(Original_RestartDelayIfBroken));
+            if ((Original__SessionStartTime.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[31].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[32].Value = ((System.DateTime)(Original__SessionStartTime.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[31].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[32].Value = global::System.DBNull.Value;
+            }
+            if ((Original__LastSessionState.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[33].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[34].Value = ((int)(Original__LastSessionState.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[33].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[34].Value = global::System.DBNull.Value;
+            }
+            this.Adapter.UpdateCommand.Parameters[35].Value = ((System.DateTime)(Original__NextStartTime));
+            if ((Original__LastStartTime.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[36].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[37].Value = ((System.DateTime)(Original__LastStartTime.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[36].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[37].Value = global::System.DBNull.Value;
+            }
+            if ((Original__LastEndTime.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[38].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[39].Value = ((System.DateTime)(Original__LastEndTime.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[38].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[39].Value = global::System.DBNull.Value;
+            }
+            if ((Original__LastProcessId.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[40].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[41].Value = ((int)(Original__LastProcessId.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[40].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[41].Value = global::System.DBNull.Value;
+            }
+            if ((Original__LastLog == null)) {
+                this.Adapter.UpdateCommand.Parameters[42].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[43].Value = global::System.DBNull.Value;
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[42].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[43].Value = ((string)(Original__LastLog));
+            }
+            if ((Original__ProductsTable == null)) {
+                throw new global::System.ArgumentNullException("Original__ProductsTable");
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[44].Value = ((string)(Original__ProductsTable));
+            }
+            if ((Original__LastProductTime.HasValue == true)) {
+                this.Adapter.UpdateCommand.Parameters[45].Value = ((object)(0));
+                this.Adapter.UpdateCommand.Parameters[46].Value = ((System.DateTime)(Original__LastProductTime.Value));
+            }
+            else {
+                this.Adapter.UpdateCommand.Parameters[45].Value = ((object)(1));
+                this.Adapter.UpdateCommand.Parameters[46].Value = global::System.DBNull.Value;
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
             if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -1632,8 +2114,46 @@ WHERE        (id = @Original_id)";
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(byte state, string site, string admin_emails, string comment, byte command1, int run_time_span, int crawl_product_timeout, int restart_delay_if_broken, string Original_id) {
-            return this.Update(Original_id, state, site, admin_emails, comment, command1, run_time_span, crawl_product_timeout, restart_delay_if_broken, Original_id);
+        public virtual int Update(
+                    int State, 
+                    string Site, 
+                    int Command1, 
+                    int RunTimeSpan, 
+                    int CrawlProductTimeout, 
+                    int YieldProductTimeout, 
+                    string AdminEmails, 
+                    string Comment, 
+                    int RestartDelayIfBroken, 
+                    global::System.Nullable<global::System.DateTime> _SessionStartTime, 
+                    global::System.Nullable<int> _LastSessionState, 
+                    System.DateTime _NextStartTime, 
+                    global::System.Nullable<global::System.DateTime> _LastStartTime, 
+                    global::System.Nullable<global::System.DateTime> _LastEndTime, 
+                    global::System.Nullable<int> _LastProcessId, 
+                    string _LastLog, 
+                    string _Archive, 
+                    string _ProductsTable, 
+                    global::System.Nullable<global::System.DateTime> _LastProductTime, 
+                    string Original_Id, 
+                    int Original_State, 
+                    string Original_Site, 
+                    int Original_Command, 
+                    int Original_RunTimeSpan, 
+                    int Original_CrawlProductTimeout, 
+                    int Original_YieldProductTimeout, 
+                    string Original_AdminEmails, 
+                    string Original_Comment, 
+                    int Original_RestartDelayIfBroken, 
+                    global::System.Nullable<global::System.DateTime> Original__SessionStartTime, 
+                    global::System.Nullable<int> Original__LastSessionState, 
+                    System.DateTime Original__NextStartTime, 
+                    global::System.Nullable<global::System.DateTime> Original__LastStartTime, 
+                    global::System.Nullable<global::System.DateTime> Original__LastEndTime, 
+                    global::System.Nullable<int> Original__LastProcessId, 
+                    string Original__LastLog, 
+                    string Original__ProductsTable, 
+                    global::System.Nullable<global::System.DateTime> Original__LastProductTime) {
+            return this.Update(Original_Id, State, Site, Command1, RunTimeSpan, CrawlProductTimeout, YieldProductTimeout, AdminEmails, Comment, RestartDelayIfBroken, _SessionStartTime, _LastSessionState, _NextStartTime, _LastStartTime, _LastEndTime, _LastProcessId, _LastLog, _Archive, _ProductsTable, _LastProductTime, Original_Id, Original_State, Original_Site, Original_Command, Original_RunTimeSpan, Original_CrawlProductTimeout, Original_YieldProductTimeout, Original_AdminEmails, Original_Comment, Original_RestartDelayIfBroken, Original__SessionStartTime, Original__LastSessionState, Original__NextStartTime, Original__LastStartTime, Original__LastEndTime, Original__LastProcessId, Original__LastLog, Original__ProductsTable, Original__LastProductTime);
         }
     }
     
@@ -1649,7 +2169,7 @@ WHERE        (id = @Original_id)";
         
         private UpdateOrderOption _updateOrder;
         
-        private crawlersTableAdapter _crawlersTableAdapter;
+        private CrawlersTableAdapter _crawlersTableAdapter;
         
         private bool _backupDataSetBeforeUpdate;
         
@@ -1671,7 +2191,7 @@ WHERE        (id = @Original_id)";
         [global::System.ComponentModel.EditorAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterManagerPropertyEditor, Microso" +
             "ft.VSDesigner, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3" +
             "a", "System.Drawing.Design.UITypeEditor")]
-        public crawlersTableAdapter crawlersTableAdapter {
+        public CrawlersTableAdapter CrawlersTableAdapter {
             get {
                 return this._crawlersTableAdapter;
             }
@@ -1731,7 +2251,7 @@ WHERE        (id = @Original_id)";
         private int UpdateUpdatedRows(CliverCrawlersDataSet dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
             if ((this._crawlersTableAdapter != null)) {
-                global::System.Data.DataRow[] updatedRows = dataSet.crawlers.Select(null, null, global::System.Data.DataViewRowState.ModifiedCurrent);
+                global::System.Data.DataRow[] updatedRows = dataSet.Crawlers.Select(null, null, global::System.Data.DataViewRowState.ModifiedCurrent);
                 updatedRows = this.GetRealUpdatedRows(updatedRows, allAddedRows);
                 if (((updatedRows != null) 
                             && (0 < updatedRows.Length))) {
@@ -1750,7 +2270,7 @@ WHERE        (id = @Original_id)";
         private int UpdateInsertedRows(CliverCrawlersDataSet dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
             if ((this._crawlersTableAdapter != null)) {
-                global::System.Data.DataRow[] addedRows = dataSet.crawlers.Select(null, null, global::System.Data.DataViewRowState.Added);
+                global::System.Data.DataRow[] addedRows = dataSet.Crawlers.Select(null, null, global::System.Data.DataViewRowState.Added);
                 if (((addedRows != null) 
                             && (0 < addedRows.Length))) {
                     result = (result + this._crawlersTableAdapter.Update(addedRows));
@@ -1768,7 +2288,7 @@ WHERE        (id = @Original_id)";
         private int UpdateDeletedRows(CliverCrawlersDataSet dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows) {
             int result = 0;
             if ((this._crawlersTableAdapter != null)) {
-                global::System.Data.DataRow[] deletedRows = dataSet.crawlers.Select(null, null, global::System.Data.DataViewRowState.Deleted);
+                global::System.Data.DataRow[] deletedRows = dataSet.Crawlers.Select(null, null, global::System.Data.DataViewRowState.Deleted);
                 if (((deletedRows != null) 
                             && (0 < deletedRows.Length))) {
                     result = (result + this._crawlersTableAdapter.Update(deletedRows));

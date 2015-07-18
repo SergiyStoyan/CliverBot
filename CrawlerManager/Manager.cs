@@ -143,7 +143,7 @@ namespace Cliver.CrawlerHost
 
         static bool launch_crawler(string crawler_id, List<string> running_crawler_ids)
         {
-            Dictionary<string, object> r = DbApi.Connection["SELECT * FROM crawlers WHERE id=@id"].GetFirstRecord("@id", crawler_id);
+            Dictionary<string, object> r = DbApi.Connection["SELECT * FROM Crawlers WHERE Id=@Id"].GetFirstRecord("@Id", crawler_id);
             if (r == null)
             {
                 LogMessage.Error("Crawler '" + crawler_id + "' does not exist.");
@@ -151,7 +151,7 @@ namespace Cliver.CrawlerHost
             }
 
             List<string> parameters = new List<string>();
-            DbApi.CrawlerState state = (DbApi.CrawlerState)(byte)r["state"];
+            DbApi.CrawlerState state = (DbApi.CrawlerState)(byte)r["State"];
             switch (state)
             {
                 case DbApi.CrawlerState.DISABLED:
@@ -218,19 +218,19 @@ namespace Cliver.CrawlerHost
             ////////////////////////////////////////////////////////////
             //Killing disabled crawler processes
             ////////////////////////////////////////////////////////////
-            Recordset rs = DbApi.Connection["SELECT id AS crawler_id, _last_start_time, _last_process_id, _last_log, admin_emails, _last_session_state FROM crawlers WHERE _last_session_state=" + (byte)DbApi.SessionState.STARTED + " AND state=" + (byte)DbApi.CrawlerState.DISABLED].GetRecordset();
+            Recordset rs = DbApi.Connection["SELECT Id AS crawler_id, _LastStartTime, _LastProcessId, _LastLog, AdminEmails, _LastSessionState FROM Crawlers WHERE _LastSessionState=" + (byte)DbApi.SessionState.STARTED + " AND State=" + (byte)DbApi.CrawlerState.DISABLED].GetRecordset();
             foreach (Dictionary<string, object> r in rs)
             {
                 string crawler_id = (string)r["crawler_id"];
-                Process p = ProcessRoutines.GetProcess((int)r["_last_process_id"]);
+                Process p = ProcessRoutines.GetProcess((int)r["_LastProcessId"]);
                 if (p == null)
                     continue;
 
                 Log.Main.Warning("Killing " + crawler_id + "as disabled");
                 p.Kill();
                 Thread.Sleep(2000);
-                if (ProcessRoutines.IsProcessAlive((int)r["_last_process_id"]))
-                    DbApi.Connection["UPDATE crawlers SET _last_session_state=" + (byte)DbApi.SessionState.KILLED + ", _last_end_time=GETDATE() WHERE id=@id"].Execute("@id", crawler_id);
+                if (ProcessRoutines.IsProcessAlive((int)r["_LastProcessId"]))
+                    DbApi.Connection["UPDATE Crawlers SET _LastSessionState=" + (byte)DbApi.SessionState.KILLED + ", _LastEndTime=GETDATE() WHERE Id=@Id"].Execute("@Id", crawler_id);
                 else
                     Log.Main.Error("Could not kill " + crawler_id);
             }
@@ -238,36 +238,36 @@ namespace Cliver.CrawlerHost
             ////////////////////////////////////////////////////////////
             //Process crawler commands
             ////////////////////////////////////////////////////////////
-            rs = DbApi.Connection["SELECT id AS crawler_id, _last_start_time, _last_process_id, _last_log, admin_emails, _last_session_state, command FROM crawlers WHERE state<>" + (byte)DbApi.CrawlerState.DISABLED + " AND command<>" + (byte)DbApi.CrawlerCommand.EMPTY].GetRecordset();
+            rs = DbApi.Connection["SELECT Id AS crawler_id, _LastStartTime, _LastProcessId, _LastLog, AdminEmails, _LastSessionState, Command FROM Crawlers WHERE State<>" + (byte)DbApi.CrawlerState.DISABLED + " AND Command<>" + (byte)DbApi.CrawlerCommand.EMPTY].GetRecordset();
             foreach (Dictionary<string, object> r in rs)
             {
                 string crawler_id = (string)r["crawler_id"];
-                Process p = ProcessRoutines.GetProcess((int)r["_last_process_id"]);
-                DbApi.CrawlerCommand command = (DbApi.CrawlerCommand)(byte)r["command"];
+                Process p = ProcessRoutines.GetProcess((int)r["_LastProcessId"]);
+                DbApi.CrawlerCommand command = (DbApi.CrawlerCommand)(int)r["Command"];
                 switch (command)
                 {
                     case DbApi.CrawlerCommand.RESTART:
-                        if ((byte)r["_last_session_state"] != (byte)DbApi.SessionState.STARTED || p == null)
+                        if ((byte)r["_LastSessionState"] != (byte)DbApi.SessionState.STARTED || p == null)
                         {
-                            DbApi.Connection["UPDATE crawlers SET command=" + (byte)DbApi.CrawlerCommand.EMPTY + ", _next_start_time=DATEADD(ss, -1, GETDATE()) WHERE id=@id"].Execute("@id", crawler_id);
+                            DbApi.Connection["UPDATE Crawlers SET Command=" + (byte)DbApi.CrawlerCommand.EMPTY + ", _NextStartTime=DATEADD(ss, -1, GETDATE()) WHERE Id=@Id"].Execute("@Id", crawler_id);
                             break;
                         }
                         Log.Main.Warning("Killing " + crawler_id + " as marked " + command);
                         p.Kill();
                         Thread.Sleep(2000);
-                        if (!ProcessRoutines.IsProcessAlive((int)r["_last_process_id"]))
-                            DbApi.Connection["UPDATE crawlers SET command=" + (byte)DbApi.CrawlerCommand.FORCE + " WHERE id=@id"].Execute("@id", crawler_id);
+                        if (!ProcessRoutines.IsProcessAlive((int)r["_LastProcessId"]))
+                            DbApi.Connection["UPDATE Crawlers SET Command=" + (byte)DbApi.CrawlerCommand.FORCE + " WHERE Id=@Id"].Execute("@Id", crawler_id);
                         else
                             Log.Main.Error("Could not kill " + crawler_id);
                         break;
                     case DbApi.CrawlerCommand.STOP:
-                        if ((byte)r["_last_session_state"] != (byte)DbApi.SessionState.STARTED || p == null)
+                        if ((byte)r["_LastSessionState"] != (byte)DbApi.SessionState.STARTED || p == null)
                             break;
                         Log.Main.Warning("Killing " + crawler_id + " as marked " + command);
                         p.Kill();
                         Thread.Sleep(2000);
-                        if (!ProcessRoutines.IsProcessAlive((int)r["_last_process_id"]))
-                            DbApi.Connection["UPDATE crawlers SET _last_session_state=" + (byte)DbApi.SessionState.KILLED + ", _last_end_time=GETDATE() WHERE id=@id"].Execute("@id", crawler_id);
+                        if (!ProcessRoutines.IsProcessAlive((int)r["_LastProcessId"]))
+                            DbApi.Connection["UPDATE Crawlers SET _LastSessionState=" + (byte)DbApi.SessionState.KILLED + ", _LastEndTime=GETDATE() WHERE Id=@Id"].Execute("@Id", crawler_id);
                         else
                             Log.Main.Error("Could not kill " + crawler_id);
                         break;
@@ -284,51 +284,51 @@ namespace Cliver.CrawlerHost
             ////////////////////////////////////////////////////////////
             List<string> running_crawler_ids = new List<string>();
             List<string> running_crawler_notifications = new List<string>();
-            rs = DbApi.Connection[@"SELECT DATEDIFF(ss, _last_start_time, GETDATE()) AS duration, id AS crawler_id, state, _last_start_time, 
-_last_process_id, _last_log, admin_emails, _last_session_state, crawl_product_timeout FROM crawlers 
-WHERE _last_session_state IN (" + (byte)DbApi.SessionState.STARTED + ", " + (byte)DbApi.SessionState._ERROR + ", " + (byte)DbApi.SessionState._COMPLETED + ")"].GetRecordset();
+            rs = DbApi.Connection[@"SELECT DATEDIFF(ss, _LastStartTime, GETDATE()) AS duration, Id AS crawler_id, State, _LastStartTime, 
+_LastProcessId, _LastLog, AdminEmails, _LastSessionState, CrawlProductTimeout FROM Crawlers 
+WHERE _LastSessionState IN (" + (byte)DbApi.SessionState.STARTED + ", " + (byte)DbApi.SessionState._ERROR + ", " + (byte)DbApi.SessionState._COMPLETED + ")"].GetRecordset();
             foreach (Dictionary<string, object> r in rs)
             {
                 string crawler_id = (string)r["crawler_id"];
-                string m1 = "\nStarted: " + r["_last_start_time"] + "\nLog: " + r["_last_log"];
-                DbApi.SessionState _last_session_state = (DbApi.SessionState)(byte)r["_last_session_state"];
+                string m1 = "\nStarted: " + r["_LastStartTime"] + "\nLog: " + r["_LastLog"];
+                DbApi.SessionState _LastSessionState = (DbApi.SessionState)(byte)r["_LastSessionState"];
                 int duration = (int)r["duration"];
-                if (_last_session_state == DbApi.SessionState._COMPLETED)
+                if (_LastSessionState == DbApi.SessionState._COMPLETED)
                 {
                     string m = "Crawler " + crawler_id + " completed successfully.\nTotal duration: " + (new TimeSpan(0, 0, duration)).ToString() + m1;
                     EmailRoutines.Send(m, crawler_id, false);
-                    DbApi.Connection["UPDATE crawlers SET _last_session_state=" + (byte)DbApi.SessionState.COMPLETED + " WHERE id=@id"].Execute("@id", crawler_id);
+                    DbApi.Connection["UPDATE Crawlers SET _LastSessionState=" + (byte)DbApi.SessionState.COMPLETED + " WHERE Id=@Id"].Execute("@Id", crawler_id);
                     continue;
                 }
 
-                if (_last_session_state == DbApi.SessionState._ERROR)
+                if (_LastSessionState == DbApi.SessionState._ERROR)
                 {
                     EmailRoutines.Send("Crawler " + crawler_id + " exited with error" + m1, crawler_id);
-                    DbApi.Connection["UPDATE crawlers SET _last_session_state=" + (byte)DbApi.SessionState.ERROR + " WHERE id=@id"].Execute("@id", crawler_id);
+                    DbApi.Connection["UPDATE Crawlers SET _LastSessionState=" + (byte)DbApi.SessionState.ERROR + " WHERE Id=@Id"].Execute("@Id", crawler_id);
                     continue;
                 }
 
-                if (!ProcessRoutines.IsProcessAlive((int)r["_last_process_id"]))
+                if (!ProcessRoutines.IsProcessAlive((int)r["_LastProcessId"]))
                 {
                     EmailRoutines.Send("Crawler " + crawler_id + " was broken by unknown reason" + m1, crawler_id);
-                    DbApi.Connection["UPDATE crawlers SET _last_session_state=" + (byte)DbApi.SessionState.BROKEN + ", _next_start_time=DATEADD(ss, restart_delay_if_broken, GETDATE()) WHERE id=@id"].Execute("@id", crawler_id);
+                    DbApi.Connection["UPDATE Crawlers SET _LastSessionState=" + (byte)DbApi.SessionState.BROKEN + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, GETDATE()) WHERE Id=@Id"].Execute("@Id", crawler_id);
                     continue;
                 }
 
-                if (duration >= (int)r["crawl_product_timeout"])
+                if (duration >= (int)r["CrawlProductTimeout"])
                 {
-                    int last_crawled_product_elapsed_time = (int)DbApi.Connection["SELECT ISNULL(DATEDIFF(ss, _last_product_time, GETDATE()), -1) AS duration FROM crawlers WHERE id=@id"].GetSingleValue("@id", crawler_id);
+                    int last_crawled_product_elapsed_time = (int)DbApi.Connection["SELECT ISNULL(DATEDIFF(ss, _LastProductTime, GETDATE()), -1) AS duration FROM Crawlers WHERE Id=@Id"].GetSingleValue("@Id", crawler_id);
 
-                    if (last_crawled_product_elapsed_time < 0 || last_crawled_product_elapsed_time > (int)r["crawl_product_timeout"])
+                    if (last_crawled_product_elapsed_time < 0 || last_crawled_product_elapsed_time > (int)r["CrawlProductTimeout"])
                     {
                         EmailRoutines.Send("Crawler " + crawler_id + " is running but not crawling products during " + last_crawled_product_elapsed_time + " seconds. It will be killed. Total duration: " + (new TimeSpan(0, 0, duration)).ToString() + m1, crawler_id);
 
-                        Process p = ProcessRoutines.GetProcess((int)r["_last_process_id"]);
+                        Process p = ProcessRoutines.GetProcess((int)r["_LastProcessId"]);
                         Log.Main.Warning("Killing " + crawler_id);
                         p.Kill();
                         Thread.Sleep(2000);
-                        if (!ProcessRoutines.IsProcessAlive((int)r["_last_process_id"]))
-                            DbApi.Connection["UPDATE crawlers SET _last_session_state=" + (byte)DbApi.SessionState.KILLED + ", _next_start_time=DATEADD(ss, restart_delay_if_broken, GETDATE()), _last_end_time=GETDATE() WHERE id=@id"].Execute("@id", crawler_id);
+                        if (!ProcessRoutines.IsProcessAlive((int)r["_LastProcessId"]))
+                            DbApi.Connection["UPDATE Crawlers SET _LastSessionState=" + (byte)DbApi.SessionState.KILLED + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, GETDATE()), _LastEndTime=GETDATE() WHERE Id=@Id"].Execute("@Id", crawler_id);
                         else
                             Log.Main.Error("Could not kill " + crawler_id);
                         continue;
@@ -336,7 +336,7 @@ WHERE _last_session_state IN (" + (byte)DbApi.SessionState.STARTED + ", " + (byt
                 }
 
                 running_crawler_ids.Add(crawler_id);
-                running_crawler_notifications.Add(crawler_id + ", process id: " + r["_last_process_id"]);
+                running_crawler_notifications.Add(crawler_id + ", process id: " + r["_LastProcessId"]);
             }
             if (running_crawler_notifications.Count > 0)
                 Log.Main.Write("Already running: " + string.Join("\r\n", running_crawler_notifications));
@@ -345,17 +345,17 @@ WHERE _last_session_state IN (" + (byte)DbApi.SessionState.STARTED + ", " + (byt
             //Starting new sessions
             ////////////////////////////////////////////////////////////
             List<string> remaining_crawler_ids = new List<string>();
-            rs = DbApi.Connection[@"SELECT id AS crawler_id, state, command, admin_emails FROM crawlers 
-WHERE (state<>" + (byte)DbApi.CrawlerState.DISABLED + " AND GETDATE()>=_next_start_time AND command<>" + (byte)DbApi.CrawlerCommand.STOP + @") 
-            OR command=" + (byte)DbApi.CrawlerCommand.FORCE + " ORDER BY command, _next_start_time"].GetRecordset();
+            rs = DbApi.Connection[@"SELECT Id AS crawler_id, State, Command, AdminEmails FROM Crawlers 
+WHERE (State<>" + (byte)DbApi.CrawlerState.DISABLED + " AND GETDATE()>=_NextStartTime AND Command<>" + (byte)DbApi.CrawlerCommand.STOP + @") 
+            OR Command=" + (byte)DbApi.CrawlerCommand.FORCE + " ORDER BY Command, _NextStartTime"].GetRecordset();
             foreach (Dictionary<string, object> r in rs)
             {
                 string crawler_id = (string)r["crawler_id"];
 
-                if ((byte)r["command"] == (byte)DbApi.CrawlerCommand.FORCE)
+                if ((byte)r["Command"] == (byte)DbApi.CrawlerCommand.FORCE)
                 {
                     Log.Main.Write("Forcing " + crawler_id);
-                    if ((byte)r["state"] == (byte)DbApi.CrawlerState.DISABLED)
+                    if ((byte)r["State"] == (byte)DbApi.CrawlerState.DISABLED)
                     {
                         Log.Main.Error(crawler_id + " is disabled.");
                         continue;
@@ -363,11 +363,11 @@ WHERE (state<>" + (byte)DbApi.CrawlerState.DISABLED + " AND GETDATE()>=_next_sta
                     if (running_crawler_ids.Contains(crawler_id))
                     {
                         Log.Main.Warning(crawler_id + " is running already.");
-                        DbApi.Connection["UPDATE crawlers SET command=" + (byte)DbApi.CrawlerCommand.EMPTY + " WHERE id=@id"].Execute("@id", crawler_id);
+                        DbApi.Connection["UPDATE Crawlers SET Command=" + (byte)DbApi.CrawlerCommand.EMPTY + " WHERE Id=@Id"].Execute("@Id", crawler_id);
                         continue;
                     }
                     if (launch_crawler(crawler_id, running_crawler_ids))
-                        DbApi.Connection["UPDATE crawlers SET command=" + (byte)DbApi.CrawlerCommand.EMPTY + " WHERE id=@id"].Execute("@id", crawler_id);
+                        DbApi.Connection["UPDATE Crawlers SET Command=" + (byte)DbApi.CrawlerCommand.EMPTY + " WHERE Id=@Id"].Execute("@Id", crawler_id);
                     continue;
                 }
 
@@ -385,7 +385,7 @@ WHERE (state<>" + (byte)DbApi.CrawlerState.DISABLED + " AND GETDATE()>=_next_sta
                 Log.Main.Warning("crawler_process_number reached " + Settings.Default.CrawlerProcessMaxNumber + " so no more crawler will be started.\nCrawlers remaining to start:\n" + string.Join("\r\n", remaining_crawler_ids));
 
             if (running_crawler_ids.Count > 0)
-                Log.Main.Write("Currently running crawlers: " + running_crawler_ids.Count);
+                Log.Main.Write("Currently running Crawlers: " + running_crawler_ids.Count);
             else Log.Main.Write("Currently no crawler runs.");
         }
     }

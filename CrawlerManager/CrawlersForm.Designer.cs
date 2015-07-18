@@ -30,31 +30,31 @@
         {
             this.components = new System.ComponentModel.Container();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.state = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.state_ = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.site = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.command = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.command_ = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.admin_emails = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.run_time_span = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.crawl_product_timeout = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.restart_delay_if_broken = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this._last_session_state = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this._last_session_state_ = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this._next_start_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this._session_start_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this._last_start_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this._last_end_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this._last_process_id = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this._last_log = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this._archive = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this._products_table = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this._last_product_time = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Id = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.State = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.State_ = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.Site = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Command = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Command_ = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.AdminEmails = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RunTimeSpan = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.CrawlProductTimeout = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RestartDelayIfBroken = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._LastSessionState = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._LastSessionState_ = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this._NextStartTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._SessionStartTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._LastStartTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._LastEndTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._LastProcessId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._LastLog = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._Archive = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._ProductsTable = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this._LastProductTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.crawlersBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.cliverCrawlersDataSet1 = new Cliver.CrawlerHost.CliverCrawlersDataSet();
-            this.crawlersTableAdapter1 = new Cliver.CrawlerHost.CliverCrawlersDataSetTableAdapters.crawlersTableAdapter();
+            this.crawlersTableAdapter1 = new Cliver.CrawlerHost.CliverCrawlersDataSetTableAdapters.CrawlersTableAdapter();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.bClose = new System.Windows.Forms.Button();
             this.bCheckNow = new System.Windows.Forms.Button();
@@ -70,28 +70,28 @@
             this.dataGridView1.AutoGenerateColumns = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.id,
-            this.state,
-            this.state_,
-            this.site,
-            this.command,
-            this.command_,
-            this.admin_emails,
-            this.run_time_span,
-            this.crawl_product_timeout,
-            this.restart_delay_if_broken,
-            this.comment,
-            this._last_session_state,
-            this._last_session_state_,
-            this._next_start_time,
-            this._session_start_time,
-            this._last_start_time,
-            this._last_end_time,
-            this._last_process_id,
-            this._last_log,
-            this._archive,
-            this._products_table,
-            this._last_product_time});
+            this.Id,
+            this.State,
+            this.State_,
+            this.Site,
+            this.Command,
+            this.Command_,
+            this.AdminEmails,
+            this.RunTimeSpan,
+            this.CrawlProductTimeout,
+            this.RestartDelayIfBroken,
+            this.Comment,
+            this._LastSessionState,
+            this._LastSessionState_,
+            this._NextStartTime,
+            this._SessionStartTime,
+            this._LastStartTime,
+            this._LastEndTime,
+            this._LastProcessId,
+            this._LastLog,
+            this._Archive,
+            this._ProductsTable,
+            this._LastProductTime});
             this.dataGridView1.DataSource = this.crawlersBindingSource;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(0, 0);
@@ -106,154 +106,154 @@
             this.dataGridView1.RowValidating += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView1_RowValidating);
             this.dataGridView1.Leave += new System.EventHandler(this.dataGridView1_Leave);
             // 
-            // id
+            // Id
             // 
-            this.id.DataPropertyName = "id";
-            this.id.HeaderText = "id";
-            this.id.Name = "id";
+            this.Id.DataPropertyName = "Id";
+            this.Id.HeaderText = "Id";
+            this.Id.Name = "Id";
             // 
-            // state
+            // State
             // 
-            this.state.DataPropertyName = "state";
-            this.state.HeaderText = "state";
-            this.state.Name = "state";
-            this.state.Visible = false;
+            this.State.DataPropertyName = "State";
+            this.State.HeaderText = "State";
+            this.State.Name = "State";
+            this.State.Visible = false;
             // 
-            // state_
+            // State_
             // 
-            this.state_.HeaderText = "state";
-            this.state_.Name = "state_";
-            this.state_.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.State_.HeaderText = "State";
+            this.State_.Name = "State_";
+            this.State_.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
-            // site
+            // Site
             // 
-            this.site.DataPropertyName = "site";
-            this.site.HeaderText = "site";
-            this.site.Name = "site";
+            this.Site.DataPropertyName = "Site";
+            this.Site.HeaderText = "Site";
+            this.Site.Name = "Site";
             // 
-            // command
+            // Command
             // 
-            this.command.DataPropertyName = "command";
-            this.command.HeaderText = "command";
-            this.command.Name = "command";
-            this.command.Visible = false;
+            this.Command.DataPropertyName = "Command";
+            this.Command.HeaderText = "Command";
+            this.Command.Name = "Command";
+            this.Command.Visible = false;
             // 
-            // command_
+            // Command_
             // 
-            this.command_.HeaderText = "command";
-            this.command_.Name = "command_";
+            this.Command_.HeaderText = "Command";
+            this.Command_.Name = "Command_";
             // 
-            // admin_emails
+            // AdminEmails
             // 
-            this.admin_emails.DataPropertyName = "admin_emails";
-            this.admin_emails.HeaderText = "admin_emails";
-            this.admin_emails.Name = "admin_emails";
+            this.AdminEmails.DataPropertyName = "AdminEmails";
+            this.AdminEmails.HeaderText = "AdminEmails";
+            this.AdminEmails.Name = "AdminEmails";
             // 
-            // run_time_span
+            // RunTimeSpan
             // 
-            this.run_time_span.DataPropertyName = "run_time_span";
-            this.run_time_span.HeaderText = "run_time_span";
-            this.run_time_span.Name = "run_time_span";
+            this.RunTimeSpan.DataPropertyName = "RunTimeSpan";
+            this.RunTimeSpan.HeaderText = "RunTimeSpan";
+            this.RunTimeSpan.Name = "RunTimeSpan";
             // 
-            // crawl_product_timeout
+            // CrawlProductTimeout
             // 
-            this.crawl_product_timeout.DataPropertyName = "crawl_product_timeout";
-            this.crawl_product_timeout.HeaderText = "crawl_product_timeout";
-            this.crawl_product_timeout.Name = "crawl_product_timeout";
+            this.CrawlProductTimeout.DataPropertyName = "CrawlProductTimeout";
+            this.CrawlProductTimeout.HeaderText = "CrawlProductTimeout";
+            this.CrawlProductTimeout.Name = "CrawlProductTimeout";
             // 
-            // restart_delay_if_broken
+            // RestartDelayIfBroken
             // 
-            this.restart_delay_if_broken.DataPropertyName = "restart_delay_if_broken";
-            this.restart_delay_if_broken.HeaderText = "restart_delay_if_broken";
-            this.restart_delay_if_broken.Name = "restart_delay_if_broken";
+            this.RestartDelayIfBroken.DataPropertyName = "RestartDelayIfBroken";
+            this.RestartDelayIfBroken.HeaderText = "RestartDelayIfBroken";
+            this.RestartDelayIfBroken.Name = "RestartDelayIfBroken";
             // 
-            // comment
+            // Comment
             // 
-            this.comment.DataPropertyName = "comment";
-            this.comment.HeaderText = "comment";
-            this.comment.Name = "comment";
+            this.Comment.DataPropertyName = "Comment";
+            this.Comment.HeaderText = "Comment";
+            this.Comment.Name = "Comment";
             // 
-            // _last_session_state
+            // _LastSessionState
             // 
-            this._last_session_state.DataPropertyName = "_last_session_state";
-            this._last_session_state.HeaderText = "_last_session_state";
-            this._last_session_state.Name = "_last_session_state";
-            this._last_session_state.ReadOnly = true;
-            this._last_session_state.Visible = false;
+            this._LastSessionState.DataPropertyName = "_LastSessionState";
+            this._LastSessionState.HeaderText = "_LastSessionState";
+            this._LastSessionState.Name = "_LastSessionState";
+            this._LastSessionState.ReadOnly = true;
+            this._LastSessionState.Visible = false;
             // 
-            // _last_session_state_
+            // _LastSessionState_
             // 
-            this._last_session_state_.HeaderText = "_last_session_state";
-            this._last_session_state_.Name = "_last_session_state_";
-            this._last_session_state_.ReadOnly = true;
-            this._last_session_state_.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this._LastSessionState_.HeaderText = "_LastSessionState";
+            this._LastSessionState_.Name = "_LastSessionState_";
+            this._LastSessionState_.ReadOnly = true;
+            this._LastSessionState_.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
-            // _next_start_time
+            // _NextStartTime
             // 
-            this._next_start_time.DataPropertyName = "_next_start_time";
-            this._next_start_time.HeaderText = "_next_start_time";
-            this._next_start_time.Name = "_next_start_time";
-            this._next_start_time.ReadOnly = true;
+            this._NextStartTime.DataPropertyName = "_NextStartTime";
+            this._NextStartTime.HeaderText = "_NextStartTime";
+            this._NextStartTime.Name = "_NextStartTime";
+            this._NextStartTime.ReadOnly = true;
             // 
-            // _session_start_time
+            // _SessionStartTime
             // 
-            this._session_start_time.DataPropertyName = "_session_start_time";
-            this._session_start_time.HeaderText = "_session_start_time";
-            this._session_start_time.Name = "_session_start_time";
-            this._session_start_time.ReadOnly = true;
+            this._SessionStartTime.DataPropertyName = "_SessionStartTime";
+            this._SessionStartTime.HeaderText = "_SessionStartTime";
+            this._SessionStartTime.Name = "_SessionStartTime";
+            this._SessionStartTime.ReadOnly = true;
             // 
-            // _last_start_time
+            // _LastStartTime
             // 
-            this._last_start_time.DataPropertyName = "_last_start_time";
-            this._last_start_time.HeaderText = "_last_start_time";
-            this._last_start_time.Name = "_last_start_time";
-            this._last_start_time.ReadOnly = true;
+            this._LastStartTime.DataPropertyName = "_LastStartTime";
+            this._LastStartTime.HeaderText = "_LastStartTime";
+            this._LastStartTime.Name = "_LastStartTime";
+            this._LastStartTime.ReadOnly = true;
             // 
-            // _last_end_time
+            // _LastEndTime
             // 
-            this._last_end_time.DataPropertyName = "_last_end_time";
-            this._last_end_time.HeaderText = "_last_end_time";
-            this._last_end_time.Name = "_last_end_time";
-            this._last_end_time.ReadOnly = true;
+            this._LastEndTime.DataPropertyName = "_LastEndTime";
+            this._LastEndTime.HeaderText = "_LastEndTime";
+            this._LastEndTime.Name = "_LastEndTime";
+            this._LastEndTime.ReadOnly = true;
             // 
-            // _last_process_id
+            // _LastProcessId
             // 
-            this._last_process_id.DataPropertyName = "_last_process_id";
-            this._last_process_id.HeaderText = "_last_process_id";
-            this._last_process_id.Name = "_last_process_id";
-            this._last_process_id.ReadOnly = true;
+            this._LastProcessId.DataPropertyName = "_LastProcessId";
+            this._LastProcessId.HeaderText = "_LastProcessId";
+            this._LastProcessId.Name = "_LastProcessId";
+            this._LastProcessId.ReadOnly = true;
             // 
-            // _last_log
+            // _LastLog
             // 
-            this._last_log.DataPropertyName = "_last_log";
-            this._last_log.HeaderText = "_last_log";
-            this._last_log.Name = "_last_log";
-            this._last_log.ReadOnly = true;
+            this._LastLog.DataPropertyName = "_LastLog";
+            this._LastLog.HeaderText = "_LastLog";
+            this._LastLog.Name = "_LastLog";
+            this._LastLog.ReadOnly = true;
             // 
-            // _archive
+            // _Archive
             // 
-            this._archive.DataPropertyName = "_archive";
-            this._archive.HeaderText = "_archive";
-            this._archive.Name = "_archive";
-            this._archive.ReadOnly = true;
+            this._Archive.DataPropertyName = "_Archive";
+            this._Archive.HeaderText = "_Archive";
+            this._Archive.Name = "_Archive";
+            this._Archive.ReadOnly = true;
             // 
-            // _products_table
+            // _ProductsTable
             // 
-            this._products_table.DataPropertyName = "_products_table";
-            this._products_table.HeaderText = "_products_table";
-            this._products_table.Name = "_products_table";
-            this._products_table.ReadOnly = true;
+            this._ProductsTable.DataPropertyName = "_ProductsTable";
+            this._ProductsTable.HeaderText = "_ProductsTable";
+            this._ProductsTable.Name = "_ProductsTable";
+            this._ProductsTable.ReadOnly = true;
             // 
-            // _last_product_time
+            // _LastProductTime
             // 
-            this._last_product_time.DataPropertyName = "_last_product_time";
-            this._last_product_time.HeaderText = "_last_product_time";
-            this._last_product_time.Name = "_last_product_time";
-            this._last_product_time.ReadOnly = true;
+            this._LastProductTime.DataPropertyName = "_LastProductTime";
+            this._LastProductTime.HeaderText = "_LastProductTime";
+            this._LastProductTime.Name = "_LastProductTime";
+            this._LastProductTime.ReadOnly = true;
             // 
             // crawlersBindingSource
             // 
-            this.crawlersBindingSource.DataMember = "crawlers";
+            this.crawlersBindingSource.DataMember = "Crawlers";
             this.crawlersBindingSource.DataSource = this.cliverCrawlersDataSet1;
             // 
             // cliverCrawlersDataSet1
@@ -331,30 +331,30 @@
 
         private System.Windows.Forms.DataGridView dataGridView1;
         private CliverCrawlersDataSet cliverCrawlersDataSet1;
-        private CliverCrawlersDataSetTableAdapters.crawlersTableAdapter crawlersTableAdapter1;
+        private CliverCrawlersDataSetTableAdapters.CrawlersTableAdapter crawlersTableAdapter1;
         private System.Windows.Forms.BindingSource crawlersBindingSource;
-        private System.Windows.Forms.DataGridViewTextBoxColumn id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn state;
-        private System.Windows.Forms.DataGridViewComboBoxColumn state_;
-        private System.Windows.Forms.DataGridViewTextBoxColumn site;
-        private System.Windows.Forms.DataGridViewTextBoxColumn command;
-        private System.Windows.Forms.DataGridViewComboBoxColumn command_;
-        private System.Windows.Forms.DataGridViewTextBoxColumn admin_emails;
-        private System.Windows.Forms.DataGridViewTextBoxColumn run_time_span;
-        private System.Windows.Forms.DataGridViewTextBoxColumn crawl_product_timeout;
-        private System.Windows.Forms.DataGridViewTextBoxColumn restart_delay_if_broken;
-        private System.Windows.Forms.DataGridViewTextBoxColumn comment;
-        private System.Windows.Forms.DataGridViewTextBoxColumn _last_session_state;
-        private System.Windows.Forms.DataGridViewComboBoxColumn _last_session_state_;
-        private System.Windows.Forms.DataGridViewTextBoxColumn _next_start_time;
-        private System.Windows.Forms.DataGridViewTextBoxColumn _session_start_time;
-        private System.Windows.Forms.DataGridViewTextBoxColumn _last_start_time;
-        private System.Windows.Forms.DataGridViewTextBoxColumn _last_end_time;
-        private System.Windows.Forms.DataGridViewTextBoxColumn _last_process_id;
-        private System.Windows.Forms.DataGridViewTextBoxColumn _last_log;
-        private System.Windows.Forms.DataGridViewTextBoxColumn _archive;
-        private System.Windows.Forms.DataGridViewTextBoxColumn _products_table;
-        private System.Windows.Forms.DataGridViewTextBoxColumn _last_product_time;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Id;
+        private System.Windows.Forms.DataGridViewTextBoxColumn State;
+        private System.Windows.Forms.DataGridViewComboBoxColumn State_;
+        new private System.Windows.Forms.DataGridViewTextBoxColumn Site;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Command;
+        private System.Windows.Forms.DataGridViewComboBoxColumn Command_;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AdminEmails;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RunTimeSpan;
+        private System.Windows.Forms.DataGridViewTextBoxColumn CrawlProductTimeout;
+        private System.Windows.Forms.DataGridViewTextBoxColumn RestartDelayIfBroken;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Comment;
+        private System.Windows.Forms.DataGridViewTextBoxColumn _LastSessionState;
+        private System.Windows.Forms.DataGridViewComboBoxColumn _LastSessionState_;
+        private System.Windows.Forms.DataGridViewTextBoxColumn _NextStartTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn _SessionStartTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn _LastStartTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn _LastEndTime;
+        private System.Windows.Forms.DataGridViewTextBoxColumn _LastProcessId;
+        private System.Windows.Forms.DataGridViewTextBoxColumn _LastLog;
+        private System.Windows.Forms.DataGridViewTextBoxColumn _Archive;
+        private System.Windows.Forms.DataGridViewTextBoxColumn _ProductsTable;
+        private System.Windows.Forms.DataGridViewTextBoxColumn _LastProductTime;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         internal System.Windows.Forms.Button bCheckNow;
         private System.Windows.Forms.Button bClose;
