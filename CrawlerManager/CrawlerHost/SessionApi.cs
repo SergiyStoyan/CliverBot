@@ -18,7 +18,7 @@ namespace Cliver.CrawlerHost
 {
     public class SessionApi
     {
-        public enum CrawlerMode : byte { IDLE, PRODUCTION }
+        public enum CrawlerMode : int { IDLE, PRODUCTION }
         
         static SessionApi()
         {
@@ -70,7 +70,7 @@ namespace Cliver.CrawlerHost
                         + " log:" + r["_LastLog"] + "\n" + r["_Archive"];
                     const int MAX_ARCHIVE_LENGTH = 10000;
                     archive = archive.Substring(0, archive.Length < MAX_ARCHIVE_LENGTH ? archive.Length : MAX_ARCHIVE_LENGTH);
-                    if (DbApi.Connection.Get("UPDATE Crawlers SET _SessionStartTime=@SessionStartTime, _LastProcessId=@ProcessId, _LastStartTime=GETDATE(), _LastEndTime=NULL, _LastSessionState=" + (byte)DbApi.SessionState.STARTED + ", _LastLog=@Log, _Archive=@Archive WHERE Id=@Id").Execute(
+                    if (DbApi.Connection.Get("UPDATE Crawlers SET _SessionStartTime=@SessionStartTime, _LastProcessId=@ProcessId, _LastStartTime=GETDATE(), _LastEndTime=NULL, _LastSessionState=" + (int)DbApi.SessionState.STARTED + ", _LastLog=@Log, _Archive=@Archive WHERE Id=@Id").Execute(
                         "@SessionStartTime", Session.This.StartTime, "@ProcessId", Process.GetCurrentProcess().Id, "@Log", Log.SessionDir, "@Archive", archive, "@Id", CrawlerId) < 1
                         )
                         throw new Exception("Could not update Crawlers table.");
@@ -103,14 +103,14 @@ namespace Cliver.CrawlerHost
                             Log.Main.Inform("Deleted marked old products: " + DbApi.Connection["DELETE FROM " + ProductsTable + " WHERE State=" + DbApi.ProductState.DELETED].Execute());
                             Log.Main.Inform("Marked as deleted old products: " + DbApi.Connection["UPDATE " + ProductsTable + " SET State=" + DbApi.ProductState.DELETED + " WHERE CrawlTime<@session_start_time"].Execute("@session_start_time", Session.This.StartTime));
 
-                            if (DbApi.Connection["UPDATE Crawlers SET _LastEndTime=GETDATE(), _LastSessionState=" + (byte)DbApi.SessionState._COMPLETED + ", _NextStartTime=DATEADD(ss, RunTimeSpan, _LastStartTime) WHERE Id=@Id"].Execute("@Id", CrawlerId) < 1)
+                            if (DbApi.Connection["UPDATE Crawlers SET _LastEndTime=GETDATE(), _LastSessionState=" + (int)DbApi.SessionState._COMPLETED + ", _NextStartTime=DATEADD(ss, RunTimeSpan, _LastStartTime) WHERE Id=@Id"].Execute("@Id", CrawlerId) < 1)
                                 throw new Exception("Could not update Crawlers table.");
 
                             DbApi.Message(DbApi.MessageType.INFORM, CrawlerId, "COMPLETED");
                             break;
                         }
 
-                        if (DbApi.Connection["UPDATE Crawlers SET _LastEndTime=GETDATE(), _LastSessionState=" + (byte)DbApi.SessionState._ERROR + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, _LastStartTime) WHERE Id=@Id"].Execute("@Id", CrawlerId) < 1)
+                        if (DbApi.Connection["UPDATE Crawlers SET _LastEndTime=GETDATE(), _LastSessionState=" + (int)DbApi.SessionState._ERROR + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, _LastStartTime) WHERE Id=@Id"].Execute("@Id", CrawlerId) < 1)
                             throw new Exception("Could not update Crawlers table.");
 
                             DbApi.Message(DbApi.MessageType.INFORM, CrawlerId, "QUITED");

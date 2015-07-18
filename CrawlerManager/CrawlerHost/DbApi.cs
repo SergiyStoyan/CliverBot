@@ -32,12 +32,12 @@ namespace Cliver.CrawlerHost
 
         public enum SessionState : int { STARTED = 1, _COMPLETED = 25, COMPLETED = 2, _ERROR = 35, ERROR = 3, BROKEN = 4, KILLED = 5 }
 
-        //public class ProductState : Enum<byte>
+        //public class ProductState : Enum<int>
         //{
         //    public static readonly ProductState NEW = new ProductState(1);
         //    public static readonly ProductState DELETED = new ProductState(4);
 
-        //    protected ProductState(byte value) : base(value) { }
+        //    protected ProductState(int value) : base(value) { }
         //}
         public enum ProductState : int { NEW = 1, DELETED = 4 }
 
