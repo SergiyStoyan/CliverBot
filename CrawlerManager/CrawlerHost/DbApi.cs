@@ -54,6 +54,9 @@ namespace Cliver.CrawlerHost
             }
             catch(Exception e)
             {
+                if (ProgramRoutines.IsWebContext)
+                    throw e;
+                
                 if (!LogMessage.DisableStumblingDialogs)
                 {
                     string connection_string = DbApi.ConnectionString;
@@ -75,7 +78,7 @@ namespace Cliver.CrawlerHost
         }
         static public readonly DbConnection Connection;
         //static public readonly CliverCrawlerHostEntities Database = new CliverCrawlerHostEntities();
-
+        
         static void create_tables()
         {
             lock (Connection)

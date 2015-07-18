@@ -247,7 +247,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Misc\SiteDataRoutines.cs" />
     <Compile Include="WebRoutines\Proxies.cs" />
     <Compile Include="WebRoutines\Spider.cs" />
     <Compile Include="WebRoutines\Spider.static.cs" />

@@ -49,6 +49,14 @@ namespace Cliver.Bot
         {
             return Regex.IsMatch(Environment.CommandLine, @"\s" + parameter.Value, RegexOptions.IgnoreCase);
         }
+
+        public static bool IsWebContext
+        {
+            get
+            {
+                return HttpRuntime.AppDomainAppId != null;
+            }
+        }
     }
 }
 
