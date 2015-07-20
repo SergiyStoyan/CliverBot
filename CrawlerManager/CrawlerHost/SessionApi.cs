@@ -36,7 +36,20 @@ namespace Cliver.CrawlerHost
 
                     Session.Closing += session_Closing;
 
-                    InitSession();
+                    string archive = "session_start_time:"
+                     + (r["_SessionStartTime"] != null ? ((DateTime)r["_SessionStartTime"]).ToString("yyyy-MM-dd HH:mm:ss") : "")
+                     + " start_time:" + (r["_LastStartTime"] != null ? ((DateTime)r["_LastStartTime"]).ToString("yyyy-MM-dd HH:mm:ss") : "")
+                     + " end_time:" + (r["_LastEndTime"] != null ? ((DateTime)r["_LastEndTime"]).ToString("yyyy-MM-dd HH:mm:ss") : "")
+                     + " state:" + (r["_LastSessionState"] != null ? ((DbApi.SessionState)r["_LastSessionState"]).ToString() : "")
+                     + " log:" + r["_LastLog"] + "\n" + r["_Archive"];
+                    const int MAX_ARCHIVE_LENGTH = 10000;
+                    archive = archive.Substring(0, archive.Length < MAX_ARCHIVE_LENGTH ? archive.Length : MAX_ARCHIVE_LENGTH);
+                    if (DbApi.Connection.Get("UPDATE Crawlers SET _SessionStartTime=@SessionStartTime, _LastProcessId=@ProcessId, _LastStartTime=GETDATE(), _LastEndTime=NULL, _LastSessionState=" + (int)DbApi.SessionState.STARTED + ", _LastLog=@Log, _Archive=@Archive WHERE Id=@Id").Execute(
+                        "@SessionStartTime", Session.This.StartTime, "@ProcessId", Process.GetCurrentProcess().Id, "@Log", Log.SessionDir, "@Archive", archive, "@Id", CrawlerId) < 1
+                        )
+                        throw new Exception("Could not update Crawlers table.");
+
+                    DbApi.Message(DbApi.MessageType.INFORM, "STARTED\r\nCommand line parameters: " + string.Join("|", Environment.GetCommandLineArgs()), CrawlerId);
                 }
                 catch (Exception e)
                 {
@@ -47,41 +60,10 @@ namespace Cliver.CrawlerHost
 
         readonly static public string CrawlerId;
         readonly static public string ProductsTable;
-        
-        public static void InitSession()
+
+        public static void Initialize()
         {
-            lock (DbApi.Connection)
-            { 
-                try
-                {
-                    if (mode != CrawlerMode.IDLE)
-                        return;
-                    mode = CrawlerMode.PRODUCTION;
-
-                    Record r = DbApi.Connection.Get("SELECT * FROM Crawlers WHERE Id=@Id").GetFirstRecord("@Id", CrawlerId);
-                    if (r == null)
-                        LogMessage.Exit("Crawler id '" + CrawlerId + "' does not exist in [Crawlers] table");
-
-                    string archive = "session_start_time:"
-                        + (r["_SessionStartTime"] != null ? ((DateTime)r["_SessionStartTime"]).ToString("yyyy-MM-dd HH:mm:ss") : "")
-                        + " start_time:" + (r["_LastStartTime"] != null ? ((DateTime)r["_LastStartTime"]).ToString("yyyy-MM-dd HH:mm:ss") : "")
-                        + " end_time:" + (r["_LastEndTime"] != null ? ((DateTime)r["_LastEndTime"]).ToString("yyyy-MM-dd HH:mm:ss") : "")
-                        + " state:" + (r["_LastSessionState"] != null ? ((DbApi.SessionState)r["_LastSessionState"]).ToString() : "")
-                        + " log:" + r["_LastLog"] + "\n" + r["_Archive"];
-                    const int MAX_ARCHIVE_LENGTH = 10000;
-                    archive = archive.Substring(0, archive.Length < MAX_ARCHIVE_LENGTH ? archive.Length : MAX_ARCHIVE_LENGTH);
-                    if (DbApi.Connection.Get("UPDATE Crawlers SET _SessionStartTime=@SessionStartTime, _LastProcessId=@ProcessId, _LastStartTime=GETDATE(), _LastEndTime=NULL, _LastSessionState=" + (int)DbApi.SessionState.STARTED + ", _LastLog=@Log, _Archive=@Archive WHERE Id=@Id").Execute(
-                        "@SessionStartTime", Session.This.StartTime, "@ProcessId", Process.GetCurrentProcess().Id, "@Log", Log.SessionDir, "@Archive", archive, "@Id", CrawlerId) < 1
-                        )
-                        throw new Exception("Could not update Crawlers table.");
-
-                    DbApi.Message(DbApi.MessageType.INFORM, CrawlerId, "STARTED\r\nCommand line parameters: " + string.Join("|", Environment.GetCommandLineArgs()));
-                }
-                catch (Exception e)
-                {
-                    LogMessage.Exit(e);
-                }
-            }
+            //to force static constructor
         }
 
         static CrawlerMode mode;
@@ -106,14 +88,14 @@ namespace Cliver.CrawlerHost
                             if (DbApi.Connection["UPDATE Crawlers SET _LastEndTime=GETDATE(), _LastSessionState=" + (int)DbApi.SessionState._COMPLETED + ", _NextStartTime=DATEADD(ss, RunTimeSpan, _LastStartTime) WHERE Id=@Id"].Execute("@Id", CrawlerId) < 1)
                                 throw new Exception("Could not update Crawlers table.");
 
-                            DbApi.Message(DbApi.MessageType.INFORM, CrawlerId, "COMPLETED");
+                            DbApi.Message(DbApi.MessageType.INFORM, "COMPLETED");
                             break;
                         }
 
                         if (DbApi.Connection["UPDATE Crawlers SET _LastEndTime=GETDATE(), _LastSessionState=" + (int)DbApi.SessionState._ERROR + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, _LastStartTime) WHERE Id=@Id"].Execute("@Id", CrawlerId) < 1)
                             throw new Exception("Could not update Crawlers table.");
 
-                            DbApi.Message(DbApi.MessageType.INFORM, CrawlerId, "QUITED");
+                            DbApi.Message(DbApi.MessageType.INFORM, "QUITED");
                         break;
                     case CrawlerMode.IDLE:
                         break;
@@ -129,8 +111,6 @@ namespace Cliver.CrawlerHost
         {
             lock (DbApi.Connection)
             {
-                //InitSession();
-
                 if (id == null)
                     throw (new Exception("id cannot be NULL"));
 

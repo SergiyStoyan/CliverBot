@@ -31,7 +31,7 @@ namespace Cliver.CrawlerHost
 
         static public void ValidateProductClass(Type type)
         {
-            Type[] ALLOWED_TYPES = new Type[] { typeof(int), typeof(int[]), typeof(string), typeof(string[]) };
+            Type[] ALLOWED_TYPES = new Type[] { typeof(int), typeof(int[]), typeof(float), typeof(float[]), typeof(string), typeof(string[]) };
             Dictionary<string, FieldInfo> declared_field_infos = type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).ToDictionary(x => x.Name, x => x);
             FieldInfo fi = declared_field_infos.Values.FirstOrDefault(x => !ALLOWED_TYPES.Contains(x.FieldType));
             if (fi != null)
@@ -101,51 +101,21 @@ namespace Cliver.CrawlerHost
             warnings.Add(message);
         }
         readonly List<string> warnings = new List<string>();
+        
+        static public T Restore<T>(Record r) where T : Product
+        {
+            T product = SerializationRoutines.Json.Get<T>((string)r["Data"]);
+            product.Set("Id", r["Id"]);
+            product.Set("Url", r["Url"]);
+            product.Set("CrawlTime", r["CrawlTime"]);
+            product.Set("ChangeTime", r["ChangeTime"]);
+            return product;
+        }
+        
+        protected void Set(string name, object value)
+        {            
+            this.GetType().GetField(name).SetValue(this, value);
+        }
     }
-
-    //public class ProductDictionary : Product
-    //{
-    //    public ProductDictionary(string id, string url):base( id,  url)
-    //    {
-    //    }
-
-    //    public ProductDictionary(params string[] key_value_pairs)
-    //    {
-    //        for (int i = 0; i < key_value_pairs.Length; i += 2)
-    //            this[(string)key_value_pairs[i]] = FileWriter.PrepareField(key_value_pairs[i + 1], FileWriter.FieldFormat.DB_TABLE);
-    //    }
-
-    //    Dictionary<string, object> container = new Dictionary<string, object>();
-
-    //    override public Dictionary<string, object> GetField2Values()
-    //    {
-    //        return container;
-    //    }
-
-    //    override public object this[string field]
-    //    {
-    //        set
-    //        {
-    //            Type field_type = value.GetType();
-    //            Type at = ALLOWED_TYPES.FirstOrDefault(x => x == field_type);
-    //            if (at == null)
-    //                throw new Exception("Product class " + this.GetType() + " cannot contain field " + field + " of a prohibited type: " + field_type);
-
-    //            container[field] = value;
-    //        }
-    //        get
-    //        {
-    //            return container[field];
-    //        }
-    //    }
-
-    //    override public IEnumerable<string> Fields
-    //    {
-    //        get
-    //        {
-    //            return container.Keys.AsEnumerable();
-    //        }
-    //    }
-    //}
 }
 

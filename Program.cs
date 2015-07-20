@@ -30,7 +30,7 @@ namespace Cliver.Bot
 
         public static void Initialize()
         {
-            ProgramMode m = Mode;
+            //to force static constructor
         }
 
         static Program()

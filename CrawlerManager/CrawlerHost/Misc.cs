@@ -18,15 +18,6 @@ namespace Cliver.CrawlerHost
 {
     public class Misc
     {
-        static public T RestoreProduct<T>(Record r) where T : Product
-        {
-            T product = SerializationRoutines.Json.Get<T>((string)r["Data"]);
-            typeof(T).GetField("Id").SetValue(product, r["Id"]);
-            typeof(T).GetField("Url").SetValue(product, r["Url"]);
-            typeof(T).GetField("CrawlTime").SetValue(product, r["CrawlTime"]);
-            typeof(T).GetField("ChangeTime").SetValue(product, r["ChangeTime"]);
-            return product;
-        }
     }
 }
 

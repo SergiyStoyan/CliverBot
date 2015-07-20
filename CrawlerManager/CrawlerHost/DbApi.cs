@@ -146,14 +146,13 @@ CREATE TABLE Crawlers (
 
                 Connection.Get(@"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='messages' and xtype='U')
 CREATE TABLE [dbo].[Messages] (
-    [Id]         INT             IDENTITY (1, 1) NOT NULL,
-    [CrawlerId] NVARCHAR (50)   NOT NULL,
-    [Type]       INT         NOT NULL,
-    [Message]    NVARCHAR (MAX) NOT NULL,
-    [Time]       DATETIME        NOT NULL,
-    [Source]     NVARCHAR(MAX) NOT NULL, 
-    PRIMARY KEY NONCLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_messages_To_crawlers] FOREIGN KEY ([CrawlerId]) REFERENCES [dbo].[Crawlers] ([Id])
+    [Id]        INT             IDENTITY (1, 1) NOT NULL,
+    [Source] NVARCHAR (100)   NOT NULL,
+    [Type]      INT             NOT NULL,
+    [Value]     NVARCHAR (MAX) NOT NULL,
+    [Time]      DATETIME        NOT NULL,
+    [Details]    NVARCHAR(MAX)     NOT NULL,
+    PRIMARY KEY NONCLUSTERED ([Id] ASC)
 );"
                     ).Execute();
             }
@@ -194,15 +193,22 @@ State tinyint NOT NULL)"
             WARNING = 2,
             ERROR = 3
         }
+        
+        static public void Message(Exception exception, string source = null, string details = null)
+        {
+            Message(MessageType.ERROR, Log.GetExceptionMessage(exception), source, details);
+        }
 
-        static public void Message(MessageType type, string crawler_id, string message, string source = null)
+        static public void Message(MessageType type, string message, string source = null, string details = null)
         {
             if (source == null)
+                source = System.AppDomain.CurrentDomain.FriendlyName;
+            if (details == null)
             {
                 System.Diagnostics.StackTrace st = new StackTrace(true);
                 StackFrame sf = st.GetFrame(1);
                 var m = sf.GetMethod();
-                source = m.DeclaringType.ToString() + "\nmethod: " + m.Name + "\nfile: " + sf.GetFileName() + "\nline: " + sf.GetFileLineNumber().ToString();
+                details = m.DeclaringType.ToString() + "\nmethod: " + m.Name + "\nfile: " + sf.GetFileName() + "\nline: " + sf.GetFileLineNumber().ToString();
             }
             //{
             //    Message m = new CrawlerHost.Message();
@@ -215,7 +221,7 @@ State tinyint NOT NULL)"
             //}
             //if (1 > Database.SaveChanges())
             //    throw new Exception("Cannot add to 'crawler_messages': " + message);
-            Connection["INSERT INTO Messages (Type,CrawlerId,Value,Time,Source) VALUES(@Type,@CrawlerId,@Value, GETDATE(),@Source)"].Execute("@Type", (int)type, "@CrawlerId", crawler_id, "@Value", message, "@Source", source);
+            Connection["INSERT INTO Messages (Type,Source,Value,Time,Details) VALUES(@Type,@Source,@Value, GETDATE(),@Details)"].Execute("@Type", (int)type, "@Source", source, "@Value", message, "@Details", details);
         }
 
         public static string ConnectionString
