@@ -202,7 +202,7 @@ State tinyint NOT NULL)"
         static public void Message(MessageType type, string message, string source = null, string details = null)
         {
             if (source == null)
-                source = System.AppDomain.CurrentDomain.FriendlyName;
+                source = Regex.Replace(System.AppDomain.CurrentDomain.FriendlyName, @"\.exe$", "", RegexOptions.IgnoreCase | RegexOptions.Singleline);
             if (details == null)
             {
                 System.Diagnostics.StackTrace st = new StackTrace(true);
