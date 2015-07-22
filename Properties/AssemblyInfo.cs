@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CliverSoft")]
 [assembly: AssemblyProduct("CliverBot")]
-[assembly: AssemblyCopyright("Copyright © 2006-2014, CliverSoft")]
+[assembly: AssemblyCopyright("Copyright © 2006-2015, CliverSoft")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]		
 

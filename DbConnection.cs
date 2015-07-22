@@ -43,16 +43,16 @@ namespace Cliver.Bot
                 throw new Exception("Could not detect an appropriate wrapper class for " + connection_string);
         }
 
-        public static DbConnection CreateFromNativeConnection(object connection)
-        {
-            if (connection == null)
-                throw new Exception("Connection is null.");
+        //public static DbConnection CreateFromNativeConnection(object connection)
+        //{
+        //    if (connection == null)
+        //        throw new Exception("Connection is null.");
 
-            if (connection is System.Data.SqlClient.SqlConnection)
-                return new MsSqlConnection((System.Data.SqlClient.SqlConnection)connection);
+        //    if (connection is System.Data.SqlClient.SqlConnection)
+        //        return new MsSqlConnection((System.Data.SqlClient.SqlConnection)connection);
 
-            throw new Exception("Could not detect an appropriate wrapper class for " + ((System.Data.SqlClient.SqlConnection)connection).ConnectionString);
-        }
+        //    throw new Exception("Could not detect an appropriate wrapper class for " + ((System.Data.SqlClient.SqlConnection)connection).ConnectionString);
+        //}
 
         protected DbConnection(string connection_string = null)
         {

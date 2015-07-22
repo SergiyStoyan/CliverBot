@@ -24,32 +24,19 @@ namespace Cliver.Bot
     {
         readonly static RegistryKey base_registry_key = Registry.CurrentUser;
         static object lock_object = new object();
-        readonly static public string DefaultRegistryKey = base_registry_key.ToString() + "/" + Properties.App.Default.RegistrySubkey;
+        readonly static public string DefaultRegistryKey = base_registry_key.ToString() + @"\" + Properties.App.Default.RegistrySubkey;
 
-        /// <summary>
-        /// Get string value from windows registry.
-        /// </summary>
         public static string GetString(string name, string default_value = null)
         {
             lock (lock_object)
-            {
-                try
-                {
-                    RegistryKey rk = base_registry_key.OpenSubKey(Properties.App.Default.RegistrySubkey);
-                    if (rk != null)
-                        return (string)rk.GetValue(name, default_value);
-                }
-                catch (Exception e)
-                {
-                    LogMessage.Error(e);
-                }
-                return null;
+            {              
+                RegistryKey rk = base_registry_key.OpenSubKey(Properties.App.Default.RegistrySubkey);
+                if (rk == null)
+                    throw new Exception("Could not open registry: " + DefaultRegistryKey);
+                return (string)rk.GetValue(name, default_value);
             }
         }
 
-        /// <summary>
-        /// Set string value to windows registry.
-        /// </summary>
         public static void SetValue<T>(string name, T value)
         {
             lock (lock_object)

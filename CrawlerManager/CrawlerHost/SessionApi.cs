@@ -49,7 +49,7 @@ namespace Cliver.CrawlerHost
                         )
                         throw new Exception("Could not update Crawlers table.");
 
-                    DbApi.Message(DbApi.MessageType.INFORM, "STARTED\r\nCommand line parameters: " + string.Join("|", Environment.GetCommandLineArgs()), CrawlerId);
+                    DbApi.Message(DbApi.MessageType.INFORM, "STARTED\r\nCommand line: " + string.Join("|", Environment.GetCommandLineArgs()) + "\nRunning as:" + System.Security.Principal.WindowsIdentity.GetCurrent().Name);
                 }
                 catch (Exception e)
                 {

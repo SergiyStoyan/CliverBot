@@ -54,7 +54,7 @@ namespace Cliver.Bot
             if (ean.Version.Major > 0 || ean.Version.Minor > 0)
                 customization_title += ean.Version.Major + "." + ean.Version.Minor;
             //CustomizationModificationTime = File.GetLastWriteTime(Log.AppDir + "\\" + ean);
-            AssemblyName can = Assembly.GetCallingAssembly().GetName();
+            AssemblyName can = Assembly.GetExecutingAssembly().GetName();
             string CliverBot_title = can.Name;
             if (can.Version.Major > 0 || can.Version.Minor > 0)
                 CliverBot_title += can.Version.Major + "." + can.Version.Minor;
