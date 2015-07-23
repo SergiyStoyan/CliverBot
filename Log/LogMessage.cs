@@ -211,6 +211,51 @@ namespace Cliver.Bot
             }
         }
 
+        //public enum MessageType
+        //{
+        //    INFORM = 1,
+        //    WARNING = 2,
+        //    ERROR = 3
+        //}
+
+        //public static void Message(MessageType type, string message)
+        //{
+        //    switch (type)
+        //    {
+        //        case MessageType.INFORM:
+        //            Inform(message);
+        //            break;
+        //        case MessageType.WARNING:
+        //            Warning(message);
+        //            break;
+        //        case MessageType.ERROR:
+        //            Error(message);
+        //            break;
+        //        default:
+        //            Error("There is not switch option: " + type.ToString());
+        //            break;
+        //    }
+        //}
+
+        //public static void Message(MessageType type, Exception e)
+        //{
+        //    switch (type)
+        //    {
+        //        case MessageType.INFORM:
+        //            Inform(e);
+        //            break;
+        //        case MessageType.WARNING:
+        //            Warning(e);
+        //            break;
+        //        case MessageType.ERROR:
+        //            Error(e);
+        //            break;
+        //        default:
+        //            Error("There is not switch option: " + type.ToString());
+        //            break;
+        //    }
+        //}
+
         public static void Inform(string message)
         {
             Log.Main.Write(message);
@@ -243,6 +288,40 @@ namespace Cliver.Bot
         public static void Inform(Exception e)
         {
             Inform(e.Message);
+        }
+
+        public static void Warning(string message)
+        {
+            Log.Main.Write("WARNING: " + message);
+            lock (lock_variable)
+            {
+                if (!DisableStumblingDialogs)
+                {
+                    if (!Output2Console)
+                    {
+                        MessageBox.Show(Owner, message,
+                            Application.ProductName,
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning);
+                    }
+                    else
+                    {
+                        Console.WriteLine(message);
+                    }
+                }
+                else
+                {
+                    if (Output2Console)
+                    {
+                        Console.WriteLine(message);
+                    }
+                }
+            }
+        }
+
+        public static void Warning(Exception e)
+        {
+            Warning(e.Message);
         }
     }
 }

@@ -120,28 +120,30 @@ namespace Cliver.CrawlerHost
                 //  PRIMARY KEY (`Id`)
                 //) ENGINE=MyISAM DEFAULT CHARSET=latin1; 		
                 Connection.Get(@"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Crawlers' and xtype='U') 
-CREATE TABLE Crawlers (
-    Id nvarchar(50) PRIMARY KEY,
-    State int DEFAULT (2) NOT NULL,
-    Site nvarchar(50) NOT NULL,
-    Command int  DEFAULT (0) NOT NULL,
-    RunTimeSpan int DEFAULT (86400) NOT NULL,
-    CrawlProductTimeout int DEFAULT (600) NOT NULL,
-    YieldProductTimeout int DEFAULT (259200) NOT NULL, 
-    AdminEmails nvarchar(300) NOT NULL,
-    Comment nvarchar(1000),
-    RestartDelayIfBroken int DEFAULT (1800) NOT NULL,
-    _SessionStartTime datetime,
-    _LastSessionState int,
-    _NextStartTime datetime DEFAULT (0) NOT NULL,
-    _LastStartTime datetime,
-    _LastEndTime datetime,
-    _LastProcessId int,
-    _LastLog nvarchar(500),
-    _Archive ntext,
-    _ProductsTable nvarchar(100) DEFAULT ('') NOT NULL,
-    _LastProductTime datetime
-)"
+CREATE TABLE [dbo].[Crawlers] (
+    [Id]                   NVARCHAR (50)   NOT NULL,
+    [State]                INT             DEFAULT ((2)) NOT NULL,
+    [Site]                 NVARCHAR (50)   NOT NULL,
+    [Command]              INT             DEFAULT ((0)) NOT NULL,
+    [RunTimeSpan]          INT             DEFAULT ((86400)) NOT NULL,
+    [CrawlProductTimeout]  INT             DEFAULT ((600)) NOT NULL,
+    [YieldProductTimeout]  INT             DEFAULT ((259200)) NOT NULL,
+    [AdminEmails]          NVARCHAR (300)  NOT NULL,
+    [Comment]              NVARCHAR (1000) DEFAULT (NULL) NULL,
+    [RestartDelayIfBroken] INT             DEFAULT ((1800)) NOT NULL,
+    [_SessionStartTime]    DATETIME        DEFAULT (NULL) NULL,
+    [_LastSessionState]    INT             DEFAULT (NULL) NULL,
+    [_NextStartTime]       DATETIME        DEFAULT ((0)) NOT NULL,
+    [_LastStartTime]       DATETIME        DEFAULT (NULL) NULL,
+    [_LastEndTime]         DATETIME        DEFAULT (NULL) NULL,
+    [_LastProcessId]       INT             DEFAULT (NULL) NULL,
+    [_LastLog]             NVARCHAR (500)  DEFAULT (NULL) NULL,
+    [_Archive]             NTEXT           DEFAULT (NULL) NULL,
+    [_ProductsTable]       NVARCHAR (100)  DEFAULT ('') NOT NULL,
+    [_LastProductTime]     DATETIME        DEFAULT (NULL) NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+"
                     ).Execute();
 
                 Connection.Get(@"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='messages' and xtype='U')
@@ -191,7 +193,8 @@ State tinyint NOT NULL)"
         {
             INFORM = 1,
             WARNING = 2,
-            ERROR = 3
+            ERROR = 3,
+            EXIT = 4
         }
         
         static public void Message(Exception exception, string source = null, string details = null)
@@ -222,6 +225,25 @@ State tinyint NOT NULL)"
             //if (1 > Database.SaveChanges())
             //    throw new Exception("Cannot add to 'crawler_messages': " + message);
             Connection["INSERT INTO Messages (Type,Source,Value,Time,Details) VALUES(@Type,@Source,@Value, GETDATE(),@Details)"].Execute("@Type", (int)type, "@Source", source, "@Value", message, "@Details", details);
+
+            switch (type)
+            {
+                case MessageType.INFORM:
+                    LogMessage.Inform(message);
+                    break;
+                case MessageType.WARNING:
+                    LogMessage.Warning(message);
+                    break;
+                case MessageType.ERROR:
+                    LogMessage.Error(message);
+                    break;
+                case MessageType.EXIT:
+                    LogMessage.Exit(message);
+                    break;
+                default:
+                    LogMessage.Exit("There is not switch option: " + type.ToString());
+                    break;
+            }
         }
 
         public static string ConnectionString

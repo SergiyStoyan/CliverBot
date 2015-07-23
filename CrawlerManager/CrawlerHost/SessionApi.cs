@@ -95,7 +95,7 @@ namespace Cliver.CrawlerHost
                         if (DbApi.Connection["UPDATE Crawlers SET _LastEndTime=GETDATE(), _LastSessionState=" + (int)DbApi.SessionState._ERROR + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, _LastStartTime) WHERE Id=@Id"].Execute("@Id", CrawlerId) < 1)
                             throw new Exception("Could not update Crawlers table.");
 
-                            DbApi.Message(DbApi.MessageType.INFORM, "QUITED");
+                        DbApi.Message(DbApi.MessageType.INFORM, "UNCOMPLETED");
                         break;
                     case CrawlerMode.IDLE:
                         break;
