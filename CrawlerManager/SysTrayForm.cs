@@ -165,9 +165,15 @@ namespace Cliver.CrawlerHost
             f.ShowDialog();
         }
 
-        private void menuSettings_Click(object sender, EventArgs e)
+        private void mManagerSettings_Click(object sender, EventArgs e)
         {
             SettingsForm f = new SettingsForm();
+            f.ShowDialog();
+        }
+
+        private void mHostSettings_Click(object sender, EventArgs e)
+        {
+            HostSettingsForm f = new HostSettingsForm();
             f.ShowDialog();
         }
     }

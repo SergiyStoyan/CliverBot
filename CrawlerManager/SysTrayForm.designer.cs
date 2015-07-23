@@ -33,13 +33,15 @@ namespace Cliver.CrawlerHost
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();
             this.menuCrawlers = new System.Windows.Forms.MenuItem();
             this.StopService = new System.Windows.Forms.MenuItem();
-            this.menuSettings = new System.Windows.Forms.MenuItem();
+            this.mManagerSettings = new System.Windows.Forms.MenuItem();
+            this.mHostSettings = new System.Windows.Forms.MenuItem();
             this.mCheckNow = new System.Windows.Forms.MenuItem();
             this.menuAbout = new System.Windows.Forms.MenuItem();
             this.menuHelp = new System.Windows.Forms.MenuItem();
             this.menuSeparator = new System.Windows.Forms.MenuItem();
             this.menuSeparator1 = new System.Windows.Forms.MenuItem();
             this.menuSeparator2 = new System.Windows.Forms.MenuItem();
+            this.menuSeparator3 = new System.Windows.Forms.MenuItem();
             this.menuExit = new System.Windows.Forms.MenuItem();
             this.SuspendLayout();
             // 
@@ -55,11 +57,13 @@ namespace Cliver.CrawlerHost
             // 
             this.contextMenu1.MenuItems.AddRange(new System.Windows.Forms.MenuItem[] {
             this.menuCrawlers,
-            this.menuSettings,
+            this.mManagerSettings,
             this.menuSeparator1,
             this.StopService,
             this.mCheckNow,
             this.menuSeparator2,
+            this.mHostSettings,
+            this.menuSeparator3,
             this.menuHelp,
             this.menuAbout,
             this.menuSeparator,
@@ -78,11 +82,17 @@ namespace Cliver.CrawlerHost
             this.mCheckNow.Text = "Check Now";
             this.mCheckNow.Click += new System.EventHandler(this.CheckNow_Click);
             // 
-            // menuSettings
+            // mManagerSettings
             // 
-          //  this.menuSettings.Index = 2;
-            this.menuSettings.Text = "Settings";
-            this.menuSettings.Click += new System.EventHandler(this.menuSettings_Click);
+            //  this.mManagerSettings.Index = 2;
+            this.mManagerSettings.Text = "Settings";
+            this.mManagerSettings.Click += new System.EventHandler(this.mManagerSettings_Click);
+            // 
+            // mHostSettings
+            // 
+            //  this.mHostSettings.Index = 2;
+            this.mHostSettings.Text = "Host Settings";
+            this.mHostSettings.Click += new System.EventHandler(this.mHostSettings_Click);
             // 
             // StopService
             // 
@@ -108,6 +118,7 @@ namespace Cliver.CrawlerHost
             this.menuSeparator.Text = "-";
             this.menuSeparator1.Text = "-";
             this.menuSeparator2.Text = "-";
+            this.menuSeparator3.Text = "-";
             // 
             // menuExit
             // 
@@ -134,7 +145,8 @@ namespace Cliver.CrawlerHost
         private System.Windows.Forms.ContextMenu contextMenu1;
         private System.Windows.Forms.MenuItem menuCrawlers;
         private System.Windows.Forms.MenuItem mCheckNow;
-        private System.Windows.Forms.MenuItem menuSettings;
+        private System.Windows.Forms.MenuItem mManagerSettings;
+        private System.Windows.Forms.MenuItem mHostSettings;
         private System.Windows.Forms.MenuItem menuSeparator;
         private System.Windows.Forms.MenuItem StopService;
         private System.Windows.Forms.MenuItem menuHelp;
@@ -142,5 +154,6 @@ namespace Cliver.CrawlerHost
         private System.Windows.Forms.MenuItem menuExit;
         private System.Windows.Forms.MenuItem menuSeparator1;
         private System.Windows.Forms.MenuItem menuSeparator2;
+        private System.Windows.Forms.MenuItem menuSeparator3;
 	}
 }
