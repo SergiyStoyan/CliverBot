@@ -45,7 +45,6 @@
             this.bCancel.TabIndex = 2;
             this.bCancel.Text = "Cancel";
             this.bCancel.UseVisualStyleBackColor = true;
-            this.bCancel.Click += new System.EventHandler(this.bCancel_Click);
             // 
             // bOK
             // 

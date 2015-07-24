@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Reflection;
 
 namespace Cliver.Bot
 {
@@ -28,7 +29,8 @@ namespace Cliver.Bot
         /// <summary>
         /// Normalized name of this process
         /// </summary>
-        public static readonly string ProcessName = Regex.Replace(System.Diagnostics.Process.GetCurrentProcess().ProcessName, @"\.vshost$", "", RegexOptions.Compiled | RegexOptions.Singleline);
+        public static readonly string ProcessName = Regex.Replace(Assembly.GetEntryAssembly().FullName, @"\,.*", "", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+        //public static readonly string ProcessName = Regex.Replace(System.Diagnostics.Process.GetCurrentProcess().ProcessName, @"\.vshost$", "", RegexOptions.Compiled | RegexOptions.Singleline);
         
         /// <summary>
         /// Directory where the application binary is located.

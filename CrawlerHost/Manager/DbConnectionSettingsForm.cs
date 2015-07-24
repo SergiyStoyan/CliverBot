@@ -16,6 +16,8 @@ namespace Cliver.CrawlerHost
         {
             InitializeComponent();
 
+            this.Text = Log.ProcessName;
+
             this.message = message;
 
             DbConnectionString.Text = connection_string;
@@ -27,26 +29,22 @@ namespace Cliver.CrawlerHost
         {
             get
             {
-                return string.IsNullOrWhiteSpace(DbConnectionString.Text) ? null : DbConnectionString.Text;
+                return connection_string;
             }
         }
+        string connection_string = null;
 
         private void bOK_Click(object sender, EventArgs e)
         {
             try
             {
+                connection_string = DbConnectionString.Text;
                 Close();
             }
             catch (Exception ex)
             {
                 LogMessage.Error(ex);
             }
-        }
-
-        private void bCancel_Click(object sender, EventArgs e)
-        {
-            DbConnectionString.Text = null;
-            Close();
         }
 
         private void PickFile_Click(object sender, EventArgs e)

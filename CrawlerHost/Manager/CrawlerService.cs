@@ -261,6 +261,8 @@ WHERE (State<>" + (int)Crawler.State.DISABLED + " AND GETDATE()>=_NextStartTime 
             ThreadRoutines.Wait(Properties.Settings.Default.ServiceCheckDurationInMss);
             if (!ServiceManager.IsProcessAlive(p.Id, crawler_id))
             {
+                DbApi.Connection["UPDATE Crawlers SET _NextStartTime=DATEADD(ss, RestartDelayIfBroken, GETDATE()) WHERE Id=@Id"].Execute("@Id", crawler_id);
+
                 email(crawler_id + " could not start.", crawler_id);
                 return false;
             }

@@ -304,6 +304,8 @@ WHERE (State<>" + (int)Service.State.DISABLED + " AND GETDATE()>=_NextStartTime 
             ThreadRoutines.Wait(Properties.Settings.Default.ServiceCheckDurationInMss);
             if (!IsProcessAlive(p.Id, service_id))
             {
+                DbApi.Connection["UPDATE Services SET _NextStartTime=DATEADD(ss, RestartDelayIfBroken, GETDATE()) WHERE Id=@Id"].Execute("@Id", service_id);
+
                 email(service_id + " could not start.", service_id);
                 return false;
             }
