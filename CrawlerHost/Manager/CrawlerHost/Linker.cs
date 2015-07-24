@@ -24,6 +24,8 @@ namespace Cliver.CrawlerHost
     {
         public static void ResolveAssembly()
         {
+            ProcessRoutines.RunSingleProcessOnly();
+
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
 
             while (!System.IO.Directory.Exists(Properties.Host.Default.CrawlerHostPath))
