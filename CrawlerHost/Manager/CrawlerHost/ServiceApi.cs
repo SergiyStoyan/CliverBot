@@ -93,6 +93,8 @@ namespace Cliver.CrawlerHost
                     if (1 > DbApi.Connection["UPDATE Services SET _LastEndTime=GETDATE(), _LastSessionState=" + (int)Service.SessionState._ERROR + ", _NextStartTime=DATEADD(ss, RunTimeSpan, _LastStartTime) WHERE Id=@Id"].Execute("@Id", ServiceId))
                         throw new Exception("Could not update Services table.");
                 }
+
+                ServiceManager.WaitUntilCheckTime();
             }
         }        
     }

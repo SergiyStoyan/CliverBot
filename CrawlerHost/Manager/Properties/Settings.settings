@@ -54,5 +54,8 @@
     <Setting Name="ServiceDirectory" Type="System.String" Scope="User">
       <Value Profile="(Default)">..\..\</Value>
     </Setting>
+    <Setting Name="ServiceCheckDurationInMss" Type="System.Int64" Scope="Application">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

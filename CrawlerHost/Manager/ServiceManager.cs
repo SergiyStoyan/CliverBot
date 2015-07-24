@@ -85,6 +85,8 @@ namespace Cliver.CrawlerHost
                 DbApi.Message(e);
                 email(Log.GetExceptionMessage(e));
             }
+            if (StateChanged != null)
+                StateChanged.BeginInvoke(false, null, null);
         }
         static bool actual_work = false;
 
@@ -93,7 +95,9 @@ namespace Cliver.CrawlerHost
             ////////////////////////////////////////////////////////////
             //Killing disabled service processes
             ////////////////////////////////////////////////////////////
-            Recordset rs = DbApi.Connection[@"SELECT Id, _LastStartTime, _LastProcessId, _LastLog, AdminEmails, _LastSessionState 
+            Recordset rs = DbApi.Connection[@"SELECT Id, 
+ISNULL(_LastStartTime, 0) AS _LastStartTime, ISNULL(_LastEndTime, 0) AS _LastEndTime, 
+_LastProcessId, _LastLog, AdminEmails, _LastSessionState 
 FROM Services 
 WHERE _LastEndTime IS NULL AND State=" + (int)Service.State.DISABLED].GetRecordset();
             foreach (Dictionary<string, object> r in rs)
@@ -116,7 +120,9 @@ WHERE _LastEndTime IS NULL AND State=" + (int)Service.State.DISABLED].GetRecords
             ////////////////////////////////////////////////////////////
             //Process service commands
             ////////////////////////////////////////////////////////////
-            rs = DbApi.Connection[@"SELECT Id, _LastStartTime, _LastEndTime, _LastProcessId, _LastLog, AdminEmails, _LastSessionState, Command 
+            rs = DbApi.Connection[@"SELECT Id, 
+ISNULL(_LastStartTime, 0) AS _LastStartTime, ISNULL(_LastEndTime, 0) AS _LastEndTime, 
+_LastProcessId, _LastLog, AdminEmails, _LastSessionState, Command 
 FROM Services 
 WHERE State<>" + (int)Service.State.DISABLED + " AND Command<>" + (int)Service.Command.EMPTY].GetRecordset();
             foreach (Dictionary<string, object> r in rs)
@@ -127,7 +133,7 @@ WHERE State<>" + (int)Service.State.DISABLED + " AND Command<>" + (int)Service.C
                 switch (command)
                 {
                     case Service.Command.RESTART:
-                        if ((int)r["_LastSessionState"] != (int)Service.SessionState.STARTED || p == null)
+                        if (p == null)
                         {
                             DbApi.Connection["UPDATE Services SET Command=" + (int)Service.Command.EMPTY + ", _NextStartTime=DATEADD(ss, -1, GETDATE()) WHERE Id=@Id"].Execute("@Id", service_id);
                             break;
@@ -166,7 +172,8 @@ WHERE State<>" + (int)Service.State.DISABLED + " AND Command<>" + (int)Service.C
             ////////////////////////////////////////////////////////////
             //Checking previously started services
             ////////////////////////////////////////////////////////////
-            rs = DbApi.Connection[@"SELECT DATEDIFF(ss, _LastStartTime, GETDATE()) AS duration, Id, State, _LastStartTime, _LastEndTime, 
+            rs = DbApi.Connection[@"SELECT DATEDIFF(ss, ISNULL(_LastStartTime, 0), GETDATE()) AS duration, Id, State, 
+ISNULL(_LastStartTime, 0) AS _LastStartTime, ISNULL(_LastEndTime, 0) AS _LastEndTime, 
 _LastProcessId, _LastLog, AdminEmails, _LastSessionState, RunTimeout 
 FROM Services 
 WHERE _LastSessionState IN (" + (int)Service.SessionState.STARTED + ", " + (int)Service.SessionState._ERROR + ", " + (int)Service.SessionState._COMPLETED + ")"].GetRecordset();
@@ -218,7 +225,7 @@ WHERE _LastSessionState IN (" + (int)Service.SessionState.STARTED + ", " + (int)
             ////////////////////////////////////////////////////////////
             //Starting services
             ////////////////////////////////////////////////////////////
-            rs = DbApi.Connection[@"SELECT Id, State, Command, AdminEmails,_LastProcessId,_LastStartTime, _LastEndTime,ExeFolder FROM Services 
+            rs = DbApi.Connection[@"SELECT Id, State, Command, AdminEmails,_LastProcessId,ExeFolder FROM Services 
 WHERE (State<>" + (int)Service.State.DISABLED + " AND GETDATE()>=_NextStartTime AND Command<>" + (int)Service.Command.STOP + @") 
             OR Command=" + (int)Service.Command.FORCE + " ORDER BY Command, _NextStartTime"].GetRecordset();
             foreach (Record r in rs)
@@ -233,7 +240,7 @@ WHERE (State<>" + (int)Service.State.DISABLED + " AND GETDATE()>=_NextStartTime 
                         Log.Main.Error(service_id + " is disabled.");
                         continue;
                     }
-                    if (p != null && (DateTime)r["_LastStartTime"] >= (DateTime)r["_LastEndTime"])
+                    if (p != null)
                     {
                         Log.Main.Warning(service_id + " is running already.");
                         DbApi.Connection["UPDATE Services SET Command=" + (int)Service.Command.EMPTY + " WHERE Id=@Id"].Execute("@Id", service_id);
@@ -244,7 +251,7 @@ WHERE (State<>" + (int)Service.State.DISABLED + " AND GETDATE()>=_NextStartTime 
                     continue;
                 }
 
-                if (p != null && (DateTime)r["_LastStartTime"] >= (DateTime)r["_LastEndTime"])
+                if (p != null)
                     continue;
 
                 launch_service(r);
@@ -294,7 +301,7 @@ WHERE (State<>" + (int)Service.State.DISABLED + " AND GETDATE()>=_NextStartTime 
             p.StartInfo.Arguments = string.Join(" ", parameters);
             Log.Main.Write("Starting service " + service_id);
             p.Start();
-            Thread.Sleep(2000);
+            ThreadRoutines.Wait(Properties.Settings.Default.ServiceCheckDurationInMss);
             if (!IsProcessAlive(p.Id, service_id))
             {
                 email(service_id + " could not start.", service_id);
@@ -359,6 +366,7 @@ WHERE (State<>" + (int)Service.State.DISABLED + " AND GETDATE()>=_NextStartTime 
 
         static public void email(string message, string service_id = null, bool error = true)
         {
+            return;
             try
             {
                 if (error)
@@ -406,6 +414,13 @@ WHERE (State<>" + (int)Service.State.DISABLED + " AND GETDATE()>=_NextStartTime 
             {
                 Log.Main.Error(e);
             }
+        }
+
+        public static void WaitUntilCheckTime()
+        {
+            long duration = (long)(Process.GetCurrentProcess().StartTime.AddMilliseconds(Properties.Settings.Default.ServiceCheckDurationInMss + 500) - DateTime.Now).Duration().TotalMilliseconds;
+            if (duration > 0)
+                ThreadRoutines.Wait(duration);
         }
     }
 }

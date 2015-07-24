@@ -110,7 +110,7 @@ namespace Cliver.Bot
             try
             {
                 Set(key_value_pairs);
-                rc = c.ExecuteNonQuery();
+                rc = c.ExecuteNonQuery();                
             }
             finally
             {

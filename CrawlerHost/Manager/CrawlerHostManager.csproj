@@ -148,7 +148,6 @@
     <Compile Include="CrawlerHost\ServiceApi.cs" />
     <Compile Include="CrawlerHost\CrawlerApi.cs" />
     <Compile Include="CrawlerHost\DbApi.cs" />
-    <Compile Include="CrawlerHost\Misc.cs" />
     <Compile Include="CrawlerHost\Product.cs" />
     <Compile Include="CrawlerHost\HostSettingsForm.cs">
       <SubType>Form</SubType>

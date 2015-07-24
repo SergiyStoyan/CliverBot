@@ -20,7 +20,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Threading;
-using Settings = Cliver.CrawlerHost.Properties.Settings;
 using Cliver.Bot;
 
 namespace Cliver.CrawlerHost
@@ -102,25 +101,32 @@ namespace Cliver.CrawlerHost
             {
                 Invoke(() =>
                 {
-                    StopService.Text = "Stop Service";
+                    StopService.Text = "Stop Manager";
+                    this.notifyIcon1.Icon = this.Icon;
+                    if (crawlers_form != null)
+                        crawlers_form.SetControlText(crawlers_form.bStop, "Stop");
                 });
-                if (crawlers_form != null)
-                    crawlers_form.SetControlText(crawlers_form.bStop, "Stop");
             }
             else
             {
                 Invoke(() =>
                 {
-                    StopService.Text = "Start Service";
+                    StopService.Text = "Start Manager";
+
+                    Bitmap i = this.Icon.ToBitmap();
+                    Graphics g = Graphics.FromImage(i);
+                    ControlPaint.DrawImageDisabled(g, i, 0, 0, Color.Transparent);
+                    this.notifyIcon1.Icon = Icon.FromHandle(i.GetHicon());
+         
+                    if (crawlers_form != null)
+                        crawlers_form.SetControlText(crawlers_form.bStop, "Start");
                 });
-                if (crawlers_form != null)
-                    crawlers_form.SetControlText(crawlers_form.bStop, "Start");
-            }            
+            }
         }
 
         private void menuHelp_Click(object sender, EventArgs e)
         {
-            Process.Start(Settings.Default.HelpUri);
+            Process.Start(Properties.Settings.Default.HelpUri);
         }
 
         private void menuAbout_Click(object sender, EventArgs e)

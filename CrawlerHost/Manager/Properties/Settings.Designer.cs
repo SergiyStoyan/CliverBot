@@ -184,5 +184,14 @@ namespace Cliver.CrawlerHost.Properties {
                 this["ServiceDirectory"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public long ServiceCheckDurationInMss {
+            get {
+                return ((long)(this["ServiceCheckDurationInMss"]));
+            }
+        }
     }
 }

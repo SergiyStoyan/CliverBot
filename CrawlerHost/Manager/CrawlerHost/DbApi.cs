@@ -213,27 +213,30 @@ State tinyint NOT NULL)"
 
         static public void Message(MessageType type, string message, string source = null, string details = null)
         {
-            if (source == null)
-                source = entry_assembly_name;
-            if (details == null)
+            lock (Connection)
             {
-                System.Diagnostics.StackTrace st = new StackTrace(true);
-                StackFrame sf = st.GetFrame(1);
-                var m = sf.GetMethod();
-                details = m.DeclaringType.ToString() + "\nmethod: " + m.Name + "\nfile: " + sf.GetFileName() + "\nline: " + sf.GetFileLineNumber().ToString();
+                if (source == null)
+                    source = entry_assembly_name;
+                if (details == null)
+                {
+                    System.Diagnostics.StackTrace st = new StackTrace(true);
+                    StackFrame sf = st.GetFrame(1);
+                    var m = sf.GetMethod();
+                    details = m.DeclaringType.ToString() + "\nmethod: " + m.Name + "\nfile: " + sf.GetFileName() + "\nline: " + sf.GetFileLineNumber().ToString();
+                }
+                //{
+                //    Message m = new CrawlerHost.Message();
+                //    m.CrawlerId = crawler_id;
+                //    m.Source = source;
+                //    m.Time = DateTime.Now;
+                //    m.Type = (int)type;
+                //    m.Value = message;
+                //    Database.Messages.Add(m);
+                //}
+                //if (1 > Database.SaveChanges())
+                //    throw new Exception("Cannot add to 'crawler_messages': " + message);
+                Connection["INSERT INTO Messages (Type,Source,Value,Time,Details) VALUES(@Type,@Source,@Value,GETDATE(),@Details)"].Execute("@Type", (int)type, "@Source", source, "@Value", message, "@Details", details);
             }
-            //{
-            //    Message m = new CrawlerHost.Message();
-            //    m.CrawlerId = crawler_id;
-            //    m.Source = source;
-            //    m.Time = DateTime.Now;
-            //    m.Type = (int)type;
-            //    m.Value = message;
-            //    Database.Messages.Add(m);
-            //}
-            //if (1 > Database.SaveChanges())
-            //    throw new Exception("Cannot add to 'crawler_messages': " + message);
-            Connection["INSERT INTO Messages (Type,Source,Value,Time,Details) VALUES(@Type,@Source,@Value,GETDATE(),@Details)"].Execute("@Type", (int)type, "@Source", source, "@Value", message, "@Details", details);
 
             switch (type)
             {

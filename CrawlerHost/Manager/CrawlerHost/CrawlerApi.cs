@@ -88,9 +88,9 @@ namespace Cliver.CrawlerHost
         }
 
         internal static void stop(bool completed)
-        {            
+        {
             lock (DbApi.Connection)
-            { 
+            {
                 switch (mode)
                 {
                     case CrawlerMode.PRODUCTION:
@@ -116,9 +116,10 @@ namespace Cliver.CrawlerHost
                     default:
                         throw new Exception("Unknown mode: " + mode);
                 }
+                mode = CrawlerMode.IDLE;
 
+                ServiceManager.WaitUntilCheckTime();
             }
-            mode = CrawlerMode.IDLE;
         }
         
         public static void SaveProduct(string id, string url, string data)

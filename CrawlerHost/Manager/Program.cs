@@ -47,8 +47,7 @@ namespace Cliver.CrawlerHost
         {
             try
             {
-                ProcessRoutines.RunSingleProcessOnly();             
-                
+                ProcessRoutines.RunSingleProcessOnly();
                 SysTrayForm.This.Hide();
                 Application.Run();
             }

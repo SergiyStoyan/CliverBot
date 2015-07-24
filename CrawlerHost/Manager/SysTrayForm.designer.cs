@@ -97,7 +97,7 @@ namespace Cliver.CrawlerHost
             // StopService
             // 
          //   this.StopService.Index = 3;
-            this.StopService.Text = "Stop Service";
+            this.StopService.Text = "Stop Manager";
             this.StopService.Click += new System.EventHandler(this.StopService_Click);
             // 
             // menuHelp

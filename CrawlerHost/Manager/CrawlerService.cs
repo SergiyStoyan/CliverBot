@@ -35,8 +35,10 @@ namespace Cliver.CrawlerHost
             ////////////////////////////////////////////////////////////
             //Killing disabled crawler processes
             ////////////////////////////////////////////////////////////
-            Recordset rs = DbApi.Connection["SELECT Id AS crawler_id, _LastStartTime, _LastProcessId, _LastLog, AdminEmails, _LastSessionState FROM Crawlers WHERE _LastSessionState=" + (int)Crawler.SessionState.STARTED + " AND State=" + (int)Crawler.State.DISABLED].GetRecordset();
-            foreach (Dictionary<string, object> r in rs)
+            Recordset rs = DbApi.Connection[@"SELECT Id AS crawler_id, 
+ISNULL(_LastStartTime, 0) AS _LastStartTime, ISNULL(_LastEndTime, 0) AS _LastEndTime, 
+_LastProcessId, _LastLog, AdminEmails, _LastSessionState FROM Crawlers WHERE _LastSessionState=" + (int)Crawler.SessionState.STARTED + " AND State=" + (int)Crawler.State.DISABLED].GetRecordset();
+            foreach (Record r in rs)
             {
                 string crawler_id = (string)r["crawler_id"];
                 Process p = ServiceManager.GetProcess((int?)r["_LastProcessId"], crawler_id);
@@ -55,8 +57,10 @@ namespace Cliver.CrawlerHost
             ////////////////////////////////////////////////////////////
             //Process crawler commands
             ////////////////////////////////////////////////////////////
-            rs = DbApi.Connection["SELECT Id AS crawler_id, _LastStartTime, _LastProcessId, _LastLog, AdminEmails, _LastSessionState, Command FROM Crawlers WHERE State<>" + (int)Crawler.State.DISABLED + " AND Command<>" + (int)Crawler.Command.EMPTY].GetRecordset();
-            foreach (Dictionary<string, object> r in rs)
+            rs = DbApi.Connection[@"SELECT Id AS crawler_id, 
+ISNULL(_LastStartTime, 0) AS _LastStartTime, ISNULL(_LastEndTime, 0) AS _LastEndTime, 
+    _LastProcessId, _LastLog, AdminEmails, _LastSessionState, Command FROM Crawlers WHERE State<>" + (int)Crawler.State.DISABLED + " AND Command<>" + (int)Crawler.Command.EMPTY].GetRecordset();
+            foreach (Record r in rs)
             {
                 string crawler_id = (string)r["crawler_id"];
                 Process p = ServiceManager.GetProcess((int?)r["_LastProcessId"], crawler_id);
@@ -64,7 +68,7 @@ namespace Cliver.CrawlerHost
                 switch (command)
                 {
                     case Crawler.Command.RESTART:
-                        if ((int)r["_LastSessionState"] != (int)Crawler.SessionState.STARTED || p == null)
+                        if (p == null)
                         {
                             DbApi.Connection["UPDATE Crawlers SET Command=" + (int)Crawler.Command.EMPTY + ", _NextStartTime=DATEADD(ss, -1, GETDATE()) WHERE Id=@Id"].Execute("@Id", crawler_id);
                             break;
@@ -101,7 +105,8 @@ namespace Cliver.CrawlerHost
             ////////////////////////////////////////////////////////////
             List<string> running_crawler_ids = new List<string>();
             List<string> running_crawler_notifications = new List<string>();
-            rs = DbApi.Connection[@"SELECT DATEDIFF(ss, _LastStartTime, GETDATE()) AS duration, Id AS crawler_id, State, _LastStartTime, 
+            rs = DbApi.Connection[@"SELECT DATEDIFF(ss, ISNULL(_LastStartTime, 0), GETDATE()) AS duration, Id AS crawler_id, State, 
+ISNULL(_LastStartTime, 0) AS _LastStartTime, ISNULL(_LastEndTime, 0) AS _LastEndTime, 
 _LastProcessId, _LastLog, AdminEmails, _LastSessionState, CrawlProductTimeout 
 FROM Crawlers 
 WHERE _LastSessionState IN (" + (int)Crawler.SessionState.STARTED + ", " + (int)Crawler.SessionState._ERROR + ", " + (int)Crawler.SessionState._COMPLETED + ")"].GetRecordset();
@@ -253,7 +258,7 @@ WHERE (State<>" + (int)Crawler.State.DISABLED + " AND GETDATE()>=_NextStartTime 
             p.StartInfo.Arguments = string.Join(" ", parameters);
             Log.Main.Write("Starting crawler " + crawler_id);
             p.Start();
-            Thread.Sleep(2000);
+            ThreadRoutines.Wait(Properties.Settings.Default.ServiceCheckDurationInMss);
             if (!ServiceManager.IsProcessAlive(p.Id, crawler_id))
             {
                 email(crawler_id + " could not start.", crawler_id);
@@ -266,6 +271,7 @@ WHERE (State<>" + (int)Crawler.State.DISABLED + " AND GETDATE()>=_NextStartTime 
 
         static public void email(string message, string crawler_id = null, bool error = true)
         {
+            return;
             try
             {
                 if (error)
