@@ -10,7 +10,7 @@
     <ApplicationIcon>3RINGS.ICO</ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
-    <AssemblyName>CrawlerManager</AssemblyName>
+    <AssemblyName>CrawlerHostManager</AssemblyName>
     <AssemblyOriginatorKeyFile>
     </AssemblyOriginatorKeyFile>
     <DefaultClientScript>JScript</DefaultClientScript>
@@ -266,7 +266,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CliverBot.csproj">
+    <ProjectReference Include="..\..\CliverBot.csproj">
       <Project>{5283eea1-5f94-4379-bdf3-975ca4adbbf4}</Project>
       <Name>CliverBot</Name>
     </ProjectReference>

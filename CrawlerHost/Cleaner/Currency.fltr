@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Filter tree file. Produced by DataSifter3.0, http://www.cliversoft.com-->
+<FilterTree>
+  <Filter type="RegexFilter" version="1.0" input_group="" definition="(?'Usd'\$|usd)&#xA;IgnoreCase, Compiled, Singleline" comment="" />
+  <Filter type="RegexFilter" version="1.0" input_group="" definition="(?'EUR'\€|eur)&#xA;IgnoreCase, Compiled, Singleline" comment="" />
+  <Filter type="RegexFilter" version="1.0" input_group="" definition="(?'GBP'\£|gbp)&#xA;IgnoreCase, Compiled, Singleline" comment="" />
+</FilterTree>
