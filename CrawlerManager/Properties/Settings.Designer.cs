@@ -25,10 +25,10 @@ namespace Cliver.CrawlerHost.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("60")]
-        public int PollIntervalInSecs {
+        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
+        public int PollIntervalInMss {
             get {
-                return ((int)(this["PollIntervalInSecs"]));
+                return ((int)(this["PollIntervalInMss"]));
             }
         }
         
@@ -53,18 +53,6 @@ namespace Cliver.CrawlerHost.Properties {
             }
             set {
                 this["CrawlerProcessMaxNumber"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool StartManagerByDefault {
-            get {
-                return ((bool)(this["StartManagerByDefault"]));
-            }
-            set {
-                this["StartManagerByDefault"] = value;
             }
         }
         
@@ -182,6 +170,18 @@ namespace Cliver.CrawlerHost.Properties {
         public string CliverCrawlerHostConnectionString {
             get {
                 return ((string)(this["CliverCrawlerHostConnectionString"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("..\\..\\")]
+        public string ServiceDirectory {
+            get {
+                return ((string)(this["ServiceDirectory"]));
+            }
+            set {
+                this["ServiceDirectory"] = value;
             }
         }
     }

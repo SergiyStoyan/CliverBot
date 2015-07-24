@@ -50,9 +50,6 @@ namespace Cliver.CrawlerHost
                 ProcessRoutines.RunSingleProcessOnly();             
                 
                 SysTrayForm.This.Hide();
-                if (Settings.Default.StartManagerByDefault)
-                    SysTrayForm.This.ToggleService();
-
                 Application.Run();
             }
             catch (Exception e)

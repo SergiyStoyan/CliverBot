@@ -17,38 +17,13 @@ using Cliver.Bot;
 namespace Cliver.CrawlerHost
 {
     public class DbApi
-    {
-        //public class CrawlerState : Enum<int>
-        //{
-        //    public static readonly CrawlerState ENABLED = new CrawlerState(1);
-        //    public static readonly CrawlerState DISABLED = new CrawlerState(2);
-        //    public static readonly CrawlerState DEBUG = new CrawlerState(3);
-
-        //    public CrawlerState(int value) : base(value) { }
-        //}
-        public enum CrawlerState : int { ENABLED = 1, DISABLED = 2, DEBUG = 3 }
-
-        public enum CrawlerCommand : int { EMPTY = 0, STOP = 1, RESTART = 2, FORCE = 3 }
-
-        public enum SessionState : int { STARTED = 1, _COMPLETED = 25, COMPLETED = 2, _ERROR = 35, ERROR = 3, BROKEN = 4, KILLED = 5 }
-
-        //public class ProductState : Enum<int>
-        //{
-        //    public static readonly ProductState NEW = new ProductState(1);
-        //    public static readonly ProductState DELETED = new ProductState(4);
-
-        //    protected ProductState(int value) : base(value) { }
-        //}
-        public enum ProductState : int { NEW = 1, DELETED = 4 }
-
-        public enum CrawlerMode : int { IDLE, PRODUCTION }
-        
+    {        
         static DbApi()
         {
             AGAIN:
             try
             {
-                //Database = new CliverCrawlerHostEntities(DbApi.ConnectionString);
+                //Context = new CrawlerHostDataContext(DbApi.ConnectionString);
                 Connection = DbConnection.Create(DbApi.ConnectionString);
                 create_tables();
             }
@@ -77,8 +52,8 @@ namespace Cliver.CrawlerHost
             }
         }
         static public readonly DbConnection Connection;
-        //static public readonly CliverCrawlerHostEntities Database = new CliverCrawlerHostEntities();
-        
+        //static public readonly CrawlerHostDataContext Context;
+
         static void create_tables()
         {
             lock (Connection)
@@ -95,7 +70,7 @@ namespace Cliver.CrawlerHost
                 //}
                 //if(null == Connection.Get(string.Format("select * from master.dbo.sysdatabases where name='{0}'", database)).GetSingleValue())
                 //    Connection.Get(string.Format("CREATE DATABASE {0}", database)).Execute();
-              
+
 
                 //if (LogMessage.AskYesNo("Crawlers table does not exist in the database " + Connection.Database + ". Do you want to create it?", true))
                 //CREATE TABLE IF NOT EXISTS `Crawlers` (
@@ -128,8 +103,8 @@ CREATE TABLE [dbo].[Crawlers] (
     [RunTimeSpan]          INT             DEFAULT ((86400)) NOT NULL,
     [CrawlProductTimeout]  INT             DEFAULT ((600)) NOT NULL,
     [YieldProductTimeout]  INT             DEFAULT ((259200)) NOT NULL,
-    [AdminEmails]          NVARCHAR (300)  NOT NULL,
-    [Comment]              NVARCHAR (1000) DEFAULT (NULL) NULL,
+    [AdminEmails]          NVARCHAR (MAX)  NOT NULL,
+    [Comment]              NVARCHAR (MAX) DEFAULT (NULL) NULL,
     [RestartDelayIfBroken] INT             DEFAULT ((1800)) NOT NULL,
     [_SessionStartTime]    DATETIME        DEFAULT (NULL) NULL,
     [_LastSessionState]    INT             DEFAULT (NULL) NULL,
@@ -137,7 +112,7 @@ CREATE TABLE [dbo].[Crawlers] (
     [_LastStartTime]       DATETIME        DEFAULT (NULL) NULL,
     [_LastEndTime]         DATETIME        DEFAULT (NULL) NULL,
     [_LastProcessId]       INT             DEFAULT (NULL) NULL,
-    [_LastLog]             NVARCHAR (500)  DEFAULT (NULL) NULL,
+    [_LastLog]             NVARCHAR (MAX)  DEFAULT (NULL) NULL,
     [_Archive]             NTEXT           DEFAULT (NULL) NULL,
     [_ProductsTable]       NVARCHAR (100)  DEFAULT ('') NOT NULL,
     [_LastProductTime]     DATETIME        DEFAULT (NULL) NULL,
@@ -158,6 +133,27 @@ CREATE TABLE [dbo].[Messages] (
 );"
                     ).Execute();
             }
+
+            Connection.Get(@"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='services' and xtype='U')
+CREATE TABLE [dbo].[Services] (
+    [Id]                   NVARCHAR (50)  NOT NULL,
+    [State]                INT            DEFAULT ((2)) NOT NULL,
+    [ExeFolder]            NVARCHAR (MAX) DEFAULT (NULL) NULL,
+    [Command]              INT            DEFAULT ((0)) NOT NULL,
+    [RunTimeSpan]          INT            DEFAULT ((86400)) NOT NULL,
+    [AdminEmails]          NVARCHAR (MAX) NOT NULL,
+    [Comment]              NVARCHAR (MAX) DEFAULT (NULL) NULL,
+    [RestartDelayIfBroken] INT            DEFAULT ((1800)) NOT NULL,
+    [_NextStartTime]       DATETIME       DEFAULT ((0)) NOT NULL,
+    [_LastStartTime]       DATETIME       DEFAULT (NULL) NULL,
+    [_LastEndTime]         DATETIME       DEFAULT (NULL) NULL,
+    [_LastProcessId]       INT            DEFAULT (NULL) NULL,
+    [_LastLog]             NVARCHAR (MAX) DEFAULT (NULL) NULL,
+    [_Archive]             NTEXT          DEFAULT (NULL) NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
+);
+"
+                ).Execute();
         }
 
         internal static string CreateProductsTableForCrawler(string crawler_id)
@@ -224,24 +220,24 @@ State tinyint NOT NULL)"
             //}
             //if (1 > Database.SaveChanges())
             //    throw new Exception("Cannot add to 'crawler_messages': " + message);
-            Connection["INSERT INTO Messages (Type,Source,Value,Time,Details) VALUES(@Type,@Source,@Value, GETDATE(),@Details)"].Execute("@Type", (int)type, "@Source", source, "@Value", message, "@Details", details);
+            Connection["INSERT INTO Messages (Type,Source,Value,Time,Details) VALUES(@Type,@Source,@Value,GETDATE(),@Details)"].Execute("@Type", (int)type, "@Source", source, "@Value", message, "@Details", details);
 
             switch (type)
             {
                 case MessageType.INFORM:
-                    LogMessage.Inform(message);
+                    Log.Inform(message);
                     break;
                 case MessageType.WARNING:
-                    LogMessage.Warning(message);
+                    Log.Warning(message);
                     break;
                 case MessageType.ERROR:
-                    LogMessage.Error(message);
+                    Log.Error(message);
                     break;
                 case MessageType.EXIT:
-                    LogMessage.Exit(message);
+                    Log.Exit(message);
                     break;
                 default:
-                    LogMessage.Exit("There is not switch option: " + type.ToString());
+                    Log.Exit("There is not switch option: " + type.ToString());
                     break;
             }
         }

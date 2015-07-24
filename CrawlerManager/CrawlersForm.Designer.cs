@@ -57,7 +57,6 @@
             this.crawlersTableAdapter1 = new Cliver.CrawlerHost.CliverCrawlersDataSetTableAdapters.CrawlersTableAdapter();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.bClose = new System.Windows.Forms.Button();
-            this.bCheckNow = new System.Windows.Forms.Button();
             this.bStop = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.crawlersBindingSource)).BeginInit();
@@ -268,7 +267,6 @@
             // flowLayoutPanel1
             // 
             this.flowLayoutPanel1.Controls.Add(this.bClose);
-            this.flowLayoutPanel1.Controls.Add(this.bCheckNow);
             this.flowLayoutPanel1.Controls.Add(this.bStop);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
@@ -286,16 +284,6 @@
             this.bClose.Text = "Close";
             this.bClose.UseVisualStyleBackColor = true;
             this.bClose.Click += new System.EventHandler(this.Close_Click);
-            // 
-            // bCheckNow
-            // 
-            this.bCheckNow.Location = new System.Drawing.Point(1075, 3);
-            this.bCheckNow.Name = "bCheckNow";
-            this.bCheckNow.Size = new System.Drawing.Size(75, 23);
-            this.bCheckNow.TabIndex = 0;
-            this.bCheckNow.Text = "Check Now";
-            this.bCheckNow.UseVisualStyleBackColor = true;
-            this.bCheckNow.Click += new System.EventHandler(this.bCheckNow_Click);
             // 
             // bStop
             // 
@@ -356,7 +344,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn _ProductsTable;
         private System.Windows.Forms.DataGridViewTextBoxColumn _LastProductTime;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        internal System.Windows.Forms.Button bCheckNow;
         private System.Windows.Forms.Button bClose;
         internal System.Windows.Forms.Button bStop;
     }

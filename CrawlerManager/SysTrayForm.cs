@@ -30,6 +30,8 @@ namespace Cliver.CrawlerHost
         SysTrayForm()
         {
             InitializeComponent();
+
+            ServiceManager.StateChanged += ServiceManager_StateChanged;
         }
 
         static internal SysTrayForm This
@@ -45,7 +47,7 @@ namespace Cliver.CrawlerHost
         }
         static SysTrayForm This_;
 
-        private void show(object sender, System.EventArgs e)
+        private void show_crawlers(object sender, System.EventArgs e)
         {
             if (crawlers_form != null)
             {
@@ -57,6 +59,11 @@ namespace Cliver.CrawlerHost
             crawlers_form = null;
         }
         CrawlersForm crawlers_form = null;
+        
+        private void show_services(object sender, System.EventArgs e)
+        {
+            MessageBox.Show("TBD");
+        }
 
         internal void RefreshView()
         {
@@ -73,14 +80,14 @@ namespace Cliver.CrawlerHost
 
         public void ToggleService()
         {
-            if (!Manager.Started)
-                Manager.Start();
+            if (!ServiceManager.Work)
+                ServiceManager.Work = true;
             else
             {
                 StopService.Text = "Stopping...";
                 if (crawlers_form != null)
                     crawlers_form.SetControlText(crawlers_form.bStop, "Stopping...");
-                Manager.Stop();
+                ServiceManager.Work = false;
             }
         }
 
@@ -89,69 +96,26 @@ namespace Cliver.CrawlerHost
             ToggleService();
         }
 
-        private void CheckNow_Click(object sender, EventArgs e)
+        void ServiceManager_StateChanged(bool started)
         {
-            CheckNow();
-        }
-
-        internal void CheckNow()
-        {
-            //CrawlerManager.RunManager.Set();
-            Manager.CheckNow();
-        }
-
-        internal bool Started
-        {
-            set
+            if (started)
             {
-                if (value)
+                Invoke(() =>
                 {
-                    Invoke(() =>
-                    {
-                        StopService.Text = "Stop Service";
-                    });
-                    if (crawlers_form != null)
-                        crawlers_form.SetControlText(crawlers_form.bStop, "Stop");
-                }
-                else
-                {
-                    Invoke(() =>
-                    {
-                        StopService.Text = "Start Service";
-                    });
-                    if (crawlers_form != null)
-                        crawlers_form.SetControlText(crawlers_form.bStop, "Start");
-                }
+                    StopService.Text = "Stop Service";
+                });
+                if (crawlers_form != null)
+                    crawlers_form.SetControlText(crawlers_form.bStop, "Stop");
             }
-        }
-
-        internal bool CheckingNow
-        {
-            set
+            else
             {
-                if (value)
+                Invoke(() =>
                 {
-                    Invoke(() =>
-                    {
-                        mCheckNow.Text = "Checking...";
-                    });
-                    if (crawlers_form != null)
-                        crawlers_form.SetControlText(crawlers_form.bCheckNow, "Checking...");
-                }
-                else
-                {
-                    Invoke(() =>
-                    {
-                        mCheckNow.Text = "Check Now";
-                    });
-                    if (crawlers_form != null)
-                        crawlers_form.SetControlText(crawlers_form.bCheckNow, "Check Now");
-                }
-            }
-        }
-
-        private void SysTray_Load(object sender, System.EventArgs e)
-        {
+                    StopService.Text = "Start Service";
+                });
+                if (crawlers_form != null)
+                    crawlers_form.SetControlText(crawlers_form.bStop, "Start");
+            }            
         }
 
         private void menuHelp_Click(object sender, EventArgs e)

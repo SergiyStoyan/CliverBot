@@ -61,15 +61,15 @@ namespace Cliver.CrawlerHost
                 //        c.AllowDBNull = true;
 
                 DataGridViewComboBoxColumn c_ = (DataGridViewComboBoxColumn)dataGridView1.Columns["Command_"];
-                c_.DataSource = Enum.GetValues(typeof(DbApi.CrawlerCommand));
-                c_.ValueType = typeof(DbApi.CrawlerCommand);
+                c_.DataSource = Enum.GetValues(typeof(Crawler.Command));
+                c_.ValueType = typeof(Crawler.Command);
                 //c_.ValueMember = "Value";
                 //c_.DisplayMember = "Display";
                 foreach (DataGridViewRow r in dataGridView1.Rows)
                 {
                     try
                     {
-                        r.Cells[command_i_].Value = (DbApi.CrawlerCommand)r.Cells[command_i].Value;
+                        r.Cells[command_i_].Value = (Crawler.Command)r.Cells[command_i].Value;
                     }
                     catch
                     {
@@ -78,13 +78,13 @@ namespace Cliver.CrawlerHost
                 }
 
                 c_ = (DataGridViewComboBoxColumn)dataGridView1.Columns["State_"];
-                c_.DataSource = Enum.GetValues(typeof(DbApi.CrawlerState));
-                c_.ValueType = typeof(DbApi.CrawlerState);
+                c_.DataSource = Enum.GetValues(typeof(Crawler.State));
+                c_.ValueType = typeof(Crawler.State);
                 foreach (DataGridViewRow r in dataGridView1.Rows)
                 {
                     try
                     {
-                        r.Cells[state_i_].Value = (DbApi.CrawlerState)r.Cells[state_i].Value;
+                        r.Cells[state_i_].Value = (Crawler.State)r.Cells[state_i].Value;
                     }
                     catch
                     {
@@ -94,13 +94,13 @@ namespace Cliver.CrawlerHost
 
                 c_ = (DataGridViewComboBoxColumn)dataGridView1.Columns["_LastSessionState_"];
                 c_.DisplayStyle = DataGridViewComboBoxDisplayStyle.Nothing;
-                c_.DataSource = Enum.GetValues(typeof(DbApi.SessionState));
-                c_.ValueType = typeof(DbApi.SessionState);
+                c_.DataSource = Enum.GetValues(typeof(Crawler.SessionState));
+                c_.ValueType = typeof(Crawler.SessionState);
                 foreach (DataGridViewRow r in dataGridView1.Rows)
                 {
                     try
                     {
-                        r.Cells[_last_session_state_i_].Value = (DbApi.SessionState)r.Cells[_last_session_state_i].Value;
+                        r.Cells[_last_session_state_i_].Value = (Crawler.SessionState)r.Cells[_last_session_state_i].Value;
                     }
                     catch
                     {
@@ -132,12 +132,12 @@ namespace Cliver.CrawlerHost
 
                 try
                 {
-                    r.Cells[command_i].Value = (byte)(DbApi.CrawlerCommand)r.Cells[command_i_].Value;
+                    r.Cells[command_i].Value = (byte)(Crawler.Command)r.Cells[command_i_].Value;
                 }
                 catch { }
                 try
                 {
-                    r.Cells[state_i].Value = (byte)(DbApi.CrawlerState)r.Cells[state_i_].Value;
+                    r.Cells[state_i].Value = (byte)(Crawler.State)r.Cells[state_i_].Value;
                 }
                 catch { }
             }
@@ -202,9 +202,9 @@ namespace Cliver.CrawlerHost
             try
             {
                 //e.Row.Cells["Id"].Value = 
-                e.Row.Cells["State_"].Value = DbApi.CrawlerState.DISABLED;
+                e.Row.Cells["State_"].Value = Crawler.State.DISABLED;
                 //e.Row.Cells["Site"].Value = 
-                e.Row.Cells["Command_"].Value = DbApi.CrawlerCommand.EMPTY;
+                e.Row.Cells["Command_"].Value = Crawler.Command.EMPTY;
                 //e.Row.Cells["AdminEmails"].Value = 
                 e.Row.Cells["RunTimeSpan"].Value = 86400;
                 e.Row.Cells["CrawlProductTimeout"].Value = 600;
@@ -260,11 +260,6 @@ namespace Cliver.CrawlerHost
             if (dataGridView1.IsCurrentCellInEditMode)
                 return;
             load_table();
-        }
-
-        private void bCheckNow_Click(object sender, EventArgs e)
-        {
-            SysTrayForm.This.CheckNow();
         }
 
         private void bStop_Click(object sender, EventArgs e)

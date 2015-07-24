@@ -106,6 +106,8 @@
       <Name>System.Data</Name>
     </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing">
       <Name>System.Drawing</Name>
     </Reference>
@@ -143,7 +145,8 @@
       <DependentUpon>CliverCrawlersDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="CrawlerHost\Linker.cs" />
-    <Compile Include="CrawlerHost\SessionApi.cs" />
+    <Compile Include="CrawlerHost\ServiceApi.cs" />
+    <Compile Include="CrawlerHost\CrawlerApi.cs" />
     <Compile Include="CrawlerHost\DbApi.cs" />
     <Compile Include="CrawlerHost\Misc.cs" />
     <Compile Include="CrawlerHost\Product.cs" />
@@ -153,7 +156,8 @@
     <Compile Include="CrawlerHost\HostSettingsForm.Designer.cs">
       <DependentUpon>HostSettingsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="EmailRoutines.cs" />
+    <Compile Include="CrawlerService.cs" />
+    <Compile Include="ServiceManager.cs" />
     <Compile Include="Properties\Host.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -186,9 +190,6 @@
       <DependentUpon>CrawlersForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="Manager.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="SysTrayForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -271,6 +272,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

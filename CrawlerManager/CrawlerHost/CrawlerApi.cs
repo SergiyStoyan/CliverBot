@@ -16,11 +16,22 @@ using Cliver.Bot;
 
 namespace Cliver.CrawlerHost
 {
-    public class SessionApi
+    public class Crawler
     {
-        public enum CrawlerMode : int { IDLE, PRODUCTION }
-        
-        static SessionApi()
+        public enum State : int { ENABLED = 1, DISABLED = 2, DEBUG = 3 }
+
+        public enum Command : int { EMPTY = 0, STOP = 1, RESTART = 2, FORCE = 3 }
+
+        public enum SessionState : int { STARTED = 1, _COMPLETED = 25, COMPLETED = 2, _ERROR = 35, ERROR = 3, BROKEN = 4, KILLED = 5 }
+
+        public enum ProductState : int { NEW = 1, DELETED = 4 }
+    }
+
+    public class CrawlerApi
+    {
+        enum CrawlerMode : int { IDLE, PRODUCTION }
+
+        static CrawlerApi()
         {
             lock (DbApi.Connection)
             { 
@@ -28,9 +39,12 @@ namespace Cliver.CrawlerHost
                 {        
                     CrawlerId = Log.ProcessName;
 
-                    Record r = DbApi.Connection.Get("SELECT _ProductsTable FROM Crawlers WHERE Id=@Id").GetFirstRecord("@Id", CrawlerId);
+                    Record r = DbApi.Connection.Get("SELECT State FROM Crawlers WHERE Id=@Id").GetFirstRecord("@Id", CrawlerId);
                     if (r == null)
                         LogMessage.Exit("Crawler id '" + CrawlerId + "' does not exist in [Crawlers] table.");
+
+                    if ((Crawler.State)r["State"] == Crawler.State.DISABLED)
+                        LogMessage.Exit("Crawler id '" + CrawlerId + "' is disabled.");
 
                     ProductsTable = DbApi.CreateProductsTableForCrawler(CrawlerId);
 
@@ -40,11 +54,11 @@ namespace Cliver.CrawlerHost
                      + (r["_SessionStartTime"] != null ? ((DateTime)r["_SessionStartTime"]).ToString("yyyy-MM-dd HH:mm:ss") : "")
                      + " start_time:" + (r["_LastStartTime"] != null ? ((DateTime)r["_LastStartTime"]).ToString("yyyy-MM-dd HH:mm:ss") : "")
                      + " end_time:" + (r["_LastEndTime"] != null ? ((DateTime)r["_LastEndTime"]).ToString("yyyy-MM-dd HH:mm:ss") : "")
-                     + " state:" + (r["_LastSessionState"] != null ? ((DbApi.SessionState)r["_LastSessionState"]).ToString() : "")
+                     + " state:" + (r["_LastSessionState"] != null ? ((Crawler.SessionState)r["_LastSessionState"]).ToString() : "")
                      + " log:" + r["_LastLog"] + "\n" + r["_Archive"];
                     const int MAX_ARCHIVE_LENGTH = 10000;
                     archive = archive.Substring(0, archive.Length < MAX_ARCHIVE_LENGTH ? archive.Length : MAX_ARCHIVE_LENGTH);
-                    if (DbApi.Connection.Get("UPDATE Crawlers SET _SessionStartTime=@SessionStartTime, _LastProcessId=@ProcessId, _LastStartTime=GETDATE(), _LastEndTime=NULL, _LastSessionState=" + (int)DbApi.SessionState.STARTED + ", _LastLog=@Log, _Archive=@Archive WHERE Id=@Id").Execute(
+                    if (DbApi.Connection.Get("UPDATE Crawlers SET _SessionStartTime=@SessionStartTime, _LastProcessId=@ProcessId, _LastStartTime=GETDATE(), _LastEndTime=NULL, _LastSessionState=" + (int)Crawler.SessionState.STARTED + ", _LastLog=@Log, _Archive=@Archive WHERE Id=@Id").Execute(
                         "@SessionStartTime", Session.This.StartTime, "@ProcessId", Process.GetCurrentProcess().Id, "@Log", Log.SessionDir, "@Archive", archive, "@Id", CrawlerId) < 1
                         )
                         throw new Exception("Could not update Crawlers table.");
@@ -82,17 +96,17 @@ namespace Cliver.CrawlerHost
                     case CrawlerMode.PRODUCTION:
                         if (completed)
                         {
-                            Log.Main.Inform("Deleted marked old products: " + DbApi.Connection["DELETE FROM " + ProductsTable + " WHERE State=" + DbApi.ProductState.DELETED].Execute());
-                            Log.Main.Inform("Marked as deleted old products: " + DbApi.Connection["UPDATE " + ProductsTable + " SET State=" + DbApi.ProductState.DELETED + " WHERE CrawlTime<@session_start_time"].Execute("@session_start_time", Session.This.StartTime));
+                            Log.Main.Inform("Deleted marked old products: " + DbApi.Connection["DELETE FROM " + ProductsTable + " WHERE State=" + Crawler.ProductState.DELETED].Execute());
+                            Log.Main.Inform("Marked as deleted old products: " + DbApi.Connection["UPDATE " + ProductsTable + " SET State=" + Crawler.ProductState.DELETED + " WHERE CrawlTime<@session_start_time"].Execute("@session_start_time", Session.This.StartTime));
 
-                            if (DbApi.Connection["UPDATE Crawlers SET _LastEndTime=GETDATE(), _LastSessionState=" + (int)DbApi.SessionState._COMPLETED + ", _NextStartTime=DATEADD(ss, RunTimeSpan, _LastStartTime) WHERE Id=@Id"].Execute("@Id", CrawlerId) < 1)
+                            if (1 > DbApi.Connection["UPDATE Crawlers SET _LastEndTime=GETDATE(), _LastSessionState=" + (int)Crawler.SessionState._COMPLETED + ", _NextStartTime=DATEADD(ss, RunTimeSpan, _LastStartTime) WHERE Id=@Id"].Execute("@Id", CrawlerId))
                                 throw new Exception("Could not update Crawlers table.");
 
                             DbApi.Message(DbApi.MessageType.INFORM, "COMPLETED");
                             break;
                         }
 
-                        if (DbApi.Connection["UPDATE Crawlers SET _LastEndTime=GETDATE(), _LastSessionState=" + (int)DbApi.SessionState._ERROR + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, _LastStartTime) WHERE Id=@Id"].Execute("@Id", CrawlerId) < 1)
+                        if (1 > DbApi.Connection["UPDATE Crawlers SET _LastEndTime=GETDATE(), _LastSessionState=" + (int)Crawler.SessionState._ERROR + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, _LastStartTime) WHERE Id=@Id"].Execute("@Id", CrawlerId))
                             throw new Exception("Could not update Crawlers table.");
 
                         DbApi.Message(DbApi.MessageType.INFORM, "UNCOMPLETED");
@@ -123,13 +137,13 @@ namespace Cliver.CrawlerHost
                 if (DbApi.Connection["SELECT Id FROM " + ProductsTable + " WHERE Id=@Id"].GetFirstRecord("@Id", id) != null)
                 {
                     if (DbApi.Connection["UPDATE " + ProductsTable + " SET Data=@Data WHERE Id=@Id"].Execute("@Data", data, "@Id", id) > 0)
-                        DbApi.Connection["UPDATE " + ProductsTable + " SET CrawlTime=GETDATE(), ChangeTime=GETDATE(), State=@State WHERE Id=@Id"].Execute("@State", DbApi.ProductState.NEW, "@Id", id);
+                        DbApi.Connection["UPDATE " + ProductsTable + " SET CrawlTime=GETDATE(), ChangeTime=GETDATE(), State=@State WHERE Id=@Id"].Execute("@State", Crawler.ProductState.NEW, "@Id", id);
                     else
                         DbApi.Connection["UPDATE " + ProductsTable + " SET CrawlTime=GETDATE() WHERE Id=@Id"].Execute("@Id", id);
                 }
                 else
                 {
-                    DbApi.Connection["INSERT INTO " + ProductsTable + " (Id, CrawlTime, ChangeTime, Url, Data, State) VALUES (@Id, GETDATE(), GETDATE(), @Url, @Data, @State)"].Execute("@Id", id, "@Url", url, "@Data", data, "@State", DbApi.ProductState.NEW);
+                    DbApi.Connection["INSERT INTO " + ProductsTable + " (Id, CrawlTime, ChangeTime, Url, Data, State) VALUES (@Id, GETDATE(), GETDATE(), @Url, @Data, @State)"].Execute("@Id", id, "@Url", url, "@Data", data, "@State", Crawler.ProductState.NEW);
                 }
 
                 if (DateTime.Now > time_2_update_last_product_time)
@@ -150,41 +164,6 @@ namespace Cliver.CrawlerHost
             SaveProduct(product.Id, product.Url, SerializationRoutines.Json.Get(product.GetDeclaredField2Values()));
             return true;
         }
-
-        //static public bool SaveProductAsXml<T>(string id, T product, string url) where T : Product
-        //{
-        //    product.Prepare();
-        //    if (!product.IsValid())
-        //        return false;
-
-        //    XmlDocument xd = new XmlDocument();
-        //    {
-        //        XmlNode xn = xd.CreateNode(XmlNodeType.Element, "Product", null);
-        //        xd.AppendChild(xn);
-        //        XmlAttribute xa = xd.CreateAttribute("Id");
-        //        xa.Value = id;
-        //        xn.Attributes.Append(xa);
-        //        xa = xd.CreateAttribute("url");
-        //        xa.Value = url;
-        //        xn.Attributes.Append(xa);
-        //    }
-
-        //    foreach (string field in product.Fields)
-        //    {
-        //        XmlNode xn = xd.CreateNode(XmlNodeType.Element, "Field", null);
-        //        xd.DocumentElement.AppendChild(xn);
-        //        XmlAttribute xa = xd.CreateAttribute("name");
-        //        xa.Value = field;
-        //        xn.Attributes.Append(xa);
-        //        xa = xd.CreateAttribute("value");
-        //        xa.Value = (string)product[field];
-        //        xn.Attributes.Append(xa);
-        //    }
-
-        //    //save_product(id, SerializationRoutines.Xml.Get(product.__GetField2Values()), url);
-        //    SaveProduct(id, xd.OuterXml, url);
-        //    return true;
-        //}
     }
 }
 
