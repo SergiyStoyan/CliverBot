@@ -103,8 +103,8 @@ CREATE TABLE [dbo].[Crawlers] (
     [RunTimeSpan]          INT             DEFAULT ((86400)) NOT NULL,
     [CrawlProductTimeout]  INT             DEFAULT ((600)) NOT NULL,
     [YieldProductTimeout]  INT             DEFAULT ((259200)) NOT NULL,
-    [AdminEmails]          NVARCHAR (MAX)  NOT NULL,
-    [Comment]              NVARCHAR (MAX) DEFAULT (NULL) NULL,
+    [AdminEmails]          NVARCHAR (300)  NOT NULL,
+    [Comment]              NVARCHAR (1000) DEFAULT (NULL) NULL,
     [RestartDelayIfBroken] INT             DEFAULT ((1800)) NOT NULL,
     [_SessionStartTime]    DATETIME        DEFAULT (NULL) NULL,
     [_LastSessionState]    INT             DEFAULT (NULL) NULL,
@@ -112,7 +112,7 @@ CREATE TABLE [dbo].[Crawlers] (
     [_LastStartTime]       DATETIME        DEFAULT (NULL) NULL,
     [_LastEndTime]         DATETIME        DEFAULT (NULL) NULL,
     [_LastProcessId]       INT             DEFAULT (NULL) NULL,
-    [_LastLog]             NVARCHAR (MAX)  DEFAULT (NULL) NULL,
+    [_LastLog]             NVARCHAR (500)  DEFAULT (NULL) NULL,
     [_Archive]             NTEXT           DEFAULT (NULL) NULL,
     [_ProductsTable]       NVARCHAR (100)  DEFAULT ('') NOT NULL,
     [_LastProductTime]     DATETIME        DEFAULT (NULL) NULL,
@@ -121,35 +121,38 @@ CREATE TABLE [dbo].[Crawlers] (
 "
                     ).Execute();
 
-                Connection.Get(@"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='messages' and xtype='U')
+                Connection.Get(@"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Messages' and xtype='U')
 CREATE TABLE [dbo].[Messages] (
-    [Id]        INT             IDENTITY (1, 1) NOT NULL,
-    [Source] NVARCHAR (100)   NOT NULL,
-    [Type]      INT             NOT NULL,
-    [Value]     NVARCHAR (MAX) NOT NULL,
-    [Time]      DATETIME        NOT NULL,
-    [Details]    NVARCHAR(MAX)     NOT NULL,
+    [Id]      INT            IDENTITY (1, 1) NOT NULL,
+    [Source]  NVARCHAR (100) NOT NULL,
+    [Type]    INT            NOT NULL,
+    [Value]   NVARCHAR (MAX) NOT NULL,
+    [Time]    DATETIME       NOT NULL,
+    [Details] NVARCHAR (MAX) NOT NULL,
+    [Mark] INT NULL, 
     PRIMARY KEY NONCLUSTERED ([Id] ASC)
-);"
+);
+"
                     ).Execute();
             }
 
-            Connection.Get(@"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='services' and xtype='U')
+            Connection.Get(@"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Services' and xtype='U')
 CREATE TABLE [dbo].[Services] (
-    [Id]                   NVARCHAR (50)  NOT NULL,
-    [State]                INT            DEFAULT ((2)) NOT NULL,
-    [ExeFolder]            NVARCHAR (MAX) DEFAULT (NULL) NULL,
-    [Command]              INT            DEFAULT ((0)) NOT NULL,
-    [RunTimeSpan]          INT            DEFAULT ((86400)) NOT NULL,
-    [AdminEmails]          NVARCHAR (MAX) NOT NULL,
-    [Comment]              NVARCHAR (MAX) DEFAULT (NULL) NULL,
-    [RestartDelayIfBroken] INT            DEFAULT ((1800)) NOT NULL,
-    [_NextStartTime]       DATETIME       DEFAULT ((0)) NOT NULL,
-    [_LastStartTime]       DATETIME       DEFAULT (NULL) NULL,
-    [_LastEndTime]         DATETIME       DEFAULT (NULL) NULL,
-    [_LastProcessId]       INT            DEFAULT (NULL) NULL,
-    [_LastLog]             NVARCHAR (MAX) DEFAULT (NULL) NULL,
-    [_Archive]             NTEXT          DEFAULT (NULL) NULL,
+    [Id]                NVARCHAR (50)  NOT NULL,
+    [State]             INT            DEFAULT ((2)) NOT NULL,
+    [ExeFolder]         NVARCHAR (MAX) NULL,
+    [Command]           INT            DEFAULT ((0)) NOT NULL,
+    [RunTimeSpan]       INT            DEFAULT ((86400)) NOT NULL,
+    [AdminEmails]       NVARCHAR (MAX) NOT NULL,
+    [Comment]           NVARCHAR (MAX) DEFAULT (NULL) NULL,
+    [RunTimeout]        INT            DEFAULT ((1800)) NOT NULL,
+    [_LastSessionState] INT            DEFAULT (NULL) NULL,
+    [_NextStartTime]    DATETIME       DEFAULT ((0)) NOT NULL,
+    [_LastStartTime]    DATETIME       DEFAULT (NULL) NULL,
+    [_LastEndTime]      DATETIME       DEFAULT (NULL) NULL,
+    [_LastProcessId]    INT            DEFAULT (NULL) NULL,
+    [_LastLog]          NVARCHAR (MAX) DEFAULT (NULL) NULL,
+    [_Archive]          NTEXT          DEFAULT (NULL) NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 "
@@ -185,12 +188,20 @@ State tinyint NOT NULL)"
             }
         }
 
+        public enum MessageMark
+        {
+            EMPTY = 0,
+            READ = 1,
+            IMPORTANT = 2
+        }
+        
         public enum MessageType
         {
             INFORM = 1,
             WARNING = 2,
             ERROR = 3,
-            EXIT = 4
+            EXIT = 4, 
+            ATTENTION = 5
         }
         
         static public void Message(Exception exception, string source = null, string details = null)
@@ -198,10 +209,12 @@ State tinyint NOT NULL)"
             Message(MessageType.ERROR, Log.GetExceptionMessage(exception), source, details);
         }
 
+        static readonly string entry_assembly_name = Regex.Replace(Assembly.GetEntryAssembly().FullName, @"\,.*", "", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
         static public void Message(MessageType type, string message, string source = null, string details = null)
         {
             if (source == null)
-                source = Regex.Replace(System.AppDomain.CurrentDomain.FriendlyName, @"\.exe$", "", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                source = entry_assembly_name;
             if (details == null)
             {
                 System.Diagnostics.StackTrace st = new StackTrace(true);

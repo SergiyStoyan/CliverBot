@@ -20,8 +20,9 @@ namespace Cliver.CrawlerHostCleaner
                 Log.LOGGING_MODE = Log.LoggingMode.ONLY_LOG;
                 LogMessage.Output2Console = true;
                 ProcessRoutines.RunSingleProcessOnly();
+                CrawlerHost.ServiceApi.Initialize();
                 Cleaner.Do();
-               CrawlerHost.ServiceApi.Complete(true);
+                CrawlerHost.ServiceApi.Complete(true);
             }
             catch (Exception e)
             {

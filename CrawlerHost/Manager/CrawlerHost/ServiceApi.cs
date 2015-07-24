@@ -57,7 +57,7 @@ namespace Cliver.CrawlerHost
                     const int MAX_ARCHIVE_LENGTH = 10000;
                     archive = archive.Substring(0, archive.Length < MAX_ARCHIVE_LENGTH ? archive.Length : MAX_ARCHIVE_LENGTH);
                     if (1 > DbApi.Connection.Get("UPDATE Services SET _LastProcessId=@ProcessId, _LastStartTime=GETDATE(), _LastEndTime=NULL, _LastSessionState=" + (int)Service.SessionState.STARTED + ", _LastLog=@Log, _Archive=@Archive WHERE Id=@Id").Execute(
-                        "@ProcessId", Process.GetCurrentProcess().Id, "@Log", Log.SessionDir, "@Archive", archive, "@Id", ServiceId)
+                        "@ProcessId", Process.GetCurrentProcess().Id, "@Log", Log.WorkDir, "@Archive", archive, "@Id", ServiceId)
                         )
                         throw new Exception("Could not update Services table.");
 
@@ -72,7 +72,7 @@ namespace Cliver.CrawlerHost
 
         readonly static public string ServiceId;
 
-        public static void Start()
+        public static void Initialize()
         {
             //to force static constructor
         }
