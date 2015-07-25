@@ -18,14 +18,14 @@ namespace Cliver.Bot.Properties
     { 
         public Log()
         {
-            this.SettingsLoaded+=Log_SettingsLoaded;
+            //this.SettingsLoaded += Log_SettingsLoaded;
         }
 
-        //new public void Reload()
-        //{
-        //    base.Reload();
-        //    Log_SettingsLoaded(null, null);
-        //}
+        new public void Reload()
+        {
+            base.Reload();
+            Log_SettingsLoaded(null, null);
+        }
 
         void Log_SettingsLoaded(object sender, System.Configuration.SettingsLoadedEventArgs e)
         {

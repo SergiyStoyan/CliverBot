@@ -119,21 +119,21 @@ WHERE _LastSessionState IN (" + (int)Crawler.SessionState.STARTED + ", " + (int)
                 if (_LastSessionState == Crawler.SessionState._COMPLETED)
                 {
                     string m = "Crawler " + crawler_id + " completed successfully.\nTotal duration: " + (new TimeSpan(0, 0, duration)).ToString() + m1;
-                    email(m, crawler_id, false);
+                    EmailRoutine.Send(m, EmailRoutine.SourceType.CRAWLER, crawler_id, false);
                     DbApi.Connection["UPDATE Crawlers SET _LastSessionState=" + (int)Crawler.SessionState.COMPLETED + " WHERE Id=@Id"].Execute("@Id", crawler_id);
                     continue;
                 }
 
                 if (_LastSessionState == Crawler.SessionState._ERROR)
                 {
-                    email("Crawler " + crawler_id + " exited with error" + m1, crawler_id);
+                    EmailRoutine.Send("Crawler " + crawler_id + " exited with error" + m1, EmailRoutine.SourceType.CRAWLER, crawler_id);
                     DbApi.Connection["UPDATE Crawlers SET _LastSessionState=" + (int)Crawler.SessionState.ERROR + " WHERE Id=@Id"].Execute("@Id", crawler_id);
                     continue;
                 }
 
                 if (!ServiceManager.IsProcessAlive((int?)r["_LastProcessId"], crawler_id))
                 {
-                    email("Crawler " + crawler_id + " was broken by unknown reason" + m1, crawler_id);
+                    EmailRoutine.Send("Crawler " + crawler_id + " was broken by unknown reason", EmailRoutine.SourceType.CRAWLER, crawler_id);
                     DbApi.Connection["UPDATE Crawlers SET _LastSessionState=" + (int)Crawler.SessionState.BROKEN + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, GETDATE()) WHERE Id=@Id"].Execute("@Id", crawler_id);
                     continue;
                 }
@@ -144,7 +144,7 @@ WHERE _LastSessionState IN (" + (int)Crawler.SessionState.STARTED + ", " + (int)
 
                     if (last_crawled_product_elapsed_time < 0 || last_crawled_product_elapsed_time > (int)r["CrawlProductTimeout"])
                     {
-                        email("Crawler " + crawler_id + " is running but not crawling products during " + last_crawled_product_elapsed_time + " seconds. It will be killed. Total duration: " + (new TimeSpan(0, 0, duration)).ToString() + m1, crawler_id);
+                        EmailRoutine.Send("Crawler " + crawler_id + " is running but not crawling products during " + last_crawled_product_elapsed_time + " seconds. It will be killed. Total duration: " + (new TimeSpan(0, 0, duration)).ToString() + m1, EmailRoutine.SourceType.CRAWLER, crawler_id);
                         
                         Process p = ServiceManager.GetProcess((int?)r["_LastProcessId"], crawler_id);
                         Log.Main.Warning("Killing " + crawler_id);
@@ -243,14 +243,14 @@ WHERE (State<>" + (int)Crawler.State.DISABLED + " AND GETDATE()>=_NextStartTime 
             crawler_directory = Log.GetAbsolutePath(Cliver.CrawlerHost.Properties.Settings.Default.CrawlersDirectory);
             if (!Directory.Exists(crawler_directory))
             {
-                email("Crawler directory '" + crawler_directory + "' does not exist", crawler_id);
+                EmailRoutine.Send("Crawler directory '" + crawler_directory + "' does not exist", EmailRoutine.SourceType.CRAWLER, crawler_id);
                 return false;
             }
             string crawler_file_name = crawler_id + ".exe";
             string crawler_file = ServiceManager.FindFile(crawler_directory, crawler_file_name);
             if (crawler_file == null)
             {
-                email("Crawler file '" + crawler_file_name + "' was not found in " + crawler_directory, crawler_id);
+                EmailRoutine.Send("Crawler file '" + crawler_file_name + "' was not found in " + crawler_directory, EmailRoutine.SourceType.CRAWLER, crawler_id);
                 return false;
             }
             Process p = new Process();
@@ -263,64 +263,12 @@ WHERE (State<>" + (int)Crawler.State.DISABLED + " AND GETDATE()>=_NextStartTime 
             {
                 DbApi.Connection["UPDATE Crawlers SET _NextStartTime=DATEADD(ss, RestartDelayIfBroken, GETDATE()) WHERE Id=@Id"].Execute("@Id", crawler_id);
 
-                email(crawler_id + " could not start.", crawler_id);
+                EmailRoutine.Send(crawler_id + " could not start.", EmailRoutine.SourceType.CRAWLER, crawler_id);
                 return false;
             }
             running_crawler_ids.Add(crawler_id);
             Log.Main.Write("Process id: " + p.Id);
             return true;
-        }
-
-        static public void email(string message, string crawler_id = null, bool error = true)
-        {
-            return;
-            try
-            {
-                if (error)
-                    Log.Main.Error(message);
-                else
-                    Log.Main.Inform(message);
-
-                string AdminEmails = null;
-                if (crawler_id != null)
-                    AdminEmails = (string)DbApi.Connection["SELECT AdminEmails FROM Crawlers WHERE Id=@Id"].GetSingleValue("@Id", crawler_id);
-                if (AdminEmails == null)
-                    AdminEmails = Properties.Settings.Default.DefaultAdminEmails;
-                if (AdminEmails != null)
-                    AdminEmails = Regex.Replace(AdminEmails.Trim(), @"[\s+\,]+", ",", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
-                else
-                    Log.Main.Error("No email is defined to send messages.");
-
-                MailMessage m = new MailMessage();
-                m.From = new MailAddress(Properties.Settings.Default.EmailSender);
-                m.To.Add(AdminEmails);
-                string subject = "Crawler Manager:";
-                if (crawler_id != null)
-                    subject += " " + crawler_id;
-                if (error) subject += " error";
-                subject += " notification";
-                m.Subject = subject;
-                m.Body = message;
-
-                System.Net.Mail.SmtpClient c = new SmtpClient(Properties.Settings.Default.SmtpHost, Properties.Settings.Default.SmtpPort);
-                c.EnableSsl = true;
-                c.DeliveryMethod = SmtpDeliveryMethod.Network;
-                c.UseDefaultCredentials = false;
-                c.Credentials = new System.Net.NetworkCredential(Properties.Settings.Default.SmtpLogin, Properties.Settings.Default.SmtpPassword);
-
-                try
-                {
-                    c.Send(m);
-                }
-                catch (Exception e)
-                {
-                    Log.Main.Error(e);
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Main.Error(e);
-            }
         }
     }
 }

@@ -82,7 +82,7 @@ namespace Cliver.CrawlerHost.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("mail.cliversoft.com")]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string SmtpHost {
             get {
                 return ((string)(this["SmtpHost"]));

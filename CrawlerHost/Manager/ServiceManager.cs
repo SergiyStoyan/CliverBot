@@ -83,7 +83,7 @@ namespace Cliver.CrawlerHost
             catch (Exception e)
             {
                 DbApi.Message(e);
-                email(Log.GetExceptionMessage(e));
+                EmailRoutine.Send(Log.GetExceptionMessage(e), EmailRoutine.SourceType.MANAGER, Log.GetExceptionMessage(e));
             }
             if (StateChanged != null)
                 StateChanged.BeginInvoke(false, null, null);
@@ -186,30 +186,30 @@ WHERE _LastSessionState IN (" + (int)Service.SessionState.STARTED + ", " + (int)
                 if (_LastSessionState == Service.SessionState._COMPLETED)
                 {
                     string m = "Service " + service_id + " completed successfully.\nTotal duration: " + (new TimeSpan(0, 0, duration)).ToString() + m1;
-                    email(m, service_id, false);
                     DbApi.Connection["UPDATE Services SET _LastSessionState=" + (int)Service.SessionState.COMPLETED + " WHERE Id=@Id"].Execute("@Id", service_id);
+                    EmailRoutine.Send(m, EmailRoutine.SourceType.SERVICE, service_id, false);
                     continue;
                 }
 
                 if (_LastSessionState ==Service.SessionState._ERROR)
                 {
-                    email("Service " + service_id + " exited with error" + m1, service_id);
                     DbApi.Connection["UPDATE Services SET _LastSessionState=" + (int)Service.SessionState.ERROR + " WHERE Id=@Id"].Execute("@Id", service_id);
+                    EmailRoutine.Send("Service " + service_id + " exited with error" + m1, EmailRoutine.SourceType.SERVICE, service_id);
                     continue;
                 }
                 
                 Process p = GetProcess((int?)r["_LastProcessId"], service_id);
                 if (p==null)
                 {
-                    email("Service " + service_id + " was broken by unknown reason" + m1, service_id);
                     DbApi.Connection["UPDATE Services SET _LastSessionState=" + (int)Service.SessionState.BROKEN + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, GETDATE()) WHERE Id=@Id"].Execute("@Id", service_id);
+                    EmailRoutine.Send("Service " + service_id + " was broken by unknown reason" + m1, EmailRoutine.SourceType.SERVICE, service_id);
                     continue;
                 }
 
                 if (duration >= (int)r["RunTimeout"])
                 {                  
-                        email("Service " + service_id + " is running " + (new TimeSpan(0, 0, duration)).ToString() + " seconds. It will be killed." + m1, service_id);
-
+                        EmailRoutine.Send("Service " + service_id + " is running " + (new TimeSpan(0, 0, duration)).ToString() + " seconds. It will be killed." + m1, EmailRoutine.SourceType.SERVICE, service_id);
+                    
                         p = GetProcess((int?)r["_LastProcessId"], service_id);
                         Log.Main.Warning("Killing " + service_id);
                         p.Kill();
@@ -286,14 +286,14 @@ WHERE (State<>" + (int)Service.State.DISABLED + " AND GETDATE()>=_NextStartTime 
             service_directory = Log.GetAbsolutePath(service_directory);
             if (!Directory.Exists(service_directory))
             {
-                email("Service directory '" + service_directory + "' does not exist", service_id);
+                EmailRoutine.Send("Service directory '" + service_directory + "' does not exist", EmailRoutine.SourceType.SERVICE, service_id);
                 return false;
             }
             string service_file_name = service_id + ".exe";
             string service_file = FindFile(service_directory, service_file_name);
             if (service_file == null)
             {
-                email("Service file '" + service_file_name + "' was not found in " + service_directory, service_id);
+                EmailRoutine.Send("Service file '" + service_file_name + "' was not found in " + service_directory, EmailRoutine.SourceType.SERVICE, service_id);
                 return false;
             }
             Process p = new Process();
@@ -306,7 +306,7 @@ WHERE (State<>" + (int)Service.State.DISABLED + " AND GETDATE()>=_NextStartTime 
             {
                 DbApi.Connection["UPDATE Services SET _NextStartTime=DATEADD(ss, RestartDelayIfBroken, GETDATE()) WHERE Id=@Id"].Execute("@Id", service_id);
 
-                email(service_id + " could not start.", service_id);
+                EmailRoutine.Send(service_id + " could not start.", EmailRoutine.SourceType.SERVICE, service_id);
                 return false;
             }
             Log.Main.Write("Process id: " + p.Id);
@@ -365,59 +365,7 @@ WHERE (State<>" + (int)Service.State.DISABLED + " AND GETDATE()>=_NextStartTime 
                 return null;
             }
         }
-
-        static public void email(string message, string service_id = null, bool error = true)
-        {
-            return;
-            try
-            {
-                if (error)
-                    Log.Main.Error(message);
-                else
-                    Log.Main.Inform(message);
-
-                string AdminEmails = null;
-                if (service_id != null)
-                    AdminEmails = (string)DbApi.Connection["SELECT AdminEmails FROM Services WHERE Id=@Id"].GetSingleValue("@Id", service_id);
-                if (AdminEmails == null)
-                    AdminEmails = Properties.Settings.Default.DefaultAdminEmails;
-                if (AdminEmails != null)
-                    AdminEmails = Regex.Replace(AdminEmails.Trim(), @"[\s+\,]+", ",", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
-                else
-                    Log.Main.Error("No email is defined to send messages.");
-
-                MailMessage m = new MailMessage();
-                m.From = new MailAddress(Properties.Settings.Default.EmailSender);
-                m.To.Add(AdminEmails);
-                string subject = "Crawler Host Service Manager:";
-                if (service_id != null)
-                    subject += " " + service_id;
-                if (error) subject += " error";
-                subject += " notification";
-                m.Subject = subject;
-                m.Body = message;
-
-                System.Net.Mail.SmtpClient c = new SmtpClient(Properties.Settings.Default.SmtpHost, Properties.Settings.Default.SmtpPort);
-                c.EnableSsl = true;
-                c.DeliveryMethod = SmtpDeliveryMethod.Network;
-                c.UseDefaultCredentials = false;
-                c.Credentials = new System.Net.NetworkCredential(Properties.Settings.Default.SmtpLogin, Properties.Settings.Default.SmtpPassword);
-
-                try
-                {
-                    c.Send(m);
-                }
-                catch (Exception e)
-                {
-                    Log.Main.Error(e);
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Main.Error(e);
-            }
-        }
-
+        
         public static void WaitUntilCheckTime()
         {
             long duration = (long)(Process.GetCurrentProcess().StartTime.AddMilliseconds(Properties.Settings.Default.ServiceCheckDurationInMss + 500) - DateTime.Now).TotalMilliseconds;

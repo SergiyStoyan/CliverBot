@@ -31,7 +31,7 @@ namespace Cliver.CrawlerHost
 
         static public void ValidateProductClass(Type type)
         {
-            Type[] ALLOWED_TYPES = new Type[] { typeof(int), typeof(int[]), typeof(float), typeof(float[]), typeof(string), typeof(string[]) };
+            Type[] ALLOWED_TYPES = new Type[] { typeof(int), typeof(int[]), typeof(decimal), typeof(decimal[]), typeof(string), typeof(string[]) };
             Dictionary<string, FieldInfo> declared_field_infos = type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).ToDictionary(x => x.Name, x => x);
             FieldInfo fi = declared_field_infos.Values.FirstOrDefault(x => !ALLOWED_TYPES.Contains(x.FieldType));
             if (fi != null)

@@ -138,21 +138,22 @@ CREATE TABLE [dbo].[Messages] (
 
             Connection.Get(@"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Services' and xtype='U')
 CREATE TABLE [dbo].[Services] (
-    [Id]                NVARCHAR (50)  NOT NULL,
-    [State]             INT            DEFAULT ((2)) NOT NULL,
-    [ExeFolder]         NVARCHAR (MAX) NULL,
-    [Command]           INT            DEFAULT ((0)) NOT NULL,
-    [RunTimeSpan]       INT            DEFAULT ((86400)) NOT NULL,
-    [AdminEmails]       NVARCHAR (MAX) NOT NULL,
-    [Comment]           NVARCHAR (MAX) DEFAULT (NULL) NULL,
-    [RunTimeout]        INT            DEFAULT ((1800)) NOT NULL,
-    [_LastSessionState] INT            DEFAULT (NULL) NULL,
-    [_NextStartTime]    DATETIME       DEFAULT ((0)) NOT NULL,
-    [_LastStartTime]    DATETIME       DEFAULT (NULL) NULL,
-    [_LastEndTime]      DATETIME       DEFAULT (NULL) NULL,
-    [_LastProcessId]    INT            DEFAULT (NULL) NULL,
-    [_LastLog]          NVARCHAR (MAX) DEFAULT (NULL) NULL,
-    [_Archive]          NTEXT          DEFAULT (NULL) NULL,
+    [Id]                   NVARCHAR (50)  NOT NULL,
+    [State]                INT            DEFAULT ((2)) NOT NULL,
+    [ExeFolder]            NVARCHAR (MAX) NULL,
+    [Command]              INT            DEFAULT ((0)) NOT NULL,
+    [RunTimeSpan]          INT            DEFAULT ((86400)) NOT NULL,
+    [RunTimeout]           INT            DEFAULT ((1800)) NOT NULL,
+    [AdminEmails]          NVARCHAR (MAX) NOT NULL,
+    [Comment]              NVARCHAR (MAX) DEFAULT (NULL) NULL,
+    [RestartDelayIfBroken] INT            DEFAULT ((86400)) NOT NULL,
+    [_LastSessionState]    INT            DEFAULT (NULL) NULL,
+    [_NextStartTime]       DATETIME       DEFAULT ((0)) NOT NULL,
+    [_LastStartTime]       DATETIME       DEFAULT (NULL) NULL,
+    [_LastEndTime]         DATETIME       DEFAULT (NULL) NULL,
+    [_LastProcessId]       INT            DEFAULT (NULL) NULL,
+    [_LastLog]             NVARCHAR (MAX) DEFAULT (NULL) NULL,
+    [_Archive]             NTEXT          DEFAULT (NULL) NULL,
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 "
@@ -220,9 +221,21 @@ State tinyint NOT NULL)"
                 if (details == null)
                 {
                     System.Diagnostics.StackTrace st = new StackTrace(true);
-                    StackFrame sf = st.GetFrame(1);
-                    var m = sf.GetMethod();
-                    details = m.DeclaringType.ToString() + "\nmethod: " + m.Name + "\nfile: " + sf.GetFileName() + "\nline: " + sf.GetFileLineNumber().ToString();
+                    StackFrame sf;
+                    string n = null;
+                    Type dt = null;
+                    for (int i = 1; ; i++)
+                    {
+                        sf = st.GetFrame(i);
+                        if (sf == null)
+                            break;
+                        MethodBase mb = sf.GetMethod();
+                        dt = mb.DeclaringType;
+                        n = mb.Name;
+                        if (n != "Message" || dt != typeof(DbApi))
+                            break;
+                    }
+                    details = dt.ToString() + "::" + n + " \nfile: " + sf.GetFileName() + " \nline: " + sf.GetFileLineNumber().ToString();
                 }
                 //{
                 //    Message m = new CrawlerHost.Message();
@@ -241,19 +254,19 @@ State tinyint NOT NULL)"
             switch (type)
             {
                 case MessageType.INFORM:
-                    Log.Inform(message);
+                    Log.Main.Inform(message);
                     break;
                 case MessageType.WARNING:
-                    Log.Warning(message);
+                    Log.Main.Warning(message);
                     break;
                 case MessageType.ERROR:
-                    Log.Error(message);
+                    Log.Main.Error(message);
                     break;
                 case MessageType.EXIT:
-                    Log.Exit(message);
+                    Log.Main.Exit(message);
                     break;
                 default:
-                    Log.Exit("There is not switch option: " + type.ToString());
+                    Log.Main.Exit("There is not switch option: " + type.ToString());
                     break;
             }
         }

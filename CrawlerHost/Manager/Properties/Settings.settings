@@ -23,7 +23,7 @@
       <Value Profile="(Default)">crawler_manager@cliversoft.com</Value>
     </Setting>
     <Setting Name="SmtpHost" Type="System.String" Scope="User">
-      <Value Profile="(Default)">mail.cliversoft.com</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="SmtpPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">25</Value>
