@@ -76,7 +76,7 @@ ISNULL(_LastStartTime, 0) AS _LastStartTime, ISNULL(_LastEndTime, 0) AS _LastEnd
                         Log.Main.Warning("Killing " + crawler_id + " as marked " + command);
                         p.Kill();
                         Thread.Sleep(2000);
-                        if (! ServiceManager.IsProcessAlive((int?)r["_LastProcessId"], crawler_id))
+                        if (!ServiceManager.IsProcessAlive((int?)r["_LastProcessId"], crawler_id))
                             DbApi.Connection["UPDATE Crawlers SET Command=" + (int)Crawler.Command.FORCE + " WHERE Id=@Id"].Execute("@Id", crawler_id);
                         else
                             Log.Main.Error("Could not kill " + crawler_id);
@@ -87,13 +87,26 @@ ISNULL(_LastStartTime, 0) AS _LastStartTime, ISNULL(_LastEndTime, 0) AS _LastEnd
                         Log.Main.Warning("Killing " + crawler_id + " as marked " + command);
                         p.Kill();
                         Thread.Sleep(2000);
-                        if (! ServiceManager.IsProcessAlive((int?)r["_LastProcessId"], crawler_id))
+                        if (!ServiceManager.IsProcessAlive((int?)r["_LastProcessId"], crawler_id))
                             DbApi.Connection["UPDATE Crawlers SET _LastSessionState=" + (int)Crawler.SessionState.KILLED + ", _LastEndTime=GETDATE() WHERE Id=@Id"].Execute("@Id", crawler_id);
                         else
                             Log.Main.Error("Could not kill " + crawler_id);
                         break;
                     case Crawler.Command.FORCE:
                         //processed below				
+                        break;
+                    case Crawler.Command.RESTART_WITH_CLEAR_SESSION:
+                        if (p != null)
+                        {
+                            Log.Main.Warning("Killing " + crawler_id + " as marked " + command);
+                            p.Kill();
+                            Thread.Sleep(2000);
+                            if (ServiceManager.IsProcessAlive((int?)r["_LastProcessId"], crawler_id))
+                                Log.Main.Error("Could not kill " + crawler_id);
+                            break;
+                        }
+                        clear_session(crawler_id);
+                        DbApi.Connection["UPDATE Crawlers SET Command=" + (int)Crawler.Command.FORCE + " WHERE Id=@Id"].Execute("@Id", crawler_id);
                         break;
                     default:
                         throw new Exception("Crawler command " + command + " is not defined.");
@@ -269,6 +282,18 @@ WHERE (State<>" + (int)Crawler.State.DISABLED + " AND GETDATE()>=_NextStartTime 
             running_crawler_ids.Add(crawler_id);
             Log.Main.Write("Process id: " + p.Id);
             return true;
+        }
+
+        static void clear_session(string crawler_id)
+        {
+            try
+            {
+                Directory.Delete(Cliver.Bot.Properties.Log.Default.PreWorkDir + @"\" + Log.WorkDirPrefix, true);
+            }
+            catch(Exception e)
+            {
+                Log.Main.Error(e);
+            }
         }
     }
 }

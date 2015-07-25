@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="PollIntervalInMss" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">1000</Value>
+      <Value Profile="(Default)">5000</Value>
     </Setting>
     <Setting Name="CrawlersDirectory" Type="System.String" Scope="User">
       <Value Profile="(Default)">..\..\Crawlers</Value>

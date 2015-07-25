@@ -119,11 +119,11 @@ namespace Cliver.Bot
                     {
                         string dir = null;
                         if (string.IsNullOrEmpty(Properties.Log.Default.PreWorkDir))
-                            dir = Log.AppDir + @"\" + Log.ProcessName + work_dir_prefix;
+                            dir = Log.AppDir + @"\" + Log.ProcessName + WorkDirPrefix;
                         else if (!Properties.Log.Default.PreWorkDir.Contains(":"))
-                            dir = Log.AppDir + @"\" + Properties.Log.Default.PreWorkDir + @"\" + Log.ProcessName + work_dir_prefix;
+                            dir = Log.AppDir + @"\" + Properties.Log.Default.PreWorkDir + @"\" + Log.ProcessName + WorkDirPrefix;
                         else
-                            dir = Properties.Log.Default.PreWorkDir + @"\" + Log.ProcessName + work_dir_prefix;
+                            dir = Properties.Log.Default.PreWorkDir + @"\" + Log.ProcessName + WorkDirPrefix;
                         WorkDir = dir;
                     }
                 }
@@ -131,7 +131,7 @@ namespace Cliver.Bot
             }
         }
         static string work_dir = null;
-        static readonly string work_dir_prefix = @"_Sessions";
+        public const string WorkDirPrefix = @"_Sessions";
 
         /// <summary>
         /// Creates session directory for current session and returns its path

@@ -20,7 +20,7 @@ namespace Cliver.CrawlerHost
     {
         public enum State : int { ENABLED = 1, DISABLED = 2, DEBUG = 3 }
 
-        public enum Command : int { EMPTY = 0, STOP = 1, RESTART = 2, FORCE = 3 }
+        public enum Command : int { EMPTY = 0, STOP = 1, RESTART = 2, FORCE = 3, RESTART_WITH_CLEAR_SESSION = 4 }
 
         public enum SessionState : int { STARTED = 1, _COMPLETED = 25, COMPLETED = 2, _ERROR = 35, ERROR = 3, BROKEN = 4, KILLED = 5 }
 
