@@ -54,8 +54,8 @@ namespace Cliver.Bot
         /// <summary>
         /// Receives owner window handle. It is needed to do message box owned.
         /// </summary>
-        static IWin32Window owner = null;
-        internal static IWin32Window Owner
+        static Form owner = null;
+        internal static Form Owner
         {
             set
             {
@@ -73,7 +73,7 @@ namespace Cliver.Bot
             }
         }
 
-        public static bool AskYesNo(string message, bool silent_yes, bool write2log = true)
+        public static bool AskYesNo(string message, bool automatic_yes, bool write2log = true)
         {
             lock (lock_variable)
             {
@@ -84,16 +84,9 @@ namespace Cliver.Bot
                 {
                     if (!Output2Console)
                     {
-                        MessageBoxDefaultButton default_button = MessageBoxDefaultButton.Button1;
-                        if (!silent_yes)
-                            default_button = MessageBoxDefaultButton.Button2;
-
-                        return MessageBox.Show(Owner, message,
-                            Application.ProductName,
-                            MessageBoxButtons.YesNo,
-                            MessageBoxIcon.Question,
-                            default_button)
-                            == DialogResult.Yes;
+                        Cliver.MessageForm mf = new Cliver.MessageForm(Application.ProductName, System.Drawing.SystemIcons.Question, message, new string[2] { "Yes", "No" }, automatic_yes ? 0 : 1, Owner);
+                        mf.ShowInTaskbar = Cliver.Message.ShowInTaskbar;
+                        return mf.ShowDialog() == 0;
                     }
                     else
                     {
@@ -119,9 +112,9 @@ namespace Cliver.Bot
                     {
                         Console.WriteLine(message);
                         Console.WriteLine("Enter Y[es] or N[o]:");
-                        Console.WriteLine("Choosen default: " + (silent_yes ? "Y[es]" : "N[o]"));
+                        Console.WriteLine("Choosen default: " + (automatic_yes ? "Y[es]" : "N[o]"));
                     }
-                    return silent_yes;
+                    return automatic_yes;
                 }
             }
         }
@@ -137,10 +130,7 @@ namespace Cliver.Bot
                 {
                     if (!Output2Console)
                     {
-                        MessageBox.Show(Owner, message,
-                            Application.ProductName,
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Error);
+                        Cliver.Message.Error(message, Owner);
                     }
                     else
                     {
@@ -172,10 +162,7 @@ namespace Cliver.Bot
                 {
                     if (!Output2Console)
                     {
-                        MessageBox.Show(Owner, message,
-                            Application.ProductName,
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Error);
+                        Cliver.Message.Error(message, Owner);
                     }
                     else
                     {
@@ -265,10 +252,7 @@ namespace Cliver.Bot
                 {
                     if (!Output2Console)
                     {
-                        MessageBox.Show(Owner, message,
-                            Application.ProductName,
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Information);
+                        Cliver.Message.Inform(message, Owner);
                     }
                     else
                     {
@@ -299,10 +283,7 @@ namespace Cliver.Bot
                 {
                     if (!Output2Console)
                     {
-                        MessageBox.Show(Owner, message,
-                            Application.ProductName,
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Warning);
+                        Cliver.Message.Warning(message, Owner);
                     }
                     else
                     {

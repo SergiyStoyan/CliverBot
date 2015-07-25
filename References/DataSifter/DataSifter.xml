@@ -362,32 +362,32 @@
             <param name="text">text that is to be parsed with the tree</param>
             <returns>Zero Capture that the tree of CroupCapture's starts from</returns>
         </member>
-        <member name="T:Cliver.Message">
+        <member name="T:Cliver.DataSifter.Message">
             <summary>
             Show MessageForm with predefined features
             </summary>
         </member>
-        <member name="F:Cliver.Message.ShowInTaskbar">
+        <member name="F:Cliver.DataSifter.Message.ShowInTaskbar">
             <summary>
             Whether the message box must be displayed in the Windows taskbar.
             </summary>
         </member>
-        <member name="T:Cliver.MessageForm">
+        <member name="T:Cliver.DataSifter.MessageForm">
             <summary>
             Dynamic dialog box with many answer cases
             </summary>
         </member>
-        <member name="F:Cliver.MessageForm.components">
+        <member name="F:Cliver.DataSifter.MessageForm.components">
             <summary>
             Required designer variable.
             </summary>
         </member>
-        <member name="M:Cliver.MessageForm.Dispose(System.Boolean)">
+        <member name="M:Cliver.DataSifter.MessageForm.Dispose(System.Boolean)">
             <summary>
             Clean up any resources being used.
             </summary>
         </member>
-        <member name="M:Cliver.MessageForm.InitializeComponent">
+        <member name="M:Cliver.DataSifter.MessageForm.InitializeComponent">
             <summary>
             Required method for Designer support - do not modify
             the contents of this method with the code editor.
@@ -855,13 +855,13 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="T:Cliver.ThreadRunner">
+        <member name="T:Cliver.DataSifter.ThreadRunner">
             <summary>
             Run a function as another thread, polls if it is working too long and then asks to break it.
             Used in GUI when a potentially time consuming operation is invoked.
             </summary>
         </member>
-        <member name="M:Cliver.ThreadRunner.#ctor(System.Int32,System.Windows.Forms.Control,System.String)">
+        <member name="M:Cliver.DataSifter.ThreadRunner.#ctor(System.Int32,System.Windows.Forms.Control,System.String)">
             <summary>
             ThreadRunner constructor
             </summary>
@@ -869,7 +869,7 @@
             <param name="owner">control whose mouse cursor will be changed to busy during running. Can be null</param>
             <param name="message">Can be null</param>
         </member>
-        <member name="M:Cliver.ThreadRunner.Run(System.Object,System.String,System.Object[])">
+        <member name="M:Cliver.DataSifter.ThreadRunner.Run(System.Object,System.String,System.Object[])">
             <summary>
             Run a function as another thread.
             (!)Function must be public.
@@ -879,7 +879,7 @@
             <param name="parameters">list of function parameters</param>
             <returns>any return from the fuction. If it is void then = null</returns>
         </member>
-        <member name="M:Cliver.ThreadRunner.Run(System.Object,System.Object[])">
+        <member name="M:Cliver.DataSifter.ThreadRunner.Run(System.Object,System.Object[])">
             <summary>
             Run delegate of a function as another thread.
             (!)Delegate must be public.

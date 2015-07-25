@@ -16,6 +16,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 using Cliver.Bot;
+using Cliver;
 
 namespace Cliver.BotGui
 {
@@ -131,7 +132,6 @@ namespace Cliver.BotGui
                     }
                     current_btc = ((BotThreadItem)listBotThreads.Items[listBotThreads.SelectedIndex]).BTC;
                     current_btc.Visible = true;
-
                     groupBoxBotThread.SetText(current_btc.Text);
                 }
             }
