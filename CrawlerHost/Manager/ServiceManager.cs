@@ -46,7 +46,7 @@ namespace Cliver.CrawlerHost
         }
         static bool work = true;
 
-        static ServiceManager()
+        static internal void Start()
         {
             thread = new Thread(new ThreadStart(service));
             thread.Start();
@@ -420,7 +420,7 @@ WHERE (State<>" + (int)Service.State.DISABLED + " AND GETDATE()>=_NextStartTime 
 
         public static void WaitUntilCheckTime()
         {
-            long duration = (long)(Process.GetCurrentProcess().StartTime.AddMilliseconds(Properties.Settings.Default.ServiceCheckDurationInMss + 500) - DateTime.Now).Duration().TotalMilliseconds;
+            long duration = (long)(Process.GetCurrentProcess().StartTime.AddMilliseconds(Properties.Settings.Default.ServiceCheckDurationInMss + 500) - DateTime.Now).TotalMilliseconds;
             if (duration > 0)
                 ThreadRoutines.Wait(duration);
         }

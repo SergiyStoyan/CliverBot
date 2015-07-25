@@ -152,12 +152,12 @@ namespace Cliver.CrawlerHost.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool RunSilently {
+        public bool NoDialogMode {
             get {
-                return ((bool)(this["RunSilently"]));
+                return ((bool)(this["NoDialogMode"]));
             }
             set {
-                this["RunSilently"] = value;
+                this["NoDialogMode"] = value;
             }
         }
         

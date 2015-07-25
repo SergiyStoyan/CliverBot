@@ -31,6 +31,7 @@ namespace Cliver.CrawlerHost
             InitializeComponent();
 
             ServiceManager.StateChanged += ServiceManager_StateChanged;
+            ServiceManager.Start();
         }
 
         static internal SysTrayForm This
