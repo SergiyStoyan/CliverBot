@@ -39,6 +39,8 @@ namespace Cliver.CrawlerHost
                 {        
                     CrawlerId = Log.ProcessName;
 
+                    ThreadLog.Exitig += Log_Exitig;
+
                     Record r = DbApi.Connection.Get("SELECT State FROM Crawlers WHERE Id=@Id").GetFirstRecord("@Id", CrawlerId);
                     if (r == null)
                         LogMessage.Exit("Crawler id '" + CrawlerId + "' does not exist in [Crawlers] table.");
@@ -72,6 +74,16 @@ namespace Cliver.CrawlerHost
             }
         }
 
+        static void Log_Exitig(string message)
+        {
+            lock (DbApi.Connection)
+            {
+                DbApi.Connection["UPDATE Crawlers SET _LastEndTime=GETDATE(), _LastSessionState=" + (int)Crawler.SessionState._ERROR + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, _LastStartTime) WHERE Id=@Id"].Execute("@Id", CrawlerId);
+                DbApi.Message(DbApi.MessageType.ERROR, message);
+                ServiceManager.WaitUntilCheckTime();
+            }
+        }
+
         readonly static public string CrawlerId;
         readonly static public string ProductsTable;
 
@@ -84,7 +96,10 @@ namespace Cliver.CrawlerHost
 
         static void session_Closing()
         {
-            stop(!Session.This.IsUnprocessedInputItem && !Session.This.IsItemToRestore);
+            lock (DbApi.Connection)
+            {
+                stop(!Session.This.IsUnprocessedInputItem && !Session.This.IsItemToRestore);
+            }
         }
 
         internal static void stop(bool completed)
@@ -109,7 +124,7 @@ namespace Cliver.CrawlerHost
                     if (1 > DbApi.Connection["UPDATE Crawlers SET _LastEndTime=GETDATE(), _LastSessionState=" + (int)Crawler.SessionState._ERROR + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, _LastStartTime) WHERE Id=@Id"].Execute("@Id", CrawlerId))
                         throw new Exception("Could not update Crawlers table.");
 
-                    DbApi.Message(DbApi.MessageType.INFORM, "UNCOMPLETED");
+                    DbApi.Message(DbApi.MessageType.WARNING, "UNCOMPLETED");
                 }
                 //        break;
                 //    case CrawlerMode.IDLE:

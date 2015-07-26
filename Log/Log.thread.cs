@@ -191,6 +191,8 @@ namespace Cliver.Bot
         {
             lock (this)
             {
+                if (Exitig != null)
+                    Exitig.Invoke(message);
                 Write("EXIT: " + message + "\r\nStack: " + Log.GetStackString());
                 if (Id >= 0)
                     Log.Main.Exit("Exited due to thread #" + Id.ToString() + ". See the respective Log");
@@ -206,12 +208,18 @@ namespace Cliver.Bot
         {
             lock (this)
             {
-                Write("EXIT: " + Log.GetExceptionMessage(e));
+                string message = Log.GetExceptionMessage(e);
+                if (Exitig != null)
+                    Exitig.Invoke(message);
+                Write("EXIT: " + message);
                 if (Id >= 0)
                     Log.Main.Exit("Exited due to thread #" + Id.ToString() + ". See the respective Log");
                 Environment.Exit(0);
             }
         }
+        
+        public delegate void OnExitig(string message);
+        static public event OnExitig Exitig = null;
 
         /// <summary>
         /// Write the warning to the current thread's log.

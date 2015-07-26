@@ -74,7 +74,7 @@ namespace Cliver.CrawlerHost
 
         private void exit(object sender, System.EventArgs e)
         {
-            Log.Main.Inform("QUIT");
+            Log.Main.Inform("EXIT");
             Environment.Exit(0);
         }
 
