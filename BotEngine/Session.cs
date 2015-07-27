@@ -68,7 +68,7 @@ namespace Cliver.Bot
             }
 
             Restored = false;
-            if (Properties.General.Default.RestoreBrokenSession)
+            if (Properties.General.Default.RestoreBrokenSession && !ProgramRoutines.IsParameterSet(CommandLineParameters.NOT_RESTORE_SESSION))
             {
                 Restored = this.restore(ref StartTime);
                 if (This == null)

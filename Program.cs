@@ -14,6 +14,7 @@ namespace Cliver.Bot
     {
         public static readonly CommandLineParameters AUTOMATIC = new CommandLineParameters("-automatic");
         public static readonly CommandLineParameters PRODUCTION = new CommandLineParameters("-production");
+        public static readonly CommandLineParameters NOT_RESTORE_SESSION = new CommandLineParameters("-not_restore_session");
 
         public CommandLineParameters(string value) : base(value) { }
     }
