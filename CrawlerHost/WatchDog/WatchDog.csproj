@@ -7,8 +7,8 @@
     <ProjectGuid>{CC46F24D-D915-4C23-AFA1-841FE825DB8D}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Cliver.CrawlerHostMonitor</RootNamespace>
-    <AssemblyName>CrawlerHostMonitor</AssemblyName>
+    <RootNamespace>Cliver.CrawlerHostWatchDog</RootNamespace>
+    <AssemblyName>CrawlerHostWatchDog</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\CliverCrawlerHost\CrawlerHostMonitor\Debug\</OutputPath>
+    <OutputPath>..\..\..\CliverCrawlerHost\CrawlerHostWatchDog\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -26,7 +26,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\CliverCrawlerHost\CrawlerHostMonitor\Release\</OutputPath>
+    <OutputPath>..\..\..\CliverCrawlerHost\CrawlerHostWatchDog\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
