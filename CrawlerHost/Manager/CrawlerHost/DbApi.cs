@@ -209,7 +209,8 @@ State tinyint NOT NULL)"
             INFORM = 1,
             WARNING = 2,
             ERROR = 3,
-            EXIT = 4
+            EXIT = 4,
+            ATTENTION = 5
         }
         
         static public void Message(Exception exception, string source = null, string details = null)

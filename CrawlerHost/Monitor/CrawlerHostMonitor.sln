@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrawlerHostMonitor", "CrawlerHostMonitor.csproj", "{CC46F24D-D915-4C23-AFA1-841FE825DB8D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrawlerHostManager", "..\Manager\CrawlerHostManager.csproj", "{F5DCAFD6-8716-46FC-AB41-583F31E652E5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliverBot", "..\..\CliverBot.csproj", "{5283EEA1-5F94-4379-BDF3-975CA4ADBBF4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CC46F24D-D915-4C23-AFA1-841FE825DB8D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC46F24D-D915-4C23-AFA1-841FE825DB8D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC46F24D-D915-4C23-AFA1-841FE825DB8D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC46F24D-D915-4C23-AFA1-841FE825DB8D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5DCAFD6-8716-46FC-AB41-583F31E652E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5DCAFD6-8716-46FC-AB41-583F31E652E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5DCAFD6-8716-46FC-AB41-583F31E652E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5DCAFD6-8716-46FC-AB41-583F31E652E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5283EEA1-5F94-4379-BDF3-975CA4ADBBF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5283EEA1-5F94-4379-BDF3-975CA4ADBBF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5283EEA1-5F94-4379-BDF3-975CA4ADBBF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5283EEA1-5F94-4379-BDF3-975CA4ADBBF4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
