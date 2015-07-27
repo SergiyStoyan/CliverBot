@@ -150,10 +150,7 @@ namespace Cliver.Bot
         /// <param name="e"></param>
         public void Error(Exception e)
         {
-            lock (this)
-            {
-                Write("ERROR: " + Log.GetExceptionMessage(e));
-            }
+            Write(Log.MessageType.ERROR, Log.GetExceptionMessage(e));
         }
 
         /// <summary>
@@ -162,10 +159,7 @@ namespace Cliver.Bot
         /// <param name="e"></param>
         public void Error(string message)
         {
-            lock (this)
-            {
-                Write("ERROR: " + message + "\r\n" + Log.GetStackString());
-            }
+            Write(Log.MessageType.ERROR, message + "\r\n" + Log.GetStackString());
         }
 
         /// <summary>
@@ -174,13 +168,10 @@ namespace Cliver.Bot
         /// <param name="e"></param>
         public void Trace(object message = null)
         {
-            lock (this)
-            {
-                if (message != null)
-                    Write("TRACE: " + message.ToString() + "\r\n" + Log.GetStackString());
-                else
-                    Write("TRACE: " + Log.GetStackString());
-            }
+            if (message != null)
+                Write(Log.MessageType.TRACE, message.ToString() + "\r\n" + Log.GetStackString());
+            else
+                Write(Log.MessageType.TRACE, Log.GetStackString());
         }
 
         /// <summary>
@@ -189,15 +180,12 @@ namespace Cliver.Bot
         /// <param name="e"></param>
         public void Exit(string message)
         {
-            lock (this)
-            {
                 if (Exitig != null)
                     Exitig.Invoke(message);
-                Write("EXIT: " + message + "\r\nStack: " + Log.GetStackString());
+                Write(Log.MessageType.EXIT, message + "\r\nStack: " + Log.GetStackString());
                 if (Id >= 0)
                     Log.Main.Exit("Exited due to thread #" + Id.ToString() + ". See the respective Log");
                 Environment.Exit(0);
-            }
         }
 
         /// <summary>
@@ -211,7 +199,7 @@ namespace Cliver.Bot
                 string message = Log.GetExceptionMessage(e);
                 if (Exitig != null)
                     Exitig.Invoke(message);
-                Write("EXIT: " + message);
+                Write(Log.MessageType.EXIT, message);
                 if (Id >= 0)
                     Log.Main.Exit("Exited due to thread #" + Id.ToString() + ". See the respective Log");
                 Environment.Exit(0);
@@ -227,10 +215,7 @@ namespace Cliver.Bot
         /// <param name="e"></param>
         public void Warning(string message)
         {
-            lock (this)
-            {
-                Write("WARNING: " + message);
-            }
+            Write(Log.MessageType.WARNING, message);
         }
 
         /// <summary>
@@ -239,10 +224,7 @@ namespace Cliver.Bot
         /// <param name="e"></param>
         public void Warning(Exception e)
         {
-            lock (this)
-            {
-                Write("WARNING: " + Log.GetExceptionMessage(e));
-            }
+            Write(Log.MessageType.WARNING, Log.GetExceptionMessage(e));
         }
 
         /// <summary>
@@ -251,30 +233,47 @@ namespace Cliver.Bot
         /// <param name="e"></param>
         public void Inform(string message)
         {
-            lock (this)
-            {
-                Write("INFORM: " + message);
-            }
+            Write(Log.MessageType.INFORM, message);
+        }
+
+        public void Write(string line)
+        {
+            Write(Log.MessageType.LOG, line);
         }
 
         /// <summary>
         /// Write the message to the current thread's log.
         /// </summary>
         /// <param name="e"></param>
-        public void Write(string message)
+        public void Write(Log.MessageType type, string message)
         {
-            if (!Properties.Log.Default.WriteLog)
-                return;
-
             lock (this)
             {
-                if (log_writer == null)
-                    log_writer = new StreamWriter(Path, true);
+                if (Properties.Log.Default.WriteLog)
+                {
+                    if (log_writer == null)
+                        log_writer = new StreamWriter(Path, true);
 
-                log_writer.WriteLine(DateTime.Now.ToString("[dd-MM-yy HH:mm:ss] ") + message);
-                log_writer.Flush();
+                    switch(type)
+                    {
+                        case Log.MessageType.INFORM: message = "INFORM: " + message; break;
+                        case Log.MessageType.WARNING: message = "WARNING: " + message; break;
+                        case Log.MessageType.ERROR: message = "ERROR: " + message; break;
+                        case Log.MessageType.EXIT: message = "EXIT: " + message; break;
+                        case Log.MessageType.TRACE: message = "TRACE: " + message; break;
+                        case Log.MessageType.LOG: break;
+                        default: throw new Exception("No case for " + type.ToString());
+                    }
+                    log_writer.WriteLine(DateTime.Now.ToString("[dd-MM-yy HH:mm:ss] ") + message);
+                    log_writer.Flush();
+                }
             }
+            if (Wrtie != null)
+                Wrtie.Invoke(type, message);
         }
         TextWriter log_writer = null;
+
+        public delegate void OnWrtie(Log.MessageType type, string message);
+        static public event OnWrtie Wrtie = null;
     }
 }

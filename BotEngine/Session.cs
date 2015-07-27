@@ -41,6 +41,9 @@ namespace Cliver.Bot
         Session()
         {
             This_ = this;
+
+            ThreadLog.Exitig += ThreadLog_Exitig;
+
             input_item_type_name2input_item_types = (from t in Assembly.GetEntryAssembly().GetTypes() where t.BaseType == typeof(InputItem) select t).ToDictionary(t => t.Name, t => t);
             Cliver.Bot.InputItem.Initialize(input_item_type_name2input_item_types.Values.ToList());
             work_item_type_name2work_item_types = (from t in Assembly.GetEntryAssembly().GetTypes() where (t.BaseType == typeof(WorkItem) && t.Name != typeof(SingleValueWorkItem<>).Name) || (t.BaseType != null && t.BaseType.Name == typeof(SingleValueWorkItem<>).Name) select t).ToDictionary(t => t.Name, t => t);
@@ -94,6 +97,11 @@ namespace Cliver.Bot
         Dictionary<string, Type> input_item_type_name2input_item_types;
         Dictionary<string, Type> work_item_type_name2work_item_types;
         Dictionary<string, Type> tag_item_type_name2tag_item_types;
+        
+        void ThreadLog_Exitig(string message)
+        {
+            Close();
+        }
 
         /// <summary>
         /// Time when the session was restored if it was.

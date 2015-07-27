@@ -50,6 +50,8 @@ namespace Cliver.CrawlerHost
                 }
                 LogMessage.Exit(e);
             }
+
+            //ThreadLog.Wrtie += ThreadLog_Wrtie;
         }
         static public readonly DbConnection Connection;
         //static public readonly CrawlerHostDataContext Context;
@@ -195,14 +197,19 @@ State tinyint NOT NULL)"
             READ = 1,
             IMPORTANT = 2
         }
+
+        //static void ThreadLog_Wrtie(Log.MessageType type, string message)
+        //{
+        //    throw new NotImplementedException();
+        //}
         
         public enum MessageType
         {
+            LOG = 0,
             INFORM = 1,
             WARNING = 2,
             ERROR = 3,
-            EXIT = 4, 
-            ATTENTION = 5
+            EXIT = 4
         }
         
         static public void Message(Exception exception, string source = null, string details = null)
@@ -249,25 +256,6 @@ State tinyint NOT NULL)"
                 //if (1 > Database.SaveChanges())
                 //    throw new Exception("Cannot add to 'crawler_messages': " + message);
                 Connection["INSERT INTO Messages (Type,Source,Value,Time,Details) VALUES(@Type,@Source,@Value,GETDATE(),@Details)"].Execute("@Type", (int)type, "@Source", source, "@Value", message, "@Details", details);
-            }
-
-            switch (type)
-            {
-                case MessageType.INFORM:
-                    Log.Main.Inform(message);
-                    break;
-                case MessageType.WARNING:
-                    Log.Main.Warning(message);
-                    break;
-                case MessageType.ERROR:
-                    Log.Main.Error(message);
-                    break;
-                case MessageType.EXIT:
-                    Log.Main.Exit(message);
-                    break;
-                default:
-                    Log.Main.Exit("There is not switch option: " + type.ToString());
-                    break;
             }
         }
 

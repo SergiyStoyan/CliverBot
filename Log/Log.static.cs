@@ -180,9 +180,24 @@ namespace Cliver.Bot
         /// Write the message to the current thread's log.
         /// </summary>
         /// <param name="e"></param>
+        static public void Write(MessageType type, string line)
+        {
+            ThreadLog.This.Write(type, line);
+        }
+
         static public void Write(string line)
         {
-            ThreadLog.This.Write(line);
+            ThreadLog.This.Write(MessageType.LOG, line);
+        }
+
+        public enum MessageType
+        {
+            LOG = 0,
+            INFORM = 1,
+            WARNING = 2,
+            ERROR = 3,
+            EXIT = 4,
+            TRACE = 5,
         }
 
         /// <summary>

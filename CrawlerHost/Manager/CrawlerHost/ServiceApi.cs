@@ -65,6 +65,7 @@ namespace Cliver.CrawlerHost
                 }
                 catch (Exception e)
                 {
+                    Log.Main.Error(e);
                     DbApi.Message(e);
                 }
             }

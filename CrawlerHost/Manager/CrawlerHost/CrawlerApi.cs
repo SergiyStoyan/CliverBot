@@ -29,17 +29,13 @@ namespace Cliver.CrawlerHost
 
     public class CrawlerApi
     {
-        //enum CrawlerMode : int { IDLE, PRODUCTION }
-
         static CrawlerApi()
         {
             lock (DbApi.Connection)
             { 
                 try
-                {        
+                {   
                     CrawlerId = Log.ProcessName;
-
-                    ThreadLog.Exitig += Log_Exitig;
 
                     Record r = DbApi.Connection.Get("SELECT State FROM Crawlers WHERE Id=@Id").GetFirstRecord("@Id", CrawlerId);
                     if (r == null)
@@ -65,7 +61,7 @@ namespace Cliver.CrawlerHost
                         )
                         throw new Exception("Could not update Crawlers table.");
 
-                    DbApi.Message(DbApi.MessageType.INFORM, "STARTED\r\nCommand line: " + string.Join("|", Environment.GetCommandLineArgs()) + "\nRunning as: " + System.Security.Principal.WindowsIdentity.GetCurrent().Name);
+                    DbApi.Message(DbApi.MessageType.INFORM, "STARTED\r\nCommand line: " + string.Join("|", Environment.GetCommandLineArgs()) + "\n Running as: " + System.Security.Principal.WindowsIdentity.GetCurrent().Name);
                 }
                 catch (Exception e)
                 {
@@ -91,25 +87,26 @@ namespace Cliver.CrawlerHost
         {
             //to force static constructor
         }
-
-        //static CrawlerMode mode;
-
-        static void session_Closing()
+        
+        internal static void session_Closing()
         {
             lock (DbApi.Connection)
             {
-                stop(!Session.This.IsUnprocessedInputItem && !Session.This.IsItemToRestore);
-            }
-        }
+                if (Session.This.IsUnprocessedInputItem)
+                {
+                    if (1 > DbApi.Connection["UPDATE Crawlers SET _LastEndTime=GETDATE(), _LastSessionState=" + (int)Crawler.SessionState._ERROR + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, _LastStartTime) WHERE Id=@Id"].Execute("@Id", CrawlerId))
+                        throw new Exception("Could not update Crawlers table.");
 
-        internal static void stop(bool completed)
-        {
-            lock (DbApi.Connection)
-            {
-                //switch (mode)
-                //{
-                //    case CrawlerMode.PRODUCTION:
-                if (completed)
+                    DbApi.Message(DbApi.MessageType.ERROR, "ABORTED");
+                }
+                else if (Session.This.IsItemToRestore)
+                {
+                    if (1 > DbApi.Connection["UPDATE Crawlers SET _LastEndTime=GETDATE(), _LastSessionState=" + (int)Crawler.SessionState._ERROR + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, _LastStartTime) WHERE Id=@Id"].Execute("@Id", CrawlerId))
+                        throw new Exception("Could not update Crawlers table.");
+
+                    DbApi.Message(DbApi.MessageType.WARNING, "UNCOMPLETED");
+                }
+                else
                 {
                     Log.Main.Inform("Deleted marked old products: " + DbApi.Connection["DELETE FROM " + ProductsTable + " WHERE State=" + (int)Crawler.ProductState.DELETED].Execute());
                     Log.Main.Inform("Marked as deleted old products: " + DbApi.Connection["UPDATE " + ProductsTable + " SET State=" + (int)Crawler.ProductState.DELETED + " WHERE CrawlTime<@session_start_time"].Execute("@session_start_time", Session.This.StartTime));
@@ -119,20 +116,6 @@ namespace Cliver.CrawlerHost
 
                     DbApi.Message(DbApi.MessageType.INFORM, "COMPLETED");
                 }
-                else
-                {
-                    if (1 > DbApi.Connection["UPDATE Crawlers SET _LastEndTime=GETDATE(), _LastSessionState=" + (int)Crawler.SessionState._ERROR + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, _LastStartTime) WHERE Id=@Id"].Execute("@Id", CrawlerId))
-                        throw new Exception("Could not update Crawlers table.");
-
-                    DbApi.Message(DbApi.MessageType.WARNING, "UNCOMPLETED");
-                }
-                //        break;
-                //    case CrawlerMode.IDLE:
-                //        break;
-                //    default:
-                //        throw new Exception("Unknown mode: " + mode);
-                //}
-                //mode = CrawlerMode.IDLE;
 
                 ServiceManager.WaitUntilCheckTime();
             }

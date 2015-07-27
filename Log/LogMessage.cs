@@ -78,7 +78,7 @@ namespace Cliver.Bot
             lock (lock_variable)
             {
                 if (write2log)
-                    Log.Main.Write(message);
+                    Log.Main.Write(Log.MessageType.LOG, message);
 
                 if (!DisableStumblingDialogs)
                 {
@@ -245,7 +245,7 @@ namespace Cliver.Bot
 
         public static void Inform(string message)
         {
-            Log.Main.Write(message);
+            Log.Main.Inform(message);
             lock (lock_variable)
             {
                 if (!DisableStumblingDialogs)
@@ -276,7 +276,7 @@ namespace Cliver.Bot
 
         public static void Warning(string message)
         {
-            Log.Main.Write("WARNING: " + message);
+            Log.Main.Write(Log.MessageType.WARNING, message);
             lock (lock_variable)
             {
                 if (!DisableStumblingDialogs)

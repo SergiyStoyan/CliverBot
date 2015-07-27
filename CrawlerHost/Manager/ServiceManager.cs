@@ -82,6 +82,7 @@ namespace Cliver.CrawlerHost
             }
             catch (Exception e)
             {
+                Log.Main.Error(e);
                 DbApi.Message(e);
                 EmailRoutine.Send(Log.GetExceptionMessage(e), EmailRoutine.SourceType.MANAGER, Log.GetExceptionMessage(e));
             }
@@ -172,6 +173,7 @@ WHERE State<>" + (int)Service.State.DISABLED + " AND Command<>" + (int)Service.C
             ////////////////////////////////////////////////////////////
             //Checking previously started services
             ////////////////////////////////////////////////////////////
+            List<string> running_service_ids = new List<string>();
             rs = DbApi.Connection[@"SELECT DATEDIFF(ss, ISNULL(_LastStartTime, 0), GETDATE()) AS duration, Id, State, 
 ISNULL(_LastStartTime, 0) AS _LastStartTime, ISNULL(_LastEndTime, 0) AS _LastEndTime, 
 _LastProcessId, _LastLog, AdminEmails, _LastSessionState, RunTimeout 
@@ -191,15 +193,15 @@ WHERE _LastSessionState IN (" + (int)Service.SessionState.STARTED + ", " + (int)
                     continue;
                 }
 
-                if (_LastSessionState ==Service.SessionState._ERROR)
+                if (_LastSessionState == Service.SessionState._ERROR)
                 {
                     DbApi.Connection["UPDATE Services SET _LastSessionState=" + (int)Service.SessionState.ERROR + " WHERE Id=@Id"].Execute("@Id", service_id);
                     EmailRoutine.Send("Service " + service_id + " exited with error" + m1, EmailRoutine.SourceType.SERVICE, service_id);
                     continue;
                 }
-                
+
                 Process p = GetProcess((int?)r["_LastProcessId"], service_id);
-                if (p==null)
+                if (p == null)
                 {
                     DbApi.Connection["UPDATE Services SET _LastSessionState=" + (int)Service.SessionState.BROKEN + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, GETDATE()) WHERE Id=@Id"].Execute("@Id", service_id);
                     EmailRoutine.Send("Service " + service_id + " was broken by unknown reason" + m1, EmailRoutine.SourceType.SERVICE, service_id);
@@ -207,19 +209,21 @@ WHERE _LastSessionState IN (" + (int)Service.SessionState.STARTED + ", " + (int)
                 }
 
                 if (duration >= (int)r["RunTimeout"])
-                {                  
-                        EmailRoutine.Send("Service " + service_id + " is running " + (new TimeSpan(0, 0, duration)).ToString() + " seconds. It will be killed." + m1, EmailRoutine.SourceType.SERVICE, service_id);
-                    
-                        p = GetProcess((int?)r["_LastProcessId"], service_id);
-                        Log.Main.Warning("Killing " + service_id);
-                        p.Kill();
-                        Thread.Sleep(2000);
-                        if (!IsProcessAlive((int?)r["_LastProcessId"], service_id))
-                            DbApi.Connection["UPDATE Services SET _LastSessionState=" + (int)Service.SessionState.KILLED + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, GETDATE()), _LastEndTime=GETDATE() WHERE Id=@Id"].Execute("@Id", service_id);
-                        else
-                            Log.Main.Error("Could not kill " + service_id);
-                        continue;                    
+                {
+                    EmailRoutine.Send("Service " + service_id + " is running " + (new TimeSpan(0, 0, duration)).ToString() + " seconds. It will be killed." + m1, EmailRoutine.SourceType.SERVICE, service_id);
+
+                    p = GetProcess((int?)r["_LastProcessId"], service_id);
+                    Log.Main.Warning("Killing " + service_id);
+                    p.Kill();
+                    Thread.Sleep(2000);
+                    if (!IsProcessAlive((int?)r["_LastProcessId"], service_id))
+                        DbApi.Connection["UPDATE Services SET _LastSessionState=" + (int)Service.SessionState.KILLED + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, GETDATE()), _LastEndTime=GETDATE() WHERE Id=@Id"].Execute("@Id", service_id);
+                    else
+                        Log.Main.Error("Could not kill " + service_id);
+                    continue;
                 }
+
+                running_service_ids.Add(service_id);
             }
 
             ////////////////////////////////////////////////////////////
@@ -246,19 +250,21 @@ WHERE (State<>" + (int)Service.State.DISABLED + " AND GETDATE()>=_NextStartTime 
                         DbApi.Connection["UPDATE Services SET Command=" + (int)Service.Command.EMPTY + " WHERE Id=@Id"].Execute("@Id", service_id);
                         continue;
                     }
-                    if (launch_service(r))
+                    if (launch_service(r, running_service_ids))
                         DbApi.Connection["UPDATE Services SET Command=" + (int)Service.Command.EMPTY + " WHERE Id=@Id"].Execute("@Id", service_id);
                     continue;
                 }
 
                 if (p != null)
                     continue;
+                if (running_service_ids.Count >= Properties.Settings.Default.ServiceProcessMaxNumber)
+                    continue;
 
-                launch_service(r);
+                launch_service(r, running_service_ids);
             }
         }
 
-        static bool launch_service(Record r)
+        static bool launch_service(Record r, List<string> running_service_ids)
         {
             string service_id = (string)r["Id"];
             List<string> parameters = new List<string>();
@@ -309,6 +315,7 @@ WHERE (State<>" + (int)Service.State.DISABLED + " AND GETDATE()>=_NextStartTime 
                 EmailRoutine.Send(service_id + " could not start.", EmailRoutine.SourceType.SERVICE, service_id);
                 return false;
             }
+            running_service_ids.Add(service_id);
             Log.Main.Write("Process id: " + p.Id);
             return true;
         }

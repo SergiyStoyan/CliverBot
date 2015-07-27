@@ -116,7 +116,6 @@ namespace Cliver.Bot
                 return IsItem2Restore;
             }
         }
-
         internal bool IsItem2Restore = false;
 
         internal RestoredWorkItemDictionary GetRestoredWorkItemDictionary(Type item_type)

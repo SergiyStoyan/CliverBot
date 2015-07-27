@@ -297,6 +297,7 @@ namespace Cliver.Bot
                 XmlRoutines.WriteElement(workflow_xtw, "State", avps.ToArray());
             }
         }
+
         internal enum SessionState
         {
             EMPTY,

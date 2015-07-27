@@ -193,5 +193,17 @@ namespace Cliver.CrawlerHost.Properties {
                 return ((long)(this["ServiceCheckDurationInMss"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        public int ServiceProcessMaxNumber {
+            get {
+                return ((int)(this["ServiceProcessMaxNumber"]));
+            }
+            set {
+                this["ServiceProcessMaxNumber"] = value;
+            }
+        }
     }
 }

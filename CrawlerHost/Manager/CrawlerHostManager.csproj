@@ -144,6 +144,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CliverCrawlersDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="CrawlerHost\CrawlerApi - Copy.cs" />
     <Compile Include="CrawlerHost\Linker.cs" />
     <Compile Include="CrawlerHost\ServiceApi.cs" />
     <Compile Include="CrawlerHost\CrawlerApi.cs" />
