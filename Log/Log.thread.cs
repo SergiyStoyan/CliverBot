@@ -118,6 +118,8 @@ namespace Cliver.Bot
                 foreach (ThreadLog tl in thread2tls.Values)
                     tl.Close();
                 thread2tls.Clear();
+
+                exiting_thread = null;
             }
         }
 
@@ -195,12 +197,12 @@ namespace Cliver.Bot
         /// <param name="e"></param>
         public void Exit(string message)
         {
-                if (Exitig != null)
-                    Exitig.Invoke(message);
-                Write(Log.MessageType.EXIT, message + "\r\nStack: " + Log.GetStackString());
+            lock (this)
+            {
                 if (Id >= 0)
-                    Log.Main.Exit("Exited due to thread #" + Id.ToString() + ". See the respective Log");
-                Environment.Exit(0);
+                    Log.Main.Write("EXIT: due to thread #" + Id.ToString() + ". See the respective Log");
+                Write(Log.MessageType.EXIT, message + "\r\nStack: " + Log.GetStackString());
+            }
         }
 
         /// <summary>
@@ -212,12 +214,7 @@ namespace Cliver.Bot
             lock (this)
             {
                 string message = Log.GetExceptionMessage(e);
-                if (Exitig != null)
-                    Exitig.Invoke(message);
-                Write(Log.MessageType.EXIT, message);
-                if (Id >= 0)
-                    Log.Main.Exit("Exited due to thread #" + Id.ToString() + ". See the respective Log");
-                Environment.Exit(0);
+                Exit(message);
             }
         }
         
@@ -264,21 +261,42 @@ namespace Cliver.Bot
         {
             lock (this)
             {
+                if (type == Log.MessageType.EXIT)
+                {
+                    if (exiting_thread != null)
+                        return;
+                    exiting_thread = new Thread(() =>
+                    {
+                        if (Exitig != null)
+                            Exitig.Invoke(message);
+                        write(type, message);
+                        Environment.Exit(0);
+                    });
+                    exiting_thread.Start();
+                }
+                else
+                    write(type, message);
+            }
+        }
+        void write(Log.MessageType type, string message)
+        {
+            lock (this)
+            {
                 if (Properties.Log.Default.WriteLog)
                 {
                     if (log_writer == null)
                         log_writer = new StreamWriter(Path, true);
 
-                    switch(type)
+                    switch (type)
                     {
                         case Log.MessageType.INFORM: message = "INFORM: " + message; break;
                         case Log.MessageType.WARNING: message = "WARNING: " + message; break;
-                        case Log.MessageType.ERROR: 
+                        case Log.MessageType.ERROR:
                             message = "ERROR: " + message;
                             _ErrorCount++;
                             break;
-                        case Log.MessageType.EXIT:                             
-                            message = "EXIT: " + message; 
+                        case Log.MessageType.EXIT:
+                            message = "EXIT: " + message;
                             _ErrorCount++;
                             break;
                         case Log.MessageType.TRACE: message = "TRACE: " + message; break;
@@ -288,11 +306,12 @@ namespace Cliver.Bot
                     log_writer.WriteLine(DateTime.Now.ToString("[dd-MM-yy HH:mm:ss] ") + message);
                     log_writer.Flush();
                 }
+                if (Wrtie != null)
+                    Wrtie.Invoke(type, message);
             }
-            if (Wrtie != null)
-                Wrtie.Invoke(type, message);
         }
         TextWriter log_writer = null;
+        static Thread exiting_thread = null;
 
         public int ErrorCount
         {

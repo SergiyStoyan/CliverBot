@@ -35,10 +35,10 @@ namespace Cliver.CrawlerHostWatchDog
                 report.SourceType = ReportSourceType.CRAWLER;
                 DateTime earliest_start_time = DateTime.Now.AddSeconds(-(int)crawler["RunTimeSpan"]);
                 Record start_message = dbc["SELECT * FROM Messages WHERE Source=@Source AND Value LIKE '" + CrawlerApi.MessageMark.STARTED + "%' ORDER BY Time DESC"].GetFirstRecord("@Source", crawler["Id"]);
+                Crawler.SessionState state =  (Crawler.SessionState)(int)dbc["SELECT _LastSessionState FROM Crawlers WHERE Id=@Id"].GetSingleValue("@Id", crawler["Id"]);
                 if (start_message == null || (DateTime)start_message["Time"] < earliest_start_time)
                 {
-                    Crawler.SessionState state =  (Crawler.SessionState)(int)dbc["SELECT _LastSessionState FROM Crawlers WHERE Id=@Id"].GetSingleValue("@Id", crawler["Id"]);
-                    if(state == Crawler.SessionState.STARTED)
+                    if (state == Crawler.SessionState.STARTED)
                     {
                         report.MessageType = DbApi.MessageType.WARNING;
                         report.Value = "LONG WORK";
@@ -53,6 +53,13 @@ namespace Cliver.CrawlerHostWatchDog
                 Record end_message = dbc["SELECT * FROM Messages WHERE Source=@Source AND (Value LIKE '" + CrawlerApi.MessageMark.ABORTED + "%' OR Value LIKE '" + CrawlerApi.MessageMark.UNCOMPLETED + "%' OR Value LIKE '" + CrawlerApi.MessageMark.COMPLETED + "%') ORDER BY Time DESC"].GetFirstRecord("@Source", crawler["Id"]);
                 if (end_message == null)
                 {
+                    if (state == Crawler.SessionState.KILLED)
+                    {
+                        report.MessageType = DbApi.MessageType.ERROR;
+                        report.Value = "KILLED";
+                        report.Description = "KIlled by Manager.";
+                        continue;
+                    }
                     report.MessageType = DbApi.MessageType.INFORM;
                     report.Value = "RUNNING";
                     report.Description = "Running";

@@ -44,7 +44,7 @@ namespace Cliver.Bot
             if (ProgramRoutines.IsParameterSet(CommandLineParameters.PRODUCTION))
             {
                 Properties.General.Default.RestoreBrokenSession = true;
-                //Properties.General.Default.RestoreErrorItemsAsNew = true;
+                Properties.General.Default.RestoreErrorItemsAsNew = false;
                 Properties.General.Default.WriteSessionRestoringLog = true;
                 Properties.Log.Default.LogDownloadedFiles = false;
                 Properties.General.Default.UseFilesFromCache = false;

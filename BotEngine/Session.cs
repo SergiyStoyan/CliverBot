@@ -136,12 +136,16 @@ namespace Cliver.Bot
         {
             if (This == null)
                 return;
-            if (This.closing)
+            if (This.closing_thread != null)
                 return;
+            This.closing_thread = new Thread(() => { This.close(); });
+            This.closing_thread.Start();
+        }
+        Thread closing_thread = null;
+        void close()
+        {
             lock (This_)
             {
-                This.closing = true;
-
                 BotCycle.Abort();
 
                 if (This.items_xtw != null)
@@ -203,7 +207,6 @@ namespace Cliver.Bot
                 This_ = null;
             }
         }
-        bool closing = false;
 
         void read_input_file()
         {
