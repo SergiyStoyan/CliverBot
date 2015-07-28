@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WatchDog", "WatchDog.csproj", "{CC46F24D-D915-4C23-AFA1-841FE825DB8D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrawlerHostWatchDog", "CrawlerHostWatchDog.csproj", "{CC46F24D-D915-4C23-AFA1-841FE825DB8D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrawlerHostManager", "..\Manager\CrawlerHostManager.csproj", "{F5DCAFD6-8716-46FC-AB41-583F31E652E5}"
 EndProject

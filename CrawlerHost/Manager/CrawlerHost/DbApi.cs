@@ -17,20 +17,20 @@ using Cliver.Bot;
 namespace Cliver.CrawlerHost
 {
     public class DbApi
-    {        
+    {
         static DbApi()
         {
-            AGAIN:
+        AGAIN:
             try
-            {                
+            {
                 Connection = DbConnection.Create(DbApi.ConnectionString);
                 create_tables();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 if (ProgramRoutines.IsWebContext)
                     throw e;
-                
+
                 if (!LogMessage.DisableStumblingDialogs)
                 {
                     string connection_string = DbApi.ConnectionString;
@@ -51,6 +51,9 @@ namespace Cliver.CrawlerHost
             }
 
             //ThreadLog.Wrtie += ThreadLog_Wrtie;
+            Assembly ea = Assembly.GetEntryAssembly();
+            if (ea != null)
+                entry_assembly_name = Regex.Replace(Assembly.GetEntryAssembly().FullName, @"\,.*", "", RegexOptions.IgnoreCase | RegexOptions.Singleline);
         }
         static public readonly DbConnection Connection;
         
@@ -192,7 +195,6 @@ State tinyint NOT NULL)"
             Message(MessageType.ERROR, Log.GetExceptionMessage(exception), source, details);
         }
 
-        static readonly string entry_assembly_name = Regex.Replace(Assembly.GetEntryAssembly().FullName, @"\,.*", "", RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
         static public void Message(MessageType type, string message, string source = null, string details = null)
         {
@@ -236,6 +238,7 @@ State tinyint NOT NULL)"
                     _ErrorCount++;
             }
         }
+        static readonly string entry_assembly_name;
 
         public static int ErrorCount
         {
