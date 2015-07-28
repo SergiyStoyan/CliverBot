@@ -130,7 +130,7 @@ WHERE State<>" + (int)Service.State.DISABLED + " AND Command<>" + (int)Service.C
             {
                 string service_id = (string)r["Id"];
                 Process p = GetProcess((int?)r["_LastProcessId"], service_id);
-               Service.Command command = (Service.Command)(int)r["Command"];
+                Service.Command command = (Service.Command)(int)r["Command"];
                 switch (command)
                 {
                     case Service.Command.RESTART:
