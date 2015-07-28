@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Cliver.Bot;
 using System.Text.RegularExpressions;
 using Cliver.CrawlerHost;
+using System.IO;
 
 namespace Cliver.CrawlerHostCleaner
 {
@@ -28,6 +29,30 @@ namespace Cliver.CrawlerHostCleaner
                     continue;
                 DbApi.Message(DbApi.MessageType.WARNING, "Deleting table '" + p["name"] + "' as not crawler owning it.");
                 DbApi.Connection.Get("DROP TABLE @ProductsTable").Execute("@ProductsTable", p["name"]);
+            }
+
+            if (!string.IsNullOrWhiteSpace(Cliver.Bot.Properties.Log.Default.PreWorkDir))
+                clear_files_older_than(new DirectoryInfo(Cliver.Bot.Properties.Log.Default.PreWorkDir), DateTime.Now.AddDays(-Properties.Settings.Default.DeleteLogsOlderThanDays));
+            else
+                DbApi.Message(DbApi.MessageType.ERROR, "Log directory does not exists: " + Cliver.Bot.Properties.Log.Default.PreWorkDir);
+        }
+
+        void clear_files_older_than(DirectoryInfo pdi, DateTime old_time)
+        {
+            foreach (FileInfo fi in pdi.GetFiles())
+                if (fi.LastWriteTime < old_time)
+                {
+                    Log.Main.Write("Deleting: " + fi.FullName);
+                    fi.Delete();
+                }
+            foreach (DirectoryInfo di in pdi.GetDirectories())
+            {
+                clear_files_older_than(di, old_time);
+                if (di.GetFiles().Length < 1 && di.GetDirectories().Length < 1)
+                {
+                    Log.Main.Write("Deleting: " + di.FullName);
+                    di.Delete();
+                }
             }
         }
     }

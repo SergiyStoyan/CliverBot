@@ -115,6 +115,8 @@ namespace Cliver.CrawlerHost
                 Log.LOGGING_MODE = Log.LoggingMode.ONLY_LOG;
                 LogMessage.Output2Console = true;
                 ProcessRoutines.RunSingleProcessOnly();
+                
+                Log.Main.Inform("STARTED");
 
                 Assembly service_assembly = Assembly.GetEntryAssembly();
                 List<Type> service_types = (from t in service_assembly.GetExportedTypes() where t.BaseType == typeof(Service) select t).ToList();
@@ -126,6 +128,8 @@ namespace Cliver.CrawlerHost
                 Service service = (Service)Activator.CreateInstance(service_types[0]);
                 service.Do();
                 service.complete();
+                
+                Log.Main.Inform("COMPLETED");
             }
             catch(Exception e)
             {

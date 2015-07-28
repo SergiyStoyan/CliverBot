@@ -34,5 +34,17 @@ namespace Cliver.CrawlerHostCleaner.Properties {
                 this["DeleteMessagesOlderThanDays"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int DeleteLogsOlderThanDays {
+            get {
+                return ((int)(this["DeleteLogsOlderThanDays"]));
+            }
+            set {
+                this["DeleteLogsOlderThanDays"] = value;
+            }
+        }
     }
 }
