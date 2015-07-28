@@ -26,16 +26,17 @@ using System.Net.Mail;
 
 namespace Cliver.CrawlerHost
 {
-    public static class EmailRoutine
-    {
-        public enum SourceType
+        public enum ReportSourceType
         {
             MANAGER,
             SERVICE,
             CRAWLER
         }
 
-        static public void Send(string message, SourceType source_type, string source_id = null, bool error = true)
+    public static class Mailer
+    {
+
+        static public void Send(string message, ReportSourceType source_type, string source_id = null, bool error = true)
         {
             try
             {
@@ -54,13 +55,13 @@ namespace Cliver.CrawlerHost
                 if (source_id != null)
                     switch (source_type)
                     {
-                        case SourceType.CRAWLER:
+                        case ReportSourceType.CRAWLER:
                             AdminEmails = (string)DbApi.Connection["SELECT AdminEmails FROM Crawlers WHERE Id=@Id"].GetSingleValue("@Id", source_id);
                             break;
-                        case SourceType.SERVICE:
+                        case ReportSourceType.SERVICE:
                             AdminEmails = (string)DbApi.Connection["SELECT AdminEmails FROM Services WHERE Id=@Id"].GetSingleValue("@Id", source_id);
                             break;
-                        case SourceType.MANAGER:
+                        case ReportSourceType.MANAGER:
                             break;
                         default:
                             throw new Exception("Option is not defined.");

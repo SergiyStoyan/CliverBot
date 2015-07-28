@@ -10,9 +10,9 @@ using Cliver.CrawlerHost;
 
 namespace Cliver.CrawlerHostCleaner
 {
-    class Cleaner
+    public class Cleaner:CrawlerHost.Service
     {
-        public static void Do()
+        override protected void Do()
         {
             //EmailRoutines.Send
 

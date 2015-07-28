@@ -121,6 +121,20 @@ namespace Cliver.Bot
             }
         }
 
+        public static int TotalErrorCount
+        {
+            get
+            {
+                lock (thread2tls)
+                {
+                    int ec = 0;
+                    foreach (ThreadLog tl in thread2tls.Values)
+                        ec += tl.ErrorCount;
+                    return ec;
+                }
+            }
+        }
+
         /// <summary>
         /// Log id that is used for logging and browsing in GUI
         /// </summary>
@@ -140,7 +154,8 @@ namespace Cliver.Bot
             {
                 if (log_writer != null)
                     log_writer.Close();
-                log_writer = null;
+                log_writer = null; 
+                _ErrorCount = 0;
             }
         }
 
@@ -258,8 +273,14 @@ namespace Cliver.Bot
                     {
                         case Log.MessageType.INFORM: message = "INFORM: " + message; break;
                         case Log.MessageType.WARNING: message = "WARNING: " + message; break;
-                        case Log.MessageType.ERROR: message = "ERROR: " + message; break;
-                        case Log.MessageType.EXIT: message = "EXIT: " + message; break;
+                        case Log.MessageType.ERROR: 
+                            message = "ERROR: " + message;
+                            _ErrorCount++;
+                            break;
+                        case Log.MessageType.EXIT:                             
+                            message = "EXIT: " + message; 
+                            _ErrorCount++;
+                            break;
                         case Log.MessageType.TRACE: message = "TRACE: " + message; break;
                         case Log.MessageType.LOG: break;
                         default: throw new Exception("No case for " + type.ToString());
@@ -272,6 +293,15 @@ namespace Cliver.Bot
                 Wrtie.Invoke(type, message);
         }
         TextWriter log_writer = null;
+
+        public int ErrorCount
+        {
+            get
+            {
+                return _ErrorCount;
+            }
+        }
+        int _ErrorCount = 0;
 
         public delegate void OnWrtie(Log.MessageType type, string message);
         static public event OnWrtie Wrtie = null;

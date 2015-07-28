@@ -157,7 +157,7 @@
       <DependentUpon>HostSettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="CrawlerService.cs" />
-    <Compile Include="EmailRoutine.cs" />
+    <Compile Include="Mailer.cs" />
     <Compile Include="ServiceManager.cs" />
     <Compile Include="Properties\Host.Designer.cs">
       <AutoGen>True</AutoGen>

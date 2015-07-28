@@ -22,8 +22,7 @@ namespace Cliver.CrawlerHost
         {
             AGAIN:
             try
-            {
-                //Context = new CrawlerHostDataContext(DbApi.ConnectionString);
+            {                
                 Connection = DbConnection.Create(DbApi.ConnectionString);
                 create_tables();
             }
@@ -54,60 +53,34 @@ namespace Cliver.CrawlerHost
             //ThreadLog.Wrtie += ThreadLog_Wrtie;
         }
         static public readonly DbConnection Connection;
-        //static public readonly CrawlerHostDataContext Context;
+        
+        //static public Db.CrawlerHostDataContext Context
+        //{
+        //    get
+        //    {
+        //        if (_Context == null)
+        //            _Context = new Db.CrawlerHostDataContext(DbApi.ConnectionString);
+        //        return _Context;
+        //    }
+        //}
+        //static Db.CrawlerHostDataContext _Context;
 
         static void create_tables()
         {
             lock (Connection)
-            {
-                //var scsb = new SqlConnectionStringBuilder(Settings.Default.DbConnectionString);
-                //var database = scsb.InitialCatalog;
-                //if(database == null)
-                //{
-                //   //Match m = Regex.Match(scsb.AttachDBFilename, @"[\\\/](?'Name'.*)\.mdf\s*$", System.Text.RegularExpressions.RegexOptions.IgnoreCase | System.Text.RegularExpressions.RegexOptions.Singleline);
-                //   //if (!m.Success)
-                //   //    throw new TerminatingException("Cannot parser database name.");
-                //   //database = m.Groups["Name"].Value;
-                //   database = scsb.AttachDBFilename;
-                //}
-                //if(null == Connection.Get(string.Format("select * from master.dbo.sysdatabases where name='{0}'", database)).GetSingleValue())
-                //    Connection.Get(string.Format("CREATE DATABASE {0}", database)).Execute();
-
-
-                //if (LogMessage.AskYesNo("Crawlers table does not exist in the database " + Connection.Database + ". Do you want to create it?", true))
-                //CREATE TABLE IF NOT EXISTS `Crawlers` (
-                //  `Id` varchar(32) NOT NULL,
-                //  `State` enum('enabled','disabled','debug') NOT NULL DEFAULT 'debug',
-                //  `Site` varchar(64) NOT NULL,
-                //  `Command` enum('stop','restart') DEFAULT NULL COMMENT 'used while debugging/updating crawler',
-                //  `RunTimeSpan` int(11) NOT NULL DEFAULT '86400' COMMENT 'in seconds',
-                //  `CrawlProductTimeout` int(11) NOT NULL DEFAULT '600' COMMENT 'if no product was crawled for the last specified number of seconds, an error is arisen',
-                //  `YieldProductTimeout` int(11) NOT NULL DEFAULT '259200' COMMENT 'if no new product was added for the last specified number of seconds, an error is arisen',
-                //  `AdminEmails` varchar(300) NOT NULL COMMENT 'emails going by  '','' or new line',
-                //  `Comment` varchar(1000) NOT NULL,
-                //  `RestartDelayIfBroken` int(11) NOT NULL DEFAULT '1800' COMMENT 'in seconds',
-                //  `_LastSessionState` enum('started','_completed','completed','_error','error','broken','killed','debug_completed') DEFAULT NULL,
-                //  `_NextStartTime` datetime NOT NULL,
-                //  `_LastStartTime` datetime NOT NULL,
-                //  `_LastEndTime` datetime NOT NULL,
-                //  `_LastProcessId` int(11) NOT NULL,
-                //  `_LastLog` varchar(500) NOT NULL,
-                //  `_Archive` text NOT NULL,
-                //  `_LastProductTime` datetime NOT NULL COMMENT 'used to monitor crawler activity by manager',
-                //  PRIMARY KEY (`Id`)
-                //) ENGINE=MyISAM DEFAULT CHARSET=latin1; 		
+            {		
                 Connection.Get(@"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Crawlers' and xtype='U') 
 CREATE TABLE [dbo].[Crawlers] (
-    [Id]                   NVARCHAR (50)   NOT NULL,
+    [Id]                   NVARCHAR (50)   NOT NULL,/*crawler process/assembly name*/
     [State]                INT             DEFAULT ((2)) NOT NULL,
     [Site]                 NVARCHAR (50)   NOT NULL,
     [Command]              INT             DEFAULT ((0)) NOT NULL,
-    [RunTimeSpan]          INT             DEFAULT ((86400)) NOT NULL,
-    [CrawlProductTimeout]  INT             DEFAULT ((600)) NOT NULL,
-    [YieldProductTimeout]  INT             DEFAULT ((259200)) NOT NULL,
-    [AdminEmails]          NVARCHAR (300)  NOT NULL,
+    [RunTimeSpan]          INT             DEFAULT ((86400)) NOT NULL,/*in seconds*/
+    [CrawlProductTimeout]  INT             DEFAULT ((600)) NOT NULL,/*in seconds. If no product was crawled for the last specified number of seconds, an error is arisen.*/
+    [YieldProductTimeout]  INT             DEFAULT ((259200)) NOT NULL,/*in seconds. If no new product was added for the last specified number of seconds, an error is arisen.*/
+    [AdminEmails]          NVARCHAR (300)  NOT NULL,/*emails going by , or new line*/
     [Comment]              NVARCHAR (1000) DEFAULT (NULL) NULL,
-    [RestartDelayIfBroken] INT             DEFAULT ((1800)) NOT NULL,
+    [RestartDelayIfBroken] INT             DEFAULT ((1800)) NOT NULL,/*in seconds*/
     [_SessionStartTime]    DATETIME        DEFAULT (NULL) NULL,
     [_LastSessionState]    INT             DEFAULT (NULL) NULL,
     [_NextStartTime]       DATETIME        DEFAULT ((0)) NOT NULL,
@@ -117,7 +90,7 @@ CREATE TABLE [dbo].[Crawlers] (
     [_LastLog]             NVARCHAR (500)  DEFAULT (NULL) NULL,
     [_Archive]             NTEXT           DEFAULT (NULL) NULL,
     [_ProductsTable]       NVARCHAR (100)  DEFAULT ('') NOT NULL,
-    [_LastProductTime]     DATETIME        DEFAULT (NULL) NULL,
+    [_LastProductTime]     DATETIME        DEFAULT (NULL) NULL,/*used to monitor crawler activity by manager*/
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 "
@@ -140,15 +113,15 @@ CREATE TABLE [dbo].[Messages] (
 
             Connection.Get(@"IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Services' and xtype='U')
 CREATE TABLE [dbo].[Services] (
-    [Id]                   NVARCHAR (50)  NOT NULL,
+    [Id]                   NVARCHAR (50)  NOT NULL,/*service process/assembly name*/
     [State]                INT            DEFAULT ((2)) NOT NULL,
     [ExeFolder]            NVARCHAR (MAX) NULL,
     [Command]              INT            DEFAULT ((0)) NOT NULL,
-    [RunTimeSpan]          INT            DEFAULT ((86400)) NOT NULL,
-    [RunTimeout]           INT            DEFAULT ((1800)) NOT NULL,
-    [AdminEmails]          NVARCHAR (MAX) NOT NULL,
+    [RunTimeSpan]          INT            DEFAULT ((86400)) NOT NULL,/*in seconds*/
+    [RunTimeout]           INT            DEFAULT ((1800)) NOT NULL,/*in seconds*/
+    [AdminEmails]          NVARCHAR (MAX) NOT NULL,/*emails going by , or new line*/
     [Comment]              NVARCHAR (MAX) DEFAULT (NULL) NULL,
-    [RestartDelayIfBroken] INT            DEFAULT ((86400)) NOT NULL,
+    [RestartDelayIfBroken] INT            DEFAULT ((86400)) NOT NULL,/*in seconds*/
     [_LastSessionState]    INT            DEFAULT (NULL) NULL,
     [_NextStartTime]       DATETIME       DEFAULT ((0)) NOT NULL,
     [_LastStartTime]       DATETIME       DEFAULT (NULL) NULL,
@@ -156,6 +129,7 @@ CREATE TABLE [dbo].[Services] (
     [_LastProcessId]       INT            DEFAULT (NULL) NULL,
     [_LastLog]             NVARCHAR (MAX) DEFAULT (NULL) NULL,
     [_Archive]             NTEXT          DEFAULT (NULL) NULL,
+    [_Data]                NVARCHAR (MAX) DEFAULT (NULL) NULL,/*json data used by service*/
     PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 "
@@ -257,8 +231,20 @@ State tinyint NOT NULL)"
                 //if (1 > Database.SaveChanges())
                 //    throw new Exception("Cannot add to 'crawler_messages': " + message);
                 Connection["INSERT INTO Messages (Type,Source,Value,Time,Details) VALUES(@Type,@Source,@Value,GETDATE(),@Details)"].Execute("@Type", (int)type, "@Source", source, "@Value", message, "@Details", details);
+
+                if (type == MessageType.ERROR || type == MessageType.EXIT)
+                    _ErrorCount++;
             }
         }
+
+        public static int ErrorCount
+        {
+            get
+            {
+                return _ErrorCount;
+            }
+        }
+        static int _ErrorCount = 0;
 
         public static string ConnectionString
         {
