@@ -43,16 +43,21 @@ namespace Cliver.Bot
                 throw new Exception("Could not detect an appropriate wrapper class for " + connection_string);
         }
 
-        //public static DbConnection CreateFromNativeConnection(object connection)
-        //{
-        //    if (connection == null)
-        //        throw new Exception("Connection is null.");
+        public static DbConnection CreateFromNativeConnection(object connection)
+        {
+            if (connection == null)
+                throw new Exception("Connection is null.");
 
-        //    if (connection is System.Data.SqlClient.SqlConnection)
-        //        return new MsSqlConnection((System.Data.SqlClient.SqlConnection)connection);
+            if (connection is System.Data.SqlClient.SqlConnection)
+            {
+                System.Data.SqlClient.SqlConnection c = (System.Data.SqlClient.SqlConnection)connection;
+                if (c.State != ConnectionState.Open)
+                    c.Open();
+                return new MsSqlConnection(c);
+            }
 
-        //    throw new Exception("Could not detect an appropriate wrapper class for " + ((System.Data.SqlClient.SqlConnection)connection).ConnectionString);
-        //}
+            throw new Exception("Could not detect an appropriate wrapper class for " + ((System.Data.SqlClient.SqlConnection)connection).ConnectionString);
+        }
 
         protected DbConnection(string connection_string = null)
         {
@@ -81,7 +86,7 @@ namespace Cliver.Bot
         /// <summary>
         /// Native connection that must be casted.
         /// </summary>
-        internal object NativeConnection
+        public object NativeConnection
         {
             get
             {

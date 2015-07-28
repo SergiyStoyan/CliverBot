@@ -14,17 +14,29 @@ namespace Cliver.CrawlerHostWatchDog
     {
         override protected void Do()
         {
-            List<Report> reports = GetReports();
+            //GetReportsIntoTempTable((System.Data.Common.DbConnection)DbApi.Connection.NativeConnection);
         }
 
-        public static List<Report> GetReports(string db_connection_string/*used by ProductOffice as it cannot read registry for some reason*/ = null)
+        public static string GetReportsTempTable(System.Data.Common.DbConnection connection)
         {
-            DbConnection dbc;
-            if (db_connection_string == null)
-                dbc = DbApi.Connection;
-            else
-                dbc = DbConnection.Create(db_connection_string);
+            string table = "#WatchDogReports";
+            DbConnection   dbc = DbConnection.CreateFromNativeConnection(connection);
+            List<Report> reports = get_reports(dbc);
+            dbc.Get(@"CREATE TABLE " + table + @" (
+    [Source]                   NVARCHAR (100)   NOT NULL,
+    [SourceType]                NVARCHAR (100)            NOT NULL,
+    [MessageType]              NVARCHAR (100)            NOT NULL,
+    [Value]          NVARCHAR (300)  NOT NULL,
+    [Details]              NVARCHAR (1000) NOT NULL
+);").Execute();
+            foreach(Report r in reports)
+                dbc[@"INSERT INTO #WatchDogReports (Source,SourceType,MessageType,Value,Details) VALUES(@Source,@SourceType,@MessageType,@Value,@Details);"].Execute("@Source", r.Source, "@SourceType", r.SourceType.ToString(), "@MessageType", r.MessageType.ToString(), "@Value", r.Value, "@Details", r.Details);
 
+            return table;
+        }
+
+        static List<Report> get_reports(DbConnection dbc)
+        {            
             List<Report> reports = new List<Report>();
 
             foreach (Record crawler in dbc.Get("SELECT * FROM Crawlers WHERE State<>" + (int)Crawler.State.DISABLED).GetRecordset())
@@ -42,12 +54,12 @@ namespace Cliver.CrawlerHostWatchDog
                     {
                         report.MessageType = DbApi.MessageType.WARNING;
                         report.Value = "LONG WORK";
-                        report.Description = "Works longer than its RunTimeSpane";
+                        report.Details = "Works longer than its RunTimeSpane";
                         continue;
                     }
                     report.MessageType = DbApi.MessageType.ERROR;
                     report.Value = "NO START";
-                    report.Description = "Not started within its RunTimeSpan";
+                    report.Details = "Not started within its RunTimeSpan";
                     continue;
                 }
                 Record end_message = dbc["SELECT * FROM Messages WHERE Source=@Source AND (Value LIKE '" + CrawlerApi.MessageMark.ABORTED + "%' OR Value LIKE '" + CrawlerApi.MessageMark.UNCOMPLETED + "%' OR Value LIKE '" + CrawlerApi.MessageMark.COMPLETED + "%') ORDER BY Time DESC"].GetFirstRecord("@Source", crawler["Id"]);
@@ -57,38 +69,38 @@ namespace Cliver.CrawlerHostWatchDog
                     {
                         report.MessageType = DbApi.MessageType.ERROR;
                         report.Value = "KILLED";
-                        report.Description = "KIlled by Manager.";
+                        report.Details = "KIlled by Manager.";
                         continue;
                     }
                     report.MessageType = DbApi.MessageType.INFORM;
                     report.Value = "RUNNING";
-                    report.Description = "Running";
+                    report.Details = "Running";
                     continue;
                 }
                 if (Regex.IsMatch((string)end_message["Value"], @"^" + CrawlerApi.MessageMark.ABORTED))
                 {
                     report.MessageType = DbApi.MessageType.ERROR;
                     report.Value = "ABORTED";
-                    report.Description = "Last session is " + CrawlerApi.MessageMark.ABORTED;
+                    report.Details = "Last session is " + CrawlerApi.MessageMark.ABORTED;
                     continue;
                 }
                 if (Regex.IsMatch((string)end_message["Value"], @"^" + CrawlerApi.MessageMark.UNCOMPLETED))
                 {
                     report.MessageType = DbApi.MessageType.WARNING;
                     report.Value = "UNCOMPLETED";
-                    report.Description = "Last session is " + CrawlerApi.MessageMark.UNCOMPLETED;
+                    report.Details = "Last session is " + CrawlerApi.MessageMark.UNCOMPLETED;
                     continue;
                 }
                 if (Regex.IsMatch((string)end_message["Value"], @"^" + CrawlerApi.MessageMark.COMPLETED))
                 {
                     report.MessageType = DbApi.MessageType.INFORM;
                     report.Value = "COMPLETED";
-                    report.Description = "Completed";
+                    report.Details = "Completed";
                     continue;
                 }
                 report.MessageType = DbApi.MessageType.ERROR;
                 report.Value = "SYSTEM ERROR";
-                report.Description = "Unknown MessageMark";
+                report.Details = "Unknown MessageMark";
             }
 
             foreach (Record service in dbc.Get("SELECT * FROM Services WHERE State<>" + (int)Service.State.DISABLED).GetRecordset())
@@ -106,12 +118,12 @@ namespace Cliver.CrawlerHostWatchDog
                     {
                         report.MessageType = DbApi.MessageType.WARNING;
                         report.Value = "LONG WORK";
-                        report.Description = "Works longer than its RunTimeSpane";
+                        report.Details = "Works longer than its RunTimeSpane";
                         continue;
                     }
                     report.MessageType = DbApi.MessageType.ERROR;
                     report.Value = "NO START";
-                    report.Description = "Not started within its RunTimeSpan";
+                    report.Details = "Not started within its RunTimeSpan";
                     continue;
                 }
                 Record end_message = dbc["SELECT * FROM Messages WHERE Source=@Source AND (Value LIKE '" + Service.MessageMark.ABORTED + "%' OR Value LIKE '" + Service.MessageMark.ERROR + "%' OR Value LIKE '" + Service.MessageMark.COMPLETED + "%') ORDER BY Time DESC"].GetFirstRecord("@Source", service["Id"]);
@@ -119,33 +131,33 @@ namespace Cliver.CrawlerHostWatchDog
                 {
                     report.MessageType = DbApi.MessageType.INFORM;
                     report.Value = "RUNNING";
-                    report.Description = "Running";
+                    report.Details = "Running";
                     continue;
                 }
                 if (Regex.IsMatch((string)end_message["Value"], @"^" + Service.MessageMark.ABORTED))
                 {
                     report.MessageType = DbApi.MessageType.ERROR;
                     report.Value = "ABORTED";
-                    report.Description = "Last session is " + Service.MessageMark.ABORTED;
+                    report.Details = "Last session is " + Service.MessageMark.ABORTED;
                     continue;
                 }
                 if (Regex.IsMatch((string)end_message["Value"], @"^" + Service.MessageMark.ERROR))
                 {
                     report.MessageType = DbApi.MessageType.ERROR;
                     report.Value = "ERRORS";
-                    report.Description = "Last session has errors";
+                    report.Details = "Last session has errors";
                     continue;
                 }
                 if (Regex.IsMatch((string)end_message["Value"], @"^" + Service.MessageMark.COMPLETED))
                 {
                     report.MessageType = DbApi.MessageType.INFORM;
                     report.Value = "COMPLETED";
-                    report.Description = "Completed";
+                    report.Details = "Completed";
                     continue;
                 }
                 report.MessageType = DbApi.MessageType.ERROR;
                 report.Value = "SYSTEM ERROR";
-                report.Description = "Unknown MessageMark";
+                report.Details = "Unknown MessageMark";
             }
 
             return reports;
