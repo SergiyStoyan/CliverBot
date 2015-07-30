@@ -17,6 +17,11 @@ namespace Cliver.CrawlerHostWatchDog
             //GetReportsIntoTempTable((System.Data.Common.DbConnection)DbApi.Connection.NativeConnection);
         }
 
+        /// <summary>
+        /// used by ProductOffice
+        /// </summary>
+        /// <param name="connection"></param>
+        /// <returns></returns>
         public static string GetReportsTempTable(System.Data.Common.DbConnection connection)
         {
             string table = "#WatchDogReports";
