@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CC46F24D-D915-4C23-AFA1-841FE825DB8D}</ProjectGuid>
+    <ProjectGuid>{5DDEEE6A-D196-40A1-B7AA-48E5E0C9755F}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Cliver.CrawlerHostCleaner</RootNamespace>

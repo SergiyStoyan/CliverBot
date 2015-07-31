@@ -44,10 +44,10 @@ namespace Cliver.CrawlerHost
 
                     Record r = DbApi.Connection.Get("SELECT State FROM Services WHERE Id=@Id").GetFirstRecord("@Id", ServiceId);
                     if (r == null)
-                        Log.Main.Exit("Service id '" + ServiceId + "' does not exist in [Services] table.");
+                       LogMessage.Exit("Service id '" + ServiceId + "' does not exist in [Services] table.");
 
                     if ((Service.State)r["State"] == Service.State.DISABLED)
-                        Log.Main.Exit("Service id '" + ServiceId + "' is disabled.");
+                        LogMessage.Exit("Service id '" + ServiceId + "' is disabled.");
 
                     string archive = " start_time:" + (r["_LastStartTime"] != null ? ((DateTime)r["_LastStartTime"]).ToString("yyyy-MM-dd HH:mm:ss") : "")
                      + " end_time:" + (r["_LastEndTime"] != null ? ((DateTime)r["_LastEndTime"]).ToString("yyyy-MM-dd HH:mm:ss") : "")
@@ -64,7 +64,7 @@ namespace Cliver.CrawlerHost
                 }
                 catch (Exception e)
                 {
-                    Log.Main.Error(e);
+                    LogMessage.Error(e);
                     DbApi.Message(e);
                 }
             }
@@ -119,7 +119,7 @@ namespace Cliver.CrawlerHost
                 Log.Main.Inform("STARTED");
 
                 Assembly service_assembly = Assembly.GetEntryAssembly();
-                List<Type> service_types = (from t in service_assembly.GetExportedTypes() where t.BaseType == typeof(Service) select t).ToList();
+                List<Type> service_types = (from t in service_assembly.GetExportedTypes() where t.IsSubclassOf(typeof(Service)) select t).ToList();
                 if (service_types.Count < 1)
                     LogMessage.Exit("Could not find Service implementation in the entry assembly: " + service_assembly.FullName);
                 if (service_types.Count > 1)
@@ -133,7 +133,7 @@ namespace Cliver.CrawlerHost
             }
             catch(Exception e)
             {
-                Log.Main.Exit(e);
+                LogMessage.Exit(e);
             }
         }
     }

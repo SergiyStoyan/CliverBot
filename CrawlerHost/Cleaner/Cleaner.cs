@@ -11,7 +11,7 @@ using System.IO;
 
 namespace Cliver.CrawlerHostCleaner
 {
-    public class Cleaner:CrawlerHost.Service
+    public class Cleaner : CrawlerHost.Service
     {
         override protected void Do()
         {
