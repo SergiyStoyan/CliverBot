@@ -14,7 +14,7 @@ namespace Cliver.CrawlerHostWatchDog
     {
         public string Source{ get; internal set; }
         public ReportSourceType SourceType { get; internal set; }
-        public DbApi.MessageType MessageType { get; internal set; }
+        public Log.MessageType MessageType { get; internal set; }
         public string Value { get; internal set; }
         public string Details { get; internal set; }
         public string Log { get; internal set; }

@@ -61,7 +61,7 @@ namespace Cliver.CrawlerHost
                         )
                         throw new Exception("Could not update Crawlers table.");
 
-                    DbApi.Message(DbApi.MessageType.INFORM, CrawlerApi.MessageMark.STARTED + "\r\nCommand line: " + string.Join("|", Environment.GetCommandLineArgs()) + "\n Running as: " + System.Security.Principal.WindowsIdentity.GetCurrent().Name);
+                    Log.Main.Write(Log.MessageType.INFORM, CrawlerApi.MessageMark.STARTED + "\r\nCommand line: " + string.Join("|", Environment.GetCommandLineArgs()) + "\n Running as: " + System.Security.Principal.WindowsIdentity.GetCurrent().Name);
                 }
                 catch (Exception e)
                 {
@@ -93,19 +93,19 @@ namespace Cliver.CrawlerHost
                 if (Session.This.IsUnprocessedInputItem)
                 {
                     DbApi.Connection["UPDATE Crawlers SET _LastEndTime=GETDATE(), _LastSessionState=" + (int)Crawler.SessionState._ERROR + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, _LastStartTime) WHERE Id=@Id"].Execute("@Id", CrawlerId);
-                    DbApi.Message(DbApi.MessageType.ERROR, MessageMark.ABORTED);
+                    Log.Main.Write(Log.MessageType.ERROR, MessageMark.ABORTED);
                 }
                 else if (Session.This.IsItemToRestore)
                 {
                     DbApi.Connection["UPDATE Crawlers SET _LastEndTime=GETDATE(), _LastSessionState=" + (int)Crawler.SessionState._ERROR + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, _LastStartTime) WHERE Id=@Id"].Execute("@Id", CrawlerId);
-                    DbApi.Message(DbApi.MessageType.WARNING, MessageMark.UNCOMPLETED);
+                    Log.Main.Write(Log.MessageType.WARNING, MessageMark.UNCOMPLETED);
                 }
                 else
                 {
                     Log.Main.Inform("Deleted marked old products: " + DbApi.Connection["DELETE FROM " + ProductsTable + " WHERE State=" + (int)Crawler.ProductState.DELETED].Execute());
                     Log.Main.Inform("Marked as deleted old products: " + DbApi.Connection["UPDATE " + ProductsTable + " SET State=" + (int)Crawler.ProductState.DELETED + " WHERE CrawlTime<@session_start_time"].Execute("@session_start_time", Session.This.StartTime));
                     DbApi.Connection["UPDATE Crawlers SET _LastEndTime=GETDATE(), _LastSessionState=" + (int)Crawler.SessionState._COMPLETED + ", _NextStartTime=DATEADD(ss, RunTimeSpan, _LastStartTime) WHERE Id=@Id"].Execute("@Id", CrawlerId);
-                    DbApi.Message(DbApi.MessageType.INFORM, MessageMark.COMPLETED);
+                    Log.Main.Write(Log.MessageType.INFORM, MessageMark.COMPLETED);
                 }
 
                 ServiceManager.WaitUntilCheckTime();

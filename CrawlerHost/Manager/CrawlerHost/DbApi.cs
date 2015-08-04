@@ -20,6 +20,7 @@ namespace Cliver.CrawlerHost
     {
         static DbApi()
         {
+            ThreadLog.Writing += ThreadLog_Writing;
         AGAIN:
             try
             {
@@ -50,11 +51,11 @@ namespace Cliver.CrawlerHost
                 LogMessage.Exit(e);
             }
 
-            //ThreadLog.Wrtie += ThreadLog_Wrtie;
             Assembly ea = Assembly.GetEntryAssembly();
             if (ea != null)
                 entry_assembly_name = Regex.Replace(Assembly.GetEntryAssembly().FullName, @"\,.*", "", RegexOptions.IgnoreCase | RegexOptions.Singleline);
         }
+
         static public readonly DbConnection Connection;
         
         //static public Db.CrawlerHostDataContext Context
@@ -174,53 +175,36 @@ State tinyint NOT NULL)"
             READ = 1,
             IMPORTANT = 2
         }
-
-        //static void ThreadLog_Wrtie(Log.MessageType type, string message)
-        //{
-        //    throw new NotImplementedException();
-        //}
         
-        public enum MessageType
+        static void ThreadLog_Writing(Log.MessageType type, string message)
         {
-            LOG = 0,
-            INFORM = 1,
-            WARNING = 2,
-            ERROR = 3,
-            EXIT = 4,
-            ATTENTION = 5
-        }
-        
-        static public void Message(Exception exception, string source = null, string details = null)
-        {
-            Message(MessageType.ERROR, Log.GetExceptionMessage(exception), source, details);
+            write2Messages(type, message);
         }
 
-
-        static public void Message(MessageType type, string message, string source = null, string details = null)
+        static void write2Messages(Log.MessageType type, string message)
         {
             lock (Connection)
             {
-                if (source == null)
-                    source = entry_assembly_name;
-                if (details == null)
+                if (type == Log.MessageType.LOG)
+                    return;
+
+                System.Diagnostics.StackTrace st = new StackTrace(true);
+                StackFrame sf;
+                string n = null;
+                Type dt = null;
+                for (int i = 1; ; i++)
                 {
-                    System.Diagnostics.StackTrace st = new StackTrace(true);
-                    StackFrame sf;
-                    string n = null;
-                    Type dt = null;
-                    for (int i = 1; ; i++)
-                    {
-                        sf = st.GetFrame(i);
-                        if (sf == null)
-                            break;
-                        MethodBase mb = sf.GetMethod();
-                        dt = mb.DeclaringType;
-                        n = mb.Name;
-                        if (n != "Message" || dt != typeof(DbApi))
-                            break;
-                    }
-                    details = dt.ToString() + "::" + n + " \nfile: " + sf.GetFileName() + " \nline: " + sf.GetFileLineNumber().ToString();
+                    sf = st.GetFrame(i);
+                    if (sf == null)
+                        break;
+                    MethodBase mb = sf.GetMethod();
+                    dt = mb.DeclaringType;
+                    n = mb.Name;
+                    if (n != "Message" || dt != typeof(DbApi))
+                        break;
                 }
+                string details = dt.ToString() + "::" + n + " \nfile: " + sf.GetFileName() + " \nline: " + sf.GetFileLineNumber().ToString();
+                //}
                 //{
                 //    Message m = new CrawlerHost.Message();
                 //    m.CrawlerId = crawler_id;
@@ -232,22 +216,10 @@ State tinyint NOT NULL)"
                 //}
                 //if (1 > Database.SaveChanges())
                 //    throw new Exception("Cannot add to 'crawler_messages': " + message);
-                Connection["INSERT INTO Messages (Type,Source,Value,Time,Details) VALUES(@Type,@Source,@Value,GETDATE(),@Details)"].Execute("@Type", (int)type, "@Source", source, "@Value", message, "@Details", details);
-
-                if (type == MessageType.ERROR || type == MessageType.EXIT)
-                    _ErrorCount++;
+                Connection["INSERT INTO Messages (Type,Source,Value,Time,Details) VALUES(@Type,@Source,@Value,GETDATE(),@Details)"].Execute("@Type", (int)type, "@Source", entry_assembly_name, "@Value", message, "@Details", details);
             }
         }
         static readonly string entry_assembly_name;
-
-        public static int ErrorCount
-        {
-            get
-            {
-                return _ErrorCount;
-            }
-        }
-        static int _ErrorCount = 0;
 
         public static string ConnectionString
         {

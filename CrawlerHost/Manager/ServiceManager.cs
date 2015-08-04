@@ -57,7 +57,7 @@ namespace Cliver.CrawlerHost
         {
             try
             {
-                DbApi.Message(DbApi.MessageType.INFORM, "STATRED");
+                Log.Main.Inform("STATRED");
                 actual_work = true;
                 while (true)
                 {
@@ -72,9 +72,9 @@ namespace Cliver.CrawlerHost
                             StateChanged.BeginInvoke(work, null, null);
                         actual_work = work;
                         if (actual_work)
-                            DbApi.Message(DbApi.MessageType.INFORM, "STARTED");
+                            Log.Main.Write(Log.MessageType.INFORM, "STARTED");
                         else
-                            DbApi.Message(DbApi.MessageType.INFORM, "STOPPED");
+                            Log.Main.Write(Log.MessageType.INFORM, "STOPPED");
                     }
                     ThreadRoutines.Wait(Properties.Settings.Default.PollIntervalInMss);
                     //ThreadRoutines.WaitForCondition(() => { if (!work) return work; return null; }, Properties.Settings.Default.PollIntervalInSecs * 1000, 100);
@@ -83,7 +83,6 @@ namespace Cliver.CrawlerHost
             catch (Exception e)
             {
                 Log.Main.Error(e);
-                DbApi.Message(e);
                 Mailer.Send(Log.GetExceptionMessage(e), ReportSourceType.MANAGER, Log.GetExceptionMessage(e));
             }
             if (StateChanged != null)

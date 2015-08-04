@@ -282,6 +282,9 @@ namespace Cliver.Bot
         {
             lock (this)
             {
+                if (Writing != null)
+                    Writing.Invoke(type, message);
+
                 if (Properties.Log.Default.WriteLog)
                 {
                     if (log_writer == null)
@@ -306,8 +309,6 @@ namespace Cliver.Bot
                     log_writer.WriteLine(DateTime.Now.ToString("[dd-MM-yy HH:mm:ss] ") + message);
                     log_writer.Flush();
                 }
-                if (Wrtie != null)
-                    Wrtie.Invoke(type, message);
             }
         }
         TextWriter log_writer = null;
@@ -322,7 +323,7 @@ namespace Cliver.Bot
         }
         int _ErrorCount = 0;
 
-        public delegate void OnWrtie(Log.MessageType type, string message);
-        static public event OnWrtie Wrtie = null;
+        public delegate void OnWrite(Log.MessageType type, string message);
+        static public event OnWrite Writing = null;
     }
 }

@@ -57,12 +57,12 @@ namespace Cliver.CrawlerHostWatchDog
                 {
                     if (state == Crawler.SessionState.STARTED)
                     {
-                        report.MessageType = DbApi.MessageType.WARNING;
+                        report.MessageType = Log.MessageType.WARNING;
                         report.Value = "LONG WORK";
                         report.Details = "Works longer than its RunTimeSpane";
                         continue;
                     }
-                    report.MessageType = DbApi.MessageType.ERROR;
+                    report.MessageType = Log.MessageType.ERROR;
                     report.Value = "NO START";
                     report.Details = "Not started within its RunTimeSpan";
                     continue;
@@ -72,38 +72,38 @@ namespace Cliver.CrawlerHostWatchDog
                 {
                     if (state == Crawler.SessionState.KILLED)
                     {
-                        report.MessageType = DbApi.MessageType.ERROR;
+                        report.MessageType = Log.MessageType.ERROR;
                         report.Value = "KILLED";
                         report.Details = "KIlled by Manager.";
                         continue;
                     }
-                    report.MessageType = DbApi.MessageType.INFORM;
+                    report.MessageType = Log.MessageType.INFORM;
                     report.Value = "RUNNING";
                     report.Details = "Running";
                     continue;
                 }
                 if (Regex.IsMatch((string)end_message["Value"], @"^" + CrawlerApi.MessageMark.ABORTED))
                 {
-                    report.MessageType = DbApi.MessageType.ERROR;
+                    report.MessageType = Log.MessageType.ERROR;
                     report.Value = "ABORTED";
                     report.Details = "Last session is " + CrawlerApi.MessageMark.ABORTED;
                     continue;
                 }
                 if (Regex.IsMatch((string)end_message["Value"], @"^" + CrawlerApi.MessageMark.UNCOMPLETED))
                 {
-                    report.MessageType = DbApi.MessageType.WARNING;
+                    report.MessageType = Log.MessageType.WARNING;
                     report.Value = "UNCOMPLETED";
                     report.Details = "Last session is " + CrawlerApi.MessageMark.UNCOMPLETED;
                     continue;
                 }
                 if (Regex.IsMatch((string)end_message["Value"], @"^" + CrawlerApi.MessageMark.COMPLETED))
                 {
-                    report.MessageType = DbApi.MessageType.INFORM;
+                    report.MessageType = Log.MessageType.INFORM;
                     report.Value = "COMPLETED";
                     report.Details = "Completed";
                     continue;
                 }
-                report.MessageType = DbApi.MessageType.ERROR;
+                report.MessageType = Log.MessageType.ERROR;
                 report.Value = "SYSTEM ERROR";
                 report.Details = "Unknown MessageMark";
             }
@@ -121,12 +121,12 @@ namespace Cliver.CrawlerHostWatchDog
                     Service.SessionState state = (Service.SessionState)(int)dbc["SELECT _LastSessionState FROM Services WHERE Id=@Id"].GetSingleValue("@Id", service["Id"]);
                     if (state == SessionState.STARTED)
                     {
-                        report.MessageType = DbApi.MessageType.WARNING;
+                        report.MessageType = Log.MessageType.WARNING;
                         report.Value = "LONG WORK";
                         report.Details = "Works longer than its RunTimeSpane";
                         continue;
                     }
-                    report.MessageType = DbApi.MessageType.ERROR;
+                    report.MessageType = Log.MessageType.ERROR;
                     report.Value = "NO START";
                     report.Details = "Not started within its RunTimeSpan";
                     continue;
@@ -134,33 +134,33 @@ namespace Cliver.CrawlerHostWatchDog
                 Record end_message = dbc["SELECT * FROM Messages WHERE Source=@Source AND (Value LIKE '" + Service.MessageMark.ABORTED + "%' OR Value LIKE '" + Service.MessageMark.ERROR + "%' OR Value LIKE '" + Service.MessageMark.COMPLETED + "%') ORDER BY Time DESC"].GetFirstRecord("@Source", service["Id"]);
                 if (end_message == null)
                 {
-                    report.MessageType = DbApi.MessageType.INFORM;
+                    report.MessageType = Log.MessageType.INFORM;
                     report.Value = "RUNNING";
                     report.Details = "Running";
                     continue;
                 }
                 if (Regex.IsMatch((string)end_message["Value"], @"^" + Service.MessageMark.ABORTED))
                 {
-                    report.MessageType = DbApi.MessageType.ERROR;
+                    report.MessageType = Log.MessageType.ERROR;
                     report.Value = "ABORTED";
                     report.Details = "Last session is " + Service.MessageMark.ABORTED;
                     continue;
                 }
                 if (Regex.IsMatch((string)end_message["Value"], @"^" + Service.MessageMark.ERROR))
                 {
-                    report.MessageType = DbApi.MessageType.ERROR;
+                    report.MessageType = Log.MessageType.ERROR;
                     report.Value = "ERRORS";
                     report.Details = "Last session has errors";
                     continue;
                 }
                 if (Regex.IsMatch((string)end_message["Value"], @"^" + Service.MessageMark.COMPLETED))
                 {
-                    report.MessageType = DbApi.MessageType.INFORM;
+                    report.MessageType = Log.MessageType.INFORM;
                     report.Value = "COMPLETED";
                     report.Details = "Completed";
                     continue;
                 }
-                report.MessageType = DbApi.MessageType.ERROR;
+                report.MessageType = Log.MessageType.ERROR;
                 report.Value = "SYSTEM ERROR";
                 report.Details = "Unknown MessageMark";
             }

@@ -60,12 +60,11 @@ namespace Cliver.CrawlerHost
                         )
                         throw new Exception("Could not update Services table.");
 
-                    DbApi.Message(DbApi.MessageType.INFORM, MessageMark.STARTED + "\r\nCommand line: " + string.Join("|", Environment.GetCommandLineArgs()) + "\nRunning as:" + System.Security.Principal.WindowsIdentity.GetCurrent().Name);
+                    Log.Main.Write(Log.MessageType.INFORM, MessageMark.STARTED + "\r\nCommand line: " + string.Join("|", Environment.GetCommandLineArgs()) + "\nRunning as:" + System.Security.Principal.WindowsIdentity.GetCurrent().Name);
                 }
                 catch (Exception e)
                 {
                     LogMessage.Error(e);
-                    DbApi.Message(e);
                 }
             }
         }
@@ -77,12 +76,12 @@ namespace Cliver.CrawlerHost
             public const string STARTED = "STARTED";
             public const string COMPLETED = "COMPLETED";
             public const string ABORTED = "ABORTED";
-            public const string ERROR = "ERROR";
+            public const string ERROR = "THERE_WAS_ERROR";
         }
 
         void ThreadLog_Exitig(string message)
         {
-            DbApi.Message(DbApi.MessageType.ERROR, MessageMark.ABORTED);
+            Log.Main.Error(MessageMark.ABORTED);
             DbApi.Connection["UPDATE Services SET _LastEndTime=GETDATE(), _LastSessionState=" + (int)Service.SessionState._ERROR + ", _NextStartTime=DATEADD(ss, RunTimeSpan, _LastStartTime) WHERE Id=@Id"].Execute("@Id", ServiceId);
         }
 
@@ -90,14 +89,14 @@ namespace Cliver.CrawlerHost
         {
             lock (DbApi.Connection)
             {
-                if (ThreadLog.TotalErrorCount > 0 || DbApi.ErrorCount > 0)
+                if (ThreadLog.TotalErrorCount > 0)
                 {
-                    DbApi.Message(DbApi.MessageType.ERROR, MessageMark.ERROR);
+                    Log.Main.Write(Log.MessageType.ERROR, MessageMark.ERROR);
                     DbApi.Connection["UPDATE Services SET _LastEndTime=GETDATE(), _LastSessionState=" + (int)Service.SessionState._ERROR + ", _NextStartTime=DATEADD(ss, RunTimeSpan, _LastStartTime) WHERE Id=@Id"].Execute("@Id", ServiceId);
                 }
                 else
                 {
-                    DbApi.Message(DbApi.MessageType.INFORM, MessageMark.COMPLETED);
+                    Log.Main.Write(Log.MessageType.INFORM, MessageMark.COMPLETED);
                     DbApi.Connection["UPDATE Services SET _LastEndTime=GETDATE(), _LastSessionState=" + (int)Service.SessionState._COMPLETED + ", _NextStartTime=DATEADD(ss, RunTimeSpan, _LastStartTime) WHERE Id=@Id"].Execute("@Id", ServiceId);
                 }
 
@@ -116,7 +115,7 @@ namespace Cliver.CrawlerHost
                 LogMessage.Output2Console = true;
                 ProcessRoutines.RunSingleProcessOnly();
                 
-                Log.Main.Inform("STARTED");
+                Log.Main.Write(Log.MessageType.INFORM, "STARTED");
 
                 Assembly service_assembly = Assembly.GetEntryAssembly();
                 List<Type> service_types = (from t in service_assembly.GetExportedTypes() where t.IsSubclassOf(typeof(Service)) select t).ToList();
@@ -128,8 +127,8 @@ namespace Cliver.CrawlerHost
                 Service service = (Service)Activator.CreateInstance(service_types[0]);
                 service.Do();
                 service.complete();
-                
-                Log.Main.Inform("COMPLETED");
+
+                Log.Main.Write(Log.MessageType.INFORM, "COMPLETED");
             }
             catch(Exception e)
             {
