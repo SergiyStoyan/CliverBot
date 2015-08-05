@@ -15,6 +15,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Reflection;
 
 namespace Cliver.Bot
 {
@@ -180,14 +181,14 @@ namespace Cliver.Bot
         /// Write the message to the current thread's log.
         /// </summary>
         /// <param name="e"></param>
-        static public void Write(MessageType type, string line)
+        static public void Write(MessageType type, string message, string details = null)
         {
-            ThreadLog.This.Write(type, line);
+            ThreadLog.This.Write(type, message, details);
         }
 
-        static public void Write(string line)
+        static public void Write(string message)
         {
-            ThreadLog.This.Write(MessageType.LOG, line);
+            ThreadLog.This.Write(MessageType.LOG, message);
         }
 
         public enum MessageType
@@ -198,6 +199,10 @@ namespace Cliver.Bot
             ERROR = 3,
             EXIT = 4,
             TRACE = 5,
+            //INFORM2 = 11,
+            //WARNING2 = 21,
+            //ERROR2 = 31,
+            //EXIT2 = 41,
         }
 
         /// <summary>
@@ -207,35 +212,38 @@ namespace Cliver.Bot
         public static string GetStackString()
         {
             System.Diagnostics.StackTrace st = new StackTrace(true);
-            StackFrame sf = st.GetFrame(2);
-            return "Stack: " + sf.GetMethod().Name + "\nfile: " + sf.GetFileName() + "\nline: " + sf.GetFileLineNumber().ToString();
+            StackFrame sf;
+            MethodBase mb = null;
+            Type dt = null;
+            for (int i = 2; ; i++)
+            {
+                sf = st.GetFrame(i);
+                if (sf == null)
+                    break;
+                mb = sf.GetMethod();
+                dt = mb.DeclaringType;
+                if (dt != typeof(Log) && dt != typeof(ThreadLog))
+                    break;
+            }
+            return "Stack: " + dt.ToString() + "::" + mb.Name + " \r\nfile: " + sf.GetFileName() + " \r\nline: " + sf.GetFileLineNumber();
         }
 
         public static string GetExceptionMessage(Exception e)
         {
-            //if (e is System.Reflection.TargetInvocationException && e.InnerException != null)
             string m;
-            if (e.InnerException != null)
-            {
-                do
-                {
-                    e = e.InnerException;
-                } while (e.InnerException != null);
-#if DEBUG
-                m = "Inner Exception:\r\n" + e.Message + "\r\n\r\nModule:" + e.TargetSite.Module + "\r\n\r\nStack:" + e.StackTrace;
+            string d;
+            GetExceptionMessage(e, out m, out d);
+            return m + " \r\n\r\n" + d; ;
+        }
+
+        static public void GetExceptionMessage(Exception e, out string message, out string details)
+        {
+            for (; e.InnerException != null; e = e.InnerException) ;
+            message = "Exception: \r\n" + e.Message;
+#if DEBUG            
+            details = "Module:" + e.TargetSite.Module + " \r\n\r\nStack:" + e.StackTrace;
 #else                
-                m = "Inner Exception:\r\n" + e.Message;
 #endif
-            }
-            else
-            {
-#if DEBUG
-                m = e.Message + "\r\n\r\nStack:" + e.StackTrace + "\r\nTarget:" + e.TargetSite;
-#else                
-                m = e.Message;
-#endif
-            }
-            return m;
         }
     }
 

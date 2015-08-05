@@ -167,7 +167,10 @@ namespace Cliver.Bot
         /// <param name="e"></param>
         public void Error(Exception e)
         {
-            Write(Log.MessageType.ERROR, Log.GetExceptionMessage(e));
+            string m;
+            string d;
+            Log.GetExceptionMessage(e, out m, out d);
+            Write(Log.MessageType.ERROR, m, d);
         }
 
         /// <summary>
@@ -176,7 +179,7 @@ namespace Cliver.Bot
         /// <param name="e"></param>
         public void Error(string message)
         {
-            Write(Log.MessageType.ERROR, message + "\r\n" + Log.GetStackString());
+            Write(Log.MessageType.ERROR, message, Log.GetStackString());
         }
 
         public void Error2(string message)
@@ -191,9 +194,9 @@ namespace Cliver.Bot
         public void Trace(object message = null)
         {
             if (message != null)
-                Write(Log.MessageType.TRACE, message.ToString() + "\r\n" + Log.GetStackString());
+                Write(Log.MessageType.TRACE, message.ToString(), Log.GetStackString());
             else
-                Write(Log.MessageType.TRACE, Log.GetStackString());
+                Write(Log.MessageType.TRACE, null, Log.GetStackString());
         }
 
         /// <summary>
@@ -206,7 +209,7 @@ namespace Cliver.Bot
             {
                 if (Id >= 0)
                     Log.Main.Write("EXITING: due to thread #" + Id.ToString() + ". See the respective Log");
-                Write(Log.MessageType.EXIT, message + "\r\nStack: " + Log.GetStackString());
+                Write(Log.MessageType.EXIT, message, Log.GetStackString());
             }
         }
 
@@ -228,8 +231,12 @@ namespace Cliver.Bot
         {
             lock (this)
             {
-                string message = Log.GetExceptionMessage(e);
-                Exit(message);
+                if (Id >= 0)
+                    Log.Main.Write("EXITING: due to thread #" + Id.ToString() + ". See the respective Log");
+                string m;
+                string d;
+                Log.GetExceptionMessage(e, out m, out d);
+                Write(Log.MessageType.EXIT, m, d);
             }
         }
         
@@ -251,7 +258,10 @@ namespace Cliver.Bot
         /// <param name="e"></param>
         public void Warning(Exception e)
         {
-            Write(Log.MessageType.WARNING, Log.GetExceptionMessage(e));
+            string m;
+            string d;
+            Log.GetExceptionMessage(e, out m, out d);
+            Write(Log.MessageType.WARNING, m, d);
         }
 
         /// <summary>
@@ -272,7 +282,7 @@ namespace Cliver.Bot
         /// Write the message to the current thread's log.
         /// </summary>
         /// <param name="e"></param>
-        public void Write(Log.MessageType type, string message)
+        public void Write(Log.MessageType type, string message, string details = null)
         {
             lock (this)
             {
@@ -284,21 +294,21 @@ namespace Cliver.Bot
                     {
                         if (Exitig != null)
                             Exitig.Invoke(message);
-                        write(type, message);
+                        write(type, message, details);
                         Environment.Exit(0);
                     });
                     exiting_thread.Start();
                 }
                 else
-                    write(type, message);
+                    write(type, message, details);
             }
         }
-        void write(Log.MessageType type, string message)
+        void write(Log.MessageType type, string message, string details)
         {
             lock (this)
             {
                 if (Writing != null)
-                    Writing.Invoke(type, message);
+                    Writing.Invoke(type, message, details);
 
                 if (Properties.Log.Default.WriteLog)
                 {
@@ -338,7 +348,7 @@ namespace Cliver.Bot
         }
         int _ErrorCount = 0;
 
-        public delegate void OnWrite(Log.MessageType type, string message);
+        public delegate void OnWrite(Log.MessageType type, string message, string details);
         static public event OnWrite Writing = null;
     }
 }

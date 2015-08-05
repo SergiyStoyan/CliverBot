@@ -11,7 +11,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
-using Settings = Cliver.CrawlerHost.Properties.Settings;
 using Cliver.Bot;
 
 namespace Cliver.CrawlerHost
@@ -176,46 +175,17 @@ State tinyint NOT NULL)"
             IMPORTANT = 2
         }
         
-        static void ThreadLog_Writing(Log.MessageType type, string message)
+        static void ThreadLog_Writing(Log.MessageType type, string message, string details)
         {
-            write2Messages(type, message);
+            write2Messages(type, message, details);
         }
 
-        static void write2Messages(Log.MessageType type, string message)
+        static void write2Messages(Log.MessageType type, string message, string details)
         {
             lock (Connection)
             {
                 if (type == Log.MessageType.LOG)
                     return;
-
-                System.Diagnostics.StackTrace st = new StackTrace(true);
-                StackFrame sf;
-                string n = null;
-                Type dt = null;
-                for (int i = 1; ; i++)
-                {
-                    sf = st.GetFrame(i);
-                    if (sf == null)
-                        break;
-                    MethodBase mb = sf.GetMethod();
-                    dt = mb.DeclaringType;
-                    n = mb.Name;
-                    if (n != "Message" || dt != typeof(DbApi))
-                        break;
-                }
-                string details = dt.ToString() + "::" + n + " \nfile: " + sf.GetFileName() + " \nline: " + sf.GetFileLineNumber().ToString();
-                //}
-                //{
-                //    Message m = new CrawlerHost.Message();
-                //    m.CrawlerId = crawler_id;
-                //    m.Source = source;
-                //    m.Time = DateTime.Now;
-                //    m.Type = (int)type;
-                //    m.Value = message;
-                //    Database.Messages.Add(m);
-                //}
-                //if (1 > Database.SaveChanges())
-                //    throw new Exception("Cannot add to 'crawler_messages': " + message);
                 Connection["INSERT INTO Messages (Type,Source,Value,Time,Details) VALUES(@Type,@Source,@Value,GETDATE(),@Details)"].Execute("@Type", (int)type, "@Source", entry_assembly_name, "@Value", message, "@Details", details);
             }
         }
