@@ -49,8 +49,6 @@ namespace Cliver.Bot
 
         public static bool Output2Console = false;
 
-        public static bool EmailErrors = false;
-
         /// <summary>
         /// Receives owner window handle. It is needed to do message box owned.
         /// </summary>
@@ -78,7 +76,7 @@ namespace Cliver.Bot
             lock (lock_variable)
             {
                 if (write2log)
-                    Log.Main.Write(Log.MessageType.LOG, message);
+                    Log.Main.Write(message);
 
                 if (!DisableStumblingDialogs)
                 {
@@ -122,27 +120,30 @@ namespace Cliver.Bot
         public static void Error(string message)
         {
             Log.Main.Error(message);
-            if (EmailErrors)
-                email(message);
+            Error_(message);
+        }
+
+        public static void Error2(string message)
+        {
+            Log.Main.Error2(message);
+            Error_(message);
+        }
+
+        static void Error_(string message)
+        {
             lock (lock_variable)
             {
                 if (!DisableStumblingDialogs)
                 {
                     if (!Output2Console)
-                    {
                         Cliver.Message.Error(message, Owner);
-                    }
                     else
-                    {
                         Console.WriteLine("ERROR: " + message);
-                    }
                 }
                 else
                 {
                     if (Output2Console)
-                    {
                         Console.WriteLine("ERROR: " + message);
-                    }
                 }
             }
         }
@@ -154,16 +155,24 @@ namespace Cliver.Bot
 
         public static void Exit(string message)
         {
-            if (EmailErrors)
-                email(message);
+            Exit_(message);
+            Log.Main.Exit(message);
+        }
+
+        public static void Exit2(string message)
+        {
+            Exit_(message);
+            Log.Main.Exit2(message);
+        }
+
+        public static void Exit_(string message)
+        {
             lock (lock_variable)
             {
                 if (!DisableStumblingDialogs)
                 {
                     if (!Output2Console)
-                    {
                         Cliver.Message.Error(message, Owner);
-                    }
                     else
                     {
                         Console.WriteLine("EXIT: " + message);
@@ -174,74 +183,15 @@ namespace Cliver.Bot
                 else
                 {
                     if (Output2Console)
-                    {
                         Console.WriteLine("EXIT: " + message);
-                    }
                 }
             }
-            Log.Main.Exit(message);
         }
 
         public static void Exit(Exception e)
         {
             Exit(Log.GetExceptionMessage(e));
-        }
-
-        static void email(string message)
-        {
-            try
-            {
-            }
-            catch (Exception e)
-            {
-                Log.Main.Error(e);
-            }
-        }
-
-        //public enum MessageType
-        //{
-        //    INFORM = 1,
-        //    WARNING = 2,
-        //    ERROR = 3
-        //}
-
-        //public static void Message(MessageType type, string message)
-        //{
-        //    switch (type)
-        //    {
-        //        case MessageType.INFORM:
-        //            Inform(message);
-        //            break;
-        //        case MessageType.WARNING:
-        //            Warning(message);
-        //            break;
-        //        case MessageType.ERROR:
-        //            Error(message);
-        //            break;
-        //        default:
-        //            Error("There is not switch option: " + type.ToString());
-        //            break;
-        //    }
-        //}
-
-        //public static void Message(MessageType type, Exception e)
-        //{
-        //    switch (type)
-        //    {
-        //        case MessageType.INFORM:
-        //            Inform(e);
-        //            break;
-        //        case MessageType.WARNING:
-        //            Warning(e);
-        //            break;
-        //        case MessageType.ERROR:
-        //            Error(e);
-        //            break;
-        //        default:
-        //            Error("There is not switch option: " + type.ToString());
-        //            break;
-        //    }
-        //}
+        }       
 
         public static void Inform(string message)
         {
@@ -251,20 +201,14 @@ namespace Cliver.Bot
                 if (!DisableStumblingDialogs)
                 {
                     if (!Output2Console)
-                    {
                         Cliver.Message.Inform(message, Owner);
-                    }
                     else
-                    {
                         Console.WriteLine(message);
-                    }
                 }
                 else
                 {
                     if (Output2Console)
-                    {
                         Console.WriteLine(message);
-                    }
                 }
             }
         }
@@ -276,26 +220,20 @@ namespace Cliver.Bot
 
         public static void Warning(string message)
         {
-            Log.Main.Write(Log.MessageType.WARNING, message);
+            Log.Main.Warning(message);
             lock (lock_variable)
             {
                 if (!DisableStumblingDialogs)
                 {
                     if (!Output2Console)
-                    {
                         Cliver.Message.Warning(message, Owner);
-                    }
                     else
-                    {
                         Console.WriteLine(message);
-                    }
                 }
                 else
                 {
                     if (Output2Console)
-                    {
                         Console.WriteLine(message);
-                    }
                 }
             }
         }
@@ -303,6 +241,26 @@ namespace Cliver.Bot
         public static void Warning(Exception e)
         {
             Warning(e.Message);
+        }
+
+        public static void Write(string message)
+        {
+            Log.Main.Write(message);
+            lock (lock_variable)
+            {
+                if (!DisableStumblingDialogs)
+                {
+                    if (!Output2Console)
+                        Cliver.Message.Inform(message, Owner);
+                    else
+                        Console.WriteLine(message);
+                }
+                else
+                {
+                    if (Output2Console)
+                        Console.WriteLine(message);
+                }
+            }
         }
     }
 }

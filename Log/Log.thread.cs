@@ -179,6 +179,11 @@ namespace Cliver.Bot
             Write(Log.MessageType.ERROR, message + "\r\n" + Log.GetStackString());
         }
 
+        public void Error2(string message)
+        {
+            Write(Log.MessageType.ERROR, message);
+        }
+
         /// <summary>
         /// Write the stack informtion for the caller to the current thread's log
         /// </summary>
@@ -200,8 +205,18 @@ namespace Cliver.Bot
             lock (this)
             {
                 if (Id >= 0)
-                    Log.Main.Write("EXIT: due to thread #" + Id.ToString() + ". See the respective Log");
+                    Log.Main.Write("EXITING: due to thread #" + Id.ToString() + ". See the respective Log");
                 Write(Log.MessageType.EXIT, message + "\r\nStack: " + Log.GetStackString());
+            }
+        }
+
+        public void Exit2(string message)
+        {
+            lock (this)
+            {
+                if (Id >= 0)
+                    Log.Main.Write("EXITING: due to thread #" + Id.ToString() + ". See the respective Log");
+                Write(Log.MessageType.EXIT, message);
             }
         }
 
