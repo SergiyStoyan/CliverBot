@@ -16,11 +16,11 @@ namespace Cliver.CrawlerHostCleaner
         override protected void Do()
         {
             //EmailRoutines.Send
-
+            
             DateTime old_time = DateTime.Now.AddDays(-Properties.Settings.Default.DeleteMessagesOlderThanDays);
             int c = DbApi.Connection.Get("DELETE FROM Messages WHERE Time<@OldTime").Execute("@OldTime", old_time);
-            if(c > 0)
-                Log.Inform("Messages older than " + old_time.ToShortDateString() + " have been cleaned up.");
+            if (c > 0)
+                Log.Inform("Messages older than " + old_time.ToShortDateString() + " have been cleaned up: " + c);
 
             Recordset ps = DbApi.Connection.Get(@"SELECT name FROM sysobjects WHERE name LIKE 'Products_%' and xtype='U'").GetRecordset();
             foreach (Record p in ps)
@@ -31,8 +31,10 @@ namespace Cliver.CrawlerHostCleaner
                 DbApi.Connection.Get("DROP TABLE @ProductsTable").Execute("@ProductsTable", p["name"]);
             }
 
+            old_time = DateTime.Now.AddDays(-Properties.Settings.Default.DeleteLogsOlderThanDays);
+            Log.Write("Cleaning logs older than " + old_time.ToShortDateString());
             if (!string.IsNullOrWhiteSpace(Cliver.Bot.Properties.Log.Default.PreWorkDir))
-                clear_files_older_than(new DirectoryInfo(Cliver.Bot.Properties.Log.Default.PreWorkDir), DateTime.Now.AddDays(-Properties.Settings.Default.DeleteLogsOlderThanDays));
+                clear_files_older_than(new DirectoryInfo(Cliver.Bot.Properties.Log.Default.PreWorkDir), old_time);
             else
                 Log.Error("Log directory does not exists: " + Cliver.Bot.Properties.Log.Default.PreWorkDir);
         }
@@ -42,7 +44,7 @@ namespace Cliver.CrawlerHostCleaner
             foreach (FileInfo fi in pdi.GetFiles())
                 if (fi.LastWriteTime < old_time)
                 {
-                    Log.Main.Write("Deleting: " + fi.FullName);
+                    Log.Write("Deleting: " + fi.FullName);
                     fi.Delete();
                 }
             foreach (DirectoryInfo di in pdi.GetDirectories())
@@ -50,7 +52,7 @@ namespace Cliver.CrawlerHostCleaner
                 clear_files_older_than(di, old_time);
                 if (di.GetFiles().Length < 1 && di.GetDirectories().Length < 1)
                 {
-                    Log.Main.Write("Deleting: " + di.FullName);
+                    Log.Write("Deleting: " + di.FullName);
                     di.Delete();
                 }
             }

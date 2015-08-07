@@ -59,8 +59,6 @@ namespace Cliver.CrawlerHost
                         "@ProcessId", Process.GetCurrentProcess().Id, "@Log", Log.WorkDir, "@Archive", archive, "@Id", ServiceId)
                         )
                         throw new Exception("Could not update Services table.");
-
-                    Log.Main.Write(Log.MessageType.INFORM, MessageMark.STARTED + "\r\nCommand line: " + string.Join("|", Environment.GetCommandLineArgs()) + "\nRunning as:" + System.Security.Principal.WindowsIdentity.GetCurrent().Name);
                 }
                 catch (Exception e)
                 {
@@ -115,7 +113,7 @@ namespace Cliver.CrawlerHost
                 LogMessage.Output2Console = true;
                 ProcessRoutines.RunSingleProcessOnly();
                 
-                Log.Main.Write(Log.MessageType.INFORM, "STARTED");
+                LogMessage.Inform(MessageMark.STARTED + " \r\nCommand line: " + string.Join("|", Environment.GetCommandLineArgs()) + " \r\nRunning as:" + System.Security.Principal.WindowsIdentity.GetCurrent().Name);
 
                 Assembly service_assembly = Assembly.GetEntryAssembly();
                 List<Type> service_types = (from t in service_assembly.GetExportedTypes() where t.IsSubclassOf(typeof(Service)) select t).ToList();
@@ -127,8 +125,6 @@ namespace Cliver.CrawlerHost
                 Service service = (Service)Activator.CreateInstance(service_types[0]);
                 service.Do();
                 service.complete();
-
-                LogMessage.Inform("COMPLETED");
             }
             catch(Exception e)
             {
