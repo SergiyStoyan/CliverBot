@@ -14,6 +14,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Configuration;
 using System.Web;
+using System.Collections.Generic;
 
 namespace Cliver.Bot
 {
@@ -63,13 +64,15 @@ namespace Cliver.Bot
             switch (field_format)
             {
                 case FieldFormat.SV_FILE:
-                    str = Regex.Replace(str, "<.*?>|[\n\r]", " ", RegexOptions.Compiled | RegexOptions.Singleline);
+                    str = Regex.Replace(str, "<.*?>|[\n\r]+", " ", RegexOptions.Compiled | RegexOptions.Singleline);
                     str = HttpUtility.HtmlDecode(str);
+                    str = Regex.Replace(str, @"[^\u0000-\u007F]", " ", RegexOptions.Compiled | RegexOptions.Singleline);
                     str = Regex.Replace(str, Properties.Output.Default.OutputFieldSeparator, Properties.Output.Default.OutputFieldSeparatorSubstitute, RegexOptions.Compiled | RegexOptions.Singleline);
                     break;
                 case FieldFormat.DB_TABLE:
                     str = Regex.Replace(str, "<.*?>", " ", RegexOptions.Compiled | RegexOptions.Singleline);
                     str = HttpUtility.HtmlDecode(str);
+                    str = Regex.Replace(str, @"[^\u0000-\u007F]", " ", RegexOptions.Compiled | RegexOptions.Singleline);
                     break;
             }
 
@@ -111,17 +114,25 @@ namespace Cliver.Bot
         /// <returns>field delimitered string</returns>
         public static string PrepareFields(params string[] strs)
         {
-            string line = null;
+            List<string> ss = new List<string>();
             foreach (string str in strs)
             {
-                string s = PrepareField(str, FieldFormat.SV_FILE);
-
-                if (line == null)
-                    line = s;
-                else
-                    line += Properties.Output.Default.OutputFieldSeparator + s;
+                ss.Add(PrepareField(str, FieldFormat.SV_FILE));
             }
-            return line;
+            return string.Join(Properties.Output.Default.OutputFieldSeparator,ss);
+        }
+
+        public static Dictionary<string, object> PrepareFields(dynamic d)
+        {
+            Dictionary<string, object> o = new Dictionary<string,object>();
+            foreach (System.Reflection.PropertyInfo pi in d.GetType().GetProperties())
+            {
+                object p = pi.GetValue(d, null);
+                if (pi.PropertyType == typeof(string))
+                    p = PrepareField((string)p, FieldFormat.DB_TABLE);
+                o[pi.Name] = p;
+            }
+            return o;
         }
 
         /// <summary>

@@ -160,6 +160,7 @@
     <Compile Include="BotEngine\WorkItemDictionary.cs" />
     <Compile Include="DbCommand.cs" />
     <Compile Include="DbConnection.cs" />
+    <Compile Include="Misc\PrepareField.cs" />
     <Compile Include="InternetDateTime.cs" />
     <Compile Include="BaseProgram.cs" />
     <Compile Include="BaseForm\Message.cs" />
