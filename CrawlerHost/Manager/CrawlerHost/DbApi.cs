@@ -106,7 +106,7 @@ CREATE TABLE [dbo].[Messages] (
     [Type]    INT            NOT NULL,
     [Value]   NVARCHAR (MAX) NOT NULL,
     [Time]    DATETIME       NOT NULL,
-    [Details] NVARCHAR (MAX) NOT NULL,
+    [Details] NVARCHAR (MAX) NULL,
     [Mark] INT NULL, 
     PRIMARY KEY NONCLUSTERED ([Id] ASC)
 );

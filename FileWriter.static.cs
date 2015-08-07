@@ -23,135 +23,27 @@ namespace Cliver.Bot
     /// </summary>
     public partial class FileWriter
     {
-        static object static_lock_variable = new object();
-
-        /// <summary>
-        /// Remove html tags, convert html entities, trim, remove delimiter spaces etc.
-        /// </summary>
-        /// <param name="str">field to be prepared</param>
-        /// <param name="output_field_delimiter">field will be stripped from field delimiter passed here. Should be null if not needed.</param>
-        //public static string PrepareField(string str, string output_field_delimiter)
-        //{
-        //    lock (static_lock_variable)
-        //    {
-        //        if (str == null)
-        //            return "";
-
-        //        str = Regex.Replace(str, "<!--.*?-->|[\n\r]", "", RegexOptions.Compiled | RegexOptions.Singleline);
-        //        str = Regex.Replace(str, "<.*?>", " ", RegexOptions.Compiled | RegexOptions.Singleline);
-        //        str = HttpUtility.HtmlDecode(str);
-        //        str = Regex.Replace(str, @"\t", " ", RegexOptions.Compiled | RegexOptions.Singleline);
-        //        if (output_field_delimiter != null)
-        //            str = Regex.Replace(str, output_field_delimiter, Properties.Output.Default.OutputFieldSeparatorSubstitute, RegexOptions.Compiled | RegexOptions.Singleline);
-        //        str = Regex.Replace(str, @"\s\s+", " ", RegexOptions.Compiled | RegexOptions.Singleline);//strip from more than 1 spaces	
-                
-        //        return str.Trim();
-        //    }
-        //}
-        
-        /// <summary>
-        /// Remove html tags, convert html entities, trim, remove unnecessary spaces etc.
-        /// </summary>
-        /// <param name="str">field to be prepared</param>
-        /// <returns>prepared value</returns>
-        public static string PrepareField(string str, FieldFormat field_format)
+        public class Html
         {
-            if (str == null)
-                return Properties.Output.Default.OutputEmptyFieldSubstitute;
-
-            str = Regex.Replace(str, "<!--.*?-->|<script .*?</script>", "", RegexOptions.Compiled | RegexOptions.Singleline);
-
-            switch (field_format)
+            public static string PrepareField(string str)
             {
-                case FieldFormat.SV_FILE:
-                    str = Regex.Replace(str, "<.*?>|[\n\r]+", " ", RegexOptions.Compiled | RegexOptions.Singleline);
-                    str = HttpUtility.HtmlDecode(str);
-                    str = Regex.Replace(str, @"[^\u0000-\u007F]", " ", RegexOptions.Compiled | RegexOptions.Singleline);
-                    str = Regex.Replace(str, Properties.Output.Default.OutputFieldSeparator, Properties.Output.Default.OutputFieldSeparatorSubstitute, RegexOptions.Compiled | RegexOptions.Singleline);
-                    break;
-                case FieldFormat.DB_TABLE:
-                    str = Regex.Replace(str, "<.*?>", " ", RegexOptions.Compiled | RegexOptions.Singleline);
-                    str = HttpUtility.HtmlDecode(str);
-                    str = Regex.Replace(str, @"[^\u0000-\u007F]", " ", RegexOptions.Compiled | RegexOptions.Singleline);
-                    break;
+                return Cliver.PrepareField.Html.GetCsvField(str, Properties.Output.Default.OutputEmptyFieldSubstitute, Properties.Output.Default.OutputFieldSeparator, Properties.Output.Default.OutputFieldSeparatorSubstitute);
             }
 
-            str = Regex.Replace(str, @"\s+", " ", RegexOptions.Compiled | RegexOptions.Singleline);//strip from more than 1 spaces	
+            public static string PrepareFields(params string[] strs)
+            {
+                return Cliver.PrepareField.Html.GetCsvLine(strs, Properties.Output.Default.OutputEmptyFieldSubstitute, Properties.Output.Default.OutputFieldSeparator, Properties.Output.Default.OutputFieldSeparatorSubstitute);
+            }
+        }        
 
-            str = str.Trim();
-            if (str == "")
-                return Properties.Output.Default.OutputEmptyFieldSubstitute;
-
-            return str;
-        }
-
-        public enum FieldFormat
-        {
-            /// <summary>
-            /// prepare as db table field
-            /// </summary>
-            DB_TABLE,
-            /// <summary>
-            /// prepare as separated file field
-            /// </summary>
-            SV_FILE
-        }
-
-        /// <summary>
-        /// Remove html tags, convert html entities, trim, remove unnecessary spaces etc. for saving within db table.
-        /// </summary>
-        /// <param name="str">field to be prepared</param>
-        /// <returns>prepared value</returns>
         public static string PrepareField(string str)
         {
-            return PrepareField(str, FieldFormat.DB_TABLE);
+            return Cliver.PrepareField.GetCsvField(str, Properties.Output.Default.OutputEmptyFieldSubstitute, Properties.Output.Default.OutputFieldSeparator, Properties.Output.Default.OutputFieldSeparatorSubstitute);
         }
         
-        /// <summary>
-        /// Remove html tags, convert html entities, trim, remove delimiter spaces, replaces default field separator etc.
-        /// </summary>
-        /// <param name="strs">array of fields to be prepared</param>
-        /// <returns>field delimitered string</returns>
         public static string PrepareFields(params string[] strs)
         {
-            List<string> ss = new List<string>();
-            foreach (string str in strs)
-            {
-                ss.Add(PrepareField(str, FieldFormat.SV_FILE));
-            }
-            return string.Join(Properties.Output.Default.OutputFieldSeparator,ss);
-        }
-
-        public static Dictionary<string, object> PrepareFields(dynamic d)
-        {
-            Dictionary<string, object> o = new Dictionary<string,object>();
-            foreach (System.Reflection.PropertyInfo pi in d.GetType().GetProperties())
-            {
-                object p = pi.GetValue(d, null);
-                if (pi.PropertyType == typeof(string))
-                    p = PrepareField((string)p, FieldFormat.DB_TABLE);
-                o[pi.Name] = p;
-            }
-            return o;
-        }
-
-        /// <summary>
-        /// Remove html tags saving text format, convert html entities.
-        /// </summary>
-        /// <param name="str">field to be prepared</param>
-        public static string PrepareFieldSavingFormat(string str)
-        {
-            if (str == null)
-                return "";
-
-            str = Regex.Replace(str, "<!--.*?-->|[\r\n]", "", RegexOptions.Compiled | RegexOptions.Singleline);
-            str = Regex.Replace(str, @"<(p|br|\/tr)(\s[^>]*>|>)", "\r\n", RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            str = Regex.Replace(str, "<.*?>", "", RegexOptions.Compiled | RegexOptions.Singleline);
-            str = Regex.Replace(str, @"\t", " ", RegexOptions.Compiled | RegexOptions.Singleline);
-            str = Regex.Replace(str, @"[ ]{2,}", " ", RegexOptions.Compiled | RegexOptions.Singleline);//strip from more than 1 spaces	
-            str = Regex.Replace(str, @"[ ]\r", "\r", RegexOptions.Compiled | RegexOptions.Singleline);
-
-            return (HttpUtility.HtmlDecode(str)).Trim();
+            return Cliver.PrepareField.GetCsvLine(strs, Properties.Output.Default.OutputEmptyFieldSubstitute, Properties.Output.Default.OutputFieldSeparator, Properties.Output.Default.OutputFieldSeparatorSubstitute);
         }
 
         public static string Write(string file, byte[] binary)

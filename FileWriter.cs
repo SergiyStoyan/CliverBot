@@ -23,6 +23,8 @@ namespace Cliver.Bot
     /// </summary>
     public partial class FileWriter
     {
+        static object static_lock_variable = new object();
+
         static FileWriter _this = null;
         public static FileWriter This
         {

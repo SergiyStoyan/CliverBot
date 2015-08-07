@@ -187,7 +187,11 @@ namespace Cliver.Bot
             if (key_value_pairs == null)
                 return;
             for (int i = 0; i < key_value_pairs.Length; i += 2)
+            {
+                if (key_value_pairs[i + 1] == null)
+                    key_value_pairs[i + 1] = DBNull.Value;
                 c.Parameters.AddWithValue((string)key_value_pairs[i], key_value_pairs[i + 1]);
+            }
         }
 
         override protected Recordset GetRecordset_(params object[] key_value_pairs)

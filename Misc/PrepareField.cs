@@ -22,7 +22,7 @@ namespace Cliver
     {
         public class Html
         {
-            public static string GetCsvCell(string value, string default_value = "", string separator = ",", string separator_substitute = ";")
+            public static string GetCsvField(string value, string default_value = "", string separator = ",", string separator_substitute = ";")
             {
                 if (value == null)
                     return default_value;
@@ -39,7 +39,7 @@ namespace Cliver
                 return value;
             }
 
-            public static string GetDbCell(string value, string default_value = "")
+            public static string GetDbField(string value, string default_value = "")
             {
                 if (value == null)
                     return default_value;
@@ -62,9 +62,22 @@ namespace Cliver
                 {
                     object p = pi.GetValue(o, null);
                     if (pi.PropertyType == typeof(string))
-                        ss.Add(GetCsvCell((string)p, default_value, separator, separator_substitute));
+                        ss.Add(GetCsvField((string)p, default_value, separator, separator_substitute));
                     else
                         ss.Add(p.ToString());
+                }
+                return string.Join(separator, ss);
+            }
+
+            public static string GetCsvLine(object[] values, string default_value = "", string separator = ",", string separator_substitute = ";")
+            {
+                List<string> ss = new List<string>();
+                foreach (object v in values)
+                {
+                    if (v is string)
+                        ss.Add(GetCsvField((string)v, default_value, separator, separator_substitute));
+                    else
+                        ss.Add(v.ToString());
                 }
                 return string.Join(separator, ss);
             }
@@ -76,7 +89,7 @@ namespace Cliver
                 {
                     object p = pi.GetValue(o, null);
                     if (pi.PropertyType == typeof(string))
-                        p = GetDbCell((string)p, default_value);
+                        p = GetDbField((string)p, default_value);
                     d[pi.Name] = p;
                 }
                 return d;
@@ -101,7 +114,7 @@ namespace Cliver
             }
         }
 
-        public static string GetCsvCell(string value, string default_value = "", string separator = ",", string separator_substitute = ";")
+        public static string GetCsvField(string value, string default_value = "", string separator = ",", string separator_substitute = ";")
         {
             if (value == null)
                 return default_value;
@@ -115,7 +128,7 @@ namespace Cliver
             return value;
         }
 
-        public static string GetDbCell(string value, string default_value = "")
+        public static string GetDbField(string value, string default_value = "")
         {
             if (value == null)
                 return default_value;
@@ -135,9 +148,22 @@ namespace Cliver
             {
                 object p = pi.GetValue(o, null);
                 if (pi.PropertyType == typeof(string))
-                    ss.Add(GetCsvCell((string)p, default_value, separator, separator_substitute));
+                    ss.Add(GetCsvField((string)p, default_value, separator, separator_substitute));
                 else
                     ss.Add(p.ToString());
+            }
+            return string.Join(separator, ss);
+        }
+
+        public static string GetCsvLine(object[] values, string default_value = "", string separator = ",", string separator_substitute = ";")
+        {
+            List<string> ss = new List<string>();
+            foreach (object v in values)
+            {
+                if (v is string)
+                    ss.Add(GetCsvField((string)v, default_value, separator, separator_substitute));
+                else
+                    ss.Add(v.ToString());
             }
             return string.Join(separator, ss);
         }
@@ -149,7 +175,7 @@ namespace Cliver
             {
                 object p = pi.GetValue(o, null);
                 if (pi.PropertyType == typeof(string))
-                    p = GetDbCell((string)p, default_value);
+                    p = GetDbField((string)p, default_value);
                 d[pi.Name] = p;
             }
             return d;
