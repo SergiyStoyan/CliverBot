@@ -60,5 +60,8 @@
     <Setting Name="ServiceProcessMaxNumber" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">2</Value>
     </Setting>
+    <Setting Name="LogFileChunkSizeInBytes" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">2000000</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

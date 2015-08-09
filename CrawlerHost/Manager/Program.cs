@@ -50,6 +50,7 @@ namespace Cliver.CrawlerHost
             {
                 ProcessRoutines.RunSingleProcessOnly();
                 SysTrayForm.This.Hide();
+                Cliver.Bot.ThreadLog.MaxFileSize = Properties.Settings.Default.LogFileChunkSizeInBytes;
                 Application.Run();
             }
             catch (Exception e)
