@@ -74,7 +74,7 @@ namespace Cliver.CrawlerHost
             public const string STARTED = "STARTED";
             public const string COMPLETED = "COMPLETED";
             public const string ABORTED = "ABORTED";
-            public const string ERROR = "THERE_WAS_ERROR";
+            public const string ERROR = "COMPLETED_WITH_ERROR";
         }
 
         void ThreadLog_Exitig(string message)
@@ -89,12 +89,12 @@ namespace Cliver.CrawlerHost
             {
                 if (ThreadLog.TotalErrorCount > 0)
                 {
-                    LogMessage.Error2(MessageMark.ERROR);
+                    LogMessage.Inform(MessageMark.ERROR);
                     DbApi.Connection["UPDATE Services SET _LastEndTime=GETDATE(), _LastSessionState=" + (int)Service.SessionState._ERROR + ", _NextStartTime=DATEADD(ss, RunTimeSpan, _LastStartTime) WHERE Id=@Id"].Execute("@Id", ServiceId);
                 }
                 else
                 {
-                   LogMessage.Inform(MessageMark.COMPLETED);
+                    LogMessage.Inform(MessageMark.COMPLETED);
                     DbApi.Connection["UPDATE Services SET _LastEndTime=GETDATE(), _LastSessionState=" + (int)Service.SessionState._COMPLETED + ", _NextStartTime=DATEADD(ss, RunTimeSpan, _LastStartTime) WHERE Id=@Id"].Execute("@Id", ServiceId);
                 }
 

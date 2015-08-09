@@ -22,17 +22,25 @@ namespace Cliver.Bot
 {
     public static class RegistryRoutines
     {
-        readonly static RegistryKey base_registry_key = Registry.CurrentUser;
+        public static RegistryKey GetRegistryKey(string key)
+        {
+            RegistryKey rk = RegistryKey.OpenBaseKey(base_registry_hive, Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32);
+            if (rk == null)
+                throw new Exception("Could not open registry: " + base_registry_hive);
+            return string.IsNullOrEmpty(key) ? rk : rk.OpenSubKey(key);
+        }
+
+        readonly static RegistryHive base_registry_hive = RegistryHive.CurrentUser;
         static object lock_object = new object();
-        readonly static public string DefaultRegistryKey = base_registry_key.ToString() + @"\" + Properties.App.Default.RegistrySubkey;
+        readonly static public string DefaultRegistryPath = GetRegistryKey(null).ToString() + @"\" + Properties.App.Default.RegistrySubkey;
 
         public static string GetString(string name, string default_value = null)
         {
             lock (lock_object)
-            {              
-                RegistryKey rk = base_registry_key.OpenSubKey(Properties.App.Default.RegistrySubkey);
+            {
+                RegistryKey rk = GetRegistryKey(Properties.App.Default.RegistrySubkey);
                 if (rk == null)
-                    throw new Exception("Could not open registry: " + DefaultRegistryKey);
+                    throw new Exception("Could not open registry: " + DefaultRegistryPath);
                 return (string)rk.GetValue(name, default_value);
             }
         }
@@ -43,7 +51,7 @@ namespace Cliver.Bot
             {
                 try
                 {
-                    RegistryKey rk = base_registry_key.CreateSubKey(Properties.App.Default.RegistrySubkey);
+                    RegistryKey rk = GetRegistryKey(null).CreateSubKey(Properties.App.Default.RegistrySubkey);
                     //RegistryAccessRule rule = new RegistryAccessRule(WindowsIdentity.GetCurrent().User, RegistryRights.FullControl, AccessControlType.Allow);
                     //RegistrySecurity Security = new RegistrySecurity();
                     //Security.SetOwner(WindowsIdentity.GetCurrent().User);

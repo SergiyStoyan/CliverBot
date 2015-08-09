@@ -20,11 +20,14 @@ namespace Cliver.Bot
 {
     public class ThreadLog
     {
-        ThreadLog(int id, string log_file)
+        ThreadLog(int id, string log_file, int max_file_size)
         {
             this.Id = id;
-            this.Path = log_file;
+            this.path = log_file;
+            this.max_file_size = max_file_size;
         }
+        
+        readonly int max_file_size;
 
         const int MAIN_THREAD_LOG_ID = -1;
 
@@ -77,7 +80,7 @@ namespace Cliver.Bot
                         else
                             log_file += "_" + log_id.ToString() + "_" + Log.TimeMark + ".log";
 
-                        tl = new ThreadLog(log_id, log_file);
+                        tl = new ThreadLog(log_id, log_file, Properties.Log.Default.LogFileChunkSizeInBytes);
                         thread2tls.Add(thread, tl);
                     }
                     catch (Exception e)
@@ -145,7 +148,14 @@ namespace Cliver.Bot
         /// <summary>
         /// Log path
         /// </summary>
-        public readonly string Path;
+        public string Path
+        {
+            get
+            {
+                return path;
+            }
+        }
+        public string path;
 
         /// <summary>
         /// Used to close Log
@@ -330,6 +340,28 @@ namespace Cliver.Bot
                         case Log.MessageType.TRACE: message = "TRACE: " + message; break;
                         case Log.MessageType.LOG: break;
                         default: throw new Exception("No case for " + type.ToString());
+                    }
+
+                    if (max_file_size > 0)
+                    {
+                        FileInfo fi = new FileInfo(Path);
+                        if (fi.Length > max_file_size)
+                        {
+                            log_writer.Close();
+
+                            int counter = 0;
+                            path = Regex.Replace(path, @"(\d+_)(\d+)(\.[^\.]+)$",
+                                (Match m)=>{                            
+                                    counter = int.Parse(m.Groups[2].Value) + 1;
+                                    return m.Groups[1].Value + counter + m.Groups[3].Value;                            
+                                }, 
+                                RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline
+                                );
+                            if (counter < 1)
+                                path = Regex.Replace(path, @"\.[^\.]+$", @"_1$0", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                          
+                            log_writer = new StreamWriter(Path, true);
+                        }
                     }
                     log_writer.WriteLine(DateTime.Now.ToString("[dd-MM-yy HH:mm:ss] ") + message);
                     log_writer.Flush();

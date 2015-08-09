@@ -82,5 +82,17 @@ namespace Cliver.Bot.Properties {
                 this["PreWorkDir"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("2000000")]
+        public int LogFileChunkSizeInBytes {
+            get {
+                return ((int)(this["LogFileChunkSizeInBytes"]));
+            }
+            set {
+                this["LogFileChunkSizeInBytes"] = value;
+            }
+        }
     }
 }
