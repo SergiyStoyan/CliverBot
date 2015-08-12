@@ -22,15 +22,27 @@ namespace Cliver.Bot
 {
     public static class RegistryRoutines
     {
-        readonly static RegistryKey base_registry_key = Properties.App.Default.RegistryHiveIsUserDependent ? Registry.CurrentUser : Registry.LocalMachine;
+        public static RegistryKey GetRegistryKey(string key, bool create = false)
+        {
+            RegistryKey rk = RegistryKey.OpenBaseKey(base_registry_hive, Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32);
+            //if (rk == null)
+            //    throw new Exception("Could not open registry: " + base_registry_hive);
+            if (string.IsNullOrEmpty(key))
+                return rk;
+            if (create)
+                return rk.CreateSubKey(key);
+            return rk.OpenSubKey(key);
+        }
+
+        readonly static RegistryHive base_registry_hive = Properties.App.Default.RegistryHiveIsUserDependent ? RegistryHive.CurrentUser : RegistryHive.LocalMachine;
         static object lock_object = new object();
-        readonly static public string DefaultRegistryPath = base_registry_key.ToString() + @"\" + Properties.App.Default.RegistrySubkey;
+        readonly static public string DefaultRegistryPath = GetRegistryKey(null).ToString() + @"\" + Properties.App.Default.RegistrySubkey;
 
         public static string GetString(string name, string default_value = null)
         {
             lock (lock_object)
             {
-                RegistryKey rk = base_registry_key.OpenSubKey(Properties.App.Default.RegistrySubkey);
+                RegistryKey rk = GetRegistryKey(Properties.App.Default.RegistrySubkey);
                 if (rk == null)
                     //throw new Exception("Could not open registry: " + DefaultRegistryPath);
                     return default_value;
@@ -44,7 +56,7 @@ namespace Cliver.Bot
             {
                 try
                 {
-                    RegistryKey rk = base_registry_key.CreateSubKey(Properties.App.Default.RegistrySubkey);
+                    RegistryKey rk = GetRegistryKey(Properties.App.Default.RegistrySubkey, true);
                     //RegistryAccessRule rule = new RegistryAccessRule(WindowsIdentity.GetCurrent().User, RegistryRights.FullControl, AccessControlType.Allow);
                     //RegistrySecurity Security = new RegistrySecurity();
                     //Security.SetOwner(WindowsIdentity.GetCurrent().User);
