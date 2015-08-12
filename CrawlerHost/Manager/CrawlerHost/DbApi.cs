@@ -19,7 +19,9 @@ namespace Cliver.CrawlerHost
     {
         static DbApi()
         {
-            ThreadLog.Writing += ThreadLog_Writing;
+            Assembly ea = Assembly.GetEntryAssembly();
+            if (ea != null)
+                entry_assembly_name = Regex.Replace(Assembly.GetEntryAssembly().FullName, @"\,.*", "", RegexOptions.IgnoreCase | RegexOptions.Singleline);
         AGAIN:
             try
             {
@@ -49,10 +51,7 @@ namespace Cliver.CrawlerHost
                 }
                 LogMessage.Exit(e);
             }
-
-            Assembly ea = Assembly.GetEntryAssembly();
-            if (ea != null)
-                entry_assembly_name = Regex.Replace(Assembly.GetEntryAssembly().FullName, @"\,.*", "", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            ThreadLog.Writing += ThreadLog_Writing;
         }
 
         static public readonly DbConnection Connection;

@@ -67,5 +67,17 @@ namespace Cliver.Bot.Properties {
                 return ((string)(this["HelpUri"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool RegistryHiveIsUserDependent {
+            get {
+                return ((bool)(this["RegistryHiveIsUserDependent"]));
+            }
+            set {
+                this["RegistryHiveIsUserDependent"] = value;
+            }
+        }
     }
 }
