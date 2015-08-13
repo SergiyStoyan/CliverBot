@@ -68,15 +68,12 @@ namespace Cliver.Bot.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool RegistryHiveIsUserDependent {
             get {
                 return ((bool)(this["RegistryHiveIsUserDependent"]));
-            }
-            set {
-                this["RegistryHiveIsUserDependent"] = value;
             }
         }
     }

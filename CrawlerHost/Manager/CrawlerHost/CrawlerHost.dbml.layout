@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 14.25, 8.5" name="CrawlerHost">
+  <DataContextMoniker Name="/CrawlerHostDataContext" />
+  <nestedChildShapes>
+    <classShape Id="8d4fed4e-3872-439c-9825-c14df20bb1c9" absoluteBounds="0.75, 0.75, 2, 4.6554182942708326">
+      <DataClassMoniker Name="/CrawlerHostDataContext/Crawler" />
+      <nestedChildShapes>
+        <elementListCompartment Id="37a33aa6-98ef-4fe0-bf48-50a9ed5e5f51" absoluteBounds="0.765, 1.21, 1.9700000000000002, 4.095418294270833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="42d97efd-71d9-4821-8f4a-a58f572e6e1e" absoluteBounds="12, 1.75, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/CrawlerHostDataContext/Message" />
+      <nestedChildShapes>
+        <elementListCompartment Id="e9389ff0-f747-4d20-9b71-72732958fbe6" absoluteBounds="12.015, 2.21, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <classShape Id="5691c9b9-fdda-4a25-8b08-d94a29eb4e47" absoluteBounds="5.5, 1.125, 2.25, 4.0785139973958326">
+      <DataClassMoniker Name="/CrawlerHostDataContext/Service" />
+      <nestedChildShapes>
+        <elementListCompartment Id="04c8e939-7181-4d8f-8e7e-32066d5e26c1" absoluteBounds="5.515, 1.585, 2.2199999999999998, 3.518513997395833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

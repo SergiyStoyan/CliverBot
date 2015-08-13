@@ -112,7 +112,8 @@ namespace Cliver.CrawlerHost
                 Log.LOGGING_MODE = Log.LoggingMode.ONLY_LOG;
                 LogMessage.Output2Console = true;
                 ProcessRoutines.RunSingleProcessOnly();
-                
+
+                Cliver.CrawlerHost.DbApi.Initialize();
                 LogMessage.Inform(MessageMark.STARTED + " \r\nCommand line: " + string.Join("|", Environment.GetCommandLineArgs()) + " \r\nRunning as:" + System.Security.Principal.WindowsIdentity.GetCurrent().Name);
 
                 Assembly service_assembly = Assembly.GetEntryAssembly();

@@ -17,16 +17,22 @@ namespace Cliver.CrawlerHost
 {
     public class DbApi
     {
+        public static void Initialize()
+        {
+            //to force static constructor (to force logging)
+        }
+
         static DbApi()
         {
             Assembly ea = Assembly.GetEntryAssembly();
-            if (ea != null)
+            if (ea != null)//can be null if web context
                 entry_assembly_name = Regex.Replace(Assembly.GetEntryAssembly().FullName, @"\,.*", "", RegexOptions.IgnoreCase | RegexOptions.Singleline);
         AGAIN:
             try
             {
                 Connection = DbConnection.Create(DbApi.ConnectionString);
                 create_tables();
+                RenewContext();
             }
             catch (Exception e)
             {
@@ -55,18 +61,24 @@ namespace Cliver.CrawlerHost
         }
 
         static public readonly DbConnection Connection;
-        
-        //static public Db.CrawlerHostDataContext Context
-        //{
-        //    get
-        //    {
-        //        if (_Context == null)
-        //            _Context = new Db.CrawlerHostDataContext(DbApi.ConnectionString);
-        //        return _Context;
-        //    }
-        //}
-        //static Db.CrawlerHostDataContext _Context;
 
+        static public CrawlerHost.CrawlerHostDataContext Context
+        {
+            get
+            {
+                return Context_;
+            }
+        }
+        static CrawlerHost.CrawlerHostDataContext Context_ = null;
+
+        public static CrawlerHost.CrawlerHostDataContext RenewContext()
+        {
+            if (Context_ != null)
+                Context_.Dispose();
+            Context_ = new CrawlerHost.CrawlerHostDataContext(DbApi.ConnectionString);
+            return Context_;
+        }
+        
         static void create_tables()
         {
             lock (Connection)

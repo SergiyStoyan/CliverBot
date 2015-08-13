@@ -144,6 +144,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CliverCrawlersDataSet.xsd</DependentUpon>
     </Compile>
+    <Compile Include="CrawlerHost\CrawlerHost.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CrawlerHost.dbml</DependentUpon>
+    </Compile>
     <Compile Include="CrawlerHost\CrawlerApi - Copy.cs" />
     <Compile Include="CrawlerHost\Linker.cs" />
     <Compile Include="CrawlerHost\ServiceApi.cs" />
@@ -198,6 +203,9 @@
       <DependentUpon>BaseForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="CrawlerHost\CrawlerHost.dbml.layout">
+      <DependentUpon>CrawlerHost.dbml</DependentUpon>
+    </None>
     <EmbeddedResource Include="CrawlersForm.resx">
       <DependentUpon>CrawlersForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -230,6 +238,11 @@
     </None>
     <None Include="CliverCrawlersDataSet.xss">
       <DependentUpon>CliverCrawlersDataSet.xsd</DependentUpon>
+    </None>
+    <None Include="CrawlerHost\CrawlerHost.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>CrawlerHost.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Properties\Host.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
