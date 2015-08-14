@@ -57,6 +57,12 @@ namespace Cliver.Bot
                 return HttpRuntime.AppDomainAppId != null;
             }
         }
+
+        public static string GetGeneralizedAppPath()
+        {
+            string p = System.AppDomain.CurrentDomain.BaseDirectory + @"\";
+            return Regex.Replace(p, @"\\(bin|debug|release)\\", "", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+        }
     }
 }
 
