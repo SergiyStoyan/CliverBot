@@ -30,7 +30,7 @@ namespace Cliver
                 value = Regex.Replace(value, "<!--.*?-->|<script .*?</script>", "", RegexOptions.Compiled | RegexOptions.Singleline);
                 value = Regex.Replace(value, "<.*?>", " ", RegexOptions.Compiled | RegexOptions.Singleline);
                 value = HttpUtility.HtmlDecode(value);
-                value = Regex.Replace(value, @"[^\u0000-\u007F]", " ", RegexOptions.Compiled | RegexOptions.Singleline);
+                value = remove_notprintables_regex.Replace(value, " ");
                 value = Regex.Replace(value, separator, separator_substitute, RegexOptions.Compiled | RegexOptions.Singleline);
                 value = Regex.Replace(value, @"\s+", " ", RegexOptions.Compiled | RegexOptions.Singleline);//strip from more than 1 spaces	
                 value = value.Trim();
@@ -47,7 +47,7 @@ namespace Cliver
                 value = Regex.Replace(value, "<!--.*?-->|<script .*?</script>", "", RegexOptions.Compiled | RegexOptions.Singleline);
                 value = Regex.Replace(value, "<.*?>", " ", RegexOptions.Compiled | RegexOptions.Singleline);
                 value = HttpUtility.HtmlDecode(value);
-                value = Regex.Replace(value, @"[^\u0000-\u007F]", " ", RegexOptions.Compiled | RegexOptions.Singleline);
+                value = remove_notprintables_regex.Replace(value, " ");
                 value = Regex.Replace(value, @"\s+", " ", RegexOptions.Compiled | RegexOptions.Singleline);//strip from more than 1 spaces	
                 value = value.Trim();
                 if (value == "")
@@ -105,7 +105,7 @@ namespace Cliver
                 value = Regex.Replace(value, @"<(p|br|\/tr)(\s[^>]*>|>)", "\r\n", RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
                 value = Regex.Replace(value, "<.*?>", " ", RegexOptions.Compiled | RegexOptions.Singleline);
                 value = HttpUtility.HtmlDecode(value);
-                value = Regex.Replace(value, @"[^\u0000-\u007F]", " ", RegexOptions.Compiled | RegexOptions.Singleline);
+                value = remove_notprintables_regex.Replace(value, " ");
                 value = Regex.Replace(value, @"[ ]+", " ", RegexOptions.Compiled | RegexOptions.Singleline);//strip from more than 1 spaces	
                 value = value.Trim();
                 if (value == "")
@@ -119,7 +119,7 @@ namespace Cliver
             if (value == null)
                 return default_value;
 
-            value = Regex.Replace(value, @"[^\u0000-\u007F]", " ", RegexOptions.Compiled | RegexOptions.Singleline);
+            value = remove_notprintables_regex.Replace(value, " ");
             value = Regex.Replace(value, separator, separator_substitute, RegexOptions.Compiled | RegexOptions.Singleline);
             value = Regex.Replace(value, @"\s+", " ", RegexOptions.Compiled | RegexOptions.Singleline);
             value = value.Trim();
@@ -133,7 +133,7 @@ namespace Cliver
             if (value == null)
                 return default_value;
 
-            value = Regex.Replace(value, @"[^\u0000-\u007F]", " ", RegexOptions.Compiled | RegexOptions.Singleline);
+            value = remove_notprintables_regex.Replace(value, " ");
             value = Regex.Replace(value, @"\s+", " ", RegexOptions.Compiled | RegexOptions.Singleline);//strip from more than 1 spaces	
             value = value.Trim();
             if (value == "")
@@ -180,5 +180,9 @@ namespace Cliver
             }
             return d;
         }
+
+        //static Regex remove_notprintables_regex = new Regex(@"[^\u0000-\u007F]", RegexOptions.Compiled | RegexOptions.Singleline);
+        static Regex remove_notprintables_regex = new Regex(@"[^\u0000-\u00b0]", RegexOptions.Compiled | RegexOptions.Singleline);
+        //static Regex remove_notprintables_regex = new Regex(@"[^\x20-\x7E]", RegexOptions.Compiled | RegexOptions.Singleline);
     }
 }
