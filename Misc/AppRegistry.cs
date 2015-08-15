@@ -98,7 +98,8 @@ namespace Cliver.Bot
             {
                 try
                 {
-                    LogMessage.Write("Creating registry key: " + rk.ToString() + @"\" + subkey_path);
+                    if (!ProgramRoutines.IsWebContext)
+                        LogMessage.Write("Creating registry key: " + rk.ToString() + @"\" + subkey_path);
                     return rk.CreateSubKey(subkey_path);
                 }
                 catch (Exception e)
@@ -115,7 +116,8 @@ namespace Cliver.Bot
             {
                 try
                 {
-                    LogMessage.Write("Setting registry key: " + rk.ToString() + @"\" + name + " = '" + value.ToString() + "'");
+                    if (!ProgramRoutines.IsWebContext)
+                        LogMessage.Write("Setting registry key: " + rk.ToString() + @"\" + name + " = '" + value.ToString() + "'");
                     //RegistryAccessRule rule = new RegistryAccessRule(WindowsIdentity.GetCurrent().User, RegistryRights.FullControl, AccessControlType.Allow);
                     //RegistrySecurity Security = new RegistrySecurity();
                     //Security.SetOwner(WindowsIdentity.GetCurrent().User);
@@ -132,6 +134,9 @@ namespace Cliver.Bot
 
         static void process_exception(Exception e)
         {
+            if (ProgramRoutines.IsWebContext)
+                throw e;
+            
             LogMessage.Error(e);
 
             if (e is System.Security.SecurityException
@@ -139,7 +144,7 @@ namespace Cliver.Bot
                 )
             {
                 if (ProcessRoutines.IsElevated())
-                    LogMessage.Exit("Despite the app is running under elevated privileges, it still cannot write to the resgistry. Please fix the problem before using the app.");
+                    LogMessage.Exit("Despite the app is running with elevated privileges, it still cannot write to the resgistry. Please fix the problem before using the app.");
                 LogMessage.Inform(Program.AppName + " needs administatrator privileges to create an initial configuration in the registry. So it will restart now and ask for elevated privileges.");
                 try
                 {
