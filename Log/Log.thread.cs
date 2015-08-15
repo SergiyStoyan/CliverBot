@@ -66,10 +66,10 @@ namespace Cliver.Bot
                         switch (Log.LOGGING_MODE)
                         {
                             case Log.LoggingMode.ONLY_LOG:
-                                log_file = Log.WorkDir + @"\" + Log.ProcessName;
+                                log_file = Log.WorkDir + @"\" + Log.EntryAssemblyName;
                                 break;
                             case Log.LoggingMode.SESSIONS:
-                                log_file = Log.SessionDir + @"\" + Log.ProcessName;
+                                log_file = Log.SessionDir + @"\" + Log.EntryAssemblyName;
                                 break;
                             default:
                                 throw new Exception("Unknown LOGGING_MODE:" + Log.LOGGING_MODE);

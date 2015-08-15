@@ -38,7 +38,7 @@ namespace Cliver.CrawlerHost
             {
                 try
                 {
-                    ServiceId = Log.ProcessName;
+                    ServiceId = Log.EntryAssemblyName;
 
                     ThreadLog.Exitig += ThreadLog_Exitig;
 

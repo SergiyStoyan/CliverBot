@@ -170,7 +170,7 @@ CREATE TABLE [dbo].[Services] (
         {
             lock (Connection)
             {
-                string products_table = Regex.Replace(Log.ProcessName, @"\.vshost$", "", RegexOptions.Compiled | RegexOptions.Singleline);
+                string products_table = Regex.Replace(Log.EntryAssemblyName, @"\.vshost$", "", RegexOptions.Compiled | RegexOptions.Singleline);
                 products_table = Regex.Replace(products_table, @"[^a-z\d]", "_", RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
                 products_table = "Products_" + products_table;
 

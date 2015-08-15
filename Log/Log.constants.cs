@@ -26,16 +26,32 @@ namespace Cliver.Bot
     {
         static object lock_object = new object();
 
+        static Log()
+        {
+            if (ProgramRoutines.IsWebContext)
+            {
+                throw new Exception("Log is disabled in web context.");
+
+                string p = System.Web.Compilation.BuildManager.GetGlobalAsaxType().BaseType.Assembly.GetName(false).CodeBase;
+                EntryAssemblyName = System.IO.Path.GetFileNameWithoutExtension(p);
+            }
+            else
+            {
+                string p = System.Reflection.Assembly.GetEntryAssembly().GetName(false).CodeBase;
+                EntryAssemblyName = System.IO.Path.GetFileNameWithoutExtension(p);
+            }
+            AppDir = AppDomain.CurrentDomain.BaseDirectory;
+        }
+
         /// <summary>
         /// Normalized name of this process
         /// </summary>
-        public static readonly string ProcessName = Regex.Replace(Assembly.GetEntryAssembly().FullName, @"\,.*", "", RegexOptions.IgnoreCase | RegexOptions.Singleline);
-        //public static readonly string ProcessName = Regex.Replace(System.Diagnostics.Process.GetCurrentProcess().ProcessName, @"\.vshost$", "", RegexOptions.Compiled | RegexOptions.Singleline);
+        public static readonly string EntryAssemblyName;
         
         /// <summary>
         /// Directory where the application binary is located.
         /// </summary>
-        public readonly static string AppDir = AppDomain.CurrentDomain.BaseDirectory;
+        public readonly static string AppDir;
 
         /// <summary>
         /// Constructs and returns time mark string for current session
@@ -119,11 +135,11 @@ namespace Cliver.Bot
                     {
                         string dir = null;
                         if (string.IsNullOrEmpty(Properties.Log.Default.PreWorkDir))
-                            dir = Log.AppDir + @"\" + Log.ProcessName + WorkDirPrefix;
+                            dir = Log.AppDir + @"\" + Log.EntryAssemblyName + WorkDirPrefix;
                         else if (!Properties.Log.Default.PreWorkDir.Contains(":"))
-                            dir = Log.AppDir + @"\" + Properties.Log.Default.PreWorkDir + @"\" + Log.ProcessName + WorkDirPrefix;
+                            dir = Log.AppDir + @"\" + Properties.Log.Default.PreWorkDir + @"\" + Log.EntryAssemblyName + WorkDirPrefix;
                         else
-                            dir = Properties.Log.Default.PreWorkDir + @"\" + Log.ProcessName + WorkDirPrefix;
+                            dir = Properties.Log.Default.PreWorkDir + @"\" + Log.EntryAssemblyName + WorkDirPrefix;
                         WorkDir = dir;
                     }
                 }

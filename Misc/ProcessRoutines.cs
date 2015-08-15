@@ -43,7 +43,7 @@ namespace Cliver.Bot
         {
             try
             {
-                GLOBAL_SINGLE_PROCESS_MUTEX = new Mutex(false, @"Global\CliverSoft_" + Log.ProcessName + "_SINGLE_PROCESS");
+                GLOBAL_SINGLE_PROCESS_MUTEX = new Mutex(false, @"Global\CliverSoft_" + Log.EntryAssemblyName + "_SINGLE_PROCESS");
                 // Wait a few seconds if contended, in case another instance
                 // of the program is still in the process of shutting down.
                 if (!GLOBAL_SINGLE_PROCESS_MUTEX.WaitOne(1000, false))

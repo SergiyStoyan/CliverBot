@@ -34,8 +34,8 @@ namespace Cliver.CrawlerHost
             lock (DbApi.Connection)
             { 
                 try
-                {   
-                    CrawlerId = Log.ProcessName;
+                {
+                    CrawlerId = Log.EntryAssemblyName;
 
                     Record r = DbApi.Connection.Get("SELECT State FROM Crawlers WHERE Id=@Id").GetFirstRecord("@Id", CrawlerId);
                     if (r == null)

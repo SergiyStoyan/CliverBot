@@ -16,7 +16,7 @@ namespace Cliver.CrawlerHost
         {
             InitializeComponent();
 
-            this.Text = Log.ProcessName;
+            this.Text = Log.EntryAssemblyName;
 
             this.message = message;
 

@@ -26,16 +26,6 @@ namespace Cliver.Bot
     {
         static AppRegistry()
         {
-            //string appPath = Path.GetDirectoryName(Application.ExecutablePath);
-            //System.Reflection.Assembly t = System.Reflection.Assembly.GetEntryAssembly();
-            //System.Reflection.Assembly w = System.Web.Compilation.BuildManager.GetGlobalAsaxType().BaseType.Assembly;
-            //System.Reflection.Assembly g = System.Web.HttpContext.Current.ApplicationInstance.GetType().Assembly;
-
-
-            //string app_rsk_name = null;
-            //app_rsk_name = System.Web.Compilation.BuildManager.GetGlobalAsaxType().BaseType.Assembly.GetName(false).CodeBase;
-            //app_rsk_name = System.Web.Compilation.BuildManager.GetGlobalAsaxType().BaseType.Assembly.GetName(true).CodeBase;
-
             string p;
             if (ProgramRoutines.IsWebContext)
                 p = System.Web.Compilation.BuildManager.GetGlobalAsaxType().BaseType.Assembly.GetName(false).CodeBase;
@@ -47,7 +37,8 @@ namespace Cliver.Bot
                 throw new Exception("Cannot parse binary path.");
             string app_rsk_name = m.Groups[1].Value;
             AppRegistryPath = Properties.App.Default.RegistryGeneralSubkey.Trim('\\','/') + @"\" + app_rsk_name;
-            LogMessage.Write("App registry key: " + AppRegistryPath);
+            if (!ProgramRoutines.IsWebContext)
+                LogMessage.Write("App registry key: " + AppRegistryPath);
         }
         static readonly string AppRegistryPath;
 

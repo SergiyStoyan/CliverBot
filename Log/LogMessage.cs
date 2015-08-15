@@ -22,6 +22,15 @@ namespace Cliver.Bot
     {
         static object lock_variable = new object();
 
+        static LogMessage()
+        {
+            if (ProgramRoutines.IsWebContext)
+            {
+                DisableStumblingDialogs = true;
+                Output2Console = false;
+            }
+        }
+
         /// <summary>
         /// Defines whether message boxes will be showed (run in manual mode) 
         /// </summary>
@@ -81,10 +90,11 @@ namespace Cliver.Bot
                 if (!DisableStumblingDialogs)
                 {
                     if (!Output2Console)
-                    {
-                        Cliver.MessageForm mf = new Cliver.MessageForm(Application.ProductName, System.Drawing.SystemIcons.Question, message, new string[2] { "Yes", "No" }, automatic_yes ? 0 : 1, Owner);
-                        mf.ShowInTaskbar = Cliver.Message.ShowInTaskbar;
-                        return mf.ShowDialog() == 0;
+                    {                        
+                        //Cliver.MessageForm mf = new Cliver.MessageForm(Application.ProductName, System.Drawing.SystemIcons.Question, message, new string[2] { "Yes", "No" }, automatic_yes ? 0 : 1, Owner);
+                        //mf.ShowInTaskbar = Cliver.Message.ShowInTaskbar;
+                        //return mf.ShowDialog() == 0;
+                        return 0 == Cliver.Message.ShowDialog(Application.ProductName, System.Drawing.SystemIcons.Question, message, new string[2] { "Yes", "No" }, automatic_yes ? 0 : 1, Owner);
                     }
                     else
                     {
