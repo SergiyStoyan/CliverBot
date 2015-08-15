@@ -77,15 +77,21 @@ namespace Cliver.Bot.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1")]
         public int RegistryAppSubkeyNameIsAppParentFolderByIndex {
             get {
                 return ((int)(this["RegistryAppSubkeyNameIsAppParentFolderByIndex"]));
             }
-            set {
-                this["RegistryAppSubkeyNameIsAppParentFolderByIndex"] = value;
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("\\#([^\\\\\\/]+)(?:[\\\\\\/]|$)")]
+        public string RegistryAppSubkeyNameRegexForBaseDirectory {
+            get {
+                return ((string)(this["RegistryAppSubkeyNameRegexForBaseDirectory"]));
             }
         }
     }
