@@ -52,10 +52,10 @@ namespace Cliver.Bot.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("SOFTWARE\\CliverSoft\\CliverBot")]
-        public string RegistrySubkey {
+        [global::System.Configuration.DefaultSettingValueAttribute("SOFTWARE\\CliverSoft\\")]
+        public string RegistryGeneralSubkey {
             get {
-                return ((string)(this["RegistrySubkey"]));
+                return ((string)(this["RegistryGeneralSubkey"]));
             }
         }
         
@@ -74,6 +74,18 @@ namespace Cliver.Bot.Properties {
         public bool RegistryHiveIsUserDependent {
             get {
                 return ((bool)(this["RegistryHiveIsUserDependent"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public int RegistryAppSubkeyNameIsAppParentFolderByIndex {
+            get {
+                return ((int)(this["RegistryAppSubkeyNameIsAppParentFolderByIndex"]));
+            }
+            set {
+                this["RegistryAppSubkeyNameIsAppParentFolderByIndex"] = value;
             }
         }
     }

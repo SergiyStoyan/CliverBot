@@ -24,68 +24,50 @@ namespace Cliver.Bot
 {
     public static class AppRegistry
     {
-        public static class Union
+        static AppRegistry()
         {
-            static Union()
-            {
-                string p = System.AppDomain.CurrentDomain.BaseDirectory.Trim('\\', '/');
-                p = Regex.Replace(p, @"[\\\/](bin|debug|release)$", @"\", RegexOptions.IgnoreCase | RegexOptions.Singleline).Trim('\\', '/');
-                string union_name = Regex.Replace(p, @"^.*[\\\/]([^\\\/]+)[\\\/][^\\\/]+$", "$1", RegexOptions.IgnoreCase | RegexOptions.Singleline);
-                UnionRegistryPath = Properties.App.Default.RegistrySubkey + @"\" + union_name;
-                LogMessage.Write("CliverHost registry key: " + UnionRegistryPath);
-            }
-            static readonly string UnionRegistryPath;
-
-            public static string GetString(string name, bool look_in_app_key_if_not_found_in_union_key = false, string default_value = null)
-            {
-                lock (lock_object)
-                {
-                    RegistryKey rk = get_base_key();
-                    rk = rk.open_subkey(UnionRegistryPath);
-                    if (rk == null)
-                    {
-                        if (look_in_app_key_if_not_found_in_union_key)
-                        {
-                            rk = get_base_key();
-                            rk = rk.open_subkey(Properties.App.Default.RegistrySubkey);
-                        }
-                        if (rk == null)
-                            return default_value;
-                    }
-                    return (string)rk.GetValue(name, default_value);
-                }
-            }
-
-            public static void SetValue<T>(string name, T value)
-            {
-                get_base_key().create_subkey(UnionRegistryPath).set_value(name, value);
-            }
+            string p = System.AppDomain.CurrentDomain.BaseDirectory.Trim('\\', '/');
+            p = Regex.Replace(p, @"[\\\/](bin|debug|release)$", @"\", RegexOptions.IgnoreCase | RegexOptions.Singleline).Trim('\\', '/');
+            string app_rsk_name = null;
+            if (Properties.App.Default.RegistryAppSubkeyNameIsAppParentFolderByIndex > 0)
+                app_rsk_name = @"\" + Regex.Replace(p, @"^.*[\\\/]([^\\\/]+)([\\\/][^\\\/]+){" + Properties.App.Default.RegistryAppSubkeyNameIsAppParentFolderByIndex + "}$", "$1", RegexOptions.IgnoreCase | RegexOptions.Singleline).Trim('\\', '/');
+            AppRegistryPath = Properties.App.Default.RegistryGeneralSubkey + app_rsk_name;
+            LogMessage.Write("App registry key: " + AppRegistryPath);
         }
+        static readonly string AppRegistryPath;
 
         static RegistryKey get_base_key()
         {
             return RegistryKey.OpenBaseKey(base_registry_hive, Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32);
         }
-
         readonly static RegistryHive base_registry_hive = Properties.App.Default.RegistryHiveIsUserDependent ? RegistryHive.CurrentUser : RegistryHive.LocalMachine;
+        
         static object lock_object = new object();
-        readonly static public string DefaultRegistryPath = get_base_key().ToString() + @"\" + Properties.App.Default.RegistrySubkey;
+        readonly static public string DefaultRegistryPath = get_base_key().ToString() + @"\" + Properties.App.Default.RegistryGeneralSubkey;
 
-        public static string GetString(string name, string default_value = null, bool look_in_root_only = false)
+        public static string GetString(string name, bool look_in_app_key_if_not_found_in_union_key = false, string default_value = null)
         {
             lock (lock_object)
             {
                 RegistryKey rk = get_base_key();
-                rk = rk.OpenSubKey(Properties.App.Default.RegistrySubkey);
+                rk = rk.open_subkey(AppRegistryPath);
                 if (rk == null)
-                    return default_value;
+                {
+                    if (look_in_app_key_if_not_found_in_union_key)
+                    {
+                        rk = get_base_key();
+                        rk = rk.open_subkey(Properties.App.Default.RegistryGeneralSubkey);
+                    }
+                    if (rk == null)
+                        return default_value;
+                }
                 return (string)rk.GetValue(name, default_value);
             }
         }
 
         public static void SetValue<T>(string name, T value)
         {
-            get_base_key().create_subkey(Properties.App.Default.RegistrySubkey).set_value(name, value);
+            get_base_key().create_subkey(AppRegistryPath).set_value(name, value);
         }
 
         static RegistryKey open_subkey(this RegistryKey rk, string subkey_path, bool writable = false)
@@ -141,7 +123,7 @@ namespace Cliver.Bot
                 }
             }
         }
-        
+
         static void process_exception(Exception e)
         {
             LogMessage.Error(e);
@@ -150,7 +132,7 @@ namespace Cliver.Bot
                 || e is System.UnauthorizedAccessException
                 )
             {
-                if(ProcessRoutines.IsElevated())
+                if (ProcessRoutines.IsElevated())
                     LogMessage.Exit("Despite the app is running under elevated privileges, it still cannot write to the resgistry. Please fix the problem before using the app.");
                 LogMessage.Inform(Program.AppName + " needs administatrator privileges to create an initial configuration in the registry. So it will restart now and ask for elevated privileges.");
                 try

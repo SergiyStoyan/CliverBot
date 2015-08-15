@@ -69,11 +69,11 @@ namespace Cliver.CrawlerHost
             }
             internal set
             {
-                Cliver.Bot.AppRegistry.Union.SetValue(DbConnectionString_registry_name, value);
+                Cliver.Bot.AppRegistry.SetValue(DbConnectionString_registry_name, value);
                 _ConnectionString = value;
             }
         }
-        static string _ConnectionString = AppRegistry.Union.GetString(DbConnectionString_registry_name, false);
+        static string _ConnectionString = AppRegistry.GetString(DbConnectionString_registry_name, false);
         const string DbConnectionString_registry_name = @"CrawlerHostDbConnectionString";
 
         static public readonly DbConnection Connection;

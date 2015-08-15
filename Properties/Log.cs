@@ -33,7 +33,7 @@ namespace Cliver.Bot.Properties
             if (string.IsNullOrEmpty(PreWorkDir))
             {
                 PreWorkDir = Cliver.Bot.Log.AppDir.Substring(0, Cliver.Bot.Log.AppDir.IndexOf(":")) + @":\CliverBotSessions";//used if GetRegistry will write error to log
-                PreWorkDir = AppRegistry.Union.GetString(GeneralWorkDir_registry_key_name, true);
+                PreWorkDir = AppRegistry.GetString(GeneralWorkDir_registry_key_name, true);
                 if (PreWorkDir == null)
                 {
                     PreWorkDir = Cliver.Bot.Log.AppDir.Substring(0, Cliver.Bot.Log.AppDir.IndexOf(":")) + @":\CliverBotSessions";
