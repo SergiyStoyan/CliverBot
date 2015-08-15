@@ -6,6 +6,7 @@
 //        26 September 2006
 //Copyright: (C) 2006, Sergey Stoyan
 //********************************************************************************************
+using System.Text.RegularExpressions;
 
 namespace Cliver.Bot.Properties 
 {    
@@ -29,29 +30,22 @@ namespace Cliver.Bot.Properties
 
         void Log_SettingsLoaded(object sender, System.Configuration.SettingsLoadedEventArgs e)
         {
-            string GeneralWorkDir_registry_key_name = "GeneralWorkDir";
             if (string.IsNullOrEmpty(PreWorkDir))
             {
-                PreWorkDir = Cliver.Bot.Log.AppDir.Substring(0, Cliver.Bot.Log.AppDir.IndexOf(":")) + @":\CliverBotSessions";//used if GetRegistry will write error to log
-                PreWorkDir = AppRegistry.GetString(GeneralWorkDir_registry_key_name, true);
-                if (PreWorkDir == null)
+                PreWorkDir = Regex.Replace(Cliver.Bot.Log.AppDir, @":.*", @":\CliverBotSessions", RegexOptions.IgnoreCase| RegexOptions.Singleline);
+                if (System.Threading.Thread.CurrentThread.GetApartmentState() == System.Threading.ApartmentState.STA)
                 {
-                    PreWorkDir = Cliver.Bot.Log.AppDir.Substring(0, Cliver.Bot.Log.AppDir.IndexOf(":")) + @":\CliverBotSessions";
-                    if (System.Threading.Thread.CurrentThread.GetApartmentState() == System.Threading.ApartmentState.STA)
+                    if (!LogMessage.AskYesNo("A folder where the application will store log data is not specified. By default it will be created in the following path:" + PreWorkDir + ".\nClick Yes if you agree, click No if you want to specify another location.", true, false))
                     {
-                        if (!LogMessage.AskYesNo("A folder where the application will store log data is not specified. By default it will be created in the following path:" + PreWorkDir + ".\nClick Yes if you agree, click No if you want to specify another location.", true, false))
-                        {
-                            System.Windows.Forms.FolderBrowserDialog f = new System.Windows.Forms.FolderBrowserDialog();
-                            f.Description = "Specify a folder where the application will store log data.";
-                            while (f.ShowDialog(/*MainForm.This*/) != System.Windows.Forms.DialogResult.OK) ;
-                            PreWorkDir = f.SelectedPath;
-                        }
+                        System.Windows.Forms.FolderBrowserDialog f = new System.Windows.Forms.FolderBrowserDialog();
+                        f.Description = "Specify a folder where the application will store log data.";
+                        while (f.ShowDialog(/*MainForm.This*/) != System.Windows.Forms.DialogResult.OK) ;
+                        PreWorkDir = f.SelectedPath;
                     }
-                    else
-                        LogMessage.Inform("A folder where the application will store log data is: " + PreWorkDir + ".\nIt can be changed in the registry key " + AppRegistry.DefaultRegistryPath + @"\GeneralWorkDir");
-                    Save();
-                    AppRegistry.SetValue(GeneralWorkDir_registry_key_name, PreWorkDir);
                 }
+                else
+                    LogMessage.Inform("A folder where the application will store log data is: " + PreWorkDir + ".\nIt can be changed in the app's settings");
+                Save();
             }            
         }
     }

@@ -32,11 +32,16 @@ namespace Cliver.Bot
             else
                 p = System.Reflection.Assembly.GetEntryAssembly().GetName(false).CodeBase;
 
-            Match m = Regex.Match(p, Properties.App.Default.RegistryAppSubkeyNameRegexForBaseDirectory, RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            if(!m.Success)
-                throw new Exception("Cannot parse binary path.");
-            string app_rsk_name = m.Groups[1].Value;
-            AppRegistryPath = Properties.App.Default.RegistryGeneralSubkey.Trim('\\','/') + @"\" + app_rsk_name;
+            if (string.IsNullOrWhiteSpace(Properties.App.Default.RegistryAppSubkeyNameRegexForBaseDirectory))
+                AppRegistryPath = Properties.App.Default.RegistryGeneralSubkey.Trim('\\', '/');
+            else
+            {
+                Match m = Regex.Match(p, Properties.App.Default.RegistryAppSubkeyNameRegexForBaseDirectory, RegexOptions.Singleline | RegexOptions.IgnoreCase);
+                if (!m.Success)
+                    throw new Exception("Cannot parse binary path.");
+                string app_rsk_name = m.Groups[1].Value;
+                AppRegistryPath = Properties.App.Default.RegistryGeneralSubkey.Trim('\\', '/') + @"\" + app_rsk_name;
+            }
             if (!ProgramRoutines.IsWebContext)
                 Log.Main.Write("App registry key: " + AppRegistryPath);
         }
