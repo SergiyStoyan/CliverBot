@@ -24,7 +24,7 @@ namespace Cliver.Bot
     /// </summary>
     public static partial class Log
     {
-        public enum LoggingMode
+        public enum Mode
         {
             /// <summary>
             /// Each session creates its own folder.
@@ -39,20 +39,20 @@ namespace Cliver.Bot
         /// <summary>
         /// Must be set as first referencing Log in the code.
         /// </summary>
-        public static LoggingMode LOGGING_MODE
+        public static Mode MODE
         {
             set
             {
                 if (session_dir != null || work_dir != null)
-                    throw new Exception("LOGGING_MODE can be set only in first referencing Log in code.");
-                LOGGING_MODE_ = value;
+                    throw new Exception("LOG.MODE can be set only in first referencing Log in code.");
+                MODE_ = value;
             }
             get
             {
-                return LOGGING_MODE_;
+                return MODE_;
             }
         }
-        static LoggingMode LOGGING_MODE_;
+        static Mode MODE_;
 
         public static Thread MainThread = Thread.CurrentThread;
 

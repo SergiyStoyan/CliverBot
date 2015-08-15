@@ -26,7 +26,7 @@ namespace Cliver.CrawlerHost
         static Program()
         {
             LogMessage.DisableStumblingDialogs = Properties.Settings.Default.NoDialogMode;
-            Log.LOGGING_MODE = Log.LoggingMode.ONLY_LOG;
+            Log.MODE = Log.Mode.ONLY_LOG;
             Config.Initialize();
             SetTitle();
         }

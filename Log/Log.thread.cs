@@ -63,16 +63,16 @@ namespace Cliver.Bot
                         }
 
                         string log_file;
-                        switch (Log.LOGGING_MODE)
+                        switch (Log.MODE)
                         {
-                            case Log.LoggingMode.ONLY_LOG:
+                            case Log.Mode.ONLY_LOG:
                                 log_file = Log.WorkDir + @"\" + Log.EntryAssemblyName;
                                 break;
-                            case Log.LoggingMode.SESSIONS:
+                            case Log.Mode.SESSIONS:
                                 log_file = Log.SessionDir + @"\" + Log.EntryAssemblyName;
                                 break;
                             default:
-                                throw new Exception("Unknown LOGGING_MODE:" + Log.LOGGING_MODE);
+                                throw new Exception("Unknown LOGGING_MODE:" + Log.MODE);
                         }
                         if (log_id < 0)
                             log_file += "_" + Log.TimeMark + ".log";

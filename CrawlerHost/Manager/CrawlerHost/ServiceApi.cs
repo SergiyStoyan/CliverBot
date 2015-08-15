@@ -109,7 +109,7 @@ namespace Cliver.CrawlerHost
             try
             {
                 LogMessage.DisableStumblingDialogs = ProgramRoutines.IsParameterSet(CommandLineParameters.AUTOMATIC);
-                Log.LOGGING_MODE = Log.LoggingMode.ONLY_LOG;
+                Log.MODE = Log.Mode.ONLY_LOG;
                 LogMessage.Output2Console = true;
                 ProcessRoutines.RunSingleProcessOnly();
 

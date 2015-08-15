@@ -122,7 +122,7 @@ namespace Cliver.Bot
                         if (!di.Exists)
                             di.Create();
 
-                        if (Log.LOGGING_MODE == LoggingMode.ONLY_LOG)
+                        if (Log.MODE == Mode.ONLY_LOG)
                             Log.DeleteOldLogs();
                     }
                 }
@@ -160,8 +160,8 @@ namespace Cliver.Bot
                 {
                     lock (lock_object)
                     {
-                        if (Log.LOGGING_MODE != LoggingMode.SESSIONS)
-                            throw new Exception("SessionDir cannot be used while LOGGING_MODE != LoggingMode.SESSIONS");
+                        if (Log.MODE != Mode.SESSIONS)
+                            throw new Exception("SessionDir cannot be used while LOGGING_MODE != Log.Mode.SESSIONS");
 
                         session_dir = WorkDir + @"\Session" + "_" + Log.TimeMark;
 
@@ -277,9 +277,9 @@ namespace Cliver.Bot
                             return;
 
                         string alert;
-                        switch (LOGGING_MODE)
+                        switch (MODE)
                         {
-                            case LoggingMode.ONLY_LOG:
+                            case Mode.ONLY_LOG:
                                 alert = "Logs older than " + FirstLogDate.ToString() + " should be deleted along the specified threshold.\n Delete?";
                                 foreach (DirectoryInfo d in di.GetDirectories())
                                 {
@@ -305,7 +305,7 @@ namespace Cliver.Bot
                                     }
                                 }
                                 break;
-                            case LoggingMode.SESSIONS:
+                            case Mode.SESSIONS:
                                 alert = "Session data including caches and logs older than " + FirstLogDate.ToString() + " should be deleted along the specified threshold.\n Delete?";
                                 foreach (FileInfo f in di.GetFiles())
                                 {
@@ -330,7 +330,7 @@ namespace Cliver.Bot
                                 }
                                 break;
                             default:
-                                throw new Exception("Unknown LOGGING_MODE:" + LOGGING_MODE);
+                                throw new Exception("Unknown LOGGING_MODE:" + MODE);
                         }
                     }
                 }
