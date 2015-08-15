@@ -38,7 +38,7 @@ namespace Cliver.Bot
             string app_rsk_name = m.Groups[1].Value;
             AppRegistryPath = Properties.App.Default.RegistryGeneralSubkey.Trim('\\','/') + @"\" + app_rsk_name;
             if (!ProgramRoutines.IsWebContext)
-                LogMessage.Write("App registry key: " + AppRegistryPath);
+                Log.Main.Write("App registry key: " + AppRegistryPath);
         }
         static readonly string AppRegistryPath;
 
@@ -99,7 +99,7 @@ namespace Cliver.Bot
                 try
                 {
                     if (!ProgramRoutines.IsWebContext)
-                        LogMessage.Write("Creating registry key: " + rk.ToString() + @"\" + subkey_path);
+                        Log.Main.Write("Creating registry key: " + rk.ToString() + @"\" + subkey_path);
                     return rk.CreateSubKey(subkey_path);
                 }
                 catch (Exception e)
@@ -117,7 +117,7 @@ namespace Cliver.Bot
                 try
                 {
                     if (!ProgramRoutines.IsWebContext)
-                        LogMessage.Write("Setting registry key: " + rk.ToString() + @"\" + name + " = '" + value.ToString() + "'");
+                        Log.Main.Write("Setting registry key: " + rk.ToString() + @"\" + name + " = '" + value.ToString() + "'");
                     //RegistryAccessRule rule = new RegistryAccessRule(WindowsIdentity.GetCurrent().User, RegistryRights.FullControl, AccessControlType.Allow);
                     //RegistrySecurity Security = new RegistrySecurity();
                     //Security.SetOwner(WindowsIdentity.GetCurrent().User);

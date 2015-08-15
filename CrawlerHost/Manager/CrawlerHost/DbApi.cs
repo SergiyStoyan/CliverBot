@@ -45,7 +45,7 @@ namespace Cliver.CrawlerHost
                     string connection_string = DbApi.ConnectionString;
                     if (string.IsNullOrWhiteSpace(connection_string))
                         connection_string = Properties.Settings.Default.DbConnectionString;
-                    string message = e.Message + "\r\n\r\nThe app could not connect the database. Please create an empty database or locate an existing one and save the respective connection string in settings.";
+                    string message = e.Message + "\r\n\r\nThe app could not connect the crawler host database. Please create an empty database or locate an existing one and save the respective connection string in settings.";
                     DbConnectionSettingsForm f = new DbConnectionSettingsForm(message, connection_string);
                     f.ShowDialog();
                     if (f.ConnectionString == null)
