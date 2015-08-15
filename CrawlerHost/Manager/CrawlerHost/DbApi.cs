@@ -27,6 +27,7 @@ namespace Cliver.CrawlerHost
             Assembly ea = Assembly.GetEntryAssembly();
             if (ea != null)//can be null if web context
                 entry_assembly_name = Regex.Replace(Assembly.GetEntryAssembly().FullName, @"\,.*", "", RegexOptions.IgnoreCase | RegexOptions.Singleline);
+
         AGAIN:
             try
             {
@@ -59,6 +60,21 @@ namespace Cliver.CrawlerHost
             }
             ThreadLog.Writing += ThreadLog_Writing;
         }
+
+        public static string ConnectionString
+        {
+            get 
+            { 
+                return _ConnectionString; 
+            }
+            internal set
+            {
+                Cliver.Bot.AppRegistry.Union.SetValue(DbConnectionString_registry_name, value);
+                _ConnectionString = value;
+            }
+        }
+        static string _ConnectionString = AppRegistry.Union.GetString(DbConnectionString_registry_name, false);
+        const string DbConnectionString_registry_name = @"CrawlerHostDbConnectionString";
 
         static public readonly DbConnection Connection;
 
@@ -201,19 +217,6 @@ State tinyint NOT NULL)"
             }
         }
         static readonly string entry_assembly_name;
-
-        public static string ConnectionString
-        {
-            get
-            {
-                return RegistryRoutines.GetString(DbConnectionString_registry_name);
-            }
-            internal set 
-            {
-                RegistryRoutines.SetValue(DbConnectionString_registry_name, value);
-            }
-        }
-        const string DbConnectionString_registry_name = @"CrawlerHostDbConnectionString";
     }
 }
 

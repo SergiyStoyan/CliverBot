@@ -22,12 +22,17 @@ using System.Media;
 using System.Web;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
-
+using System.Security.Principal;
 
 namespace Cliver.Bot
 {
     public static class ProcessRoutines
     {
+        public static bool IsElevated()
+        {
+            return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
+        }
+
         public static bool IsProgramRunningAlready()
         {
             Process p = Process.GetCurrentProcess();

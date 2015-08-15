@@ -24,7 +24,7 @@ namespace Cliver
         public BaseForm()
         {
             InitializeComponent();
-            this.Icon = Icon.ExtractAssociatedIcon(Assembly.GetExecutingAssembly().Location);
+            this.Icon = Icon.ExtractAssociatedIcon(Assembly.GetEntryAssembly().Location);
         }
     }
 

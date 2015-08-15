@@ -194,7 +194,7 @@
     <Compile Include="FileReader.cs" />
     <Compile Include="FileWriter.cs" />
     <Compile Include="FileWriter.static.cs" />
-    <Compile Include="Misc\RegistryRoutines.cs" />
+    <Compile Include="Misc\AppRegistry.cs" />
     <Compile Include="Properties\Web.Designer.cs">
       <DependentUpon>Web.settings</DependentUpon>
       <AutoGen>True</AutoGen>

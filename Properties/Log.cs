@@ -29,11 +29,11 @@ namespace Cliver.Bot.Properties
 
         void Log_SettingsLoaded(object sender, System.Configuration.SettingsLoadedEventArgs e)
         {
-            string GeneralWorkDir_registry_name = "GeneralWorkDir";
+            string GeneralWorkDir_registry_key_name = "GeneralWorkDir";
             if (string.IsNullOrEmpty(PreWorkDir))
             {
                 PreWorkDir = Cliver.Bot.Log.AppDir.Substring(0, Cliver.Bot.Log.AppDir.IndexOf(":")) + @":\CliverBotSessions";//used if GetRegistry will write error to log
-                PreWorkDir = RegistryRoutines.GetString(GeneralWorkDir_registry_name);
+                PreWorkDir = AppRegistry.Union.GetString(GeneralWorkDir_registry_key_name, true);
                 if (PreWorkDir == null)
                 {
                     PreWorkDir = Cliver.Bot.Log.AppDir.Substring(0, Cliver.Bot.Log.AppDir.IndexOf(":")) + @":\CliverBotSessions";
@@ -48,9 +48,9 @@ namespace Cliver.Bot.Properties
                         }
                     }
                     else
-                        LogMessage.Inform("A folder where the application will store log data is: " + PreWorkDir + ".\nIt can be changed in the registry key " + RegistryRoutines.DefaultRegistryPath + @"\GeneralWorkDir");
+                        LogMessage.Inform("A folder where the application will store log data is: " + PreWorkDir + ".\nIt can be changed in the registry key " + AppRegistry.DefaultRegistryPath + @"\GeneralWorkDir");
                     Save();
-                    RegistryRoutines.SetValue(GeneralWorkDir_registry_name, PreWorkDir);
+                    AppRegistry.SetValue(GeneralWorkDir_registry_key_name, PreWorkDir);
                 }
             }            
         }
