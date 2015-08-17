@@ -31,6 +31,7 @@ namespace Cliver.CrawlerHost
     {
         static CrawlerApi()
         {
+            DbApi = new DbApi();
             lock (DbApi.Connection)
             { 
                 try
@@ -70,6 +71,7 @@ namespace Cliver.CrawlerHost
             }
         }
 
+        readonly static public DbApi DbApi;
         readonly static public string CrawlerId;
         readonly static public string ProductsTable;
 

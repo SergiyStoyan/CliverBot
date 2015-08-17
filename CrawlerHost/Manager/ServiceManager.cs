@@ -30,6 +30,8 @@ namespace Cliver.CrawlerHost
 {
     public class ServiceManager
     {
+        static DbApi DbApi = new DbApi();
+
         public delegate void OnStateChanged(bool work);
         static public event OnStateChanged StateChanged = null;
 
@@ -83,7 +85,7 @@ namespace Cliver.CrawlerHost
             catch (Exception e)
             {
                 Log.Main.Error(e);
-                Mailer.Send(Log.GetExceptionMessage(e), ReportSourceType.MANAGER, Log.GetExceptionMessage(e));
+                Mailer.Send(DbApi, Log.GetExceptionMessage(e), ReportSourceType.MANAGER, Log.GetExceptionMessage(e));
             }
             if (StateChanged != null)
                 StateChanged.BeginInvoke(false, null, null);
@@ -188,14 +190,14 @@ WHERE _LastSessionState IN (" + (int)Service.SessionState.STARTED + ", " + (int)
                 {
                     string m = "Service " + service_id + " completed successfully.\nTotal duration: " + (new TimeSpan(0, 0, duration)).ToString() + m1;
                     DbApi.Connection["UPDATE Services SET _LastSessionState=" + (int)Service.SessionState.COMPLETED + " WHERE Id=@Id"].Execute("@Id", service_id);
-                    Mailer.Send(m, ReportSourceType.SERVICE, service_id, false);
+                    Mailer.Send(DbApi, m, ReportSourceType.SERVICE, service_id, false);
                     continue;
                 }
 
                 if (_LastSessionState == Service.SessionState._ERROR)
                 {
                     DbApi.Connection["UPDATE Services SET _LastSessionState=" + (int)Service.SessionState.ERROR + " WHERE Id=@Id"].Execute("@Id", service_id);
-                    Mailer.Send("Service " + service_id + " exited with error" + m1, ReportSourceType.SERVICE, service_id);
+                    Mailer.Send(DbApi, "Service " + service_id + " exited with error" + m1, ReportSourceType.SERVICE, service_id);
                     continue;
                 }
 
@@ -203,13 +205,13 @@ WHERE _LastSessionState IN (" + (int)Service.SessionState.STARTED + ", " + (int)
                 if (p == null)
                 {
                     DbApi.Connection["UPDATE Services SET _LastSessionState=" + (int)Service.SessionState.BROKEN + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, GETDATE()) WHERE Id=@Id"].Execute("@Id", service_id);
-                    Mailer.Send("Service " + service_id + " was broken by unknown reason" + m1, ReportSourceType.SERVICE, service_id);
+                    Mailer.Send(DbApi, "Service " + service_id + " was broken by unknown reason" + m1, ReportSourceType.SERVICE, service_id);
                     continue;
                 }
 
                 if (duration >= (int)r["RunTimeout"])
                 {
-                    Mailer.Send("Service " + service_id + " is running " + (new TimeSpan(0, 0, duration)).ToString() + " seconds. It will be killed." + m1, ReportSourceType.SERVICE, service_id);
+                    Mailer.Send(DbApi, "Service " + service_id + " is running " + (new TimeSpan(0, 0, duration)).ToString() + " seconds. It will be killed." + m1, ReportSourceType.SERVICE, service_id);
 
                     p = GetProcess((int?)r["_LastProcessId"], service_id);
                     Log.Main.Warning("Killing " + service_id);
@@ -291,14 +293,14 @@ WHERE (State<>" + (int)Service.State.DISABLED + " AND GETDATE()>=_NextStartTime 
             service_directory = Log.GetAbsolutePath(service_directory);
             if (!Directory.Exists(service_directory))
             {
-                Mailer.Send("Service directory '" + service_directory + "' does not exist", ReportSourceType.SERVICE, service_id);
+                Mailer.Send(DbApi, "Service directory '" + service_directory + "' does not exist", ReportSourceType.SERVICE, service_id);
                 return false;
             }
             string service_file_name = service_id + ".exe";
             string service_file = FindFile(service_directory, service_file_name);
             if (service_file == null)
             {
-                Mailer.Send("Service file '" + service_file_name + "' was not found in " + service_directory, ReportSourceType.SERVICE, service_id);
+                Mailer.Send(DbApi, "Service file '" + service_file_name + "' was not found in " + service_directory, ReportSourceType.SERVICE, service_id);
                 return false;
             }
             Process p = new Process();
@@ -311,7 +313,7 @@ WHERE (State<>" + (int)Service.State.DISABLED + " AND GETDATE()>=_NextStartTime 
             {
                 DbApi.Connection["UPDATE Services SET _NextStartTime=DATEADD(ss, RestartDelayIfBroken, GETDATE()) WHERE Id=@Id"].Execute("@Id", service_id);
 
-                Mailer.Send(service_id + " could not start.", ReportSourceType.SERVICE, service_id);
+                Mailer.Send(DbApi, service_id + " could not start.", ReportSourceType.SERVICE, service_id);
                 return false;
             }
             running_service_ids.Add(service_id);

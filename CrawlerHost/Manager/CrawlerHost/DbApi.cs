@@ -22,7 +22,7 @@ namespace Cliver.CrawlerHost
             //to force static constructor (to force logging)
         }
 
-        static DbApi()
+        public DbApi()
         {
             Assembly ea = Assembly.GetEntryAssembly();
             if (ea != null)//can be null if web context
@@ -46,7 +46,7 @@ namespace Cliver.CrawlerHost
                     if (string.IsNullOrWhiteSpace(connection_string))
                         connection_string = Properties.Settings.Default.DbConnectionString;
                     string message = e.Message + "\r\n\r\nThe app could not connect the crawler host database. Please create an empty database or locate an existing one and save the respective connection string in settings.";
-                    DbConnectionSettingsForm f = new DbConnectionSettingsForm(message, connection_string);
+                    DbConnectionSettingsForm f = new DbConnectionSettingsForm("Crawler Host database", message, connection_string);
                     f.ShowDialog();
                     if (f.ConnectionString == null)
                     {
@@ -76,18 +76,18 @@ namespace Cliver.CrawlerHost
         static string _ConnectionString = AppRegistry.GetString(DbConnectionString_registry_name, false);
         const string DbConnectionString_registry_name = @"CrawlerHostDbConnectionString";
 
-        static public readonly DbConnection Connection;
+        public readonly DbConnection Connection;
 
-        static public CrawlerHost.CrawlerHostDataContext Context
+        public CrawlerHost.CrawlerHostDataContext Context
         {
             get
             {
                 return Context_;
             }
         }
-        static CrawlerHost.CrawlerHostDataContext Context_ = null;
+        CrawlerHost.CrawlerHostDataContext Context_ = null;
 
-        public static CrawlerHost.CrawlerHostDataContext RenewContext()
+        public CrawlerHost.CrawlerHostDataContext RenewContext()
         {
             if (Context_ != null)
                 Context_.Dispose();
@@ -95,7 +95,7 @@ namespace Cliver.CrawlerHost
             return Context_;
         }
         
-        static void create_tables()
+        void create_tables()
         {
             lock (Connection)
             {		
@@ -166,7 +166,7 @@ CREATE TABLE [dbo].[Services] (
                 ).Execute();
         }
 
-        internal static string CreateProductsTableForCrawler(string crawler_id)
+        internal string CreateProductsTableForCrawler(string crawler_id)
         {
             lock (Connection)
             {
@@ -202,12 +202,12 @@ State tinyint NOT NULL)"
             IMPORTANT = 2
         }
         
-        static void ThreadLog_Writing(Log.MessageType type, string message, string details)
+        void ThreadLog_Writing(Log.MessageType type, string message, string details)
         {
             write2Messages(type, message, details);
         }
 
-        static void write2Messages(Log.MessageType type, string message, string details)
+        void write2Messages(Log.MessageType type, string message, string details)
         {
             lock (Connection)
             {
@@ -216,7 +216,7 @@ State tinyint NOT NULL)"
                 Connection["INSERT INTO Messages (Type,Source,Value,Time,Details) VALUES(@Type,@Source,@Value,GETDATE(),@Details)"].Execute("@Type", (int)type, "@Source", entry_assembly_name, "@Value", message, "@Details", details);
             }
         }
-        static readonly string entry_assembly_name;
+        readonly string entry_assembly_name;
     }
 }
 

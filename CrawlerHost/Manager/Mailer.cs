@@ -35,8 +35,7 @@ namespace Cliver.CrawlerHost
 
     public static class Mailer
     {
-
-        static public void Send(string message, ReportSourceType source_type, string source_id = null, bool error = true)
+        static public void Send(DbApi db_api, string message, ReportSourceType source_type, string source_id = null, bool error = true)
         {
             try
             {
@@ -56,10 +55,10 @@ namespace Cliver.CrawlerHost
                     switch (source_type)
                     {
                         case ReportSourceType.CRAWLER:
-                            AdminEmails = (string)DbApi.Connection["SELECT AdminEmails FROM Crawlers WHERE Id=@Id"].GetSingleValue("@Id", source_id);
+                            AdminEmails = (string)db_api.Connection["SELECT AdminEmails FROM Crawlers WHERE Id=@Id"].GetSingleValue("@Id", source_id);
                             break;
                         case ReportSourceType.SERVICE:
-                            AdminEmails = (string)DbApi.Connection["SELECT AdminEmails FROM Services WHERE Id=@Id"].GetSingleValue("@Id", source_id);
+                            AdminEmails = (string)db_api.Connection["SELECT AdminEmails FROM Services WHERE Id=@Id"].GetSingleValue("@Id", source_id);
                             break;
                         case ReportSourceType.MANAGER:
                             break;
@@ -103,8 +102,7 @@ namespace Cliver.CrawlerHost
             {
                 Log.Main.Error(e);
             }
-        }
-     
+        }     
     }
 }
 

@@ -12,11 +12,13 @@ namespace Cliver.CrawlerHost
 {
     public partial class DbConnectionSettingsForm : BaseForm
     {
-        public DbConnectionSettingsForm(string message, string connection_string)
+        public DbConnectionSettingsForm(string db_name, string message, string connection_string)
         {
             InitializeComponent();
 
             this.Text = Log.EntryAssemblyName;
+
+            lConectionString.Text = "Connection String to " + db_name;
 
             this.message = message;
 

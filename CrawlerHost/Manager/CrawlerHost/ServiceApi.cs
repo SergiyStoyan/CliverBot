@@ -34,6 +34,7 @@ namespace Cliver.CrawlerHost
         
         protected Service()
         {
+            DbApi = new DbApi();
             lock (DbApi.Connection)
             {
                 try
@@ -67,6 +68,7 @@ namespace Cliver.CrawlerHost
             }
         }
 
+        readonly public DbApi DbApi;
         readonly public string ServiceId;
 
         public class MessageMark
