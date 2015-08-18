@@ -31,6 +31,8 @@ namespace Cliver.CrawlerHost
         AGAIN:
             try
             {
+                if (!ProgramRoutines.IsWebContext)
+                    Log.Main.Write("DbApi ConnectionString: " + ConnectionString);
                 Connection = DbConnection.Create(DbApi.ConnectionString);
                 create_tables();
                 RenewContext();
@@ -71,6 +73,8 @@ namespace Cliver.CrawlerHost
             {
                 Cliver.Bot.AppRegistry.SetValue(DbConnectionString_registry_name, value);
                 _ConnectionString = value;
+                if (!ProgramRoutines.IsWebContext)
+                    Log.Main.Write("DbApi ConnectionString: " + ConnectionString);
             }
         }
         static string _ConnectionString = AppRegistry.GetString(DbConnectionString_registry_name, false);
