@@ -1,4 +1,4 @@
-﻿namespace Cliver.CrawlerHost
+﻿namespace Cliver.CrawlerHostManager
 {
     partial class SettingsForm
     {

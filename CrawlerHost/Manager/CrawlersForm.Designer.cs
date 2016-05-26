@@ -1,4 +1,4 @@
-﻿namespace Cliver.CrawlerHost
+﻿namespace Cliver.CrawlerHostManager
 {
     internal partial class CrawlersForm
     {
@@ -53,8 +53,8 @@
             this._ProductsTable = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._LastProductTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.crawlersBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.cliverCrawlersDataSet1 = new Cliver.CrawlerHost.CliverCrawlersDataSet();
-            this.crawlersTableAdapter1 = new Cliver.CrawlerHost.CliverCrawlersDataSetTableAdapters.CrawlersTableAdapter();
+            this.cliverCrawlersDataSet1 = new Cliver.CrawlerHostManager.CliverCrawlersDataSet();
+            this.crawlersTableAdapter1 = new Cliver.CrawlerHostManager.CliverCrawlersDataSetTableAdapters.CrawlersTableAdapter();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.bClose = new System.Windows.Forms.Button();
             this.bStop = new System.Windows.Forms.Button();

@@ -47,14 +47,14 @@ namespace Cliver.Bot
         }
         abstract protected object GetSingleValue_(params object[] key_value_pairs);
 
-        public object GetReader(params object[] key_value_pairs)
+        public IDataReader GetReader(params object[] key_value_pairs)
         {
             lock (dc.NativeConnection)
             {
                 return GetReader_(key_value_pairs);
             }
         }
-        abstract protected object GetReader_(params object[] key_value_pairs);
+        abstract protected IDataReader GetReader_(params object[] key_value_pairs);
 
         public Record GetFirstRecord(params object[] key_value_pairs)
         {
@@ -131,11 +131,10 @@ namespace Cliver.Bot
             {
                 c.Parameters.Clear();
             }
-            c.Parameters.Clear();
             return o;
         }
 
-        override protected object GetReader_(params object[] key_value_pairs)
+        override protected IDataReader GetReader_(params object[] key_value_pairs)
         {
             SqlDataReader r = null;
             try
@@ -147,7 +146,6 @@ namespace Cliver.Bot
             {
                 c.Parameters.Clear();
             }
-            c.Parameters.Clear();
             return r;
         }
 

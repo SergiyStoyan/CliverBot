@@ -37,10 +37,9 @@ namespace Cliver.Bot
             if (connection_string == null)
                 throw new Exception("connection_string is null.");
 
-            if (Regex.IsMatch(connection_string, @"\.mdf|\.sdf  \s*=\s*System\.Data\.SqlClient", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline))
+            if (Regex.IsMatch(connection_string, @"\.mdf|\.sdf|Initial\s+Catalog\s*=", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline))
                 return new MsSqlConnection(connection_string);
-            else
-                throw new Exception("Could not detect an appropriate wrapper class for " + connection_string);
+            throw new Exception("Could not detect an appropriate wrapper class for " + connection_string);
         }
 
         public static DbConnection CreateFromNativeConnection(object connection)
@@ -55,7 +54,6 @@ namespace Cliver.Bot
                     c.Open();
                 return new MsSqlConnection(c);
             }
-
             throw new Exception("Could not detect an appropriate wrapper class for " + ((System.Data.SqlClient.SqlConnection)connection).ConnectionString);
         }
 
@@ -81,7 +79,7 @@ namespace Cliver.Bot
                 return get_database();
             }
         }
-        virtual protected string get_database() { throw new Exception("Not overriden"); }
+        virtual protected string get_database() { throw new Exception("Stub method is not overriden"); }
 
         /// <summary>
         /// Native connection that must be casted.
@@ -120,7 +118,7 @@ namespace Cliver.Bot
                 }
             }
         }
-        virtual internal DbCommand create_command(string sql) { throw new Exception("Not overriden"); }
+        virtual internal DbCommand create_command(string sql) { throw new Exception("Stub method is not overriden"); }
         protected Dictionary<string, DbCommand> sqls2commands = new Dictionary<string, DbCommand>();
 
         /// <summary>
@@ -134,14 +132,14 @@ namespace Cliver.Bot
         }
     }
 
-    internal class MsSqlConnection : DbConnection
+    public class MsSqlConnection : DbConnection
     {
-        internal MsSqlConnection(string connection_string = null)
+        public MsSqlConnection(string connection_string = null)
             : base(connection_string)
         {
         }
 
-        internal MsSqlConnection(System.Data.SqlClient.SqlConnection connection)
+        public MsSqlConnection(System.Data.SqlClient.SqlConnection connection)
             : base(connection)
         {
         }        

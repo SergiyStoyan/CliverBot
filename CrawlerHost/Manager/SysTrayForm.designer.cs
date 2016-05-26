@@ -1,4 +1,4 @@
-namespace Cliver.CrawlerHost
+namespace Cliver.CrawlerHostManager
 {
     partial class SysTrayForm
     {
@@ -27,7 +27,11 @@ namespace Cliver.CrawlerHost
 		/// the contents of this method with the code editor.
 		/// </summary>
 		private void InitializeComponent()
-		{
+        {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SysTrayForm));
+                //this.SuspendLayout();
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+                //this.ResumeLayout(false);
             this.components = new System.ComponentModel.Container();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.contextMenu1 = new System.Windows.Forms.ContextMenu();

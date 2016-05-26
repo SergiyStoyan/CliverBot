@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Cliver.CrawlerHost.Api" Collapsed="true">
+    <Position X="3" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAgAAAAAAAAgCAgAAAAAAIAgAAAAAAAAAAA=</HashCode>
+      <FileName>Api.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cliver.CrawlerHost.Crawler" Collapsed="true">
+    <Position X="4.75" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Crawler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cliver.CrawlerHost.CrawlerApi">
+    <Position X="13.75" Y="0.5" Width="2" />
+    <NestedTypes>
+      <Class Name="Cliver.CrawlerHost.CrawlerApi.MessageMark" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Crawler.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAIAIgAAAAAQAAEQAAAAgACAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Crawler.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cliver.CrawlerHost.DbApi" Collapsed="true">
+    <Position X="4.75" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAQAEAIAAAAAAAAAAgAAAAABEAAAAABAAAAAAA=</HashCode>
+      <FileName>DbApi.dbc.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cliver.CrawlerHost.Mailer" Collapsed="true">
+    <Position X="6.5" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mailer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cliver.CrawlerHost.Product" Collapsed="true">
+    <Position X="4.75" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAACABQAAgJkCBBAABAAAIAABCAAAAAAAAAA=</HashCode>
+      <FileName>Product.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cliver.CrawlerHost.Service" Collapsed="true">
+    <Position X="6.5" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAgAAAAAAEAAAAAAACAAAAIAgAAAAAAAAAAI=</HashCode>
+      <FileName>Service.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cliver.CrawlerHost.Settings" Collapsed="true">
+    <Position X="6.5" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAQAAAAAABAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Settings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cliver.CrawlerHost.Models.CrawlerHostDataContext" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>gAAgIABAAAAAAAAAAEAAAAAABDAIEAQAgAgEEQCABAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cliver.CrawlerHost.Models.Crawler" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="6.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EJB6hQpFBBTAkgFAZgEaBRiBjLGACIYQCmBZjSsUBTI=</HashCode>
+      <FileName>Models\CrawlerAttributes.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Cliver.CrawlerHost.Models.Message" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAIjgAABCgAZABBAQAEAAAABjGBAABEAAQCgCCAUBQA=</HashCode>
+      <FileName>Models\MessageAttributes.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Cliver.CrawlerHost.Models.Service" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10" Y="2.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EZByhAhFBACAGwFA4AESBBgJjCCACAIQCmBVrSMURTo=</HashCode>
+      <FileName>Models\ServiceAttributes.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Cliver.CrawlerHost.Models.Setting" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="4.75" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAgAgADAAAAAjQAQAEEAAAhiCBAAAEAAAAgAAAAgAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="Cliver.CrawlerHost.Models.CrawlerAttributes" Collapsed="true">
+    <Position X="3" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EAAKBQBEAAAAgAAAIAAQBAAAAAAAAIAACAAADQAABRA=</HashCode>
+      <FileName>Models\CrawlerAttributes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cliver.CrawlerHost.Models.DbApi">
+    <Position X="0.5" Y="2" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQAAAAAAAACAAAAAgAAAAAAEAAAAAAAAAAAAA=</HashCode>
+      <FileName>Models\DbApi.dbml.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cliver.CrawlerHost.Models.MessageAttributes" Collapsed="true">
+    <Position X="3" Y="2.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAgABAAAAAAAAAAAAAAAAAAAAAQCgAAAAAQA=</HashCode>
+      <FileName>Models\MessageAttributes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cliver.CrawlerHost.Models.ServiceAttributes" Collapsed="true">
+    <Position X="3" Y="3.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EQACBABEAAAACAAAIAAABAAAAAAAAAAACAAADQAABQA=</HashCode>
+      <FileName>Models\ServiceAttributes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Cliver.CrawlerHost.Properties.Settings" Collapsed="true">
+    <Position X="11" Y="3.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAIAAAAAAABEIAACAAABAACAAAAAAAQAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Cliver.CrawlerHost.ReportSourceType" Collapsed="true">
+    <Position X="3" Y="4.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAQAAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Mailer.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

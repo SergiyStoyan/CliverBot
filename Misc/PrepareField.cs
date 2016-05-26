@@ -184,5 +184,12 @@ namespace Cliver
         //static Regex remove_notprintables_regex = new Regex(@"[^\u0000-\u007F]", RegexOptions.Compiled | RegexOptions.Singleline);
         static Regex remove_notprintables_regex = new Regex(@"[^\u0000-\u00b0]", RegexOptions.Compiled | RegexOptions.Singleline);
         //static Regex remove_notprintables_regex = new Regex(@"[^\x20-\x7E]", RegexOptions.Compiled | RegexOptions.Singleline);
+
+        public static string Trim(string s, int length, string ending = "...")
+        {
+            if (s.Length <= length)
+                return s;
+            return s.Substring(0, length) + ending;
+        }
     }
 }

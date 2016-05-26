@@ -7,8 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Cliver.Bot;
+using Cliver.CrawlerHost;
 
-namespace Cliver.CrawlerHost
+namespace Cliver.CrawlerHostManager
 {
     internal partial class SettingsForm : BaseForm
     {
@@ -16,16 +17,16 @@ namespace Cliver.CrawlerHost
         {
             InitializeComponent();
 
-            CrawlerProcessMaxNumber.Text = Properties.Settings.Default.CrawlerProcessMaxNumber.ToString();
-            SmtpHost.Text = Properties.Settings.Default.SmtpHost;
-            SmtpLogin.Text = Properties.Settings.Default.SmtpLogin;
-            SmtpPassword.Text = Properties.Settings.Default.SmtpPassword;
-            SmtpPort.Text = Properties.Settings.Default.SmtpPort.ToString();
-            AdminEmailSender.Text = Properties.Settings.Default.EmailSender;
-            DefaultAdminEmails.Text = Properties.Settings.Default.DefaultAdminEmails;
-            DbConnectionString.Text = DbApi.ConnectionString;
-            if (string.IsNullOrWhiteSpace(DbConnectionString.Text))
-                DbConnectionString.Text = Properties.Settings.Default.DbConnectionString;
+            CrawlerProcessMaxNumber.Text = CrawlerHostManager.Properties.Settings.Default.CrawlerProcessMaxNumber.ToString();
+            SmtpHost.Text = CrawlerHost.Properties.Settings.Default.SmtpHost;
+            SmtpLogin.Text = CrawlerHost.Properties.Settings.Default.SmtpLogin;
+            SmtpPassword.Text = CrawlerHost.Properties.Settings.Default.SmtpPassword;
+            SmtpPort.Text = CrawlerHost.Properties.Settings.Default.SmtpPort.ToString();
+            AdminEmailSender.Text = CrawlerHost.Properties.Settings.Default.EmailSender;
+            DefaultAdminEmails.Text = CrawlerHost.Properties.Settings.Default.DefaultAdminEmails;
+            DbConnectionString.Text = DbApi.GetConnectionString();
+            //if (string.IsNullOrWhiteSpace(DbConnectionString.Text))
+            //    DbConnectionString.Text = CrawlerHost.Properties.Settings.Default.DbConnectionString;
         }
 
         private void bOK_Click(object sender, EventArgs e)
@@ -33,14 +34,15 @@ namespace Cliver.CrawlerHost
             try
             {
                 Properties.Settings.Default.CrawlerProcessMaxNumber = int.Parse(CrawlerProcessMaxNumber.Text);
-                Properties.Settings.Default.SmtpHost = SmtpHost.Text;
-                Properties.Settings.Default.SmtpLogin = SmtpLogin.Text;
-                Properties.Settings.Default.SmtpPassword = SmtpPassword.Text;
-                Properties.Settings.Default.SmtpPort = int.Parse(SmtpPort.Text);
-                Properties.Settings.Default.EmailSender = AdminEmailSender.Text;
-                Properties.Settings.Default.DefaultAdminEmails = DefaultAdminEmails.Text;
+                CrawlerHost.Properties.Settings.Default.SmtpHost = SmtpHost.Text;
+                CrawlerHost.Properties.Settings.Default.SmtpLogin = SmtpLogin.Text;
+                CrawlerHost.Properties.Settings.Default.SmtpPassword = SmtpPassword.Text;
+                CrawlerHost.Properties.Settings.Default.SmtpPort = int.Parse(SmtpPort.Text);
+                CrawlerHost.Properties.Settings.Default.EmailSender = AdminEmailSender.Text;
+                CrawlerHost.Properties.Settings.Default.DefaultAdminEmails = DefaultAdminEmails.Text;
                 Properties.Settings.Default.Save();
-                DbApi.ConnectionString = DbConnectionString.Text;
+                CrawlerHost.Api.SaveConnectionString(DbApi.DATABASE_CONNECTION_STRING_NAME, DbConnectionString.Text);
+                Message.Inform("To use the new settings, the application may need to be restarted.");
                 Close();
             }
             catch (Exception ex)

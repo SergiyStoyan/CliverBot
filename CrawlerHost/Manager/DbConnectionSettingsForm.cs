@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using Cliver.Bot;
 
-namespace Cliver.CrawlerHost
+namespace Cliver.CrawlerHostManager
 {
     public partial class DbConnectionSettingsForm : BaseForm
     {

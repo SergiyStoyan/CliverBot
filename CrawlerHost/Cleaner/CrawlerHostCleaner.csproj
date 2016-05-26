@@ -77,9 +77,9 @@
       <Project>{5283eea1-5f94-4379-bdf3-975ca4adbbf4}</Project>
       <Name>CliverBot</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Manager\CrawlerHostManager.csproj">
-      <Project>{f5dcafd6-8716-46fc-ab41-583f31e652e5}</Project>
-      <Name>CrawlerHostManager</Name>
+    <ProjectReference Include="..\Api\CrawlerHostApi.csproj">
+      <Project>{60998033-82b3-42e8-b492-759dd506b783}</Project>
+      <Name>CrawlerHostApi</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

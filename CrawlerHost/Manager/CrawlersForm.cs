@@ -9,7 +9,7 @@ using System.Windows.Forms;
 using Cliver.Bot;
 using Cliver.CrawlerHost;
 
-namespace Cliver.CrawlerHost
+namespace Cliver.CrawlerHostManager
 {
     internal partial class CrawlersForm : BaseForm
     {
@@ -52,7 +52,7 @@ namespace Cliver.CrawlerHost
         {
             try
             {
-                this.crawlersTableAdapter1.Connection.ConnectionString = DbApi.ConnectionString;
+                this.crawlersTableAdapter1.Connection.ConnectionString = DbApi.GetConnectionString();
                 this.crawlersTableAdapter1.Fill(this.cliverCrawlersDataSet1.Crawlers);
                 //dataGridView1.AutoResizeColumns();
                 

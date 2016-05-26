@@ -59,7 +59,7 @@
             : using a System.ComponentModel.TypeConverter
             : and then encoded with base64 encoding.
     -->
-  <xsd:schema Id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -117,13 +117,50 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="notifyIcon1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
-  <metadata name="contextMenu1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>124, 17</value>
-  </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>79</value>
   </metadata>
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAICAAAAAAAACoCAAAFgAAACgAAAAgAAAAQAAAAAEACAAAAAAAgAQAAAAAAAAAAAAAAAEAAAAA
+        AAAAAAAAAACAAACAAAAAgIAAgAAAAIAAgACAgAAAwMDAAMDcwADwyqYAzP//AJn//wBm//8AM///AP/M
+        /wDMzP8Amcz/AGbM/wAzzP8AAMz/AP+Z/wDMmf8AmZn/AGaZ/wAzmf8AAJn/AP9m/wDMZv8AmWb/AGZm
+        /wAzZv8AAGb/AP8z/wDMM/8AmTP/AGYz/wAzM/8AADP/AMwA/wCZAP8AZgD/ADMA/wD//8wAzP/MAJn/
+        zABm/8wAZv/MADP/zAAA/8wA/8zMAMzMzACZzMwAZszMADPMzAAAzMwA/5nMAMyZzACZmcwAZpnMADOZ
+        zAAAmcwA/2bMAMxmzACZZswAZmbMADNmzAAAZswA/zPMAMwzzACZM8wAZjPMADMzzAAAM8wA/wDMAMwA
+        zACZAMwAZgDMADMAzAAAAMwA//+ZAMz/mQCZ/5kAZv+ZADP/mQAA/5kA/8yZAMzMmQCZzJkAZsyZADPM
+        mQAAzJkA/5mZAMyZmQCZmZkAZpmZADOZmQAAmZkA/2aZAMxmmQCZZpkAZmaZADNmmQAAZpkA/zOZAMwz
+        mQCZM5kAZjOZADMzmQAAM5kA/wCZAMwAmQCZAJkAZgCZADMAmQAAAJkA//9mAMz/ZgCZ/2YAZv9mADP/
+        ZgAA/2YA/8xmAMzMZgCZzGYAZsxmADPMZgAAzGYA/5lmAMyZZgCZmWYAZplmADOZZgAAmWYA/2ZmAMxm
+        ZgCZZmYAZmZmADNmZgAAZmYA/zNmAMwzZgCZM2YAZjNmADMzZgAAM2YA/wBmAMwAZgCZAGYAZgBmADMA
+        ZgAAAGYA//8zAMz/MwCZ/zMAZv8zADP/MwAA/zMA/8wzAMzMMwCZzDMAZswzADPMMwAAzDMA/5kzAMyZ
+        MwCZmTMAZpkzADOZMwAAmTMA/2YzAMxmMwCZZjMAZmYzADNmMwAAZjMA/zMzAMwzMwCZMzMAZjMzADMz
+        MwAAMzMA/wAzAMwAMwCZADMAZgAzADMAMwAAADMAzP8AAJn/AABm/wAAM/8AAP/MAADMzAAAmcwAAGbM
+        AAAzzAAAAMwAAP+ZAADMmQAAmZkAAGaZAAAzmQAAAJkAAP9mAADMZgAAmWYAAGZmAAAAZgAAM2YAAP8z
+        AADMMwAAmTMAAGYzAAAzMwAAADMAAMwAAACZAAAAZgAAADMAAAAAAN0AAAC7AAAAqgAAAIgAAAB3AAAA
+        VQAAAEQAAAAiAADdAAAAuwAAAKoAAACIAAAAdwAAAFUAAABEAAAAIgAA3d3dAFVVVQB3d3cAd3d3AERE
+        RAAiIiIAERERAHcAAABVAAAARAAAACIAAADw+/8ApKCgAICAgAAAAP8AAP8AAAD//wD/AAAA/wD/AP//
+        AAD///8AAAAAAAAAAABd7wAAAO9dAABd7wAAAO9dAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAA7QAAAAAAAAAAAADtAADX19fX19fXAACy19fX19fX17IAAAAAAAAAAAAAAADXhltbW1tbAACy14Zb
+        W1tbW1uG19eyAO0AAAAAAAAA11tbW1tbWwAA11tbW1tbW1tbW1tbW9eyAO0AAADtANdbW1tbWwAAANdb
+        W1tbW1sAAABbW1tbW9eyAAAABwDXW1tbWwAAAADXW1tbW1sAAACyAAAAW1tbW9eyAADvAFtbW1sAAAAA
+        AIZbW1vXAABbW9cAAAAAW1tb19cABwDXW1tb1wAAAO3XW1tb1wAAW1tb17LtAAAAW1tb17LvANdbW9cA
+        7QAAANcAAAAAAAAAW1uGsgAAAO0AW1vXsgAAhltb1wAAAAAAAACy19fX1wBbW1vXAAAAAABbW4bXAABb
+        W4ayAAAAAADX14ZbW1tbAFtbW9cAAAAAAFtbW9cAAFtbhgAAAAAA11tbW1tbW1sAW1tb1wAAAAAAW1tb
+        1wAAW1uGAAAAANdbW1tbW1tbWwBbW1vXANcAAABbW1vXAABbW1uyAADXW1tbWwAAAAAAAFtbW9cA17IA
+        AFtbhtcA7wBbW9cAAABbW1sAANcAAABbW1uGAABb1wAAW1vXAO8HAFtbW7IAAABbAABbW7IAAABbW9cA
+        W1vXsgBbW9cABwAAAFtbW9cAAAAAAFtbW7IAAAAAAABbW1vXAFvXAAAAAAAAAFtbW9eyAAAAW1tbW9ey
+        AAAAAFtbW9cAANcAAAAAAAAAAFtbW1vX19cAW1tbW1vX19fXsltb17IAAAAAAAAAAAAAAFtbW1tbW1sA
+        11tbW1tbW1sAW1vXsgAAAAAAAAAAAO8AAABbW1tbW9cAANdbW1tbALJbW9cA7QAAAAAAAAAA7QBbAAAA
+        AAAAAADt7QAAAAAAW1tb1wAAAAAAAAAAAAD3AFtb1wAAAAAAAAAAAAAAAABbW1vXAAAAAAAAAAAAAADv
+        hltb1wAAAAAAAAAAAAAAW1tbhgDtAAAAAAAAAAAAAPcAW1tbsgAAAO0AAO0AANdbW1vXAAAAAAAAAAAA
+        AAAAAO0AW1tb17IAAAAAstfXW1tb1wDtAAAAAAAAAAAAAAAAAAAAW1tbW9fX19fXW1tbW9cAAAAAAAAA
+        AAAAAAAAAAAAAAAAW1tbW1tbW1tbW1vXAAAAAAAAAAAAAAAAAAAAAAAAAO0AAFtbW1tbW1vXAADtAAAA
+        AAAAAAAAAAAAAAAAAAAAAAftAAAA19cAAADtBwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAXe8AAO9dAAAA
+        AAAAAAAAAAAAAP8BgP/8AAA/8AAAH+AAAAfAAAADgAAAAwAAAAEAwAMAAYABgAGAAYADgAHAAwAAwAIA
+        AEAAAAAAAAAAAAAAAAAAAAAAgAAAAcAAAAPgAAAH8AAAD/AAAA/wAAAf8A/wH/gH4B/4AYA//AAAP/4A
+        AH//AAD//4AB///AA///+B//
+</value>
+  </data>
 </root>

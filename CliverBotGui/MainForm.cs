@@ -104,6 +104,8 @@ namespace Cliver.BotGui
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            if (closing)//looped by Application.Exit();
+                return;
             if (buttonStart.Text == "Stop" && !LogMessage.AskYesNo("Terminating Session. Are you sure to proceed?", true))
             {
                 e.Cancel = true;
@@ -112,6 +114,7 @@ namespace Cliver.BotGui
             Session.Close();
             try
             {
+                closing = true;
                 Application.Exit();
             }
             catch { }
@@ -119,6 +122,7 @@ namespace Cliver.BotGui
             //Thread.Sleep(1000);
             //System.Diagnostics.Process.GetCurrentProcess().Kill();
         }
+        bool closing = false;
 
         private void StartButton_Click(object sender, EventArgs e)
         {

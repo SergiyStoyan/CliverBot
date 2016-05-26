@@ -26,10 +26,6 @@ namespace Cliver.Bot
     /// </summary>
     public partial class IeRoutine : WebRoutine
     {
-        /// <summary>
-        /// Create instance of curl transport
-        /// </summary>
-        /// <param name="web_routine">parent class/param>
         public IeRoutine(WebBrowser browser)
         {
             IeRoutines.Invoke(browser, () =>
@@ -47,9 +43,13 @@ namespace Cliver.Bot
                 this.browser = browser;
 
                 //needed to make google (and probably other sites) work correctly
-                if (!InternetExplorerBrowserEmulation.IsBrowserEmulationSet())
-                    InternetExplorerBrowserEmulation.SetBrowserEmulationVersion();
+                //if (!InternetExplorerBrowserEmulation.IsBrowserEmulationSet())
+                //    InternetExplorerBrowserEmulation.SetBrowserEmulationVersion();
             });
+        }
+        public WebBrowser Browser
+        {
+            get { return browser; }
         }
 
         ~IeRoutine()
@@ -89,6 +89,7 @@ namespace Cliver.Bot
         //*********************************************************************************************
         //*****************************************IE ROUTINE*****************************************
         //*********************************************************************************************           
+
 
         /// <summary>
         /// Downloaded managed DOM document
@@ -181,6 +182,7 @@ namespace Cliver.Bot
         {
             try
             {
+                IE_result = false;
                 lock (completed_urls)
                 {
                     completed_urls.Clear();
@@ -450,9 +452,9 @@ namespace Cliver.Bot
                     //string s = d.documentElement.outerHTML;
                     html_result = browser.DocumentText;
                 }
-                catch 
+                catch
                 {
-                    html_result = ""; 
+                    html_result = "";
                 }
 
                 //waiting while refreshing/redirecting page
@@ -483,10 +485,10 @@ namespace Cliver.Bot
                     {
                         if (HtmlFrameDocs.IsSaved(name))
                             continue;
-                        mshtml.IHTMLElement ie = ((mshtml.IHTMLDocument3)(HtmlFrameDocs[name].DomDocument)).documentElement;
-                        if (ie == null)
-                            continue;
-                        Cache.SaveDownloadedFile(ie.outerHTML, get_page_number(), cycle_identifier + "_ie" + "_" + name);
+                        //mshtml.IHTMLElement ie = ((mshtml.IHTMLDocument3)(HtmlFrameDocs[name].DomDocument)).documentElement;
+                        //if (ie == null)
+                        //    continue;
+                        //Cache.SaveDownloadedFile(ie.outerHTML, get_page_number(), cycle_identifier + "_ie" + "_" + name);
                         //Cache.CacheDownloadedString( browser.Url.AbsoluteUri, null, e.Url.AbsoluteUri, ie.outerHTML, get_page_number(), cycle_identifier + "_ie", WebRoutineStatus.OK);
                         HtmlFrameDocs.Saved(name);
                     }
@@ -537,6 +539,11 @@ namespace Cliver.Bot
 
             try
             {
+                if (url == "about:blank")
+                {
+                    e.Cancel = true;
+                    return;
+                }
                 if (Regex.IsMatch(url, @"\.(gif|jpg|jpeg|png|bmp)&", RegexOptions.Compiled | RegexOptions.IgnoreCase))
                 {
                     e.Cancel = true;

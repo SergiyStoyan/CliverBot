@@ -57,6 +57,16 @@ namespace Cliver.Bot
                 return HttpRuntime.AppDomainAppId != null;
             }
         }
+
+        static public string GetAppDirectory()
+        {
+            string p;
+            if (ProgramRoutines.IsWebContext)
+                p = System.Web.Compilation.BuildManager.GetGlobalAsaxType().BaseType.Assembly.GetName(false).CodeBase;
+            else
+                p = System.Reflection.Assembly.GetEntryAssembly().GetName(false).CodeBase;
+            return Path.GetFullPath(p);
+        }
     }
 }
 

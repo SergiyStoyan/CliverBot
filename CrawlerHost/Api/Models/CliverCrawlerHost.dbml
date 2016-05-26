@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="CliverCrawlerHost" Class="CrawlerHostDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=&quot;D:\_d\_PROJECTS\FHR(for Andreas Chermak)\FhrCliverHost#development\_data\CliverCrawlerHost.mdf&quot;;Integrated Security=True;Connect Timeout=30" SettingsObjectName="Cliver.CrawlerHost.Properties.Settings" SettingsPropertyName="CliverCrawlerHostConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Crawlers" Member="Crawlers">
+    <Type Name="Crawler">
+      <Column Name="Id" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Site" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Command" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RunTimeSpan" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CrawlProductTimeout" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="YieldProductTimeout" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AdminEmails" Type="System.String" DbType="NVarChar(300) NOT NULL" CanBeNull="false" />
+      <Column Name="Comment" Type="System.String" DbType="NVarChar(1000)" CanBeNull="true" />
+      <Column Name="RestartDelayIfBroken" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="[_SessionStartTime]" Member="_SessionStartTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="[_LastSessionState]" Member="_LastSessionState" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="[_NextStartTime]" Member="_NextStartTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="[_LastStartTime]" Member="_LastStartTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="[_LastEndTime]" Member="_LastEndTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="[_LastProcessId]" Member="_LastProcessId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="[_LastLog]" Member="_LastLog" Type="System.String" DbType="NVarChar(500)" CanBeNull="true" />
+      <Column Name="[_Archive]" Member="_Archive" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="[_ProductsTable]" Member="_ProductsTable" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="[_LastProductTime]" Member="_LastProductTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Messages" Member="Messages">
+    <Type Name="Message">
+      <Column Name="Id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Source" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Type" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Value" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Time" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Details" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Mark" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Services" Member="Services">
+    <Type Name="Service">
+      <Column Name="Id" Type="System.String" DbType="NVarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="State" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ExeFolder" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Command" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RunTimeSpan" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RunTimeout" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AdminEmails" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Comment" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="RestartDelayIfBroken" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="[_LastSessionState]" Member="_LastSessionState" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="[_NextStartTime]" Member="_NextStartTime" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="[_LastStartTime]" Member="_LastStartTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="[_LastEndTime]" Member="_LastEndTime" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="[_LastProcessId]" Member="_LastProcessId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="[_LastLog]" Member="_LastLog" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="[_Archive]" Member="_Archive" Type="System.String" DbType="NText" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="[_Data]" Member="_Data" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Settings" Member="Settings">
+    <Type Name="Setting">
+      <Column Name="Scope" Type="System.String" DbType="NVarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="[Key]" Member="Key" Type="System.String" DbType="NVarChar(100) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Value" Type="System.String" DbType="NText NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+    </Type>
+  </Table>
+</Database>

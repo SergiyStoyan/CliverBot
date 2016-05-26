@@ -26,18 +26,18 @@ using System.Net.Mail;
 using Cliver.Bot;
 using Cliver.CrawlerHost;
 
-namespace Cliver.CrawlerHost
+namespace Cliver.CrawlerHostManager
 {
     internal class CrawlerService
-    {   
-        static DbApi DbApi = new DbApi();
+    {
+        static DbApi db = DbApi.Create();
 
         public static void Run()
         {
             ////////////////////////////////////////////////////////////
             //Killing disabled crawler processes
             ////////////////////////////////////////////////////////////
-            Recordset rs = DbApi.Connection[@"SELECT Id AS crawler_id, 
+            Recordset rs = db[@"SELECT Id AS crawler_id, 
 ISNULL(_LastStartTime, 0) AS _LastStartTime, ISNULL(_LastEndTime, 0) AS _LastEndTime, 
 _LastProcessId, _LastLog, AdminEmails, _LastSessionState FROM Crawlers WHERE _LastSessionState=" + (int)Crawler.SessionState.STARTED + " AND State=" + (int)Crawler.State.DISABLED].GetRecordset();
             foreach (Record r in rs)
@@ -53,13 +53,13 @@ _LastProcessId, _LastLog, AdminEmails, _LastSessionState FROM Crawlers WHERE _La
                 if (ServiceManager.IsProcessAlive((int?)r["_LastProcessId"], crawler_id))
                     Log.Main.Error("Could not kill " + crawler_id);
                 else
-                    DbApi.Connection["UPDATE Crawlers SET _LastSessionState=" + (int)Crawler.SessionState.KILLED + ", _LastEndTime=GETDATE() WHERE Id=@Id"].Execute("@Id", crawler_id);
+                    db["UPDATE Crawlers SET _LastSessionState=" + (int)Crawler.SessionState.KILLED + ", _LastEndTime=GETDATE() WHERE Id=@Id"].Execute("@Id", crawler_id);
             }
 
             ////////////////////////////////////////////////////////////
             //Process crawler commands
             ////////////////////////////////////////////////////////////
-            rs = DbApi.Connection[@"SELECT Id AS crawler_id, 
+            rs = db[@"SELECT Id AS crawler_id, 
 ISNULL(_LastStartTime, 0) AS _LastStartTime, ISNULL(_LastEndTime, 0) AS _LastEndTime, 
     _LastProcessId, _LastLog, AdminEmails, _LastSessionState, Command FROM Crawlers WHERE State<>" + (int)Crawler.State.DISABLED + " AND Command<>" + (int)Crawler.Command.EMPTY].GetRecordset();
             foreach (Record r in rs)
@@ -72,14 +72,14 @@ ISNULL(_LastStartTime, 0) AS _LastStartTime, ISNULL(_LastEndTime, 0) AS _LastEnd
                     case Crawler.Command.RESTART:
                         if (p == null)
                         {
-                            DbApi.Connection["UPDATE Crawlers SET Command=" + (int)Crawler.Command.EMPTY + ", _NextStartTime=DATEADD(ss, -1, GETDATE()) WHERE Id=@Id"].Execute("@Id", crawler_id);
+                            db["UPDATE Crawlers SET Command=" + (int)Crawler.Command.EMPTY + ", _NextStartTime=DATEADD(ss, -1, GETDATE()) WHERE Id=@Id"].Execute("@Id", crawler_id);
                             break;
                         }
                         Log.Main.Warning("Killing " + crawler_id + " as marked " + command);
                         p.Kill();
                         Thread.Sleep(2000);
                         if (!ServiceManager.IsProcessAlive((int?)r["_LastProcessId"], crawler_id))
-                            DbApi.Connection["UPDATE Crawlers SET Command=" + (int)Crawler.Command.FORCE + " WHERE Id=@Id"].Execute("@Id", crawler_id);
+                            db["UPDATE Crawlers SET Command=" + (int)Crawler.Command.FORCE + " WHERE Id=@Id"].Execute("@Id", crawler_id);
                         else
                             Log.Main.Error("Could not kill " + crawler_id);
                         break;
@@ -90,7 +90,7 @@ ISNULL(_LastStartTime, 0) AS _LastStartTime, ISNULL(_LastEndTime, 0) AS _LastEnd
                         p.Kill();
                         Thread.Sleep(2000);
                         if (!ServiceManager.IsProcessAlive((int?)r["_LastProcessId"], crawler_id))
-                            DbApi.Connection["UPDATE Crawlers SET _LastSessionState=" + (int)Crawler.SessionState.KILLED + ", _LastEndTime=GETDATE() WHERE Id=@Id"].Execute("@Id", crawler_id);
+                            db["UPDATE Crawlers SET _LastSessionState=" + (int)Crawler.SessionState.KILLED + ", _LastEndTime=GETDATE() WHERE Id=@Id"].Execute("@Id", crawler_id);
                         else
                             Log.Main.Error("Could not kill " + crawler_id);
                         break;
@@ -118,7 +118,7 @@ ISNULL(_LastStartTime, 0) AS _LastStartTime, ISNULL(_LastEndTime, 0) AS _LastEnd
             ////////////////////////////////////////////////////////////
             List<string> running_crawler_ids = new List<string>();
             List<string> running_crawler_notifications = new List<string>();
-            rs = DbApi.Connection[@"SELECT DATEDIFF(ss, ISNULL(_LastStartTime, 0), GETDATE()) AS duration, Id AS crawler_id, State, 
+            rs = db[@"SELECT DATEDIFF(ss, ISNULL(_LastStartTime, 0), GETDATE()) AS duration, Id AS crawler_id, State, 
 ISNULL(_LastStartTime, 0) AS _LastStartTime, ISNULL(_LastEndTime, 0) AS _LastEndTime, 
 _LastProcessId, _LastLog, AdminEmails, _LastSessionState, CrawlProductTimeout 
 FROM Crawlers 
@@ -132,39 +132,39 @@ WHERE _LastSessionState IN (" + (int)Crawler.SessionState.STARTED + ", " + (int)
                 if (_LastSessionState == Crawler.SessionState._COMPLETED)
                 {
                     string m = "Crawler " + crawler_id + " completed successfully.\nTotal duration: " + (new TimeSpan(0, 0, duration)).ToString() + m1;
-                    Mailer.Send(DbApi, m, ReportSourceType.CRAWLER, crawler_id, false);
-                    DbApi.Connection["UPDATE Crawlers SET _LastSessionState=" + (int)Crawler.SessionState.COMPLETED + " WHERE Id=@Id"].Execute("@Id", crawler_id);
+                    Mailer.Send(db, m, ReportSourceType.CRAWLER, crawler_id, false);
+                    db["UPDATE Crawlers SET _LastSessionState=" + (int)Crawler.SessionState.COMPLETED + " WHERE Id=@Id"].Execute("@Id", crawler_id);
                     continue;
                 }
 
                 if (_LastSessionState == Crawler.SessionState._ERROR)
                 {
-                    Mailer.Send(DbApi, "Crawler " + crawler_id + " exited with error" + m1, ReportSourceType.CRAWLER, crawler_id);
-                    DbApi.Connection["UPDATE Crawlers SET _LastSessionState=" + (int)Crawler.SessionState.ERROR + " WHERE Id=@Id"].Execute("@Id", crawler_id);
+                    Mailer.Send(db, "Crawler " + crawler_id + " exited with error" + m1, ReportSourceType.CRAWLER, crawler_id);
+                    db["UPDATE Crawlers SET _LastSessionState=" + (int)Crawler.SessionState.ERROR + " WHERE Id=@Id"].Execute("@Id", crawler_id);
                     continue;
                 }
 
                 if (!ServiceManager.IsProcessAlive((int?)r["_LastProcessId"], crawler_id))
                 {
-                    Mailer.Send(DbApi, "Crawler " + crawler_id + " was broken by unknown reason", ReportSourceType.CRAWLER, crawler_id);
-                    DbApi.Connection["UPDATE Crawlers SET _LastSessionState=" + (int)Crawler.SessionState.BROKEN + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, GETDATE()) WHERE Id=@Id"].Execute("@Id", crawler_id);
+                    Mailer.Send(db, "Crawler " + crawler_id + " was broken by unknown reason", ReportSourceType.CRAWLER, crawler_id);
+                    db["UPDATE Crawlers SET _LastSessionState=" + (int)Crawler.SessionState.BROKEN + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, GETDATE()) WHERE Id=@Id"].Execute("@Id", crawler_id);
                     continue;
                 }
 
                 if (duration >= (int)r["CrawlProductTimeout"])
                 {
-                    int last_crawled_product_elapsed_time = (int)DbApi.Connection["SELECT ISNULL(DATEDIFF(ss, _LastProductTime, GETDATE()), -1) AS duration FROM Crawlers WHERE Id=@Id"].GetSingleValue("@Id", crawler_id);
+                    int last_crawled_product_elapsed_time = (int)db["SELECT ISNULL(DATEDIFF(ss, _LastProductTime, GETDATE()), -1) AS duration FROM Crawlers WHERE Id=@Id"].GetSingleValue("@Id", crawler_id);
 
                     if (last_crawled_product_elapsed_time < 0 || last_crawled_product_elapsed_time > (int)r["CrawlProductTimeout"])
                     {
-                        Mailer.Send(DbApi, "Crawler " + crawler_id + " is running but not crawling products during " + last_crawled_product_elapsed_time + " seconds. It will be killed. Total duration: " + (new TimeSpan(0, 0, duration)).ToString() + m1, ReportSourceType.CRAWLER, crawler_id);
+                        Mailer.Send(db, "Crawler " + crawler_id + " is running but not crawling products during " + last_crawled_product_elapsed_time + " seconds. It will be killed. Total duration: " + (new TimeSpan(0, 0, duration)).ToString() + m1, ReportSourceType.CRAWLER, crawler_id);
                         
                         Process p = ServiceManager.GetProcess((int?)r["_LastProcessId"], crawler_id);
                         Log.Main.Warning("Killing " + crawler_id);
                         p.Kill();
                         Thread.Sleep(2000);
                         if (!ServiceManager.IsProcessAlive((int?)r["_LastProcessId"], crawler_id))
-                            DbApi.Connection["UPDATE Crawlers SET _LastSessionState=" + (int)Crawler.SessionState.KILLED + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, GETDATE()), _LastEndTime=GETDATE() WHERE Id=@Id"].Execute("@Id", crawler_id);
+                            db["UPDATE Crawlers SET _LastSessionState=" + (int)Crawler.SessionState.KILLED + ", _NextStartTime=DATEADD(ss, RestartDelayIfBroken, GETDATE()), _LastEndTime=GETDATE() WHERE Id=@Id"].Execute("@Id", crawler_id);
                         else
                             Log.Main.Error("Could not kill " + crawler_id);
                         continue;
@@ -181,7 +181,7 @@ WHERE _LastSessionState IN (" + (int)Crawler.SessionState.STARTED + ", " + (int)
             //Starting new crawlers
             ////////////////////////////////////////////////////////////
             List<string> remaining_crawler_ids = new List<string>();
-            rs = DbApi.Connection[@"SELECT Id AS crawler_id, State, Command, AdminEmails FROM Crawlers 
+            rs = db[@"SELECT Id AS crawler_id, State, Command, AdminEmails FROM Crawlers 
 WHERE (State<>" + (int)Crawler.State.DISABLED + " AND GETDATE()>=_NextStartTime AND Command<>" + (int)Crawler.Command.STOP + @") 
             OR Command=" + (int)Crawler.Command.FORCE + " ORDER BY Command, _NextStartTime"].GetRecordset();
             foreach (Dictionary<string, object> r in rs)
@@ -199,11 +199,11 @@ WHERE (State<>" + (int)Crawler.State.DISABLED + " AND GETDATE()>=_NextStartTime 
                     if (running_crawler_ids.Contains(crawler_id))
                     {
                         Log.Main.Warning(crawler_id + " is running already.");
-                        DbApi.Connection["UPDATE Crawlers SET Command=" + (int)Crawler.Command.EMPTY + " WHERE Id=@Id"].Execute("@Id", crawler_id);
+                        db["UPDATE Crawlers SET Command=" + (int)Crawler.Command.EMPTY + " WHERE Id=@Id"].Execute("@Id", crawler_id);
                         continue;
                     }
                     if (launch_crawler(crawler_id, running_crawler_ids))
-                        DbApi.Connection["UPDATE Crawlers SET Command=" + (int)Crawler.Command.EMPTY + " WHERE Id=@Id"].Execute("@Id", crawler_id);
+                        db["UPDATE Crawlers SET Command=" + (int)Crawler.Command.EMPTY + " WHERE Id=@Id"].Execute("@Id", crawler_id);
                     continue;
                 }
 
@@ -227,7 +227,7 @@ WHERE (State<>" + (int)Crawler.State.DISABLED + " AND GETDATE()>=_NextStartTime 
 
         static bool launch_crawler(string crawler_id, List<string> running_crawler_ids)
         {
-            Dictionary<string, object> r = DbApi.Connection["SELECT * FROM Crawlers WHERE Id=@Id"].GetFirstRecord("@Id", crawler_id);
+            Dictionary<string, object> r = db["SELECT * FROM Crawlers WHERE Id=@Id"].GetFirstRecord("@Id", crawler_id);
             if (r == null)
             {
                 LogMessage.Error("Crawler '" + crawler_id + "' does not exist.");
@@ -256,17 +256,17 @@ WHERE (State<>" + (int)Crawler.State.DISABLED + " AND GETDATE()>=_NextStartTime 
                 parameters.Add(Bot.CommandLineParameters.NOT_RESTORE_SESSION.ToString());
 
             string crawler_directory;
-            crawler_directory = Log.GetAbsolutePath(Cliver.CrawlerHost.Properties.Settings.Default.CrawlersDirectory);
+            crawler_directory = Log.GetAbsolutePath(Properties.Settings.Default.CrawlersDirectory);
             if (!Directory.Exists(crawler_directory))
             {
-                Mailer.Send(DbApi, "Crawler directory '" + crawler_directory + "' does not exist", ReportSourceType.CRAWLER, crawler_id);
+                Mailer.Send(db, "Crawler directory '" + crawler_directory + "' does not exist", ReportSourceType.CRAWLER, crawler_id);
                 return false;
             }
             string crawler_file_name = crawler_id + ".exe";
             string crawler_file = ServiceManager.FindFile(crawler_directory, crawler_file_name);
             if (crawler_file == null)
             {
-                Mailer.Send(DbApi, "Crawler file '" + crawler_file_name + "' was not found in " + crawler_directory, ReportSourceType.CRAWLER, crawler_id);
+                Mailer.Send(db, "Crawler file '" + crawler_file_name + "' was not found in " + crawler_directory, ReportSourceType.CRAWLER, crawler_id);
                 return false;
             }
             Process p = new Process();
@@ -274,12 +274,12 @@ WHERE (State<>" + (int)Crawler.State.DISABLED + " AND GETDATE()>=_NextStartTime 
             p.StartInfo.Arguments = string.Join(" ", parameters);
             Log.Main.Write("Starting crawler " + crawler_id);
             p.Start();
-            ThreadRoutines.Wait(Properties.Settings.Default.ServiceCheckDurationInMss);
+            ThreadRoutines.Wait(Cliver.CrawlerHost.Properties.Settings.Default.ServiceCheckDurationInMss);
             if (!ServiceManager.IsProcessAlive(p.Id, crawler_id))
             {
-                DbApi.Connection["UPDATE Crawlers SET _NextStartTime=DATEADD(ss, RestartDelayIfBroken, GETDATE()) WHERE Id=@Id"].Execute("@Id", crawler_id);
+                db["UPDATE Crawlers SET _NextStartTime=DATEADD(ss, RestartDelayIfBroken, GETDATE()) WHERE Id=@Id"].Execute("@Id", crawler_id);
 
-                Mailer.Send(DbApi, crawler_id + " could not start.", ReportSourceType.CRAWLER, crawler_id);
+                Mailer.Send(db, crawler_id + " could not start.", ReportSourceType.CRAWLER, crawler_id);
                 return false;
             }
             running_crawler_ids.Add(crawler_id);

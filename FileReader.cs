@@ -32,7 +32,7 @@ namespace Cliver.Bot
         /// <param name="delimiter"></param>
         /// <param name="headers">if null, then the first line is considered to be a header</param>
         /// <param name="comment_marks">lines that begins with a comment mark is omitted</param>
-        public FileReader(string file_path, string delimiter, string[] headers = null, bool ignore_space_lines = true, string[] comment_marks = null)
+        public FileReader(string file_path, string delimiter, string[] headers = null, bool ignore_space_lines = true, string[] comment_marks = null, bool no_headers = false)
         {
             if (comment_marks == null)
                 comment_marks = new string[] { "#" };
@@ -40,21 +40,26 @@ namespace Cliver.Bot
             split_regex = new Regex(@"\s*" + Regex.Escape(delimiter) + @"\s*");
             TR = new StreamReader(file_path);
 
-            if (headers == null)
+            if (!no_headers)
             {
-                string row = null;
-                do
+                if (headers == null)
                 {
-                    row = TR.ReadLine();
-                    if (row == null)
-                        throw new Exception("No header found in " + file_path);
-                } while (comment_or_empty_string_regex.IsMatch(row));
-                headers = split_regex.Split(row.Trim());
-            }
+                    string row = null;
+                    do
+                    {
+                        row = TR.ReadLine();
+                        if (row == null)
+                            throw new Exception("No header found in " + file_path);
+                    } while (comment_or_empty_string_regex.IsMatch(row));
+                    headers = split_regex.Split(row.Trim());
+                }
 
-            if ((from x in headers where string.IsNullOrWhiteSpace(x) select x).FirstOrDefault() != null)
-                throw new Exception("One of header names is empty in the file: " + file_path);
-            Headers = headers;
+                if ((from x in headers where string.IsNullOrWhiteSpace(x) select x).FirstOrDefault() != null)
+                    throw new Exception("One of header names is empty in the file: " + file_path);
+                Headers = headers;
+            }
+            else
+                Headers = null;
         }
 
         TextReader TR = null;
@@ -119,14 +124,29 @@ namespace Cliver.Bot
                 }
             }
 
+            public int Count
+            {
+                get
+                {
+                    return row.Count;
+                }
+            }
+
             internal Row(string[] headers, string[] values)
             {
-                if (values.Length != headers.Length)
-                    throw new Exception("Number of values is not equal to number of headers:\n" + string.Join(" | ", headers) + "\n" + string.Join(" | ", values));
-                //Headers = headers;
                 row = new OrderedDictionary();
-                for (int i = 0; i < headers.Length; i++)
-                    row[headers[i]] = values[i];
+                if (headers != null)
+                {
+                    if (values.Length != headers.Length)
+                        throw new Exception("Number of values is not equal to number of headers:\n" + string.Join(" | ", headers) + "\n" + string.Join(" | ", values));
+                    for (int i = 0; i < headers.Length; i++)
+                        row[headers[i]] = values[i];
+                }
+                else
+                {
+                    for (int i = 0; i < values.Length; i++)
+                        row.Add(i, values[i]);
+                }
             }
         }
 

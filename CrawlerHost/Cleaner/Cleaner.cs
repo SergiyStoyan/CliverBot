@@ -18,17 +18,17 @@ namespace Cliver.CrawlerHostCleaner
             //EmailRoutines.Send
             
             DateTime old_time = DateTime.Now.AddDays(-Properties.Settings.Default.DeleteMessagesOlderThanDays);
-            int c = DbApi.Connection.Get("DELETE FROM Messages WHERE Time<@OldTime").Execute("@OldTime", old_time);
+            int c = Db.Get("DELETE FROM Messages WHERE Time<@OldTime").Execute("@OldTime", old_time);
             if (c > 0)
                 Log.Inform("Messages older than " + old_time.ToShortDateString() + " have been cleaned up: " + c);
 
-            Recordset ps = DbApi.Connection.Get(@"SELECT name FROM sysobjects WHERE name LIKE 'Products_%' and xtype='U'").GetRecordset();
+            Recordset ps = Db.Get(@"SELECT name FROM sysobjects WHERE name LIKE 'Products_%' and xtype='U'").GetRecordset();
             foreach (Record p in ps)
             {
-                if (null != DbApi.Connection["SELECT Id FROM Crawlers WHERE _ProductsTable=@ProductsTable"].GetSingleValue("@ProductsTable", p["name"]))
+                if (null != Db["SELECT Id FROM Crawlers WHERE _ProductsTable=@ProductsTable"].GetSingleValue("@ProductsTable", p["name"]))
                     continue;
                 Log.Warning("Deleting table '" + p["name"] + "' as not crawler owning it.");
-                DbApi.Connection.Get("DROP TABLE @ProductsTable").Execute("@ProductsTable", p["name"]);
+                Db.Get("DROP TABLE @ProductsTable").Execute("@ProductsTable", p["name"]);
             }
 
             old_time = DateTime.Now.AddDays(-Properties.Settings.Default.DeleteLogsOlderThanDays);

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Cliver.CrawlerHost.Properties {
+namespace Cliver.CrawlerHostManager.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -58,90 +58,6 @@ namespace Cliver.CrawlerHost.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"D:\\_d\\_PROJECTS\\FHR(for Andr" +
-            "eas Chermak)\\CliverHost\\CliverCrawlerHost\\CliverCrawlerHost.mdf\";Integrated Secu" +
-            "rity=True;Connect Timeout=30")]
-        public string DbConnectionString {
-            get {
-                return ((string)(this["DbConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("crawler_manager@cliversoft.com")]
-        public string EmailSender {
-            get {
-                return ((string)(this["EmailSender"]));
-            }
-            set {
-                this["EmailSender"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string SmtpHost {
-            get {
-                return ((string)(this["SmtpHost"]));
-            }
-            set {
-                this["SmtpHost"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("25")]
-        public int SmtpPort {
-            get {
-                return ((int)(this["SmtpPort"]));
-            }
-            set {
-                this["SmtpPort"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("crawler_manager@cliversoft.com")]
-        public string SmtpLogin {
-            get {
-                return ((string)(this["SmtpLogin"]));
-            }
-            set {
-                this["SmtpLogin"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("123456")]
-        public string SmtpPassword {
-            get {
-                return ((string)(this["SmtpPassword"]));
-            }
-            set {
-                this["SmtpPassword"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("sergey.stoyan@gmail.com")]
-        public string DefaultAdminEmails {
-            get {
-                return ((string)(this["DefaultAdminEmails"]));
-            }
-            set {
-                this["DefaultAdminEmails"] = value;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("http://cliversoft.com/articles/manual_to_crawlerhost.php")]
         public string HelpUri {
             get {
@@ -161,18 +77,6 @@ namespace Cliver.CrawlerHost.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"D:\\_d\\_PROJECTS\\FHR(for Andr" +
-            "eas Chermak)\\CliverHost\\CliverCrawlerHost\\CliverCrawlerHost.mdf\";Integrated Secu" +
-            "rity=True;Connect Timeout=30")]
-        public string CliverCrawlerHostConnectionString {
-            get {
-                return ((string)(this["CliverCrawlerHostConnectionString"]));
-            }
-        }
-        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("..\\..\\")]
@@ -182,15 +86,6 @@ namespace Cliver.CrawlerHost.Properties {
             }
             set {
                 this["ServiceDirectory"] = value;
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
-        public long ServiceCheckDurationInMss {
-            get {
-                return ((long)(this["ServiceCheckDurationInMss"]));
             }
         }
         
@@ -215,6 +110,18 @@ namespace Cliver.CrawlerHost.Properties {
             }
             set {
                 this["LogFileChunkSizeInBytes"] = value;
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=\"D:\\_d\\_PROJECTS\\FHR(for Andr" +
+            "eas Chermak)\\CliverHost\\CliverCrawlerHost\\CliverCrawlerHost.mdf\";Integrated Secu" +
+            "rity=True;Connect Timeout=30")]
+        public string CliverCrawlerHostConnectionString {
+            get {
+                return ((string)(this["CliverCrawlerHostConnectionString"]));
             }
         }
     }

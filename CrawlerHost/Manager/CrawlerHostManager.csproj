@@ -18,7 +18,7 @@
     <DefaultTargetSchema>IE50</DefaultTargetSchema>
     <DelaySign>false</DelaySign>
     <OutputType>Library</OutputType>
-    <RootNamespace>Cliver.CrawlerHost</RootNamespace>
+    <RootNamespace>Cliver.CrawlerHost.Manager</RootNamespace>
     <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
     <StartupObject>
     </StartupObject>
@@ -26,7 +26,7 @@
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <OldToolsVersion>2.0</OldToolsVersion>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <PublishUrl>publish\</PublishUrl>
@@ -43,6 +43,7 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -66,6 +67,7 @@
     <WarningLevel>4</WarningLevel>
     <DebugType>full</DebugType>
     <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>
@@ -89,14 +91,9 @@
     <WarningLevel>4</WarningLevel>
     <DebugType>none</DebugType>
     <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\..\ProductOffice\packages\EntityFramework.6.1.1\lib\net40\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\..\ProductOffice\packages\EntityFramework.6.1.1\lib\net40\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -144,31 +141,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CliverCrawlersDataSet.xsd</DependentUpon>
     </Compile>
-    <Compile Include="CrawlerHost\CrawlerHost.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CrawlerHost.dbml</DependentUpon>
-    </Compile>
-    <Compile Include="CrawlerHost\CrawlerApi - Copy.cs" />
-    <Compile Include="CrawlerHost\Linker.cs" />
-    <Compile Include="CrawlerHost\ServiceApi.cs" />
-    <Compile Include="CrawlerHost\CrawlerApi.cs" />
-    <Compile Include="CrawlerHost\DbApi.cs" />
-    <Compile Include="CrawlerHost\Product.cs" />
-    <Compile Include="CrawlerHost\HostSettingsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="CrawlerHost\HostSettingsForm.Designer.cs">
-      <DependentUpon>HostSettingsForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="CrawlerService.cs" />
-    <Compile Include="Mailer.cs" />
+    <Compile Include="Properties\Settings.cs" />
     <Compile Include="ServiceManager.cs" />
-    <Compile Include="Properties\Host.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Host.settings</DependentUpon>
-    </Compile>
     <Compile Include="Properties\Settings.Designer.cs">
       <DependentUpon>Settings.settings</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -203,15 +178,9 @@
       <DependentUpon>BaseForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="CrawlerHost\CrawlerHost.dbml.layout">
-      <DependentUpon>CrawlerHost.dbml</DependentUpon>
-    </None>
     <EmbeddedResource Include="CrawlersForm.resx">
       <DependentUpon>CrawlersForm.cs</DependentUpon>
       <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="CrawlerHost\HostSettingsForm.resx">
-      <DependentUpon>HostSettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DbConnectionSettingsForm.resx">
       <DependentUpon>DbConnectionSettingsForm.cs</DependentUpon>
@@ -239,16 +208,6 @@
     <None Include="CliverCrawlersDataSet.xss">
       <DependentUpon>CliverCrawlersDataSet.xsd</DependentUpon>
     </None>
-    <None Include="CrawlerHost\CrawlerHost.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>CrawlerHost.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Properties\Host.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Host.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -280,14 +239,18 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\CliverBot.csproj">
       <Project>{5283eea1-5f94-4379-bdf3-975ca4adbbf4}</Project>
       <Name>CliverBot</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <ProjectReference Include="..\Api\CrawlerHostApi.csproj">
+      <Project>{60998033-82b3-42e8-b492-759dd506b783}</Project>
+      <Name>CrawlerHostApi</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -22,7 +22,7 @@ using System.Net;
 using System.Threading;
 using Cliver.Bot;
 
-namespace Cliver.CrawlerHost
+namespace Cliver.CrawlerHostManager
 {
     internal partial class SysTrayForm : BaseForm
     {
@@ -144,8 +144,22 @@ namespace Cliver.CrawlerHost
 
         private void mHostSettings_Click(object sender, EventArgs e)
         {
-            HostSettingsForm f = new HostSettingsForm();
+            SettingsForm f = new SettingsForm();
             f.ShowDialog();
         }
+
+        //private void InitializeComponent()
+        //{
+        //    System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SysTrayForm));
+        //    this.SuspendLayout();
+        //    // 
+        //    // SysTrayForm
+        //    // 
+        //    this.ClientSize = new System.Drawing.Size(284, 262);
+        //    this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+        //    this.Name = "SysTrayForm";
+        //    this.ResumeLayout(false);
+
+        //}
     }
 }

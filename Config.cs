@@ -68,6 +68,12 @@ namespace Cliver.Bot
                 return ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null))[parameter];
             }
             catch { }
+            fi = get_setting_for_namespace(Assembly.GetEntryAssembly(), CustomizationApi.CUSTOM_NAMESPACE, section);
+            try
+            {
+                return ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null))[parameter];
+            }
+            catch { }
             fi = get_setting_for_namespace(Assembly.GetEntryAssembly(), CustomizationApi.CUSTOM_NAMESPACE + ".Properties", section);
             try
             {

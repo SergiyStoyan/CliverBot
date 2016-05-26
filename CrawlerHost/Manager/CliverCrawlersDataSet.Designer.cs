@@ -10,7 +10,7 @@
 
 #pragma warning disable 1591
 
-namespace Cliver.CrawlerHost {
+namespace Cliver.CrawlerHostManager {
     
     
     /// <summary>
@@ -1256,7 +1256,7 @@ namespace Cliver.CrawlerHost {
         }
     }
 }
-namespace Cliver.CrawlerHost.CliverCrawlersDataSetTableAdapters {
+namespace Cliver.CrawlerHostManager.CliverCrawlersDataSetTableAdapters {
     
     
     /// <summary>
@@ -1543,7 +1543,7 @@ SELECT Id, State, Site, Command, RunTimeSpan, CrawlProductTimeout, YieldProductT
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         private void InitConnection() {
             this._connection = new global::System.Data.SqlClient.SqlConnection();
-            this._connection.ConnectionString = global::Cliver.CrawlerHost.Properties.Settings.Default.CliverCrawlerHostConnectionString;
+            this._connection.ConnectionString = global::Cliver.CrawlerHostManager.Properties.Settings.Default.CliverCrawlerHostConnectionString;
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]

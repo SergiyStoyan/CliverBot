@@ -15,11 +15,10 @@ using System.Windows.Forms;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
-using Settings = Cliver.CrawlerHost.Properties.Settings;
 using System.Reflection;
 using Cliver.Bot;
 
-namespace Cliver.CrawlerHost
+namespace Cliver.CrawlerHostManager
 {
     public static class Program
     {
@@ -69,9 +68,9 @@ namespace Cliver.CrawlerHost
 
         static public void ResetSettings()
         {
-            Settings.Default.Reset();
-            Settings.Default.Save();
-            Settings.Default.Reload();
+           Properties.Settings.Default.Reset();
+           Properties.Settings.Default.Save();
+           Properties.Settings.Default.Reload();
         }
     }
 }

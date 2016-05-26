@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
 
-namespace Cliver.CrawlerHost
+namespace Cliver.CrawlerHostManager
 {
     public partial class BaseForm : Form
     {
