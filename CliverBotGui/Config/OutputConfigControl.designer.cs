@@ -42,11 +42,13 @@ namespace Cliver.BotGui
             this.label26 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.OutputFieldSeparator = new System.Windows.Forms.TextBox();
+            this.AppendOutputFile = new System.Windows.Forms.CheckBox();
             this.group_box.SuspendLayout();
             this.SuspendLayout();
             // 
             // group_box
             // 
+            this.group_box.Controls.Add(this.AppendOutputFile);
             this.group_box.Controls.Add(this.WriteOutputFile2CommonFolder);
             this.group_box.Controls.Add(this.label36);
             this.group_box.Controls.Add(this.OutputEmptyFieldSubstitute);
@@ -81,7 +83,7 @@ namespace Cliver.BotGui
             // 
             // label36
             // 
-            this.label36.Location = new System.Drawing.Point(43, 217);
+            this.label36.Location = new System.Drawing.Point(43, 254);
             this.label36.Name = "label36";
             this.label36.Size = new System.Drawing.Size(138, 17);
             this.label36.TabIndex = 67;
@@ -90,7 +92,7 @@ namespace Cliver.BotGui
             // 
             // OutputEmptyFieldSubstitute
             // 
-            this.OutputEmptyFieldSubstitute.Location = new System.Drawing.Point(190, 215);
+            this.OutputEmptyFieldSubstitute.Location = new System.Drawing.Point(190, 252);
             this.OutputEmptyFieldSubstitute.Name = "OutputEmptyFieldSubstitute";
             this.OutputEmptyFieldSubstitute.Size = new System.Drawing.Size(144, 20);
             this.OutputEmptyFieldSubstitute.TabIndex = 66;
@@ -98,7 +100,7 @@ namespace Cliver.BotGui
             // 
             // label35
             // 
-            this.label35.Location = new System.Drawing.Point(43, 185);
+            this.label35.Location = new System.Drawing.Point(43, 222);
             this.label35.Name = "label35";
             this.label35.Size = new System.Drawing.Size(138, 17);
             this.label35.TabIndex = 65;
@@ -107,7 +109,7 @@ namespace Cliver.BotGui
             // 
             // OutputFieldSeparatorSubstitute
             // 
-            this.OutputFieldSeparatorSubstitute.Location = new System.Drawing.Point(190, 183);
+            this.OutputFieldSeparatorSubstitute.Location = new System.Drawing.Point(190, 220);
             this.OutputFieldSeparatorSubstitute.Name = "OutputFieldSeparatorSubstitute";
             this.OutputFieldSeparatorSubstitute.Size = new System.Drawing.Size(17, 20);
             this.OutputFieldSeparatorSubstitute.TabIndex = 64;
@@ -116,25 +118,26 @@ namespace Cliver.BotGui
             // _1_SetTAB2OutputFieldDelimiter
             // 
             this._1_SetTAB2OutputFieldDelimiter.Appearance = System.Windows.Forms.Appearance.Button;
-            this._1_SetTAB2OutputFieldDelimiter.Location = new System.Drawing.Point(228, 151);
+            this._1_SetTAB2OutputFieldDelimiter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this._1_SetTAB2OutputFieldDelimiter.Location = new System.Drawing.Point(213, 188);
             this._1_SetTAB2OutputFieldDelimiter.Name = "_1_SetTAB2OutputFieldDelimiter";
-            this._1_SetTAB2OutputFieldDelimiter.Size = new System.Drawing.Size(75, 23);
+            this._1_SetTAB2OutputFieldDelimiter.Size = new System.Drawing.Size(121, 23);
             this._1_SetTAB2OutputFieldDelimiter.TabIndex = 63;
-            this._1_SetTAB2OutputFieldDelimiter.Text = "Set TAB";
+            this._1_SetTAB2OutputFieldDelimiter.Text = "Use TAB as delimiter";
             this._1_SetTAB2OutputFieldDelimiter.UseVisualStyleBackColor = true;
             this._1_SetTAB2OutputFieldDelimiter.CheckedChanged += new System.EventHandler(this.@__SetTAB2OutputFieldDelimiter_CheckedChanged);
             // 
             // label33
             // 
             this.label33.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label33.Location = new System.Drawing.Point(14, 249);
+            this.label33.Location = new System.Drawing.Point(14, 286);
             this.label33.Name = "label33";
             this.label33.Size = new System.Drawing.Size(483, 2);
             this.label33.TabIndex = 62;
             // 
             // label29
             // 
-            this.label29.Location = new System.Drawing.Point(16, 96);
+            this.label29.Location = new System.Drawing.Point(16, 133);
             this.label29.Name = "label29";
             this.label29.Size = new System.Drawing.Size(168, 17);
             this.label29.TabIndex = 61;
@@ -143,7 +146,7 @@ namespace Cliver.BotGui
             // 
             // OutputFileChunkSizeInBytes
             // 
-            this.OutputFileChunkSizeInBytes.Location = new System.Drawing.Point(190, 96);
+            this.OutputFileChunkSizeInBytes.Location = new System.Drawing.Point(190, 133);
             this.OutputFileChunkSizeInBytes.Name = "OutputFileChunkSizeInBytes";
             this.OutputFileChunkSizeInBytes.Size = new System.Drawing.Size(141, 20);
             this.OutputFileChunkSizeInBytes.TabIndex = 60;
@@ -159,7 +162,7 @@ namespace Cliver.BotGui
             // label27
             // 
             this.label27.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label27.Location = new System.Drawing.Point(15, 136);
+            this.label27.Location = new System.Drawing.Point(15, 173);
             this.label27.Name = "label27";
             this.label27.Size = new System.Drawing.Size(483, 2);
             this.label27.TabIndex = 58;
@@ -175,7 +178,7 @@ namespace Cliver.BotGui
             // 
             // label13
             // 
-            this.label13.Location = new System.Drawing.Point(95, 156);
+            this.label13.Location = new System.Drawing.Point(95, 193);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(83, 17);
             this.label13.TabIndex = 56;
@@ -184,12 +187,22 @@ namespace Cliver.BotGui
             // 
             // OutputFieldSeparator
             // 
-            this.OutputFieldSeparator.Location = new System.Drawing.Point(190, 154);
+            this.OutputFieldSeparator.Location = new System.Drawing.Point(190, 191);
             this.OutputFieldSeparator.Name = "OutputFieldSeparator";
             this.OutputFieldSeparator.Size = new System.Drawing.Size(17, 20);
             this.OutputFieldSeparator.TabIndex = 55;
             this.OutputFieldSeparator.Text = ",";
             this.OutputFieldSeparator.TextChanged += new System.EventHandler(this.OutputFieldSeparator_TextChanged);
+            // 
+            // AppendOutputFile
+            // 
+            this.AppendOutputFile.AutoSize = true;
+            this.AppendOutputFile.Location = new System.Drawing.Point(35, 79);
+            this.AppendOutputFile.Name = "AppendOutputFile";
+            this.AppendOutputFile.Size = new System.Drawing.Size(117, 17);
+            this.AppendOutputFile.TabIndex = 69;
+            this.AppendOutputFile.Text = "Append Output File";
+            this.AppendOutputFile.UseVisualStyleBackColor = true;
             // 
             // OutputConfigControl
             // 
@@ -218,6 +231,7 @@ namespace Cliver.BotGui
         private System.Windows.Forms.Label label26;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox OutputFieldSeparator;
+        private System.Windows.Forms.CheckBox AppendOutputFile;
 
 
 

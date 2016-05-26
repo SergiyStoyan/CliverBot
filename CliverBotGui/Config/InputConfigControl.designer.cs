@@ -58,17 +58,18 @@ namespace Cliver.BotGui
             // _1_SetTAB2InputFieldDelimiter
             // 
             this._1_SetTAB2InputFieldDelimiter.Appearance = System.Windows.Forms.Appearance.Button;
-            this._1_SetTAB2InputFieldDelimiter.Location = new System.Drawing.Point(391, 110);
+            this._1_SetTAB2InputFieldDelimiter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this._1_SetTAB2InputFieldDelimiter.Location = new System.Drawing.Point(342, 118);
             this._1_SetTAB2InputFieldDelimiter.Name = "_1_SetTAB2InputFieldDelimiter";
-            this._1_SetTAB2InputFieldDelimiter.Size = new System.Drawing.Size(75, 23);
+            this._1_SetTAB2InputFieldDelimiter.Size = new System.Drawing.Size(124, 23);
             this._1_SetTAB2InputFieldDelimiter.TabIndex = 56;
-            this._1_SetTAB2InputFieldDelimiter.Text = "Set TAB";
+            this._1_SetTAB2InputFieldDelimiter.Text = "Use TAB as delimiter";
             this._1_SetTAB2InputFieldDelimiter.UseVisualStyleBackColor = true;
             this._1_SetTAB2InputFieldDelimiter.CheckedChanged += new System.EventHandler(this.@__SetTAB2InputFieldDelimiter_CheckedChanged);
             // 
             // label20
             // 
-            this.label20.Location = new System.Drawing.Point(246, 115);
+            this.label20.Location = new System.Drawing.Point(200, 124);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(113, 16);
             this.label20.TabIndex = 55;
@@ -78,7 +79,7 @@ namespace Cliver.BotGui
             // InputFieldSeparator
             // 
             this.InputFieldSeparator.AcceptsTab = true;
-            this.InputFieldSeparator.Location = new System.Drawing.Point(365, 112);
+            this.InputFieldSeparator.Location = new System.Drawing.Point(319, 120);
             this.InputFieldSeparator.Name = "InputFieldSeparator";
             this.InputFieldSeparator.Size = new System.Drawing.Size(17, 20);
             this.InputFieldSeparator.TabIndex = 54;

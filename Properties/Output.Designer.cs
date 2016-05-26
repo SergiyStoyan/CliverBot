@@ -58,7 +58,7 @@ namespace Cliver.Bot.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("output.txt")]
+        [global::System.Configuration.DefaultSettingValueAttribute("output.csv")]
         public string OutputFileName {
             get {
                 return ((string)(this["OutputFileName"]));
@@ -125,6 +125,18 @@ namespace Cliver.Bot.Properties {
             }
             set {
                 this["OutputFieldSeparator"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AppendOutputFile {
+            get {
+                return ((bool)(this["AppendOutputFile"]));
+            }
+            set {
+                this["AppendOutputFile"] = value;
             }
         }
     }

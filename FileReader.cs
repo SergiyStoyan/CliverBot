@@ -38,7 +38,8 @@ namespace Cliver.Bot
                 comment_marks = new string[] { "#" };
             comment_or_empty_string_regex = new Regex(@"^" + (ignore_space_lines ? @"\s*" : "") + "(" + string.Join("|", (from x in comment_marks select Regex.Escape(x)).ToArray()) + ")" + (ignore_space_lines ? @"?" : "") + "$");
             split_regex = new Regex(@"\s*" + Regex.Escape(delimiter) + @"\s*");
-            TR = new StreamReader(file_path);
+            Stream s = File.Open(file_path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            TR = new StreamReader(s);
 
             if (!no_headers)
             {

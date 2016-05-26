@@ -34,14 +34,10 @@ namespace Cliver.Bot
                 {
                     if (_this == null)
                     {
-                        string output_file_name = Properties.Output.Default.OutputFileName;
-                        if (Properties.Output.Default.WriteOutputFile2CommonFolder)
-                            output_file_name = Log.WorkDir + @"\" + output_file_name;
-
                         _this = new FileWriter(
-                            output_file_name,
-                            false,
-                            true,
+                            Properties.Output.Default.WriteOutputFile2CommonFolder ? Log.WorkDir + @"\" + Properties.Output.Default.OutputFileName : Properties.Output.Default.OutputFileName,
+                            Properties.Output.Default.AppendOutputFile,
+                            !Properties.Output.Default.WriteOutputFile2CommonFolder,
                             Properties.Output.Default.OutputFileChunkSizeInBytes
                             );
                     }

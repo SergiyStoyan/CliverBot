@@ -29,30 +29,20 @@ namespace Cliver.Bot
         {
             //dummy to trigger static constructor
         }
-                
+
         public static void Set(string section, string parameter, object value)
         {
+            string error;
             FieldInfo fi = get_setting_for_namespace(Assembly.GetExecutingAssembly(), "Cliver.Bot.Properties", section);
-            try
-            {
-                PropertyInfo pi = fi.FieldType.GetProperty(parameter);
-                if (pi.PropertyType == typeof(int) && value is string)
-                    value = int.Parse((string)value);
-                ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null))[parameter] = value;
+            if (set_(fi, parameter, value, out error))
                 return;
-            }
-            catch { }
+            fi = get_setting_for_namespace(Assembly.GetEntryAssembly(), CustomizationApi.CUSTOM_NAMESPACE, section);
+            if (set_(fi, parameter, value, out error))
+                return;
             fi = get_setting_for_namespace(Assembly.GetEntryAssembly(), CustomizationApi.CUSTOM_NAMESPACE + ".Properties", section);
-            try
-            {
-                PropertyInfo pi = fi.FieldType.GetProperty(parameter);
-                if (pi.PropertyType == typeof(int) && value is string)
-                    value = int.Parse((string)value);
-                ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null))[parameter] = value;
+            if (set_(fi, parameter, value, out error))
                 return;
-            }
-            catch { }
-            LogMessage.Error("Could not set '" + section + "." + parameter + "' to " + value.ToString());
+            LogMessage.Error("Could not set '" + section + "." + parameter + "' to " + value.ToString() + "\r\n\r\n" + error);
 
             //Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             ////config.AppSettings.Settings
@@ -60,28 +50,61 @@ namespace Cliver.Bot
             //string t = cs.Settings.Get("RestoreErrorItemsAsNew").Value.ValueXml.InnerText;
         }
 
+        static bool set_(FieldInfo fi, string parameter, object value, out string error)
+        {
+            try
+            {
+                PropertyInfo pi = fi.FieldType.GetProperty(parameter);
+                if (pi.PropertyType == typeof(int) && value is string)
+                    value = int.Parse((string)value);
+                else if (pi.PropertyType == typeof(double) && value is string)
+                    value = double.Parse((string)value);
+                else if (pi.PropertyType == typeof(long) && value is string)
+                    value = long.Parse((string)value);
+                ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null))[parameter] = value;
+                error = null;
+                return true;
+            }
+            catch (Exception e)
+            {
+                for (; e.InnerException != null; e = e.InnerException) ;
+                error = e.Message;
+            }
+            return false;
+        }
+
         public static object Get(string section, string parameter)
         {
+            object value;
+            string error;
             FieldInfo fi = get_setting_for_namespace(Assembly.GetExecutingAssembly(), "Cliver.Bot.Properties", section);
-            try
-            {
-                return ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null))[parameter];
-            }
-            catch { }
+            if (get_(fi, parameter, out value, out error))
+                return value;
             fi = get_setting_for_namespace(Assembly.GetEntryAssembly(), CustomizationApi.CUSTOM_NAMESPACE, section);
-            try
-            {
-                return ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null))[parameter];
-            }
-            catch { }
+            if (get_(fi, parameter, out value, out error))
+                return value;
             fi = get_setting_for_namespace(Assembly.GetEntryAssembly(), CustomizationApi.CUSTOM_NAMESPACE + ".Properties", section);
-            try
-            {
-                return ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null))[parameter];
-            }
-            catch { }
+            if (get_(fi, parameter, out value, out error))
+                return value;
             LogMessage.Error("Could not find setting '" + section + "." + parameter + "'");
             return null;
+        }
+
+        static bool get_(FieldInfo fi, string parameter, out object value, out string error)
+        {
+            try
+            {
+                error = null;
+                value = ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null))[parameter];
+                return true;
+            }
+            catch (Exception e)
+            {
+                for (; e.InnerException != null; e = e.InnerException) ;
+                error = e.Message;
+                value = true;
+            }
+            return false;
         }
 
         static FieldInfo get_setting_for_namespace(Assembly assembly, string ns, string section)

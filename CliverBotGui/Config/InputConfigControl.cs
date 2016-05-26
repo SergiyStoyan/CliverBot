@@ -45,7 +45,7 @@ namespace Cliver.BotGui
         private void InputFieldSeparator_TextChanged(object sender, EventArgs e)
         {
             _1_SetTAB2InputFieldDelimiter.Checked = InputFieldSeparator.Text == "\t";
-            _1_SetTAB2InputFieldDelimiter.Enabled = !_1_SetTAB2InputFieldDelimiter.Checked;
+            InputFieldSeparator.Enabled = !_1_SetTAB2InputFieldDelimiter.Checked;
         }
 
         private void bInputFile_Click(object sender, EventArgs e)

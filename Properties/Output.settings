@@ -12,7 +12,7 @@
       <Value Profile="(Default)">2000000</Value>
     </Setting>
     <Setting Name="OutputFileName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">output.txt</Value>
+      <Value Profile="(Default)">output.csv</Value>
     </Setting>
     <Setting Name="OutputFieldSeparatorSubstitute" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -29,6 +29,9 @@
     <Setting Name="OutputFieldSeparator" Type="System.String" Scope="User">
       <Value Profile="(Default)">,
                 </Value>
+    </Setting>
+    <Setting Name="AppendOutputFile" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

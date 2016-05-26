@@ -42,7 +42,7 @@ namespace Cliver.BotGui
         private void OutputFieldSeparator_TextChanged(object sender, EventArgs e)
         {
             _1_SetTAB2OutputFieldDelimiter.Checked = this.OutputFieldSeparator.Text == "\t";
-            _1_SetTAB2OutputFieldDelimiter.Enabled = !_1_SetTAB2OutputFieldDelimiter.Checked;
+            OutputFieldSeparator.Enabled = !_1_SetTAB2OutputFieldDelimiter.Checked;
             if (this.OutputFieldSeparator.Text == "\t")
             {
                 this.OutputFieldSeparatorSubstitute.Text = " ";
