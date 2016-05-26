@@ -2,14 +2,14 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Cliver.Bot.Properties" GeneratedClassName="Output">
   <Profiles />
   <Settings>
-    <Setting Name="WriteOutputFile2CommonFolder" Type="System.Boolean" Scope="Application">
+    <Setting Name="WriteOutputFile2CommonFolder" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="OutputEmptyFieldSubstitute" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="OutputFileChunkSizeInBytes" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">2000000</Value>
+      <Value Profile="(Default)">1000000</Value>
     </Setting>
     <Setting Name="OutputFileName" Type="System.String" Scope="User">
       <Value Profile="(Default)">output.csv</Value>

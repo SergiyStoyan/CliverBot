@@ -387,7 +387,15 @@ namespace Cliver.BotGui
         {
             try
             {
-                Process.Start(Bot.Properties.Input.Default.InputFile);
+                Process p = new Process();
+                if (System.Environment.OSVersion.Version.Major >= 6)
+                {
+                    p.StartInfo.Verb = "runas";
+                }
+                p.StartInfo.FileName = Cliver.Bot.Properties.General.Default.InputFileViewer;
+                p.StartInfo.Arguments = "\"" + Bot.Log.AppDir + Bot.Properties.Input.Default.InputFile + "\"";
+                p.Start();
+                //Process.Start(Bot.Properties.Input.Default.InputFile);
             }
             catch (Exception ex)
             {

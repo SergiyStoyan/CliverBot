@@ -23,12 +23,15 @@ namespace Cliver.Bot.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool WriteOutputFile2CommonFolder {
             get {
                 return ((bool)(this["WriteOutputFile2CommonFolder"]));
+            }
+            set {
+                this["WriteOutputFile2CommonFolder"] = value;
             }
         }
         
@@ -46,7 +49,7 @@ namespace Cliver.Bot.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2000000")]
+        [global::System.Configuration.DefaultSettingValueAttribute("1000000")]
         public int OutputFileChunkSizeInBytes {
             get {
                 return ((int)(this["OutputFileChunkSizeInBytes"]));

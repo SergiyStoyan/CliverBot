@@ -77,7 +77,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutForm.cs" />
+    <Compile Include="AboutForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="BotThreadControls\BotThreadControl.Api.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -147,7 +149,9 @@
     <Compile Include="BotThreadControls\BotThreadControl.designer.cs">
       <DependentUpon>BotThreadControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="BotThreadManagerForm.cs" />
+    <Compile Include="BotThreadManagerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="BotThreadManagerForm.designer.cs">
       <DependentUpon>BotThreadManagerForm.cs</DependentUpon>
     </Compile>
@@ -157,7 +161,9 @@
     <Compile Include="Config\ConfigControl.designer.cs">
       <DependentUpon>ConfigControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Config\ConfigForm.cs" />
+    <Compile Include="Config\ConfigForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Config\ConfigForm.designer.cs">
       <DependentUpon>ConfigForm.cs</DependentUpon>
     </Compile>
@@ -169,7 +175,9 @@
     </Compile>
     <Compile Include="BotGui.cs" />
     <Compile Include="CustomizationApi.cs" />
-    <Compile Include="MainForm.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="MainForm.designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
