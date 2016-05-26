@@ -46,7 +46,7 @@ namespace Cliver.Bot
                         foreach (Thread t in old_log_keys)
                         {
                             t.Abort();
-                            thread2tls[t].Error("This thread was detected to be not alive. Aborting it...");
+                            thread2tls[t].Error("This thread is detected as being not alive. Aborting it...");
                             thread2tls[t].Close();
                             thread2tls.Remove(t);
                         }
@@ -362,6 +362,8 @@ namespace Cliver.Bot
                             log_writer = new StreamWriter(Path, true);
                         }
                     }
+                    //if (!string.IsNullOrWhiteSpace(details))
+                    //    message += "\r\n\r\n" + details;
                     log_writer.WriteLine(DateTime.Now.ToString("[dd-MM-yy HH:mm:ss] ") + message);
                     log_writer.Flush();
                 }

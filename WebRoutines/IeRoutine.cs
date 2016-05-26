@@ -47,10 +47,10 @@ namespace Cliver.Bot
                 //    InternetExplorerBrowserEmulation.SetBrowserEmulationVersion();
             });
         }
-        public WebBrowser Browser
-        {
-            get { return browser; }
-        }
+        //public WebBrowser Browser
+        //{
+        //    get { return browser; }
+        //}
 
         ~IeRoutine()
         {
@@ -608,6 +608,18 @@ namespace Cliver.Bot
             //if (IntPtr.Zero == handle) Cliver.Message.Error("no found window!!!");
             //UserSimulateRoutines.MouseLeftClick(browser.Handle, p);
             //return handle;
+        }
+        
+        public void InjectScript(string script)
+        {
+            HtmlElement he = browser.Document.CreateElement("script");
+            he.SetAttribute("text", script);
+            browser.Document.Body.AppendChild(he);
+        }
+
+        public object RunScript(string function, object[] parameters = null)
+        {
+            return browser.Document.InvokeScript(function, parameters);
         }
     }
 }

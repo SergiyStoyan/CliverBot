@@ -242,7 +242,8 @@ namespace Cliver.Bot
             message = "Exception: \r\n" + e.Message;
 #if DEBUG            
             details = "Module:" + e.TargetSite.Module + " \r\n\r\nStack:" + e.StackTrace;
-#else                
+#else       
+            details = ""; //"Module:" + e.TargetSite.Module + " \r\n\r\nStack:" + e.StackTrace;
 #endif
         }
     }

@@ -254,6 +254,15 @@ namespace Cliver.Bot
                 WriteLine(line);
             }
         }
+
+        public void PrepareAndWriteHtmlLine(params string[] strs)
+        {
+            lock (this)
+            {
+                string line = Html.PrepareFields(strs);
+                WriteLine(line);
+            }
+        }
         
         /// <summary>
         /// Writes parameters as cells in html table.
