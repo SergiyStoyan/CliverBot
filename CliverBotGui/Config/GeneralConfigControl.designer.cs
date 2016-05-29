@@ -28,8 +28,6 @@ namespace Cliver.BotGui
         /// </summary>
         private void InitializeComponent()
         {
-            this.label40 = new System.Windows.Forms.Label();
-            this.InputFileViewer = new System.Windows.Forms.TextBox();
             this.label39 = new System.Windows.Forms.Label();
             this.label38 = new System.Windows.Forms.Label();
             this.MaxProcessorErrorNumber = new System.Windows.Forms.TextBox();
@@ -44,14 +42,11 @@ namespace Cliver.BotGui
             this.RestoreBrokenSession = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.MaxBotThreadNumber = new System.Windows.Forms.TextBox();
-            this.RunSilently = new System.Windows.Forms.CheckBox();
             this.group_box.SuspendLayout();
             this.SuspendLayout();
             // 
             // group_box
             // 
-            this.group_box.Controls.Add(this.label40);
-            this.group_box.Controls.Add(this.InputFileViewer);
             this.group_box.Controls.Add(this.label39);
             this.group_box.Controls.Add(this.label38);
             this.group_box.Controls.Add(this.MaxProcessorErrorNumber);
@@ -66,24 +61,13 @@ namespace Cliver.BotGui
             this.group_box.Controls.Add(this.RestoreBrokenSession);
             this.group_box.Controls.Add(this.label2);
             this.group_box.Controls.Add(this.MaxBotThreadNumber);
-            this.group_box.Controls.Add(this.RunSilently);
             this.group_box.Text = "TestCustom";
             // 
-            // label40
+            // toolTip1
             // 
-            this.label40.Location = new System.Drawing.Point(22, 264);
-            this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(169, 16);
-            this.label40.TabIndex = 68;
-            this.label40.Text = "Input File Viewer Application:";
-            this.label40.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            // 
-            // InputFileViewer
-            // 
-            this.InputFileViewer.Location = new System.Drawing.Point(199, 261);
-            this.InputFileViewer.Name = "InputFileViewer";
-            this.InputFileViewer.Size = new System.Drawing.Size(299, 20);
-            this.InputFileViewer.TabIndex = 67;
+            this.toolTip1.AutoPopDelay = 100000;
+            this.toolTip1.InitialDelay = 500;
+            this.toolTip1.ReshowDelay = 100;
             // 
             // label39
             // 
@@ -208,18 +192,6 @@ namespace Cliver.BotGui
             this.MaxBotThreadNumber.TabIndex = 52;
             this.MaxBotThreadNumber.Text = "1";
             // 
-            // RunSilently
-            // 
-            this.RunSilently.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.RunSilently.Checked = true;
-            this.RunSilently.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.RunSilently.Location = new System.Drawing.Point(113, 85);
-            this.RunSilently.Name = "RunSilently";
-            this.RunSilently.Size = new System.Drawing.Size(126, 16);
-            this.RunSilently.TabIndex = 54;
-            this.RunSilently.Text = "Run Silently";
-            this.RunSilently.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // GeneralConfigControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -233,8 +205,6 @@ namespace Cliver.BotGui
 
         #endregion
 
-        private System.Windows.Forms.Label label40;
-        private System.Windows.Forms.TextBox InputFileViewer;
         private System.Windows.Forms.Label label39;
         private System.Windows.Forms.Label label38;
         private System.Windows.Forms.TextBox MaxProcessorErrorNumber;
@@ -249,7 +219,6 @@ namespace Cliver.BotGui
         private System.Windows.Forms.CheckBox RestoreBrokenSession;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox MaxBotThreadNumber;
-        private System.Windows.Forms.CheckBox RunSilently;
 
 
 

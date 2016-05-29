@@ -35,11 +35,15 @@ namespace Cliver.BotGui
             this.InputFile = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this._0_bViewInputFile = new System.Windows.Forms.Button();
+            this.label40 = new System.Windows.Forms.Label();
+            this.InputFileViewer = new System.Windows.Forms.TextBox();
             this.group_box.SuspendLayout();
             this.SuspendLayout();
             // 
             // group_box
             // 
+            this.group_box.Controls.Add(this.label40);
+            this.group_box.Controls.Add(this.InputFileViewer);
             this.group_box.Controls.Add(this._0_bViewInputFile);
             this.group_box.Controls.Add(this._1_SetTAB2InputFieldDelimiter);
             this.group_box.Controls.Add(this.label20);
@@ -123,6 +127,22 @@ namespace Cliver.BotGui
             this._0_bViewInputFile.UseVisualStyleBackColor = true;
             this._0_bViewInputFile.Click += new System.EventHandler(this.bInputFile_Click);
             // 
+            // label40
+            // 
+            this.label40.Location = new System.Drawing.Point(20, 168);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(169, 16);
+            this.label40.TabIndex = 70;
+            this.label40.Text = "Input File Viewer Application:";
+            this.label40.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // InputFileViewer
+            // 
+            this.InputFileViewer.Location = new System.Drawing.Point(197, 165);
+            this.InputFileViewer.Name = "InputFileViewer";
+            this.InputFileViewer.Size = new System.Drawing.Size(299, 20);
+            this.InputFileViewer.TabIndex = 69;
+            // 
             // InputConfigControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -143,6 +163,8 @@ namespace Cliver.BotGui
         private System.Windows.Forms.TextBox InputFile;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Button _0_bViewInputFile;
+        private System.Windows.Forms.Label label40;
+        private System.Windows.Forms.TextBox InputFileViewer;
 
 
 

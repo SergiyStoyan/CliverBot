@@ -11,5 +11,8 @@
     <Setting Name="EscapedInputFieldSeparator" Type="System.String" Scope="User">
       <Value Profile="(Default)">','</Value>
     </Setting>
+    <Setting Name="InputFileViewer" Type="System.String" Scope="User">
+      <Value Profile="(Default)">notepad.exe</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

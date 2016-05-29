@@ -12,7 +12,6 @@ namespace Cliver.Bot
 {
     public class CommandLineParameters : ProgramRoutines.CommandLineParameters
     {
-        public static readonly CommandLineParameters NOT_START = new CommandLineParameters("-not_start");//used if settings need to be configured though GUI while silent(automatic) mode is set by default
         public static readonly CommandLineParameters AUTOMATIC = new CommandLineParameters("-automatic");
         public static readonly CommandLineParameters PRODUCTION = new CommandLineParameters("-production");
         public static readonly CommandLineParameters NOT_RESTORE_SESSION = new CommandLineParameters("-not_restore_session");
@@ -39,7 +38,8 @@ namespace Cliver.Bot
         {
             Config.Initialize();
 
-            Mode = (!ProgramRoutines.IsParameterSet(CommandLineParameters.NOT_START) && (ProgramRoutines.IsParameterSet(CommandLineParameters.AUTOMATIC) || Properties.General.Default.RunSilently)) ? ProgramMode.AUTOMATIC : ProgramMode.DIALOG;
+            //Mode = (!ProgramRoutines.IsParameterSet(CommandLineParameters.NOT_START) && (ProgramRoutines.IsParameterSet(CommandLineParameters.AUTOMATIC) || Properties.General.Default.RunSilently)) ? ProgramMode.AUTOMATIC : ProgramMode.DIALOG;
+            Mode = ProgramRoutines.IsParameterSet(CommandLineParameters.AUTOMATIC) ? ProgramMode.AUTOMATIC : ProgramMode.DIALOG;
             LogMessage.DisableStumblingDialogs = Mode == ProgramMode.AUTOMATIC;
 
             if (ProgramRoutines.IsParameterSet(CommandLineParameters.PRODUCTION))

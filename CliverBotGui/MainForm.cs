@@ -33,6 +33,9 @@ namespace Cliver.BotGui
             InitializeComponent();
             this.Text = Cliver.Bot.Program.Title;
 
+            if (ProgramRoutines.IsParameterSet(CommandLineParameters.CONFIGURE))
+                this.buttonStart.Enabled = false;
+
             ProgressBarInputItemQueueName = Session.GetFirstDeclaredInputItemType().Name;
             Session.Closing += Session_Closing;
             InputItemQueue.Progress += new InputItemQueue.OnProgress(Session_InputItemQueueProgress);
@@ -393,7 +396,7 @@ namespace Cliver.BotGui
                 p.StartInfo.FileName = Cliver.Bot.Properties.General.Default.InputFileViewer;
                 p.StartInfo.Arguments = "\"" + Bot.Log.AppDir + Bot.Properties.Input.Default.InputFile + "\"";
                 //the following is required to run the process as administrator without Windows Prompt
-                p.StartInfo.UseShellExecute = false;
+                //p.StartInfo.UseShellExecute = false;
                 //p.StartInfo.CreateNoWindow = true;
                 //p.StartInfo.RedirectStandardOutput = true;
                 try

@@ -47,8 +47,18 @@ Developed by: www.cliversoft.com";
         }
 
         static public void FillStartInputItemQueue(InputItemQueue start_input_item_queue, Type start_input_item_type)
-        {
+        {            
             Log.Main.Write("Filling queue of " + start_input_item_queue.Name + " with input file.");
+
+            //if (!Properties.Input.Default.InputFile.Contains(":"))
+            //{
+            //    string input_file2 = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\" + Properties.Input.Default.InputFile;
+            //    if (!File.Exists(input_file2))
+            //    {
+            //        File.Copy(Properties.Input.Default.InputFile, input_file2);
+            //        Properties.Input.Default.InputFile = input_file2;
+            //    }
+            //}
 
             if (!File.Exists(Properties.Input.Default.InputFile))
                 throw (new Exception("Input file " + Properties.Input.Default.InputFile + " does not exist."));

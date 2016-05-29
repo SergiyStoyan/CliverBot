@@ -34,7 +34,7 @@ namespace Cliver.BotGui
             toolTip1.SetToolTip(this.WriteSessionRestoringLog, "Define whether the bot will write files needed to restore session.");
             toolTip1.SetToolTip(this.RestoreBrokenSession, "Define whether the bot will restore the previous session if it was broken.");
             //toolTip1.SetToolTip(this.SingleProcessOnly, "When checked, the bot will exit if its instance runs already on this machine.");
-            toolTip1.SetToolTip(this.RunSilently, "When checked, the bot will start session immediately and will not display any message boxes during its work.");
+            //toolTip1.SetToolTip(this.RunSilently, "When checked, the bot will start session immediately and will not display any message boxes during its work.");
             toolTip1.SetToolTip(this.MaxProcessorErrorNumber, "Max number of consecutive errors in bot cycle before automatic exit. Set -1 not to exit.");
             toolTip1.SetToolTip(this.MaxTime2WaitForSessionStopInSecs, "Timeout of wait for closing session before exit.");          
         }

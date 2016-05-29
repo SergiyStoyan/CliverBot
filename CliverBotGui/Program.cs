@@ -14,6 +14,7 @@ namespace Cliver.BotGui
     public class CommandLineParameters : ProgramRoutines.CommandLineParameters
     {
         public static readonly CommandLineParameters WINDOWLESS = new CommandLineParameters("-windowless");
+        public static readonly CommandLineParameters CONFIGURE = new CommandLineParameters("-configure");//used only to edit settings while it cannot perform
 
         public CommandLineParameters(string value) : base(value) { }
     }
@@ -33,18 +34,28 @@ namespace Cliver.BotGui
         {
             try
             {
+                if (ProgramRoutines.IsParameterSet(CommandLineParameters.CONFIGURE))
+                {
+                    LogMessage.Output2Console = false;
+                    Cliver.Bot.Program.Initialize();
+                    Log.Main.Inform("Configure mode. Run is disabled.");
+                    Application.Run(MainForm.This);
+                    return;
+                }
+
+                if (Bot.Properties.App.Default.SingleProcessOnly)
+                    ProcessRoutines.RunSingleProcessOnly();
+
                 if (ProgramRoutines.IsParameterSet(CommandLineParameters.WINDOWLESS))
                 {
+                    LogMessage.Output2Console = true;
+                    Log.Main.Inform("Windowless mode.");
                     Cliver.Bot.Program.Run();
                     return;
                 }
 
                 LogMessage.Output2Console = false;
                 Cliver.Bot.Program.Initialize();
-
-                if (Bot.Properties.App.Default.SingleProcessOnly)
-                    ProcessRoutines.RunSingleProcessOnly();
-
                 Application.Run(MainForm.This);
             }
             catch (Exception e)
