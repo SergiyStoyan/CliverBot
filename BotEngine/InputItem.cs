@@ -72,15 +72,17 @@ namespace Cliver.Bot
                 try
                 {
                     FieldInfo fi = serialized_field_name2serialized_field_fis[field];
-                    //object v;
-                    //if (fi.FieldType == typeof(DateTime))
-                    //    v = DateTime.Parse(field2value[field]);
-                    //else if (fi.FieldType == typeof(int))
-                    //    v = int.Parse(field2value[field]);
-                    //else
-                    //    v = field2value[field];
-                    //fi.SetValue(item, v);
-                    fi.SetValue(item, field2value[field]);
+                    object v;
+                    if (fi.FieldType == typeof(DateTime))
+                        v = DateTime.Parse(field2value[field]);
+                    else if (fi.FieldType == typeof(int))
+                        v = int.Parse(field2value[field]);
+                    else if (fi.FieldType == typeof(double))
+                        v = double.Parse(field2value[field]);
+                    else
+                        v = field2value[field];
+                    fi.SetValue(item, v);
+                    //fi.SetValue(item, field2value[field]);
                 }
                 catch (Exception e)
                 {

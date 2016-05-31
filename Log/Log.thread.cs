@@ -324,16 +324,18 @@ namespace Cliver.Bot
                     if (log_writer == null)
                         log_writer = new StreamWriter(Path, true);
 
+                    details = string.IsNullOrWhiteSpace(details) ? "" : "\r\n\r\n" + details;
+
                     switch (type)
                     {
                         case Log.MessageType.INFORM: message = "INFORM: " + message; break;
                         case Log.MessageType.WARNING: message = "WARNING: " + message; break;
                         case Log.MessageType.ERROR:
-                            message = "ERROR: " + message;
+                            message = "ERROR: " + message + details;
                             _ErrorCount++;
                             break;
                         case Log.MessageType.EXIT:
-                            message = "EXIT: " + message;
+                            message = "EXIT: " + message + details;
                             _ErrorCount++;
                             break;
                         case Log.MessageType.TRACE: message = "TRACE: " + message; break;
@@ -350,15 +352,16 @@ namespace Cliver.Bot
 
                             int counter = 0;
                             path = Regex.Replace(path, @"(\d+_)(\d+)(\.[^\.]+)$",
-                                (Match m)=>{                            
+                                (Match m) =>
+                                {
                                     counter = int.Parse(m.Groups[2].Value) + 1;
-                                    return m.Groups[1].Value + counter + m.Groups[3].Value;                            
-                                }, 
+                                    return m.Groups[1].Value + counter + m.Groups[3].Value;
+                                },
                                 RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline
                                 );
                             if (counter < 1)
                                 path = Regex.Replace(path, @"\.[^\.]+$", @"_1$0", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
-                          
+
                             log_writer = new StreamWriter(Path, true);
                         }
                     }

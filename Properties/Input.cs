@@ -1,4 +1,7 @@
-﻿namespace Cliver.Bot.Properties {
+﻿using System.IO;
+using System;
+
+namespace Cliver.Bot.Properties {
     
     
     // This class allows you to handle specific events on the settings class:
@@ -22,6 +25,20 @@
         void Input_SettingsLoaded(object sender, System.Configuration.SettingsLoadedEventArgs e)
         {
             InputFieldSeparator = EscapedInputFieldSeparator != null ? EscapedInputFieldSeparator.Trim('\'') : "";
+
+            if (!InputFile.Contains(":"))
+            {
+                string common_app_folder = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\" + Cliver.Bot.Log.EntryAssemblyName;
+                if (!Directory.Exists(common_app_folder))
+                    Directory.CreateDirectory(common_app_folder);
+                string input_file2 = common_app_folder + "\\" + Input.Default.InputFile;
+                if (!File.Exists(input_file2))
+                {
+                    File.Copy(InputFile, input_file2);
+                    InputFile = input_file2;
+                    Save();
+                }
+            }
         }
     }
 }

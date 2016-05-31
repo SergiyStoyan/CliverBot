@@ -30,8 +30,10 @@ namespace Cliver.BotGui
         private void ChooseInputFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog d = new OpenFileDialog();
+            d.InitialDirectory = PathRoutines.GetDirFromPath(InputFile.Text);
             d.ShowDialog();
-            InputFile.Text = d.FileName;
+            if (!string.IsNullOrWhiteSpace(d.FileName))
+                InputFile.Text = d.FileName;
         }
 
         private void __SetTAB2InputFieldDelimiter_CheckedChanged(object sender, EventArgs e)

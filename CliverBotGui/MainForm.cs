@@ -390,25 +390,25 @@ namespace Cliver.BotGui
         {
             try
             {
-                Process p = new Process();
-                if (System.Environment.OSVersion.Version.Major >= 6)
-                    p.StartInfo.Verb = "runas";
-                p.StartInfo.FileName = Cliver.Bot.Properties.General.Default.InputFileViewer;
-                p.StartInfo.Arguments = "\"" + Bot.Log.AppDir + Bot.Properties.Input.Default.InputFile + "\"";
-                //the following is required to run the process as administrator without Windows Prompt
-                //p.StartInfo.UseShellExecute = false;
-                //p.StartInfo.CreateNoWindow = true;
-                //p.StartInfo.RedirectStandardOutput = true;
-                try
-                {
-                    p.Start();
-                }
-                catch (Exception ex)
-                {
-                    LogMessage.Error(ex);
-                }
+                //Process p = new Process();
+                //if (System.Environment.OSVersion.Version.Major >= 6)
+                //    p.StartInfo.Verb = "runas";
+                //p.StartInfo.FileName = Cliver.Bot.Properties.General.Default.InputFileViewer;
+                //p.StartInfo.Arguments = "\"" + Bot.Log.AppDir + Bot.Properties.Input.Default.InputFile + "\"";
+                ////the following is required to run the process as administrator without Windows Prompt
+                ////p.StartInfo.UseShellExecute = false;
+                ////p.StartInfo.CreateNoWindow = true;
+                ////p.StartInfo.RedirectStandardOutput = true;
+                //try
+                //{
+                //    p.Start();
+                //}
+                //catch (Exception ex)
+                //{
+                //    LogMessage.Error(ex);
+                //}
 
-                //Process.Start(Bot.Properties.Input.Default.InputFile);
+                Process.Start(Bot.Properties.Input.Default.InputFile);
             }
             catch (Exception ex)
             {
