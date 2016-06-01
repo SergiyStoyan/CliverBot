@@ -246,13 +246,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CliverBot.csproj">
-      <Project>{5283EEA1-5F94-4379-BDF3-975CA4ADBBF4}</Project>
-      <Name>CliverBot</Name>
-    </ProjectReference>
+    <Content Include="computers308.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="computers308.ico" />
+    <ProjectReference Include="..\CliverBot.csproj">
+      <Project>{5283eea1-5f94-4379-bdf3-975ca4adbbf4}</Project>
+      <Name>CliverBot</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

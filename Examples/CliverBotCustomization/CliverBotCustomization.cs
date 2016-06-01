@@ -17,7 +17,8 @@ using System.Configuration;
 using System.Xml;
 using System.Text;
 using System.Threading;
-using Cliver;
+using Cliver.Bot;
+using Cliver.BotGui;
 using System.Windows.Forms;
 
 namespace CliverBotCustomization
@@ -27,30 +28,31 @@ namespace CliverBotCustomization
         [STAThread]
         static void Main()
         {
-            Config.General.RestoreBrokenSession = true;
-            Config.General.WriteSessionRestoringLog = true;
-            Config.Save();            
-            //Cliver.Program.Run();//It is the entry when the app does not have GUI.
-            Cliver.ProgramGui.Run();//It is the entry when the app uses the default GUI.
+            //Bot.Properties.General.Default.RestoreBrokenSession = true;
+            //Bot.Properties.General.Default.WriteSessionRestoringLog = true;
+            //Bot.Properties.General.Default.Save();
+
+            //Cliver.Bot.Program.Run();//It is the entry when the app runs as a console app.
+            Cliver.BotGui.Program.Run();//It is the entry when the app uses the default GUI.
         }
     }
 
     /// <summary>
     /// Defines look of GUI. May be not implemented.
     /// </summary>
-    public class CustomBotGui : ACustomBotGui
+    public class CustomBotGui : Cliver.BotGui.BotGui
     {
-        override public string[] GetDefaultConfigSectionList()
+        override public string[] GetConfigControlNames()
         {
-            return null;
+            return new string[] { "General", "Input", "Output", "Web", "Spider", "Log" };
         }
 
-        override public string[] GetCustomConfigControls()
+        override public Type GetBotThreadControlType()
         {
-            return null;
+            return typeof(WebRoutineBotThreadControl);
         }
 
-        override public BaseForm GetToolsForm()
+        override public Cliver.BaseForm GetToolsForm()
         {
             return null;
         }
@@ -59,8 +61,15 @@ namespace CliverBotCustomization
     /// <summary>
     /// Most important interface that defines certain routines of CliverBot customisation.
     /// </summary>
-    public class CustomBot : ACustomBot
+    public class CustomBot : Cliver.Bot.Bot
     {
+        new static public string GetAbout()
+        {
+            return @"
+Created: " + Cliver.Bot.Program.GetCustomizationCompiledTime().ToString() + @"
+Developed by: www.cliversoft.com";
+        }
+
         /// <summary>
         /// Invoked when the session is in creating stage. Can be not defined. If throw an Exception, the session is stopped and closed.
         /// </summary>
@@ -70,7 +79,7 @@ namespace CliverBotCustomization
             Session.SetInputItemQueuesOrder(typeof(Product), typeof(Category), typeof(Site));
 
             //Set the queue which the progress bar will reflect. 
-            ProgramGui.SetProgressInputItemType(typeof(Product));
+            Cliver.BotGui.Program.BindProgressBar2InputItemQueue(typeof(Product));
             
             //It is possible to add InputItems to queues before BotCycle started            
             Session.Add<Site>(new { Url = "www.google.com" });
@@ -113,6 +122,22 @@ namespace CliverBotCustomization
             //Fields must be public value or string type.
             readonly public string Url;
 
+            #region non needed for logic - only a demo of the paramterless constructor
+            /// <summary>
+            /// a sample of field that must be set by constructor explicitly
+            /// </summary>
+            [ConstructedField]
+            readonly public string[] Test;
+
+            /// <summary>
+            /// parameterless constructor is invoked after all fields are set excluding those atributed with ConstructedField
+            /// </summary>
+            public Site()
+            {
+                Test = new string[] { Url };
+            }
+            #endregion
+
             /// <summary>
             /// InputItem can define a method to process it. 
             /// When it is not defined within InputItem class, it must be defined in CustomBot as PROCESSOR_[InputItem class name]
@@ -123,7 +148,7 @@ namespace CliverBotCustomization
                 bc.Add(new Category(url: Url + "?q=1", t: new Category.Tag(name: "fff", description: "ttttt")));
 
                 //it is possible to get the current CustomBot when access to common members is needed
-                ((CustomBot)bc.CB).counter++;
+                ((CustomBot)bc.Bot).counter++;
             }
         }
         int counter = 0;

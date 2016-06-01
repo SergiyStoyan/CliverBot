@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Cliver.BotCustomization</RootNamespace>
     <AssemblyName>LinkChecker</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -33,6 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -59,11 +61,11 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\CliverBot.csproj">
-      <Project>{5283EEA1-5F94-4379-BDF3-975CA4ADBBF4}</Project>
+      <Project>{5283eea1-5f94-4379-bdf3-975ca4adbbf4}</Project>
       <Name>CliverBot</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\CliverBotGui\CliverBotGui.csproj">
-      <Project>{CCD9744F-AA5D-4D39-BD63-0451C3E1E16A}</Project>
+      <Project>{ccd9744f-aa5d-4d39-bd63-0451c3e1e16a}</Project>
       <Name>CliverBotGui</Name>
     </ProjectReference>
   </ItemGroup>

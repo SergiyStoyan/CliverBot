@@ -23,6 +23,9 @@ using System.Windows.Forms;
 using Cliver.Bot;
 using Cliver.BotGui;
 
+/// <summary>
+/// Link checker: crawls listed sites and checks broken links
+/// </summary>
 namespace Cliver.BotCustomization
 {
     class Program
@@ -66,7 +69,7 @@ namespace Cliver.BotCustomization
         new static public string GetAbout()
         {
             return @"WEB LINK CHECKER
-Created: " + Cliver.Bot.Program.CustomizationModificationTime.ToString() + @"
+Created: " + Cliver.Bot.Program.GetCustomizationCompiledTime().ToString() + @"
 Developed by: www.cliversoft.com";
         }
 

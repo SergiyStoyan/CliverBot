@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>CliverBotCustomization</RootNamespace>
     <AssemblyName>CliverBotCustomizationExample</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -24,6 +24,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -33,6 +34,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -48,103 +50,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\App.Designer.cs">
-      <DependentUpon>App.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
     <Compile Include="CliverBotCustomization.cs" />
-    <Compile Include="Properties\Browser.Designer.cs">
-      <DependentUpon>Browser.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="Properties\General.Designer.cs">
-      <DependentUpon>General.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="Properties\Input.Designer.cs">
-      <DependentUpon>Input.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="Properties\Log.Designer.cs">
-      <DependentUpon>Log.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="Properties\Output.Designer.cs">
-      <DependentUpon>Output.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Proxy.Designer.cs">
-      <DependentUpon>Proxy.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="Properties\Spider.Designer.cs">
-      <DependentUpon>Spider.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="Properties\Web.Designer.cs">
-      <DependentUpon>Web.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\CliverBot.csproj">
-      <Project>{5283EEA1-5F94-4379-BDF3-975CA4ADBBF4}</Project>
-      <Name>CliverBot</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CliverBotGui\CliverBotGui.csproj">
-      <Project>{CCD9744F-AA5D-4D39-BD63-0451C3E1E16A}</Project>
-      <Name>CliverBotGui</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Properties\app.config" />
-    <None Include="Properties\App.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>App.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Properties\Browser.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Browser.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Properties\General.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>General.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Properties\Input.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Input.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Properties\Log.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Log.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Properties\Output.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Output.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Properties\Proxy.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Proxy.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Properties\Spider.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Spider.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Properties\Web.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Web.Designer.cs</LastGenOutput>
-    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\CliverBot.csproj">
+      <Project>{5283eea1-5f94-4379-bdf3-975ca4adbbf4}</Project>
+      <Name>CliverBot</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CliverBotGui\CliverBotGui.csproj">
+      <Project>{ccd9744f-aa5d-4d39-bd63-0451c3e1e16a}</Project>
+      <Name>CliverBotGui</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
