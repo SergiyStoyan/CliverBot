@@ -41,12 +41,19 @@ namespace Cliver.Bot
                 EntryAssemblyName = System.IO.Path.GetFileNameWithoutExtension(p);
             }
             AppDir = AppDomain.CurrentDomain.BaseDirectory;
+
+            AppCommonDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\" + Cliver.Bot.Log.EntryAssemblyName;
         }
 
         /// <summary>
         /// Normalized name of this process
         /// </summary>
         public static readonly string EntryAssemblyName;
+
+        /// <summary>
+        /// Directory where the application's data files independent on user are located.
+        /// </summary>
+        public static readonly string AppCommonDataDir;
         
         /// <summary>
         /// Directory where the application binary is located.

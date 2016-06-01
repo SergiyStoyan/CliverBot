@@ -180,7 +180,7 @@ namespace CliverBotCustomization
             //When defined, they are set by the system automatically.
             //Parent InputItem is the item that is current when new items are added to the system.
             //Also, can be defined not direct parent but grand-parents also.
-            //As not always praent item types are the same, these memebers can be null and so should be checked for null and can be used as flags.
+            //As not always parent item types are the same, these memebers can be null and so should be checked for null and can be used as flags.
             readonly public Category Category;
 
             [KeyField]

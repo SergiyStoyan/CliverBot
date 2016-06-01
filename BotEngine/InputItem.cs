@@ -67,27 +67,24 @@ namespace Cliver.Bot
         static internal bool Add2QueueBeforeStart(InputItemQueue queue, Type item_type, Dictionary<string, string> field2value)
         {
             InputItem item = (InputItem)FormatterServices.GetUninitializedObject(item_type);
-            Dictionary<string, FieldInfo> serialized_field_name2serialized_field_fis = item_type2serialized_field_name2serialized_field_fis[item_type];
+            Dictionary<string, FieldInfo> serialized_field_name2serialized_field_fis = item_types2serialized_field_names2serialized_field_fi[item_type];
             foreach (string field in field2value.Keys)
                 try
                 {
                     FieldInfo fi = serialized_field_name2serialized_field_fis[field];
-                    object v;
-                    if (fi.FieldType == typeof(DateTime))
-                        v = DateTime.Parse(field2value[field]);
-                    else if (fi.FieldType == typeof(int))
-                        v = int.Parse(field2value[field]);
-                    else if (fi.FieldType == typeof(double))
-                        v = double.Parse(field2value[field]);
-                    else
-                        v = field2value[field];
-                    fi.SetValue(item, v);
-                    //fi.SetValue(item, field2value[field]);
+                    fi.SetValue(item, Convert.ChangeType(field2value[field], fi.FieldType));
                 }
                 catch (Exception e)
                 {
                     throw new Exception("Field '" + field + "' does not exist.\n" + e.Message);
                 }
+
+            ConstructorInfo ci;
+            if (item_types2constructor_info.TryGetValue(item_type, out ci))
+            {
+                ci.Invoke(item, new object[]{});
+            }
+
             typeof(Item).GetField("__Id", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(item, Session.This.GetNewItemId());
             return item.add2queue(queue);
         }

@@ -28,10 +28,9 @@ namespace Cliver.Bot.Properties {
 
             if (!InputFile.Contains(":"))
             {
-                string common_app_folder = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\" + Cliver.Bot.Log.EntryAssemblyName;
-                if (!Directory.Exists(common_app_folder))
-                    Directory.CreateDirectory(common_app_folder);
-                string input_file2 = common_app_folder + "\\" + Input.Default.InputFile;
+                if (!Directory.Exists(Cliver.Bot.Log.AppCommonDataDir))
+                    Directory.CreateDirectory(Cliver.Bot.Log.AppCommonDataDir);
+                string input_file2 = Cliver.Bot.Log.AppCommonDataDir + "\\" + Input.Default.InputFile;
                 if (!File.Exists(input_file2))
                 {
                     File.Copy(InputFile, input_file2);
