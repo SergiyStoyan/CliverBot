@@ -122,7 +122,7 @@ Developed by: www.cliversoft.com";
             //Fields must be public value or string type.
             readonly public string Url;
 
-            #region non needed for logic - only a demo of the paramterless constructor
+            #region non needed for logic - only as a demo of the paramterless constructor
             /// <summary>
             /// a sample of field that must be set by constructor explicitly
             /// </summary>
@@ -130,7 +130,7 @@ Developed by: www.cliversoft.com";
             readonly public string[] Test;
 
             /// <summary>
-            /// parameterless constructor is invoked after all fields are set excluding those atributed with ConstructedField
+            /// The parameterless constructor is invoked AFTER all fields are set excluding those atributed with ConstructedField
             /// </summary>
             public Site()
             {

@@ -42,7 +42,7 @@ namespace Cliver.Bot
             }
             AppDir = AppDomain.CurrentDomain.BaseDirectory;
 
-            AppCommonDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\" + Cliver.Bot.Log.EntryAssemblyName;
+            AppCommonDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CliverSoft\\" + Cliver.Bot.Log.EntryAssemblyName;
         }
 
         /// <summary>
