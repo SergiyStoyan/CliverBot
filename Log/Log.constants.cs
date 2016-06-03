@@ -286,8 +286,8 @@ namespace Cliver.Bot
                         string alert;
                         switch (MODE)
                         {
-                            case Mode.ONLY_LOG:
-                                alert = "Logs older than " + FirstLogDate.ToString() + " should be deleted along the specified threshold.\n Delete?";
+                            case Mode.SESSIONS:
+                                alert = "Session data including caches and logs older than " + FirstLogDate.ToString() + " should be deleted along the specified threshold.\n Delete?";
                                 foreach (DirectoryInfo d in di.GetDirectories())
                                 {
                                     if (session_dir != null && d.FullName.StartsWith(session_dir, StringComparison.InvariantCultureIgnoreCase))
@@ -312,8 +312,8 @@ namespace Cliver.Bot
                                     }
                                 }
                                 break;
-                            case Mode.SESSIONS:
-                                alert = "Session data including caches and logs older than " + FirstLogDate.ToString() + " should be deleted along the specified threshold.\n Delete?";
+                            case Mode.ONLY_LOG:
+                                alert = "Logs older than " + FirstLogDate.ToString() + " should be deleted along the specified threshold.\n Delete?";
                                 foreach (FileInfo f in di.GetFiles())
                                 {
                                     if (f.LastWriteTime >= FirstLogDate)
