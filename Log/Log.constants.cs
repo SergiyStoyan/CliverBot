@@ -82,7 +82,7 @@ namespace Cliver.Bot
         static string time_mark = null;
         
         /// <summary>
-        /// Creates parent Log directory where all sessions are stored and returns/receives its name
+        ///Parent Log directory where logs are recorded
         /// </summary>
         public static string WorkDir
         {
@@ -111,7 +111,7 @@ namespace Cliver.Bot
         public const string WorkDirPrefix = @"_Sessions";
 
         /// <summary>
-        /// Creates session directory for current session and returns its path
+        /// Session directory for current session
         /// </summary>
         public static string SessionDir
         {
@@ -143,7 +143,7 @@ namespace Cliver.Bot
         static string session_dir = null;
 
         /// <summary>
-        /// Creates output directory for current session and returns its name
+        /// Output directory for current session
         /// </summary>
         public static string OutputDir
         {
@@ -171,8 +171,8 @@ namespace Cliver.Bot
         public static string OutputDirName = @"output";
 
         /// <summary>
-        /// Creates download directory where files downloaded during session are stored, and returns its path. 
-        /// This dir is used to calculate value of downloaded bytes.
+        /// Download directory for session. 
+        /// This dir can be used to calculate value of downloaded bytes.
         /// </summary>
         public static string DownloadDir
         {
