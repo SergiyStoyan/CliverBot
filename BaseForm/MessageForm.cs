@@ -19,11 +19,13 @@ namespace Cliver
     /// <summary>
     /// Dynamic dialog box with many answer cases
     /// </summary>
-    public partial class MessageForm : BaseForm
+    public partial class MessageForm : Form
     {
         public MessageForm(string caption, Icon icon, string message, string[] buttons, int default_button, Form owner)
         {
             InitializeComponent();
+
+            this.MaximizeBox = true;
 
             Owner = owner;
 
@@ -52,7 +54,11 @@ namespace Cliver
                 if (i == default_button)
                     b.Select();
             }
-        }
+
+            //Size s = this.message.GetPreferredSize(new Size(Screen.PrimaryScreen.WorkingArea.Width * 3 / 4, Screen.PrimaryScreen.WorkingArea.Height * 3 / 4));
+            //this.Width = this.Width + s.Width - this.message.Width;
+            //this.Height = this.Height + s.Height - this.message.Height;
+        }         
 
         void b_Click(object sender, EventArgs e)
         {
@@ -76,24 +82,49 @@ namespace Cliver
         private void Message_ContentsResized(object sender, ContentsResizedEventArgs e)
         {
             var rtb = (RichTextBox)sender;
+            Size s = this.Size;
             {
                 int h = e.NewRectangle.Height - rtb.Height;
                 if (h > 0)
                 {
-                    if (Screen.PrimaryScreen.WorkingArea.Height * 3 / 4 < this.Height + h)
-                        h = Screen.PrimaryScreen.WorkingArea.Height * 3 / 4 - this.Height;
-                    this.Height += h;
+                    int h2 = Screen.PrimaryScreen.WorkingArea.Height * 3 / 4 - this.Height;
+                    s.Height += h2 < h ? h2 : h;
                 }
             }
             {
                 int w = e.NewRectangle.Width - rtb.Width;
                 if (w > 0)
                 {
-                    if (Screen.PrimaryScreen.WorkingArea.Width * 3 / 4 < this.Width + w)
-                        w = Screen.PrimaryScreen.WorkingArea.Width * 3 / 4 - this.Width;
-                    this.Width += w;
+                    int w2 = Screen.PrimaryScreen.WorkingArea.Width * 3 / 4 - this.Width;
+                    s.Width += w2 < w ? w2 : w;
                 }
             }
-        }    
+            {
+                if (s.Height > s.Width)
+                {
+                    s.Height -= 100;
+                    s.Width += 100;
+                }
+            }
+            this.Size = s;
+        }
+
+        protected override void WndProc(ref System.Windows.Forms.Message m)
+        {
+            if (m.Msg == 0x0112) // WM_SYSCOMMAND
+            {
+                switch ((Int32)m.WParam)
+                {
+                    case 0xF030: // Maximize event - SC_MAXIMIZE from Winuser.h
+                        restored_size = this.Size;
+                        break;
+                    case 0xF120: // Restore event - SC_RESTORE from Winuser.h
+                        this.Size = restored_size;
+                        break;
+                }
+            }
+            base.WndProc(ref m);
+        }
+        Size restored_size;
     }
 }

@@ -43,6 +43,8 @@ namespace Cliver.Bot
             AppDir = AppDomain.CurrentDomain.BaseDirectory;
 
             AppCommonDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CliverSoft\\" + Cliver.Bot.Log.EntryAssemblyName;
+
+            //Log.DeleteOldLogs();
         }
 
         /// <summary>
@@ -78,76 +80,28 @@ namespace Cliver.Bot
             }
         }
         static string time_mark = null;
-
-        /// <summary>
-        /// Creates temporary directory and returns/receives its name
-        /// </summary>
-        public static string TempDir
-        {
-            set
-            {
-                lock (lock_object)
-                {
-                    if (temp_dir == null)
-                    {
-                        temp_dir = value;
-
-                        DirectoryInfo di = new DirectoryInfo(temp_dir);
-                        if (!di.Exists)
-                            di.Create();
-                    }
-                }
-            }
-            get
-            {
-                if (temp_dir == null)
-                {
-                    lock (lock_object)
-                    {
-                        TempDir = Log.AppDir + @"\temp";
-                    }
-                }
-                return temp_dir;
-            }
-        }
-        static string temp_dir = null;
-
+        
         /// <summary>
         /// Creates parent Log directory where all sessions are stored and returns/receives its name
         /// </summary>
         public static string WorkDir
         {
-            set
-            {
-                lock (lock_object)
-                {
-                    if (work_dir == null)
-                    {
-                        work_dir = value;
-
-                        DirectoryInfo di = new DirectoryInfo(work_dir);
-                        if (!di.Exists)
-                            di.Create();
-
-                        if (Log.MODE == Mode.ONLY_LOG)
-                            Log.DeleteOldLogs();
-                    }
-                }
-            }
             get
             {
                 if (work_dir == null)
                 {
                     lock (lock_object)
                     {
-                        string dir = null;
                         if (string.IsNullOrEmpty(Properties.Log.Default.PreWorkDir))
-                            dir = Log.AppDir + @"\" + Log.EntryAssemblyName + WorkDirPrefix;
+                            work_dir = Log.AppDir + @"\" + Log.EntryAssemblyName + WorkDirPrefix;
                         else if (!Properties.Log.Default.PreWorkDir.Contains(":"))
-                            dir = Log.AppDir + @"\" + Properties.Log.Default.PreWorkDir + @"\" + Log.EntryAssemblyName + WorkDirPrefix;
+                            work_dir = Log.AppDir + @"\" + Properties.Log.Default.PreWorkDir + @"\" + Log.EntryAssemblyName + WorkDirPrefix;
                         else
-                            dir = Properties.Log.Default.PreWorkDir + @"\" + Log.EntryAssemblyName + WorkDirPrefix;
-                        WorkDir = dir;
+                            work_dir = Properties.Log.Default.PreWorkDir + @"\" + Log.EntryAssemblyName + WorkDirPrefix;
+
+                        DirectoryInfo di = new DirectoryInfo(work_dir);
+                        if (!di.Exists)
+                            di.Create();
                     }
                 }
                 return work_dir;
@@ -181,8 +135,6 @@ namespace Cliver.Bot
                             di = new DirectoryInfo(session_dir);
                         }
                         di.Create();
-
-                        Log.DeleteOldLogs();
                     }
                 }
                 return session_dir;
@@ -257,7 +209,6 @@ namespace Cliver.Bot
                 session_dir = null;
                 output_dir = null;
                 download_dir = null;
-                temp_dir = null;
 
                 GC.Collect();
             }

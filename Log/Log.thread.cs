@@ -20,6 +20,12 @@ namespace Cliver.Bot
 {
     public class ThreadLog
     {
+        static ThreadLog()
+        {
+            //to avoid looping if calling 
+            Log.DeleteOldLogs();
+        }
+
         ThreadLog(int id, string log_file)
         {
             this.Id = id;

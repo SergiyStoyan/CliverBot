@@ -96,13 +96,11 @@ namespace Cliver
             // 
             // MessageForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.ClientSize = new System.Drawing.Size(391, 120);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.message);
             this.Controls.Add(this.image_box);
             this.Font = new System.Drawing.Font("Tahoma", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "MessageForm";
             this.ShowInTaskbar = false;

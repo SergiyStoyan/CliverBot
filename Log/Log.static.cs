@@ -54,7 +54,7 @@ namespace Cliver.Bot
         }
         static Mode MODE_;
 
-        public static Thread MainThread = Thread.CurrentThread;
+        public static readonly Thread MainThread = Thread.CurrentThread;
 
         /// <summary>
         /// Log belonging to the first (main) thread of the process.
