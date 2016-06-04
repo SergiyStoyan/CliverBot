@@ -51,8 +51,11 @@ namespace Cliver.Bot
                         List<Thread> old_log_keys = (from t in thread2tls.Keys where !t.IsAlive select t).ToList();
                         foreach (Thread t in old_log_keys)
                         {
-                            t.Abort();
-                            thread2tls[t].Error("This thread is detected as being not alive. Aborting it...");
+                            if (t.ThreadState != System.Threading.ThreadState.Stopped)
+                            {
+                                thread2tls[t].Error("This thread is detected as being not alive. Aborting it...");
+                                t.Abort();
+                            }
                             thread2tls[t].Close();
                             thread2tls.Remove(t);
                         }
