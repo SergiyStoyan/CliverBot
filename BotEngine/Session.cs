@@ -172,7 +172,6 @@ namespace Cliver.Bot
                 This.workflow_xtw.WriteEndDocument();
                 This.workflow_xtw.Close();
 
-                Log.Warning("test11");
                 try
                 {
                     CustomizationApi.SessionClosing();
@@ -192,33 +191,30 @@ namespace Cliver.Bot
                     LogMessage.Error(e);
                 }
 
-                Log.Warning("test3");
                 InputItemQueue.Close();
-                Log.Warning("test4");
                 Log.ClearSession();
-                Log.Warning("test5");
                 FileWriter.ClearSession();
-                Log.Warning("test6");
                 Cache.ClearSession();
-                Log.Warning("test7");
                 Proxies.ClearSession();
-                Log.Warning("test8");
                 WebRoutine.ClearSession();
-                Log.Warning("test2");
-
-                try
-                {
-                    if (Closed != null)
-                        Closed.Invoke();
-                }
-                catch (Exception e)
-                {
-                    LogMessage.Error(e);
-                }
+                              
                 if (Cliver.Bot.Program.Mode == Cliver.Bot.Program.ProgramMode.AUTOMATIC)
                 {
-                    Log.Warning("test");
-                    Environment.Exit(0);
+                    try
+                    {
+                        if (Environment.UserInteractive)
+                            System.Windows.Forms.Application.Exit();
+                        else  // Console app
+                            System.Environment.Exit(0);
+                    }
+                    catch (Exception e)
+                    {
+                        LogMessage.Error(e);
+                    }
+                    finally
+                    {
+                        Environment.Exit(1);
+                    }
                 }
 
                 This_ = null;

@@ -166,9 +166,6 @@ namespace Cliver.Bot
 
         public delegate void OnClosing();
         static public event OnClosing Closing = null;
-
-        public delegate void OnClosed();
-        static public event OnClosed Closed = null;
         
         static public Type GetFirstDeclaredInputItemType()
         {

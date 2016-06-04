@@ -38,20 +38,7 @@ namespace Cliver.BotGui
 
             ProgressBarInputItemQueueName = Session.GetFirstDeclaredInputItemType().Name;
             Session.Closing += Session_Closing;
-            Session.Closed += Session_Closed;
             InputItemQueue.Progress += new InputItemQueue.OnProgress(Session_InputItemQueueProgress);
-        }
-
-        void Session_Closed()
-        {
-            this.Invoke(() =>
-            {
-                if (Cliver.Bot.Program.Mode == Cliver.Bot.Program.ProgramMode.AUTOMATIC)
-                {
-                    Log.Warning("test33");
-                    Application.Exit();
-                }
-            });
         }
 
         void Session_Closing()
