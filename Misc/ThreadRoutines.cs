@@ -23,6 +23,37 @@ namespace Cliver.Bot
     /// </summary>
     public static class ThreadRoutines
     {
+        //static HashSet<Thread> threads = new HashSet<Thread>();
+
+        //public static Thread GetThread(ThreadStart st)
+        //{
+        //    lock (threads)
+        //    {
+        //        Thread t = new Thread(st);
+        //        threads.Add(t);
+        //        return t;
+        //    }
+        //}
+
+        //public static void Shutdown()
+        //{
+        //    lock (threads)
+        //    {
+        //        foreach (Thread t in threads)
+        //            if (t != Thread.CurrentThread)
+        //                t.Abort();
+        //    }
+        //}
+
+        //public static void Kill(Thread t)
+        //{
+        //    lock (threads)
+        //    {
+        //        threads.Remove(t);
+        //        t.Abort();
+        //    }
+        //}
+
         public static void Wait(long milliseconds, int poll_interval_in_mss = 20)
         {
             if (milliseconds / 2 < poll_interval_in_mss) poll_interval_in_mss /= 2;

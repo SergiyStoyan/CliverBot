@@ -129,17 +129,21 @@ namespace Cliver.Bot
         }
 
         /// <summary>
-        /// Closes current session: that is finish and closes session logs if all input Items were processed
+        /// Closes current session: closes session logs if all input Items were processed
         /// </summary>
         /// <param name="session_is_completed">specify whether session is completed</param>
         public static void Close()
         {
-            if (This == null)
-                return;
-            if (This.closing_thread != null)
-                return;
-            This.closing_thread = new Thread(() => { This.close(); });
-            This.closing_thread.Start();
+            lock (Log.MainThread)
+            {
+                if (This == null)
+                    return;
+                if (This.closing_thread != null)
+                    return;
+                This.closing_thread = new Thread(() => { This.close(); });
+                This.closing_thread.IsBackground = true;
+                This.closing_thread.Start();
+            }
         }
         Thread closing_thread = null;
         void close()
@@ -168,6 +172,7 @@ namespace Cliver.Bot
                 This.workflow_xtw.WriteEndDocument();
                 This.workflow_xtw.Close();
 
+                Log.Warning("test11");
                 try
                 {
                     CustomizationApi.SessionClosing();
@@ -187,21 +192,33 @@ namespace Cliver.Bot
                     LogMessage.Error(e);
                 }
 
+                Log.Warning("test3");
                 InputItemQueue.Close();
+                Log.Warning("test4");
                 Log.ClearSession();
+                Log.Warning("test5");
                 FileWriter.ClearSession();
+                Log.Warning("test6");
                 Cache.ClearSession();
+                Log.Warning("test7");
                 Proxies.ClearSession();
+                Log.Warning("test8");
                 WebRoutine.ClearSession();
-                
+                Log.Warning("test2");
+
+                try
+                {
+                    if (Closed != null)
+                        Closed.Invoke();
+                }
+                catch (Exception e)
+                {
+                    LogMessage.Error(e);
+                }
                 if (Cliver.Bot.Program.Mode == Cliver.Bot.Program.ProgramMode.AUTOMATIC)
                 {
-                    try
-                    {
-                        Environment.Exit(0);
-                    }
-                    catch
-                    { }
+                    Log.Warning("test");
+                    Environment.Exit(0);
                 }
 
                 This_ = null;

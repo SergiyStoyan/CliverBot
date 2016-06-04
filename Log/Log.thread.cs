@@ -312,6 +312,7 @@ namespace Cliver.Bot
                         write(type, message, details);
                         Environment.Exit(0);
                     });
+                    exiting_thread.IsBackground = true;
                     exiting_thread.Start();
                 }
                 else

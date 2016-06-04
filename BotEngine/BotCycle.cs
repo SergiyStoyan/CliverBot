@@ -101,6 +101,7 @@ namespace Cliver.Bot
         BotCycle()
         {
             thread = new Thread(bot_cycle);
+            thread.IsBackground = true;
             thread.Start();
             object o = ThreadRoutines.WaitForCondition(() => { if (Id < 0) return null; return Id; }, 100000);
             if (o == null)

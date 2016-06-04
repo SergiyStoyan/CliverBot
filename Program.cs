@@ -40,6 +40,7 @@ namespace Cliver.Bot
 
             //Mode = (!ProgramRoutines.IsParameterSet(CommandLineParameters.NOT_START) && (ProgramRoutines.IsParameterSet(CommandLineParameters.AUTOMATIC) || Properties.General.Default.RunSilently)) ? ProgramMode.AUTOMATIC : ProgramMode.DIALOG;
             Mode = ProgramRoutines.IsParameterSet(CommandLineParameters.AUTOMATIC) ? ProgramMode.AUTOMATIC : ProgramMode.DIALOG;
+            //Mode = ProgramMode.AUTOMATIC;
             LogMessage.DisableStumblingDialogs = Mode == ProgramMode.AUTOMATIC;
 
             if (ProgramRoutines.IsParameterSet(CommandLineParameters.PRODUCTION))
@@ -62,7 +63,12 @@ namespace Cliver.Bot
                 CliverBot_title += can.Version.Major + "." + can.Version.Minor;
             Title = customization_title + @" / " + CliverBot_title;
 
-            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+            AppDomain.CurrentDomain.UnhandledException += delegate(object sender, UnhandledExceptionEventArgs args)
+            {
+                Exception e = (Exception)args.ExceptionObject;
+                Log.Error(e);
+                Environment.Exit(0);
+            };
         }
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

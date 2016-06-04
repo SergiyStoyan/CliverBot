@@ -38,14 +38,29 @@ namespace Cliver.BotGui
 
             ProgressBarInputItemQueueName = Session.GetFirstDeclaredInputItemType().Name;
             Session.Closing += Session_Closing;
+            Session.Closed += Session_Closed;
             InputItemQueue.Progress += new InputItemQueue.OnProgress(Session_InputItemQueueProgress);
+        }
+
+        void Session_Closed()
+        {
+            this.Invoke(() =>
+            {
+                if (Cliver.Bot.Program.Mode == Cliver.Bot.Program.ProgramMode.AUTOMATIC)
+                {
+                    Log.Warning("test33");
+                    Application.Exit();
+                }
+            });
         }
 
         void Session_Closing()
         {
             try
             {
-                this.Invoke(() => { on_session_closing(); });
+                this.Invoke(() => {
+                    on_session_closing();
+                });
             }
             catch (Exception e)
             {
@@ -131,10 +146,14 @@ namespace Cliver.BotGui
         {
             if (buttonStart.Text != "Stop")
             {
+                if (Session.This != null)
+                    return;
                 start_session();
             }
             else
             {
+                if (Session.This == null)
+                    return;
                 if (!LogMessage.AskYesNo("Terminating Session. Are you sure to proceed?", true))
                     return;
                 Session.Close();
@@ -159,6 +178,7 @@ namespace Cliver.BotGui
                 DisplayStatus2("Thread Count", "0");
 
                 start_session_t = new Thread(new ThreadStart(start_session_));
+                start_session_t.IsBackground = true;
                 //start_session_.Priority = ThreadPriority.Lowest;
                 //Thread.CurrentThread.Priority = ThreadPriority.Highest;
                 start_session_t.Start();
