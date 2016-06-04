@@ -202,10 +202,7 @@ namespace Cliver.Bot
                 {
                     try
                     {
-                        if (Environment.UserInteractive)
-                            System.Windows.Forms.Application.Exit();
-                        else  // Console app
-                            System.Environment.Exit(0);
+                        System.Environment.Exit(0);
                     }
                     catch (Exception e)
                     {

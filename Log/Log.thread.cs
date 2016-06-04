@@ -53,7 +53,7 @@ namespace Cliver.Bot
                         {
                             if (t.ThreadState != System.Threading.ThreadState.Stopped)
                             {
-                                thread2tls[t].Error("This thread is detected as being not alive. Aborting it...");
+                                thread2tls[t].Error("This thread is detected as not alive. Aborting it...");
                                 t.Abort();
                             }
                             thread2tls[t].Close();
