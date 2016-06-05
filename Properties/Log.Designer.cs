@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Cliver.Properties {
+namespace Cliver.Bot.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -92,6 +92,18 @@ namespace Cliver.Properties {
             }
             set {
                 this["LogFileChunkSizeInBytes"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("CliverBotSessions")]
+        public string PrefWorkDirName {
+            get {
+                return ((string)(this["PrefWorkDirName"]));
+            }
+            set {
+                this["PrefWorkDirName"] = value;
             }
         }
     }

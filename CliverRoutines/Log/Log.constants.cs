@@ -24,6 +24,17 @@ namespace Cliver
     /// </summary>
     public static partial class Log
     {
+        public static void Initialize(string pre_work_dir, bool write_log, int delete_logs_older_days)
+        {
+            Log.pre_work_dir = pre_work_dir;
+            Log.WriteLog = write_log; 
+            Log.delete_logs_older_days = delete_logs_older_days;
+        }
+        static string pre_work_dir = null;
+        static int delete_logs_older_days = 10;
+
+        static public bool WriteLog = true;
+
         static object lock_object = new object();
 
         static Log()
@@ -92,7 +103,6 @@ namespace Cliver
                 {
                     lock (lock_object)
                     {
-                        string pre_work_dir = Properties.Log.Default.PreWorkDir;
                         if (string.IsNullOrEmpty(pre_work_dir))
                             pre_work_dir = Log.EntryAssemblyName + WorkDirPrefix;
                         if (!pre_work_dir.Contains(":"))
@@ -226,9 +236,9 @@ namespace Cliver
                 ignore_delete_old_logs = true;
                 try
                 {
-                    if (Properties.Log.Default.DeleteLogsOlderDays > 0)
+                    if (delete_logs_older_days > 0)
                     {
-                        DateTime FirstLogDate = DateTime.Now.AddDays(-Properties.Log.Default.DeleteLogsOlderDays);
+                        DateTime FirstLogDate = DateTime.Now.AddDays(-delete_logs_older_days);
 
                         DirectoryInfo di = new DirectoryInfo(Log.WorkDir);
                         if (!di.Exists)

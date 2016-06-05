@@ -8,7 +8,7 @@
 //********************************************************************************************
 using System.Text.RegularExpressions;
 
-namespace Cliver.Properties 
+namespace Cliver.Bot.Properties
 {    
     // This class allows you to handle specific events on the settings class:
     //  The SettingChanging event is raised before a setting's value is changed.
@@ -32,7 +32,7 @@ namespace Cliver.Properties
         {
             if (string.IsNullOrEmpty(PreWorkDir))
             {
-                PreWorkDir = Regex.Replace(Cliver.Log.AppDir, @":.*", @":\CliverBotSessions", RegexOptions.IgnoreCase| RegexOptions.Singleline);
+                PreWorkDir = Regex.Replace(Cliver.Log.AppDir, @":.*", @":\" + PrefWorkDirName, RegexOptions.IgnoreCase| RegexOptions.Singleline);
                 if (System.Threading.Thread.CurrentThread.GetApartmentState() == System.Threading.ApartmentState.STA)
                 {
                     if (!LogMessage.AskYesNo("A folder where the application will store log data is not specified. By default it will be created in the following path:\r\n" + PreWorkDir + "\r\nClick Yes if you agree, click No if you want to specify another location.", true, false))

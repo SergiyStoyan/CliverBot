@@ -145,12 +145,6 @@
     </Compile>
     <Compile Include="Db\DbCommand.cs" />
     <Compile Include="Db\DbConnection.cs" />
-    <Compile Include="Properties\Log.cs" />
-    <Compile Include="Properties\Log.Designer.cs">
-      <DependentUpon>Log.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
     <Compile Include="Misc\FieldPreparation.cs" />
     <Compile Include="InternetDateTime.cs" />
     <Compile Include="Misc\Enum.cs" />
@@ -212,12 +206,11 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <None Include="Properties\Log.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Log.Designer.cs</LastGenOutput>
-    </None>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

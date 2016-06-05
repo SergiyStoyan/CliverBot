@@ -329,7 +329,7 @@ namespace Cliver
                 if (Writing != null)
                     Writing.Invoke(type, message, details);
 
-                if (Properties.Log.Default.WriteLog)
+                if (Log.WriteLog)
                 {
                     if (log_writer == null)
                         log_writer = new StreamWriter(Path, true);

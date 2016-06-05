@@ -23,6 +23,7 @@ namespace Cliver.BotGui
     {
         static Program()
         {
+            Log.Initialize(Cliver.Bot.Properties.Log.Default.PreWorkDir, Cliver.Bot.Properties.Log.Default.WriteLog, Cliver.Bot.Properties.Log.Default.DeleteLogsOlderDays);
             Config.Initialize();
         }
 
