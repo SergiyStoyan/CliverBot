@@ -175,9 +175,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Browser.settings</DependentUpon>
     </Compile>
-    <Compile Include="FileReader.cs" />
-    <Compile Include="FileWriter.cs" />
-    <Compile Include="FileWriter.static.cs" />
+    <Compile Include="Misc\FileReader.cs" />
+    <Compile Include="Misc\FileWriter.cs" />
+    <Compile Include="Misc\FileWriter.static.cs" />
     <Compile Include="Misc\AppRegistry.cs" />
     <Compile Include="Properties\Web.Designer.cs">
       <DependentUpon>Web.settings</DependentUpon>
@@ -219,7 +219,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>App.settings</DependentUpon>
     </Compile>
-    <Compile Include="Config.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
@@ -233,7 +232,7 @@
     <Compile Include="WebRoutines\Spider.cs" />
     <Compile Include="WebRoutines\Spider.static.cs" />
     <Compile Include="WebRoutines\WebRoutine.cs" />
-    <Compile Include="Win32\WindowInterceptor.cs" />
+    <Compile Include="Misc\WindowInterceptor.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>

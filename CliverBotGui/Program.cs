@@ -21,6 +21,11 @@ namespace Cliver.BotGui
 
     public static class Program
     {
+        static Program()
+        {
+            Config.Initialize();
+        }
+
         /// <summary>
         /// By deafult each item type has its own queue. But independed named queues can be created during session.
         /// </summary>

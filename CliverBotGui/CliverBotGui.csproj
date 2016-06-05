@@ -89,6 +89,7 @@
     <Compile Include="BotThreadControls\IeRoutineBotThreadControl.designer.cs">
       <DependentUpon>IeRoutineBotThreadControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Config.cs" />
     <Compile Include="Config\BrowserConfigControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
