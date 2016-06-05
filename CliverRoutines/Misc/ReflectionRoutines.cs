@@ -19,7 +19,7 @@ using System.Threading;
 using System.Configuration;
 using System.Reflection;
 
-namespace Cliver.Bot
+namespace Cliver
 {
     public static class ReflectionRoutines
     {

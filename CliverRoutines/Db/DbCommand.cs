@@ -16,14 +16,14 @@ using System.Configuration;
 using System.Data.SqlClient;
 //using MySql.Data.MySqlClient;
 
-namespace Cliver.Bot
+namespace Cliver.Db
 {
-    public abstract class DbCommand
+    public abstract class Command
     {
         public readonly string Sql;
         protected readonly DbConnection dc;
 
-        protected DbCommand(string sql, DbConnection db_connection)
+        protected Command(string sql, DbConnection db_connection)
         {
             this.dc = db_connection;
             this.Sql = sql;
@@ -93,7 +93,7 @@ namespace Cliver.Bot
         abstract protected string GetCommandText_();
     }
 
-    public class MsSqlCommand : DbCommand
+    public class MsSqlCommand : Command
     {
         SqlCommand c;
 

@@ -20,7 +20,7 @@ namespace Cliver.BotGui
 	/// <summary>
 	/// Summary description for About.
 	/// </summary>
-    internal class AboutForm : BaseForm
+    internal class AboutForm : Cliver.BaseForm
 	{
 		private System.Windows.Forms.Label lCopyright;
         private System.Windows.Forms.Button button1;

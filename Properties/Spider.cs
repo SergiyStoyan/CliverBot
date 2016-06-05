@@ -21,11 +21,11 @@
         {
             if (UnchangableDomainPartNumber <= 1)
                 if (!LogMessage.AskYesNo("UnchangableDomainPartNumber is < 2. That will make the bot crawl through external links of sites. This may consume all RAM on your comp and hang the app. Are you sure to proceed?", false))
-                    Cliver.Bot.Log.Main.Exit("Exit since UnchangableDomainPartNumber < 2");
+                    Cliver.Log.Main.Exit("Exit since UnchangableDomainPartNumber < 2");
 
             if (MaxPageCountPerSite < 0)
                 if (!LogMessage.AskYesNo("MaxPageCountPerSite is < 0. That will make the bot crawl through all links of the site independently on their quantity. This may consume all RAM on your comp and hang the app. Are you sure to proceed?", false))
-                    Cliver.Bot.Log.Main.Exit("MaxPageCountPerSite is < 0");
+                    Cliver.Log.Main.Exit("MaxPageCountPerSite is < 0");
         }
     }
 }

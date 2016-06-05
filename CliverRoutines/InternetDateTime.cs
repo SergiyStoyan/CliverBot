@@ -35,7 +35,7 @@ using System.Net;
 using System.Reflection;
 using System.Diagnostics;
 
-namespace Cliver.Bot
+namespace Cliver
 {
     /// <summary>
     /// Get current time from internet. Used to control test period.

@@ -32,7 +32,7 @@ namespace Cliver.Bot.Properties
         {
             if (string.IsNullOrEmpty(PreWorkDir))
             {
-                PreWorkDir = Regex.Replace(Cliver.Bot.Log.AppDir, @":.*", @":\CliverBotSessions", RegexOptions.IgnoreCase| RegexOptions.Singleline);
+                PreWorkDir = Regex.Replace(Cliver.Log.AppDir, @":.*", @":\CliverBotSessions", RegexOptions.IgnoreCase| RegexOptions.Singleline);
                 if (System.Threading.Thread.CurrentThread.GetApartmentState() == System.Threading.ApartmentState.STA)
                 {
                     if (!LogMessage.AskYesNo("A folder where the application will store log data is not specified. By default it will be created in the following path:\r\n" + PreWorkDir + "\r\nClick Yes if you agree, click No if you want to specify another location.", true, false))

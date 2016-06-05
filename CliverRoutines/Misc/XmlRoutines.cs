@@ -17,7 +17,7 @@ using System.Linq;
 using System.Threading;
 using System.Configuration;
 
-namespace Cliver.Bot
+namespace Cliver
 {
     public static class XmlRoutines
     {

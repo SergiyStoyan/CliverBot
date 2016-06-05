@@ -24,7 +24,7 @@ using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 
-namespace Cliver.Bot
+namespace Cliver
 {
     public static class ProcessRoutines
     {
@@ -47,7 +47,10 @@ namespace Cliver.Bot
                 // Wait a few seconds if contended, in case another instance
                 // of the program is still in the process of shutting down.
                 if (!GLOBAL_SINGLE_PROCESS_MUTEX.WaitOne(1000, false))
-                    LogMessage.Exit(Program.AppName + " is already running, so this instance will exit.");
+                {
+                    string name = Application.ProductName == null ? Log.EntryAssemblyName : Application.ProductName;
+                    LogMessage.Exit(name + " is already running, so this instance will exit.");
+                }
             }
             catch(Exception e)
             {

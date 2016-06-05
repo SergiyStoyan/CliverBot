@@ -17,7 +17,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Reflection;
 
-namespace Cliver.Bot
+namespace Cliver
 {
     /// <summary>
     /// Multithreaded logging routines
@@ -54,32 +54,32 @@ namespace Cliver.Bot
         }
         static Mode MODE_;
 
-        public static readonly Thread MainThread = Thread.CurrentThread;
+        public static readonly System.Threading.Thread MainThread = System.Threading.Thread.CurrentThread;
 
         /// <summary>
         /// Log belonging to the first (main) thread of the process.
         /// </summary>
-        public static ThreadLog Main
+        public static Log.Thread Main
         {
             get
             {
-                return ThreadLog.Main;
+                return Log.Thread.Main;
             }
         }
 
         public static void CloseAll()
         {
-            ThreadLog.CloseAll();
+            Log.Thread.CloseAll();
         }
 
         /// <summary>
         /// Log beloning to the current thread.
         /// </summary>
-        public static ThreadLog This
+        public static Log.Thread This
         {
             get
             {
-                return ThreadLog.This;
+                return Log.Thread.This;
             }
         }
 
@@ -90,7 +90,7 @@ namespace Cliver.Bot
         {
             get
             {
-                return ThreadLog.This.Path;
+                return Log.Thread.This.Path;
             }
         }
 
@@ -101,7 +101,7 @@ namespace Cliver.Bot
         {
             get
             {
-                return ThreadLog.This.Id;
+                return Log.Thread.This.Id;
             }
         }
 
@@ -111,7 +111,7 @@ namespace Cliver.Bot
         /// <param name="e"></param>
         public static void Error(Exception e)
         {
-            ThreadLog.This.Error(e);
+            Log.Thread.This.Error(e);
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Cliver.Bot
         /// <param name="e"></param>
         static public void Error(string message)
         {
-            ThreadLog.This.Error(message);
+            Log.Thread.This.Error(message);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace Cliver.Bot
         /// <param name="e"></param>
         static public void Trace(object message = null)
         {
-            ThreadLog.This.Trace(message);
+            Log.Thread.This.Trace(message);
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace Cliver.Bot
         /// <param name="e"></param>
         static public void Exit(string message)
         {
-            ThreadLog.This.Error(message);
+            Log.Thread.This.Error(message);
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace Cliver.Bot
         /// <param name="e"></param>
         static public void Exit(Exception e)
         {
-            ThreadLog.This.Exit(e);
+            Log.Thread.This.Exit(e);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace Cliver.Bot
         /// <param name="e"></param>
         static public void Warning(string message)
         {
-            ThreadLog.This.Warning(message);
+            Log.Thread.This.Warning(message);
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace Cliver.Bot
         /// <param name="e"></param>
         static public void Warning(Exception e)
         {
-            ThreadLog.This.Warning(e);
+            Log.Thread.This.Warning(e);
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace Cliver.Bot
         /// <param name="e"></param>
         static public void Inform(string message)
         {
-            ThreadLog.This.Inform(message);
+            Log.Thread.This.Inform(message);
         }
 
         /// <summary>
@@ -183,12 +183,12 @@ namespace Cliver.Bot
         /// <param name="e"></param>
         static public void Write(MessageType type, string message, string details = null)
         {
-            ThreadLog.This.Write(type, message, details);
+            Log.Thread.This.Write(type, message, details);
         }
 
         static public void Write(string message)
         {
-            ThreadLog.This.Write(MessageType.LOG, message);
+            Log.Thread.This.Write(MessageType.LOG, message);
         }
 
         public enum MessageType
@@ -222,7 +222,7 @@ namespace Cliver.Bot
                     break;
                 mb = sf.GetMethod();
                 dt = mb.DeclaringType;
-                if (dt != typeof(Log) && dt != typeof(ThreadLog))
+                if (dt != typeof(Log) && dt != typeof(Log.Thread))
                     break;
             }
             return "Stack: " + dt.ToString() + "::" + mb.Name + " \r\nfile: " + sf.GetFileName() + " \r\nline: " + sf.GetFileLineNumber();

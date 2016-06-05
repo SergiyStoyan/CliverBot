@@ -6,19 +6,14 @@
 //        26 September 2006
 //Copyright: (C) 2006, Sergey Stoyan
 //********************************************************************************************
-using System;
-using System.Windows.Forms;
-using System.Diagnostics;
-using System.IO;
-using System.Text;
+
 using System.Text.RegularExpressions;
-using System.Configuration;
 using System.Web;
 using System.Collections.Generic;
 
 namespace Cliver
 {
-    public class PrepareField
+    public class FieldPreparation
     {
         public class Html
         {

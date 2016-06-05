@@ -17,7 +17,7 @@ using System.Data.SqlClient;
 //using MySql.Data.MySqlClient;
 using System.Text.RegularExpressions;
 
-namespace Cliver.Bot
+namespace Cliver.Db
 {
     public class DbConnection
     {
@@ -102,13 +102,13 @@ namespace Cliver.Bot
         /// </summary>
         /// <param name="sql"></param>
         /// <returns></returns>
-        public DbCommand this[string sql]
+        public Command this[string sql]
         {
             get
             {
                 lock (sqls2commands)
                 {
-                    Cliver.Bot.DbCommand c;
+                    Command c;
                     if (!sqls2commands.TryGetValue(sql, out c))
                     {
                         c = create_command(sql);
@@ -118,15 +118,15 @@ namespace Cliver.Bot
                 }
             }
         }
-        virtual internal DbCommand create_command(string sql) { throw new Exception("Stub method is not overriden"); }
-        protected Dictionary<string, DbCommand> sqls2commands = new Dictionary<string, DbCommand>();
+        virtual internal Command create_command(string sql) { throw new Exception("Stub method is not overriden"); }
+        protected Dictionary<string, Command> sqls2commands = new Dictionary<string, Command>();
 
         /// <summary>
         /// Creates a not cached command.
         /// </summary>
         /// <param name="sql"></param>
         /// <returns></returns>
-        public DbCommand Get(string sql)
+        public Command Get(string sql)
         {
             return create_command(sql);
         }
@@ -159,7 +159,7 @@ namespace Cliver.Bot
                 c = new SqlConnection(c.ConnectionString);
                 native_connection = c;
                 c.Open();
-                Dictionary<string, DbCommand> s2cs = new Dictionary<string, DbCommand>();
+                Dictionary<string, Command> s2cs = new Dictionary<string, Command>();
                 foreach (string sql in sqls2commands.Keys)
                     s2cs[sql] = new MsSqlCommand(sql, this);
                 sqls2commands = s2cs;
@@ -167,7 +167,7 @@ namespace Cliver.Bot
             return c;
         }
 
-        override internal DbCommand create_command(string sql)
+        override internal Command create_command(string sql)
         {
             return new MsSqlCommand(sql, this);
         }

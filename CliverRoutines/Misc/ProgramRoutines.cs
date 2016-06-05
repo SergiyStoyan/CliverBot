@@ -24,7 +24,7 @@ using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 
 
-namespace Cliver.Bot
+namespace Cliver
 {
     public static class ProgramRoutines
     {

@@ -16,7 +16,7 @@ using System.Windows.Forms;
 using System.Collections;
 using System.Web;
 
-namespace Cliver.Bot
+namespace Cliver
 {
     /// <summary>
     /// Sleep not freezing the app

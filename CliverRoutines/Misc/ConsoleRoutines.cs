@@ -22,32 +22,41 @@ using System.Configuration;
 using System.Media;
 using System.Web;
 using System.Net.NetworkInformation;
+using System.Runtime.InteropServices;
 
 
-namespace Cliver.Bot
+namespace Cliver
 {
-    public static class SleepRoutines
+    public static class ConsoleRoutines
     {
-        public static object WaitForCondition(Func<object> check_condition, int mss)
+        public static bool OpenConsole()
         {
-            object o = null;
-            DateTime dt = DateTime.Now + new TimeSpan(0, 0, 0, 0, mss);
-            while (dt > DateTime.Now)
-            {
-                o = check_condition();
-                if (o != null)
-                    break;
-                Application.DoEvents();
-            }
-            return o;
+            open = AllocConsole();
+            return open;
         }
 
-        public static void Wait(int mss)
+        public static bool IsConsoleOpen
         {
-            DateTime dt = DateTime.Now + new TimeSpan(0, 0, 0, 0, mss);
-            while (dt > DateTime.Now)
-                Application.DoEvents();
-        }        
+            get
+            {
+                return open;
+            }
+        }
+        static bool open = false;
+
+        public static bool CloseConsole()
+        {
+            open = !FreeConsole();
+            return !open;
+        }
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool AllocConsole();
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool FreeConsole();
     }
 }
 

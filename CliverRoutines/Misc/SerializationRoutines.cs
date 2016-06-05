@@ -7,7 +7,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Xml;
 
-namespace Cliver.Bot
+namespace Cliver
 {
     static public class SerializationRoutines
     {

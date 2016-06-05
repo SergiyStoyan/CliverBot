@@ -14,7 +14,7 @@ using System.Threading;
 using System.Collections;
 using System.Web;
 
-namespace Cliver.Bot
+namespace Cliver
 {
     /// <summary>
     /// Miscellaneous and parsing thread-safe methods for DateTime

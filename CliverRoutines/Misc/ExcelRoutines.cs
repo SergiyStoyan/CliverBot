@@ -3,7 +3,7 @@
 //using System.Text;
 //using Excel = Microsoft.Office.Interop.Excel;
 
-//namespace Cliver.Bot
+//namespace Cliver
 //{
 //    /// <summary>
 //    /// Safe interface to work with Microsoft.Office.Interop.Excel

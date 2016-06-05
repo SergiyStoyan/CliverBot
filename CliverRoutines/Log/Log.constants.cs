@@ -17,13 +17,23 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Reflection;
 
-namespace Cliver.Bot
+namespace Cliver
 {
     /// <summary>
     /// Multithreaded logging routines
     /// </summary>
     public static partial class Log
     {
+        public static void Initialize(int delete_logs_older_days, string pre_work_dir, bool write_log)
+        {
+            Log.delete_logs_older_days = delete_logs_older_days;
+            Log.pre_work_dir = pre_work_dir;
+            Log.write_log = write_log;
+        }
+        static int delete_logs_older_days = 10;
+        static string pre_work_dir = null;
+        static bool write_log;
+
         static object lock_object = new object();
 
         static Log()
@@ -42,7 +52,7 @@ namespace Cliver.Bot
             }
             AppDir = AppDomain.CurrentDomain.BaseDirectory;
 
-            AppCommonDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CliverSoft\\" + Cliver.Bot.Log.EntryAssemblyName;
+            AppCommonDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CliverSoft\\" + Cliver.Log.EntryAssemblyName;
 
             //Log.DeleteOldLogs();
         }
@@ -92,12 +102,11 @@ namespace Cliver.Bot
                 {
                     lock (lock_object)
                     {
-                        if (string.IsNullOrEmpty(Properties.Log.Default.PreWorkDir))
-                            work_dir = Log.AppDir + @"\" + Log.EntryAssemblyName + WorkDirPrefix;
-                        else if (!Properties.Log.Default.PreWorkDir.Contains(":"))
-                            work_dir = Log.AppDir + @"\" + Properties.Log.Default.PreWorkDir + @"\" + Log.EntryAssemblyName + WorkDirPrefix;
-                        else
-                            work_dir = Properties.Log.Default.PreWorkDir + @"\" + Log.EntryAssemblyName + WorkDirPrefix;
+                        if (string.IsNullOrEmpty(pre_work_dir))
+                            pre_work_dir = Log.EntryAssemblyName + WorkDirPrefix;
+                        if (!pre_work_dir.Contains(":"))
+                            pre_work_dir = Log.AppDir + @"\" + pre_work_dir;
+                        work_dir = pre_work_dir + @"\" + Log.EntryAssemblyName + WorkDirPrefix;
 
                         DirectoryInfo di = new DirectoryInfo(work_dir);
                         if (!di.Exists)
@@ -198,7 +207,7 @@ namespace Cliver.Bot
         /// <summary>
         /// Used to clear all session parameters in order to start a new session
         /// </summary>
-        internal static void ClearSession()
+        public static void ClearSession()
         {
             lock (lock_object)
             {
@@ -226,9 +235,9 @@ namespace Cliver.Bot
                 ignore_delete_old_logs = true;
                 try
                 {
-                    if (Properties.Log.Default.DeleteLogsOlderDays > 0)
+                    if (delete_logs_older_days > 0)
                     {
-                        DateTime FirstLogDate = DateTime.Now.AddDays(-Properties.Log.Default.DeleteLogsOlderDays);
+                        DateTime FirstLogDate = DateTime.Now.AddDays(-delete_logs_older_days);
 
                         DirectoryInfo di = new DirectoryInfo(Log.WorkDir);
                         if (!di.Exists)

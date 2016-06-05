@@ -140,12 +140,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseForm\BaseForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BaseForm\BaseForm.designer.cs">
-      <DependentUpon>BaseForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="BotEngine\BotCycle.Api.cs" />
     <Compile Include="BotEngine\BotCycle.cs" />
     <Compile Include="BotEngine\Counter.cs" />
@@ -161,22 +155,6 @@
     <Compile Include="BotEngine\TagItem.cs" />
     <Compile Include="BotEngine\WorkItem.cs" />
     <Compile Include="BotEngine\WorkItemDictionary.cs" />
-    <Compile Include="DbCommand.cs" />
-    <Compile Include="DbConnection.cs" />
-    <Compile Include="Misc\DbSettings.cs" />
-    <Compile Include="Misc\PrepareField.cs" />
-    <Compile Include="InternetDateTime.cs" />
-    <Compile Include="BaseProgram.cs" />
-    <Compile Include="BaseForm\Message.cs" />
-    <Compile Include="BaseForm\MessageForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BaseForm\MessageForm.Designer.cs">
-      <DependentUpon>MessageForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Misc\Enum.cs" />
-    <Compile Include="Misc\ProgramRoutines.cs" />
-    <Compile Include="Misc\SerializationRoutines.cs" />
     <Compile Include="Properties\Input.cs" />
     <Compile Include="Properties\Log.cs" />
     <Compile Include="Properties\Output.cs" />
@@ -242,21 +220,7 @@
       <DependentUpon>App.settings</DependentUpon>
     </Compile>
     <Compile Include="Config.cs" />
-    <Compile Include="Log\Log.constants.cs" />
-    <Compile Include="Log\Log.static.cs" />
-    <Compile Include="Log\Log.thread.cs" />
-    <Compile Include="Log\LogMessage.cs" />
-    <Compile Include="Misc\ProcessRoutines.cs" />
-    <Compile Include="Misc\ReflectionRoutines.cs" />
-    <Compile Include="Misc\XmlRoutines.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Misc\ConsoleRoutine.cs" />
-    <Compile Include="Misc\ThreadRoutines.cs" />
-    <Compile Include="Misc\StringByteRoutines.cs" />
-    <Compile Include="Misc\ExcelRoutines.cs" />
-    <Compile Include="Misc\SleepRoutines.cs" />
-    <Compile Include="Misc\DateTimeRoutines.cs" />
-    <Compile Include="Misc\PathRoutines.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -269,16 +233,7 @@
     <Compile Include="WebRoutines\Spider.cs" />
     <Compile Include="WebRoutines\Spider.static.cs" />
     <Compile Include="WebRoutines\WebRoutine.cs" />
-    <Compile Include="Win32\Win32.cs" />
-    <Compile Include="Win32\Win32Messages.cs" />
     <Compile Include="Win32\WindowInterceptor.cs" />
-    <EmbeddedResource Include="BaseForm\BaseForm.resx">
-      <DependentUpon>BaseForm.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BaseForm\MessageForm.resx">
-      <DependentUpon>MessageForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>
@@ -356,6 +311,13 @@
       <ProductName>SQL Server Compact 4.0 SP1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="CliverRoutines\CliverRoutines.csproj">
+      <Project>{aca94788-bed1-4b8e-94ef-e54293e8d139}</Project>
+      <Name>CliverRoutines</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

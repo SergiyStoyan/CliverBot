@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using Win32;
 using System.Windows.Forms;
 using System.Collections;
+using Cliver;
 
 namespace Cliver.Bot
 {    
@@ -19,7 +20,7 @@ namespace Cliver.Bot
         static Win32.Functions.HookProc cbf = new Win32.Functions.HookProc(wnd_hook_proc);
 
         static IntPtr[] owner_windows = new IntPtr[0];
-        static Dictionary<IntPtr, ThreadLog> owner_window_logs = new Dictionary<IntPtr,ThreadLog>();
+        static Dictionary<IntPtr, Log.Thread> owner_window_logs = new Dictionary<IntPtr, Log.Thread>();
 
         /// <summary>
         /// Add new owner window to be traced for dialog box creating

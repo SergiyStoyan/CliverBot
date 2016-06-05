@@ -13,10 +13,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Text;
 //using System.Configuration;
-using Cliver.Bot;
+using Cliver;
 using System.Text.RegularExpressions;
 
-namespace Cliver.Bot
+namespace Cliver
 {
     public class LogMessage
     {
