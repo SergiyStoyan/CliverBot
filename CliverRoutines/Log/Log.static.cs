@@ -59,27 +59,27 @@ namespace Cliver
         /// <summary>
         /// Log belonging to the first (main) thread of the process.
         /// </summary>
-        public static Log.Thread Main
+        public static ThreadLog Main
         {
             get
             {
-                return Log.Thread.Main;
+                return ThreadLog.Main;
             }
         }
 
         public static void CloseAll()
         {
-            Log.Thread.CloseAll();
+            ThreadLog.CloseAll();
         }
 
         /// <summary>
         /// Log beloning to the current thread.
         /// </summary>
-        public static Log.Thread This
+        public static ThreadLog This
         {
             get
             {
-                return Log.Thread.This;
+                return ThreadLog.This;
             }
         }
 
@@ -90,7 +90,7 @@ namespace Cliver
         {
             get
             {
-                return Log.Thread.This.Path;
+                return ThreadLog.This.Path;
             }
         }
 
@@ -101,7 +101,7 @@ namespace Cliver
         {
             get
             {
-                return Log.Thread.This.Id;
+                return ThreadLog.This.Id;
             }
         }
 
@@ -111,7 +111,7 @@ namespace Cliver
         /// <param name="e"></param>
         public static void Error(Exception e)
         {
-            Log.Thread.This.Error(e);
+            ThreadLog.This.Error(e);
         }
 
         /// <summary>
@@ -120,7 +120,7 @@ namespace Cliver
         /// <param name="e"></param>
         static public void Error(string message)
         {
-            Log.Thread.This.Error(message);
+            ThreadLog.This.Error(message);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace Cliver
         /// <param name="e"></param>
         static public void Trace(object message = null)
         {
-            Log.Thread.This.Trace(message);
+            ThreadLog.This.Trace(message);
         }
 
         /// <summary>
@@ -138,7 +138,7 @@ namespace Cliver
         /// <param name="e"></param>
         static public void Exit(string message)
         {
-            Log.Thread.This.Error(message);
+            ThreadLog.This.Error(message);
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace Cliver
         /// <param name="e"></param>
         static public void Exit(Exception e)
         {
-            Log.Thread.This.Exit(e);
+            ThreadLog.This.Exit(e);
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace Cliver
         /// <param name="e"></param>
         static public void Warning(string message)
         {
-            Log.Thread.This.Warning(message);
+            ThreadLog.This.Warning(message);
         }
 
         /// <summary>
@@ -165,7 +165,7 @@ namespace Cliver
         /// <param name="e"></param>
         static public void Warning(Exception e)
         {
-            Log.Thread.This.Warning(e);
+            ThreadLog.This.Warning(e);
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace Cliver
         /// <param name="e"></param>
         static public void Inform(string message)
         {
-            Log.Thread.This.Inform(message);
+            ThreadLog.This.Inform(message);
         }
 
         /// <summary>
@@ -183,12 +183,12 @@ namespace Cliver
         /// <param name="e"></param>
         static public void Write(MessageType type, string message, string details = null)
         {
-            Log.Thread.This.Write(type, message, details);
+            ThreadLog.This.Write(type, message, details);
         }
 
         static public void Write(string message)
         {
-            Log.Thread.This.Write(MessageType.LOG, message);
+            ThreadLog.This.Write(MessageType.LOG, message);
         }
 
         public enum MessageType
@@ -222,7 +222,7 @@ namespace Cliver
                     break;
                 mb = sf.GetMethod();
                 dt = mb.DeclaringType;
-                if (dt != typeof(Log) && dt != typeof(Log.Thread))
+                if (dt != typeof(Log) && dt != typeof(ThreadLog))
                     break;
             }
             return "Stack: " + dt.ToString() + "::" + mb.Name + " \r\nfile: " + sf.GetFileName() + " \r\nline: " + sf.GetFileLineNumber();
