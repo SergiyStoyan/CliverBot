@@ -27,13 +27,12 @@ namespace Cliver
         public static void Initialize(string pre_work_dir, bool write_log, int delete_logs_older_days)
         {
             Log.pre_work_dir = pre_work_dir;
-            Log.WriteLog = write_log; 
+            Log.write_log = write_log; 
             Log.delete_logs_older_days = delete_logs_older_days;
         }
         static string pre_work_dir = null;
         static int delete_logs_older_days = 10;
-
-        static public bool WriteLog = true;
+        static bool write_log = true;
 
         static object lock_object = new object();
 
@@ -104,10 +103,14 @@ namespace Cliver
                     lock (lock_object)
                     {
                         if (string.IsNullOrEmpty(pre_work_dir))
-                            pre_work_dir = Log.EntryAssemblyName + WorkDirPrefix;
-                        if (!pre_work_dir.Contains(":"))
-                            pre_work_dir = Log.AppDir + @"\" + pre_work_dir;
-                        work_dir = pre_work_dir + @"\" + Log.EntryAssemblyName + WorkDirPrefix;
+                            work_dir = Log.AppDir + @"\" + Log.EntryAssemblyName + WorkDirPrefix;
+                        else
+                        {
+                            if (!pre_work_dir.Contains(":"))
+                                work_dir = Log.AppDir + @"\" + pre_work_dir + @"\" + Log.EntryAssemblyName + WorkDirPrefix;
+                            else
+                                work_dir = pre_work_dir + @"\" + Log.EntryAssemblyName + WorkDirPrefix;
+                        }
 
                         DirectoryInfo di = new DirectoryInfo(work_dir);
                         if (!di.Exists)
