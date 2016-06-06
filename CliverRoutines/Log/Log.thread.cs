@@ -74,7 +74,7 @@ namespace Cliver
                             }
 
                             string log_file;
-                            switch (Log.MODE)
+                            switch (Log.mode)
                             {
                                 case Log.Mode.ONLY_LOG:
                                     log_file = Log.WorkDir + @"\" + Log.EntryAssemblyName;
@@ -83,7 +83,7 @@ namespace Cliver
                                     log_file = Log.SessionDir + @"\" + Log.EntryAssemblyName;
                                     break;
                                 default:
-                                    throw new Exception("Unknown LOGGING_MODE:" + Log.MODE);
+                                    throw new Exception("Unknown LOGGING_MODE:" + Log.mode);
                             }
                             if (log_id < 0)
                                 log_file += "_" + Log.TimeMark + ".log";

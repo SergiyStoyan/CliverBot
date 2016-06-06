@@ -24,16 +24,6 @@ namespace Cliver
     /// </summary>
     public static partial class Log
     {
-        public static void Initialize(string pre_work_dir, bool write_log, int delete_logs_older_days)
-        {
-            Log.pre_work_dir = pre_work_dir;
-            Log.write_log = write_log; 
-            Log.delete_logs_older_days = delete_logs_older_days;
-        }
-        static string pre_work_dir = null;
-        static int delete_logs_older_days = 10;
-        static bool write_log = true;
-
         static object lock_object = new object();
 
         static Log()
@@ -134,7 +124,7 @@ namespace Cliver
                 {
                     lock (lock_object)
                     {
-                        if (Log.MODE != Mode.SESSIONS)
+                        if (Log.mode != Mode.SESSIONS)
                             throw new Exception("SessionDir cannot be used while LOGGING_MODE != Log.Mode.SESSIONS");
 
                         session_dir = WorkDir + @"\Session" + "_" + Log.TimeMark;
@@ -248,7 +238,7 @@ namespace Cliver
                             return;
 
                         string alert;
-                        switch (MODE)
+                        switch (Log.mode)
                         {
                             case Mode.SESSIONS:
                                 alert = "Session data including caches and logs older than " + FirstLogDate.ToString() + " should be deleted along the specified threshold.\n Delete?";
@@ -301,7 +291,7 @@ namespace Cliver
                                 }
                                 break;
                             default:
-                                throw new Exception("Unknown LOGGING_MODE:" + MODE);
+                                throw new Exception("Unknown LOGGING_MODE:" + Log.mode);
                         }
                     }
                 }

@@ -36,7 +36,7 @@ namespace Cliver.Bot
 
         static Program()
         {
-            Log.Initialize(Cliver.Bot.Properties.Log.Default.PreWorkDir, Cliver.Bot.Properties.Log.Default.WriteLog, Cliver.Bot.Properties.Log.Default.DeleteLogsOlderDays);
+            Log.Initialize(Log.Mode.SESSIONS, Cliver.Bot.Properties.Log.Default.PreWorkDir, Cliver.Bot.Properties.Log.Default.WriteLog, Cliver.Bot.Properties.Log.Default.DeleteLogsOlderDays);
 
             //Mode = (!ProgramRoutines.IsParameterSet(CommandLineParameters.NOT_START) && (ProgramRoutines.IsParameterSet(CommandLineParameters.AUTOMATIC) || Properties.General.Default.RunSilently)) ? ProgramMode.AUTOMATIC : ProgramMode.DIALOG;
             Mode = ProgramRoutines.IsParameterSet(CommandLineParameters.AUTOMATIC) ? ProgramMode.AUTOMATIC : ProgramMode.DIALOG;

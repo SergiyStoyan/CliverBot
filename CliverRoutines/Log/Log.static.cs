@@ -24,6 +24,21 @@ namespace Cliver
     /// </summary>
     public static partial class Log
     {
+        public static void Initialize(Mode mode, string pre_work_dir, bool write_log, int delete_logs_older_days)
+        {
+            if (work_dir != null)
+                //return;
+                throw new Exception("Initialize should not be called when log is open.");
+            Log.mode = mode;
+            Log.pre_work_dir = pre_work_dir;
+            Log.write_log = write_log;
+            Log.delete_logs_older_days = delete_logs_older_days;
+        }
+        static string pre_work_dir = null;
+        static int delete_logs_older_days = 10;
+        static bool write_log = true;
+        static Mode mode = Mode.ONLY_LOG;
+
         public enum Mode
         {
             /// <summary>
@@ -35,25 +50,7 @@ namespace Cliver
             /// </summary>
             ONLY_LOG
         }
-
-        /// <summary>
-        /// Must be set as first referencing Log in the code.
-        /// </summary>
-        public static Mode MODE
-        {
-            set
-            {
-                if (session_dir != null || work_dir != null)
-                    throw new Exception("LOG.MODE can be set only in first referencing Log in code.");
-                MODE_ = value;
-            }
-            get
-            {
-                return MODE_;
-            }
-        }
-        static Mode MODE_;
-
+        
         public static readonly System.Threading.Thread MainThread = System.Threading.Thread.CurrentThread;
 
         /// <summary>

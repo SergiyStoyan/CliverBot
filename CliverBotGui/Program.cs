@@ -23,8 +23,6 @@ namespace Cliver.BotGui
     {
         static Program()
         {
-            Log.Initialize(Cliver.Bot.Properties.Log.Default.PreWorkDir, Cliver.Bot.Properties.Log.Default.WriteLog, Cliver.Bot.Properties.Log.Default.DeleteLogsOlderDays);
-            Config.Initialize();
         }
 
         /// <summary>
@@ -45,6 +43,7 @@ namespace Cliver.BotGui
                     LogMessage.Output2Console = false;
                     Cliver.Bot.Program.Initialize();
                     Log.Main.Inform("Configure mode. Run is disabled.");
+                    Config.Initialize();
                     Application.Run(MainForm.This);
                     return;
                 }
@@ -62,6 +61,7 @@ namespace Cliver.BotGui
 
                 LogMessage.Output2Console = false;
                 Cliver.Bot.Program.Initialize();
+                Config.Initialize();
                 Application.Run(MainForm.This);
             }
             catch (Exception e)
