@@ -7,8 +7,7 @@
     <ProjectGuid>{ACA94788-BED1-4B8E-94EF-E54293E8D139}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>3RINGS~1.ICO</ApplicationIcon>
     <AssemblyKeyContainerName>
     </AssemblyKeyContainerName>
     <AssemblyName>CliverRoutines</AssemblyName>
@@ -164,6 +163,7 @@
     <Compile Include="Misc\SleepRoutines.cs" />
     <Compile Include="Misc\DateTimeRoutines.cs" />
     <Compile Include="Misc\PathRoutines.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Win32\Win32.cs" />
     <Compile Include="Win32\Win32Messages.cs" />
     <EmbeddedResource Include="BaseForm\BaseForm.resx">
@@ -207,7 +207,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
+    <Content Include="3RINGS~1.ICO" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
