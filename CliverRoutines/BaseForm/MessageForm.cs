@@ -19,7 +19,7 @@ namespace Cliver
     /// <summary>
     /// Dynamic dialog box with many answer cases
     /// </summary>
-    public partial class MessageForm : Form
+    public partial class MessageForm : BaseForm
     {
         public MessageForm(string caption, Icon icon, string message, string[] buttons, int default_button, Form owner)
         {

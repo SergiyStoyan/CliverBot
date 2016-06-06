@@ -28,7 +28,7 @@ namespace Cliver.Bot
             Reload();
         }
         static Assembly bot_assembly = Assembly.Load("CliverBot");
-        static Assembly routines_assembly = Assembly.Load("CliverRoutines");
+        //static Assembly routines_assembly = Assembly.Load("CliverRoutines");
 
         public static void Initialize()
         {
@@ -41,9 +41,9 @@ namespace Cliver.Bot
             FieldInfo fi = get_setting_for_namespace(bot_assembly, "Cliver.Bot.Properties", section);
             if (set_(fi, parameter, value, out error))
                 return;
-            fi = get_setting_for_namespace(routines_assembly, "Cliver.Properties", section);
-            if (set_(fi, parameter, value, out error))
-                return;
+            //fi = get_setting_for_namespace(routines_assembly, "Cliver.Properties", section);
+            //if (set_(fi, parameter, value, out error))
+            //    return;
             fi = get_setting_for_namespace(Assembly.GetEntryAssembly(), CustomizationApi.CUSTOM_NAMESPACE, section);
             if (set_(fi, parameter, value, out error))
                 return;
@@ -88,9 +88,9 @@ namespace Cliver.Bot
             FieldInfo fi = get_setting_for_namespace(bot_assembly, "Cliver.Bot.Properties", section);
             if (get_(fi, parameter, out value, out error))
                 return value;
-            fi = get_setting_for_namespace(routines_assembly, "Cliver.Properties", section);
-            if (get_(fi, parameter, out value, out error))
-                return value;
+            //fi = get_setting_for_namespace(routines_assembly, "Cliver.Properties", section);
+            //if (get_(fi, parameter, out value, out error))
+            //    return value;
             fi = get_setting_for_namespace(Assembly.GetEntryAssembly(), CustomizationApi.CUSTOM_NAMESPACE, section);
             if (get_(fi, parameter, out value, out error))
                 return value;
