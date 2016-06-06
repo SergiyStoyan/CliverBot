@@ -47,9 +47,7 @@ namespace Cliver.BotGui
             {
                 this.Invoke(() => {
                     on_session_closing();
-                    if (Program.Mode == Program.ProgramMode.AUTOMATIC
-                        || Program.Mode == Program.ProgramMode.WINDOWLESS
-                        )
+                    if (Program.Mode == Program.ProgramMode.AUTOMATIC)
                         System.Windows.Forms.Application.Exit();
                 });
             }

@@ -29,8 +29,6 @@ namespace Cliver.Bot
         {
             Log.Initialize(Log.Mode.SESSIONS, Cliver.Bot.Properties.Log.Default.PreWorkDir, Cliver.Bot.Properties.Log.Default.WriteLog, Cliver.Bot.Properties.Log.Default.DeleteLogsOlderDays);
 
-            //Mode = (!ProgramRoutines.IsParameterSet(CommandLineParameters.NOT_START) && (ProgramRoutines.IsParameterSet(CommandLineParameters.AUTOMATIC) || Properties.General.Default.RunSilently)) ? ProgramMode.AUTOMATIC : ProgramMode.DIALOG;
-            
             LogMessage.DisableStumblingDialogs = true;
 
             if (ProgramRoutines.IsParameterSet(CommandLineParameters.PRODUCTION))

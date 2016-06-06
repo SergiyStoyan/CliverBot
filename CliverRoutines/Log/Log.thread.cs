@@ -24,8 +24,6 @@ namespace Cliver
         {
             static Thread()
             {
-                //to avoid looping if calling 
-                Log.DeleteOldLogs();
             }
 
             Thread(int id, string log_file)
