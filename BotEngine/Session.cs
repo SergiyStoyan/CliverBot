@@ -193,12 +193,13 @@ namespace Cliver.Bot
                 }
 
                 InputItemQueue.Close();
-                Cliver.Log.ClearSession();
                 FileWriter.ClearSession();
                 Cache.ClearSession();
                 Proxies.ClearSession();
                 WebRoutine.ClearSession();
-                              
+
+                Log.Main.Write("End of session");//test //the issue is that in automatic mode it sometimes hangs on after Closing.Invoke(); and does not exit
+
                 if (Cliver.Bot.Program.Mode == Cliver.Bot.Program.ProgramMode.AUTOMATIC)
                 {
                     try
@@ -214,6 +215,8 @@ namespace Cliver.Bot
                         Environment.Exit(1);
                     }
                 }
+
+                Cliver.Log.ClearSession();
 
                 This_ = null;
             }

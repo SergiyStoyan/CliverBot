@@ -41,7 +41,10 @@ namespace Cliver.Bot
 
         internal static void Close()
         {
-            item_keys.Clear();
+            lock (item_keys)
+            {
+                item_keys.Clear();
+            }
         }
 
         /// <summary>

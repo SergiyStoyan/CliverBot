@@ -124,7 +124,7 @@ namespace Cliver.Bot
                 try
                 {
                     file_abs_path = get_file_abs_path(file, add_time_mark, append_output);
-                    TW = new StreamWriter(file_abs_path, append_output);//, Encoding.Unicode);//System.Text.Encoding.GetEncoding("ISO-8859-1")
+                    tw = new StreamWriter(file_abs_path, append_output);//, Encoding.Unicode);//System.Text.Encoding.GetEncoding("ISO-8859-1")
                 }
                 catch (Exception e)
                 {
@@ -137,7 +137,7 @@ namespace Cliver.Bot
         bool append_output = false;
         bool add_time_mark = true;
         int max_file_size = 0;
-        TextWriter TW = null;
+        TextWriter tw = null;
         string file_abs_path = null;
 
         /// <summary>
@@ -150,8 +150,8 @@ namespace Cliver.Bot
                 if (_this != null)
                 {
                     _this.Close();
+                    _this = null;
                 }
-                _this = null;
             }
         }
 
@@ -162,11 +162,10 @@ namespace Cliver.Bot
         {
             lock (this)
             {
-                if (TW != null)
+                if (tw != null)
                 {
-                    TW.Close();
-                    TW.Dispose();
-                    TW = null;
+                    tw.Close();
+                    tw = null;
                 }
             }
         }
@@ -184,13 +183,13 @@ namespace Cliver.Bot
                         FileInfo g = new FileInfo(file_abs_path);
                         if (g.Length >= max_file_size)
                         {
-                            TW.Close();
+                            tw.Close();
                             open_file(); 
                         }                        
                     }
-                   
-                    TW.Write(str);
-                    TW.Flush();
+
+                    tw.Write(str);
+                    tw.Flush();
                 }
                 catch (Exception e)
                 {

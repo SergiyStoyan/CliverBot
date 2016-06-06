@@ -53,7 +53,7 @@ namespace Cliver.Bot
         /// </summary>
         internal static int page_number = 0;
 
-        internal int get_page_number()
+        internal int get_next_page_number()
         {
             lock (static_lock_object)
             {
@@ -64,7 +64,10 @@ namespace Cliver.Bot
 
         internal static void ClearSession()
         {
-            page_number = 0;
+            lock (static_lock_object)
+            {
+                page_number = 0;
+            }
         }
 
         /// <summary>

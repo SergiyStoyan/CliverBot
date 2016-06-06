@@ -494,7 +494,7 @@ namespace Cliver.Bot
                     }
                 }
 
-                Cache.CacheDownloadedFile(browser.Url.AbsoluteUri, null, e.Url.AbsoluteUri, HtmlResult, get_page_number(), cycle_identifier + "_ie", WebRoutineStatus.OK);
+                Cache.CacheDownloadedFile(browser.Url.AbsoluteUri, null, e.Url.AbsoluteUri, HtmlResult, get_next_page_number(), cycle_identifier + "_ie", WebRoutineStatus.OK);
                 //IE_result = true;
             }
             catch (ThreadAbortException)

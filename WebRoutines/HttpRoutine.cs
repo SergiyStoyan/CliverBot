@@ -365,7 +365,7 @@ namespace Cliver.Bot
                 bool content_is_text = false;
                 if (Regex.IsMatch(HWResponse.ContentType, "text|json|xml", RegexOptions.Compiled | RegexOptions.IgnoreCase))
                     content_is_text = true;
-                CachedFile = Cache.CacheDownloadedFile(content_is_text, http_request.Url, http_request.PostString, ResponseUrl, BinaryResult, get_page_number(), cycle_identifier, web_routine_status);
+                CachedFile = Cache.CacheDownloadedFile(content_is_text, http_request.Url, http_request.PostString, ResponseUrl, BinaryResult, get_next_page_number(), cycle_identifier, web_routine_status);
 
                 return true;
             }
