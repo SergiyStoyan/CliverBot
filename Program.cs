@@ -12,7 +12,6 @@ namespace Cliver.Bot
 {
     public class CommandLineParameters : ProgramRoutines.CommandLineParameters
     {
-        public static readonly CommandLineParameters AUTOMATIC = new CommandLineParameters("-automatic");
         public static readonly CommandLineParameters PRODUCTION = new CommandLineParameters("-production");
         public static readonly CommandLineParameters NOT_RESTORE_SESSION = new CommandLineParameters("-not_restore_session");
 
@@ -21,14 +20,6 @@ namespace Cliver.Bot
     
     public static class Program
     {
-        public enum ProgramMode
-        {
-            AUTOMATIC,
-            DIALOG
-        }
-
-        static readonly public ProgramMode Mode;
-
         public static void Initialize()
         {
             //to force static constructor
@@ -39,9 +30,8 @@ namespace Cliver.Bot
             Log.Initialize(Log.Mode.SESSIONS, Cliver.Bot.Properties.Log.Default.PreWorkDir, Cliver.Bot.Properties.Log.Default.WriteLog, Cliver.Bot.Properties.Log.Default.DeleteLogsOlderDays);
 
             //Mode = (!ProgramRoutines.IsParameterSet(CommandLineParameters.NOT_START) && (ProgramRoutines.IsParameterSet(CommandLineParameters.AUTOMATIC) || Properties.General.Default.RunSilently)) ? ProgramMode.AUTOMATIC : ProgramMode.DIALOG;
-            Mode = ProgramRoutines.IsParameterSet(CommandLineParameters.AUTOMATIC) ? ProgramMode.AUTOMATIC : ProgramMode.DIALOG;
-            //Mode = ProgramMode.AUTOMATIC;
-            LogMessage.DisableStumblingDialogs = Mode == ProgramMode.AUTOMATIC;
+            
+            LogMessage.DisableStumblingDialogs = true;
 
             if (ProgramRoutines.IsParameterSet(CommandLineParameters.PRODUCTION))
             {
@@ -66,8 +56,7 @@ namespace Cliver.Bot
             AppDomain.CurrentDomain.UnhandledException += delegate(object sender, UnhandledExceptionEventArgs args)
             {
                 Exception e = (Exception)args.ExceptionObject;
-                Log.Error(e);
-                Environment.Exit(0);
+                Log.Main.Exit(e);
             };
         }
 

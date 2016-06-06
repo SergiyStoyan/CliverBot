@@ -26,9 +26,10 @@ namespace Cliver
     {
         public static void Initialize(Mode mode, string pre_work_dir, bool write_log, int delete_logs_older_days)
         {
-            if (work_dir != null)
+            Log.ClearSession();
+            //if (work_dir != null)
                 //return;
-                throw new Exception("Initialize should not be called when log is open.");
+            //    throw new Exception("Initialize should not be called when log is open.");
             Log.mode = mode;
             Log.pre_work_dir = pre_work_dir;
             Log.write_log = write_log;

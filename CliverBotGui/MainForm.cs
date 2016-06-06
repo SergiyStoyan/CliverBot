@@ -47,6 +47,10 @@ namespace Cliver.BotGui
             {
                 this.Invoke(() => {
                     on_session_closing();
+                    if (Program.Mode == Program.ProgramMode.AUTOMATIC
+                        || Program.Mode == Program.ProgramMode.WINDOWLESS
+                        )
+                        System.Windows.Forms.Application.Exit();
                 });
             }
             catch (Exception e)
@@ -95,7 +99,7 @@ namespace Cliver.BotGui
             // Progress.Enabled = false; 
             progressBar.Value = 0;
 
-            if (Cliver.Bot.Program.Mode == Bot.Program.ProgramMode.AUTOMATIC)
+            if (Program.Mode == Program.ProgramMode.AUTOMATIC)
             {
                 this.WindowState = FormWindowState.Minimized;
                 start_session();
@@ -185,7 +189,7 @@ namespace Cliver.BotGui
             catch (Exception e)
             {
                 Session.Close();
-                if (Cliver.Bot.Program.Mode == Bot.Program.ProgramMode.AUTOMATIC)
+                if (Program.Mode == Program.ProgramMode.AUTOMATIC)
                     LogMessage.Exit(e);
                 else
                     LogMessage.Error(e);
@@ -200,6 +204,8 @@ namespace Cliver.BotGui
             {
                 Session.Start();
 
+                Log.Main.Inform("Mode: " + Program.Mode);
+
                 if (Session.This != null)
                     if (Session.This.Restored)
                         DisplayStatus2("Session", "started: " + Session.This.StartTime.ToString("dd-MM-yy HH:mm:ss") + ", restored: " + Session.This.RestoreTime.ToString("dd-MM-yy HH:mm:ss"));
@@ -210,7 +216,7 @@ namespace Cliver.BotGui
             {
                 if (!(e is ThreadAbortException))
                 {
-                    if (Cliver.Bot.Program.Mode == Bot.Program.ProgramMode.AUTOMATIC)
+                    if (Program.Mode == Program.ProgramMode.AUTOMATIC)
                         LogMessage.Exit(e);
                     else
                         LogMessage.Error(e);

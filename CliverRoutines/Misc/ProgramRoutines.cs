@@ -47,7 +47,7 @@ namespace Cliver
 
         static public bool IsParameterSet<T>(T parameter) where T : CommandLineParameters
         {
-            return Regex.IsMatch(Environment.CommandLine, @"\s" + parameter.Value, RegexOptions.IgnoreCase);
+            return Regex.IsMatch(Environment.CommandLine, @"\s" + parameter.Value + @"([^\w]|$)", RegexOptions.IgnoreCase);
         }
 
         public static bool IsWebContext

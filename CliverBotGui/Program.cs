@@ -15,14 +15,43 @@ namespace Cliver.BotGui
     {
         public static readonly CommandLineParameters WINDOWLESS = new CommandLineParameters("-windowless");
         public static readonly CommandLineParameters CONFIGURE = new CommandLineParameters("-configure");//used only to edit settings while it cannot perform
+        public static readonly CommandLineParameters AUTOMATIC = new CommandLineParameters("-automatic");
 
         public CommandLineParameters(string value) : base(value) { }
     }
 
     public static class Program
     {
+        public enum ProgramMode
+        {
+            AUTOMATIC,
+            DIALOG, 
+            CONFIGURE,
+            WINDOWLESS
+        }
+
+        static readonly public ProgramMode Mode;
+
         static Program()
         {
+            Cliver.Bot.Program.Initialize();
+
+            if (ProgramRoutines.IsParameterSet(CommandLineParameters.CONFIGURE))
+            {
+                Mode = ProgramMode.CONFIGURE;
+                return;
+            }
+            if (ProgramRoutines.IsParameterSet(CommandLineParameters.WINDOWLESS))
+            {
+                Mode = ProgramMode.WINDOWLESS;
+                return;
+            }
+            if (ProgramRoutines.IsParameterSet(CommandLineParameters.AUTOMATIC))
+            {
+                Mode = ProgramMode.AUTOMATIC;
+                return;
+            }
+            Mode = ProgramMode.DIALOG;
         }
 
         /// <summary>
@@ -38,31 +67,34 @@ namespace Cliver.BotGui
         {
             try
             {
-                if (ProgramRoutines.IsParameterSet(CommandLineParameters.CONFIGURE))
+                switch (Mode)
                 {
-                    LogMessage.Output2Console = false;
-                    Cliver.Bot.Program.Initialize();
-                    Log.Main.Inform("Configure mode. Run is disabled.");
-                    Config.Initialize();
-                    Application.Run(MainForm.This);
-                    return;
+                    case ProgramMode.AUTOMATIC:
+                        LogMessage.Output2Console = false;
+                        LogMessage.DisableStumblingDialogs = true;
+                        Config.Initialize();
+                        Application.Run(MainForm.This);
+                        return;
+                    case ProgramMode.WINDOWLESS:
+                        LogMessage.Output2Console = true;
+                        LogMessage.DisableStumblingDialogs = true;
+                        Cliver.Bot.Program.Run();
+                        return;
+                    case ProgramMode.CONFIGURE:
+                        LogMessage.Output2Console = false;
+                        LogMessage.DisableStumblingDialogs = false;
+                        Config.Initialize();
+                        Application.Run(MainForm.This);
+                        return;
+                    case ProgramMode.DIALOG:
+                        LogMessage.Output2Console = false;
+                        LogMessage.DisableStumblingDialogs = false;
+                        Config.Initialize();
+                        Application.Run(MainForm.This);
+                        break;
+                    default:
+                        throw new Exception("Unknown mode: " + Mode);
                 }
-
-                if (Bot.Properties.App.Default.SingleProcessOnly)
-                    ProcessRoutines.RunSingleProcessOnly();
-
-                if (ProgramRoutines.IsParameterSet(CommandLineParameters.WINDOWLESS))
-                {
-                    LogMessage.Output2Console = true;
-                    Log.Main.Inform("Windowless mode.");
-                    Cliver.Bot.Program.Run();
-                    return;
-                }
-
-                LogMessage.Output2Console = false;
-                Cliver.Bot.Program.Initialize();
-                Config.Initialize();
-                Application.Run(MainForm.This);
             }
             catch (Exception e)
             {
