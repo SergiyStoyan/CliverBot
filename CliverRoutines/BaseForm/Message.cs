@@ -27,6 +27,11 @@ namespace Cliver
         /// </summary>
         public static bool ShowInTaskbar = true;
 
+        /// <summary>
+        /// Owner that is used by default
+        /// </summary>
+        public static Form Owner = null;
+
         public static void Inform(string message, Form owner = null)
         {
             ShowDialog(Application.ProductName, SystemIcons.Information, message, new string[1] { "OK" }, 0, owner);
@@ -64,6 +69,21 @@ namespace Cliver
         }
 
         public static int ShowDialog(string title, Icon icon, string message, string[] buttons, int default_button, Form owner)
+        {
+            owner = owner ?? Owner;
+            if (owner != null)
+            {
+                int r = -1;
+                ControlRoutines.Invoke(owner, () =>
+                {
+                    r = _ShowDialog(title, icon, message, buttons, default_button, owner);
+                });
+                return r;
+            }
+            return _ShowDialog(title, icon, message, buttons, default_button, owner);
+        }
+        
+        static int _ShowDialog(string title, Icon icon, string message, string[] buttons, int default_button, Form owner)
         {
             MessageForm mf = new MessageForm(title, icon, message, buttons, default_button, owner);
             mf.ShowInTaskbar = ShowInTaskbar;

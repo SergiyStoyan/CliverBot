@@ -49,7 +49,7 @@ namespace Cliver
         /// Receives owner window handle. It is needed to do message box owned.
         /// </summary>
         static Form owner = null;
-        internal static Form Owner
+        public static Form Owner
         {
             set
             {
