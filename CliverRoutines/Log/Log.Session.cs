@@ -33,8 +33,8 @@ namespace Cliver
                 if (Log.mode == Mode.ONLY_LOG)
                     throw new Exception("SessionDir cannot be used in Log.Mode.ONLY_LOG");
 
-                Path = get_path(name);
-                Directory.CreateDirectory(Path);
+                path = get_path(name);
+                Directory.CreateDirectory(path);
             }
 
             string get_path(string name)
@@ -46,19 +46,20 @@ namespace Cliver
             }
 
             public readonly string Name;
-            public readonly string Path;
+
+            public string Path
+            {
+                get
+                {
+                    return path;
+                }
+            }
+            string path;
+
             public readonly string TimeMark = DateTime.Now.ToString("yyMMddHHmmss");
 
             Dictionary<string, NamedLog> names2tl = new Dictionary<string, NamedLog>();
-            
-            //public static void Close(string name)
-            //{
-            //    lock (names2session)
-            //    {
-            //        names2session.Remove(name);
-            //    }
-            //}
-            
+                        
             internal const string SINGLE_SESSION_NAME = "";
 
             public void Close(string new_name = null)
@@ -85,6 +86,7 @@ namespace Cliver
                         try
                         {
                             Directory.Move(Path, path2);
+                            path = path2;
                         }
                         catch (Exception e)
                         {
