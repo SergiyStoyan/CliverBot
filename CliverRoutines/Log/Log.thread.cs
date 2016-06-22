@@ -26,133 +26,25 @@ namespace Cliver
             {
             }
 
-            Thread(int id, string log_file)
+            internal Thread(string name, string log_file)
             {
-                this.Id = id;
+                Name = name;
                 this.path = log_file;
             }
 
+            public readonly string Name;
+
+            //Thread(int id, string log_file)
+            //{
+            //    this.Id = id;
+            //    this.path = log_file;
+            //    Name = id.ToString();
+            //}
+
             public static int MaxFileSize = -1;
 
-            const int MAIN_THREAD_LOG_ID = -1;
-
-            static Dictionary<System.Threading.Thread, Thread> thread2tls = new Dictionary<System.Threading.Thread, Thread>();
-
-            static Thread get_thread_log(System.Threading.Thread thread)
-            {
-                lock (thread2tls)
-                {
-                    Thread tl;
-                    if (!thread2tls.TryGetValue(thread, out tl))
-                    {
-                        try
-                        {
-                            //cleanup for dead thread logs
-                            List<System.Threading.Thread> old_log_keys = (from t in thread2tls.Keys where !t.IsAlive select t).ToList();
-                            foreach (System.Threading.Thread t in old_log_keys)
-                            {
-                                if (t.ThreadState != System.Threading.ThreadState.Stopped)
-                                {
-                                    thread2tls[t].Error("This thread is detected as not alive. Aborting it...");
-                                    t.Abort();
-                                }
-                                thread2tls[t].Close();
-                                thread2tls.Remove(t);
-                            }
-
-                            int log_id;
-                            if (thread == Log.MainThread)
-                                log_id = MAIN_THREAD_LOG_ID;
-                            else
-                            {
-                                log_id = 1;
-                                var ids = from x in thread2tls.Keys orderby thread2tls[x].Id select thread2tls[x].Id;
-                                foreach (int id in ids)
-                                    if (log_id == id) log_id++;
-                            }
-
-                            string log_file;
-                            switch (Log.mode)
-                            {
-                                case Log.Mode.ONLY_LOG:
-                                    log_file = Log.WorkDir + @"\" + Log.EntryAssemblyName;
-                                    break;
-                                case Log.Mode.SESSIONS:
-                                    log_file = Log.SessionDir + @"\" + Log.EntryAssemblyName;
-                                    break;
-                                default:
-                                    throw new Exception("Unknown LOGGING_MODE:" + Log.mode);
-                            }
-                            if (log_id < 0)
-                                log_file += "_" + Log.TimeMark + ".log";
-                            else
-                                log_file += "_" + log_id.ToString() + "_" + Log.TimeMark + ".log";
-
-                            tl = new Thread(log_id, log_file);
-                            thread2tls.Add(thread, tl);
-                        }
-                        catch (Exception e)
-                        {
-                            Log.Main.Error(e);
-                        }
-                    }
-                    return tl;
-                }
-            }
-
-            /// <summary>
-            /// Log belonging to the first (main) thread of the process.
-            /// </summary>
-            public static Thread Main
-            {
-                get
-                {
-                    return get_thread_log(Log.MainThread);
-                }
-            }
-
-            /// <summary>
-            /// Log beloning to the current thread.
-            /// </summary>
-            public static Thread This
-            {
-                get
-                {
-                    return get_thread_log(System.Threading.Thread.CurrentThread);
-                }
-            }
-
-            public static void CloseAll()
-            {
-                lock (thread2tls)
-                {
-                    foreach (Thread tl in thread2tls.Values)
-                        tl.Close();
-                    thread2tls.Clear();
-
-                    exiting_thread = null;
-                }
-            }
-
-            public static int TotalErrorCount
-            {
-                get
-                {
-                    lock (thread2tls)
-                    {
-                        int ec = 0;
-                        foreach (Thread tl in thread2tls.Values)
-                            ec += tl.ErrorCount;
-                        return ec;
-                    }
-                }
-            }
-
-            /// <summary>
-            /// Log id that is used for logging and browsing in GUI
-            /// </summary>
-            public readonly int Id;
-
+            internal const string MAIN_THREAD_LOG_NAME = null;
+                        
             /// <summary>
             /// Log path
             /// </summary>
@@ -225,8 +117,8 @@ namespace Cliver
             {
                 lock (this)
                 {
-                    if (Id >= 0)
-                        Log.Main.Write("EXITING: due to thread #" + Id.ToString() + ". See the respective Log");
+                    if (Name != MAIN_THREAD_LOG_NAME)
+                        Log.Main.Write("EXITING: due to thread #" + Name + ". See the respective Log");
                     Write(Log.MessageType.EXIT, message, Log.GetStackString());
                 }
             }
@@ -235,8 +127,8 @@ namespace Cliver
             {
                 lock (this)
                 {
-                    if (Id >= 0)
-                        Log.Main.Write("EXITING: due to thread #" + Id.ToString() + ". See the respective Log");
+                    if (Name != MAIN_THREAD_LOG_NAME)
+                        Log.Main.Write("EXITING: due to thread #" + Name + ". See the respective Log");
                     Write(Log.MessageType.EXIT, message);
                 }
             }
@@ -249,8 +141,8 @@ namespace Cliver
             {
                 lock (this)
                 {
-                    if (Id >= 0)
-                        Log.Main.Write("EXITING: due to thread #" + Id.ToString() + ". See the respective Log");
+                    if (Name != MAIN_THREAD_LOG_NAME)
+                        Log.Main.Write("EXITING: due to thread #" + Name + ". See the respective Log");
                     string m;
                     string d;
                     Log.GetExceptionMessage(e, out m, out d);
@@ -383,7 +275,7 @@ namespace Cliver
                 }
             }
             TextWriter log_writer = null;
-            static System.Threading.Thread exiting_thread = null;
+            static protected System.Threading.Thread exiting_thread = null;
 
             public int ErrorCount
             {

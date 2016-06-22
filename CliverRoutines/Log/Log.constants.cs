@@ -126,8 +126,8 @@ namespace Cliver
                 {
                     lock (lock_object)
                     {
-                        if (Log.mode != Mode.SESSIONS)
-                            throw new Exception("SessionDir cannot be used while LOGGING_MODE != Log.Mode.SESSIONS");
+                        if (Log.mode == Mode.ONLY_LOG)
+                            throw new Exception("SessionDir cannot be used in Log.Mode.ONLY_LOG");
 
                         session_dir = WorkDir + @"\Session" + "_" + Log.TimeMark;
 
@@ -243,6 +243,7 @@ namespace Cliver
                         switch (Log.mode)
                         {
                             case Mode.SESSIONS:
+                            //case Mode.SINGLE_SESSION:
                                 alert = "Session data including caches and logs older than " + FirstLogDate.ToString() + " should be deleted along the specified threshold.\n Delete?";
                                 foreach (DirectoryInfo d in di.GetDirectories())
                                 {

@@ -45,6 +45,11 @@ namespace Cliver
         {
             return Regex.Replace(path, @".*\\", "", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
         }
+        
+        public static string GetDirNameFromPath(string path)
+        {
+            return Regex.Replace(path.TrimEnd('\\'), @".*\\", "", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
+        }
 
         /// <summary>
         /// Works for any length path unlike Path.GetFileName()

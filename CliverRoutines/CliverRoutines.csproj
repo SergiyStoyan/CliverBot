@@ -144,6 +144,9 @@
     </Compile>
     <Compile Include="Db\DbCommand.cs" />
     <Compile Include="Db\DbConnection.cs" />
+    <Compile Include="Log\Log.NamedLog.cs" />
+    <Compile Include="Log\Log.Session.cs" />
+    <Compile Include="Log\Log.ThreadLog.cs" />
     <Compile Include="Misc\FieldPreparation.cs" />
     <Compile Include="InternetDateTime.cs" />
     <Compile Include="Misc\Enum.cs" />
@@ -151,7 +154,7 @@
     <Compile Include="Misc\SerializationRoutines.cs" />
     <Compile Include="Log\Log.constants.cs" />
     <Compile Include="Log\Log.static.cs" />
-    <Compile Include="Log\Log.thread.cs" />
+    <Compile Include="Log\Log.Thread.cs" />
     <Compile Include="Log\LogMessage.cs" />
     <Compile Include="Misc\ProcessRoutines.cs" />
     <Compile Include="Misc\ReflectionRoutines.cs" />
