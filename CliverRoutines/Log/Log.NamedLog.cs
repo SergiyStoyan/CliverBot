@@ -73,14 +73,6 @@ namespace Cliver
                         return tl;
                     }
                 }
-
-                public static int TotalErrorCount
-                {
-                    get
-                    {
-                        return Session.Default.TotalErrorCount;
-                    }
-                }
             }
         }
     }

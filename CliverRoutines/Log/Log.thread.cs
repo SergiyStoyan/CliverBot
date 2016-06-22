@@ -33,6 +33,7 @@ namespace Cliver
             }
 
             public readonly string Name;
+            public readonly string FileName;
 
             //Thread(int id, string log_file)
             //{

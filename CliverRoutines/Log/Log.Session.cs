@@ -26,35 +26,23 @@ namespace Cliver
     {
         public partial class Session
         {
-            static Dictionary<string, Session> names2session = new Dictionary<string, Session>();
-
-            Session(string name, Session parent_session = null)
+            public Session(string name)
             {
                 Name = name;
 
                 if (Log.mode == Mode.ONLY_LOG)
                     throw new Exception("SessionDir cannot be used in Log.Mode.ONLY_LOG");
 
-                if (parent_session == null)
-                    session_dir = WorkDir + @"\Session" + "_" + Name + "_" + TimeMark;
-                else
-                    session_dir = parent_session.Path + "_" + Name;
-
-                DirectoryInfo di = new DirectoryInfo(session_dir);
-                for (int count = 0; di.Exists; )
-                {
-                    count++;
-                    session_dir = WorkDir + @"\Session" + "_" + Log.TimeMark + "_" + count.ToString();
-                    di = new DirectoryInfo(session_dir);
-                }
-                di.Create();
-
-                Path = session_dir;
+                Path = get_path(name);
+                Directory.CreateDirectory(Path);
             }
-            
-            ~Session()
+
+            string get_path(string name)
             {
-                Close();
+                string path = WorkDir + @"\Session" + "_" + name + "_" + TimeMark;
+                for (int count = 1; Directory.Exists(path); count++)
+                    path = WorkDir + @"\Session" + "_" + name + "_" + TimeMark + "_" + count.ToString();
+                return path;
             }
 
             public readonly string Name;
@@ -62,51 +50,7 @@ namespace Cliver
             public readonly string TimeMark = DateTime.Now.ToString("yyMMddHHmmss");
 
             Dictionary<string, NamedLog> names2tl = new Dictionary<string, NamedLog>();
-
-            public static Session Get(string name)
-            {
-                lock (names2session)
-                {
-                    Session session;
-                    if (!names2session.TryGetValue(name, out session))
-                    {
-                        session = new Session(name);
-                        names2session[name] = session;
-                    }
-                    return session;
-                }
-            }
-
-            //public void Rename(string name)
-            //{
-            //    lock (names2session)
-            //    {
-            //        Session session;
-            //        if (!names2session.TryGetValue(name, out session))
-            //        {
-            //            session = new Session(name);
-            //            names2session[name] = session;
-            //        }
-            //        return session;
-            //    }
-            //}
-
-            //public Session Get(string name)
-            //{
-            //    lock (names2session)
-            //    {
-            //        this.n
-
-            //        Session session;
-            //        if (!names2session.TryGetValue(name, out session))
-            //        {
-            //            session = new Session(name);
-            //            names2session[name] = session;
-            //        }
-            //        return session;
-            //    }
-            //}
-
+            
             //public static void Close(string name)
             //{
             //    lock (names2session)
@@ -114,46 +58,46 @@ namespace Cliver
             //        names2session.Remove(name);
             //    }
             //}
-
-            public static void CloseAll()
-            {
-                lock (names2session)
-                {
-                    foreach (Session s in names2session.Values)
-                        s.Close();
-                    names2session.Clear();
-                }
-            }
-
-            public static Session Default
-            {
-                get
-                {
-                    return Get(SINGLE_SESSION_NAME);
-                }
-            }
-
+            
             internal const string SINGLE_SESSION_NAME = "";
 
-            public void Close()
+            public void Close(string new_name = null)
             {
-                lock (names2tl)
+                lock (this)
                 {
+                    if (names2tl == null)
+                        return;
+
+                    DefaultLog.Write("Closing the session");
+
+                    string path2 = null;
+                    if (new_name != null)
+                    {
+                        path2 = get_path(new_name);
+                        DefaultLog.Write("The session folder will be renamed to " + path2);
+                    }
+
                     foreach (Thread tl in names2tl.Values)
                         tl.Close();
-                    names2tl.Clear();
+                    names2tl = null;
+
+                    if (new_name != null)
+                        try
+                        {
+                            Directory.Move(Path, path2);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.Main.Error(e);
+                        }
                 }
-                lock (names2session)
-                {
-                    names2session.Remove(this.Name);
-                }
-            }
+            }                
 
             public int TotalErrorCount
             {
                 get
                 {
-                    lock (names2tl)
+                    lock (this)
                     {
                         int ec = 0;
                         foreach (Thread tl in names2tl.Values)
