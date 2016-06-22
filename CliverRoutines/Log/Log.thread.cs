@@ -55,7 +55,7 @@ namespace Cliver
                     return path;
                 }
             }
-            public string path;
+            protected string path;
 
             /// <summary>
             /// Used to close Log

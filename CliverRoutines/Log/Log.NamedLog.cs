@@ -24,10 +24,13 @@ namespace Cliver
         {
             public class NamedLog : Thread
             {
-                NamedLog(string name, string log_file)
+                NamedLog(Session session, string name, string log_file)
                     : base(name, log_file)
                 {
+                    this.session = session;
                 }
+
+                readonly Session session;
 
                 public static NamedLog Get(Session session, string name)
                 {
@@ -56,9 +59,9 @@ namespace Cliver
                                     default:
                                         throw new Exception("Unknown LOGGING_MODE:" + Cliver.Log.mode);
                                 }
-                                log_file += name + "_" + Cliver.Log.TimeMark + ".log";
+                                log_file += Cliver.Log.TimeMark + "_" + name + ".log";
 
-                                tl = new NamedLog(name, log_file);
+                                tl = new NamedLog(session, name, log_file);
                                 session.names2tl.Add(name, tl);
 
                             }
