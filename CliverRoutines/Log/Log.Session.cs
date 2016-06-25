@@ -72,7 +72,7 @@ namespace Cliver
                     Default.Write("Closing the session");
 
                     string path2 = null;
-                    if (new_name != null)
+                    if (new_name != null && new_name != Name)
                     {
                         path2 = get_path(new_name);
                         Default.Write("The session '" + Path + "' will be renamed to '" + path2 + "'");
@@ -82,7 +82,7 @@ namespace Cliver
                         tl.Close();
                     names2tl.Clear();
 
-                    if (new_name != null)
+                    if (new_name != null && new_name != Name)
                         try
                         {
                             Directory.Move(Path, path2);
@@ -93,7 +93,7 @@ namespace Cliver
                             Log.Main.Error(e);
                         }
                 }
-            }                
+            }
 
             public int TotalErrorCount
             {
