@@ -23,6 +23,7 @@ using System.Web;
 using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
+using System.Management;
 
 namespace Cliver
 {
@@ -51,7 +52,7 @@ namespace Cliver
                     LogMessage.Exit(name + " is already running, so this instance will exit.");
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 LogMessage.Error(e);
             }
@@ -74,11 +75,11 @@ namespace Cliver
             psi.UseShellExecute = true;
             psi.WorkingDirectory = Environment.CurrentDirectory;
             psi.FileName = Application.ExecutablePath;
-            if(as_administarator)
+            if (as_administarator)
                 psi.Verb = "runas";
             Process.Start(psi);
             ProcessRoutines.Exit();
-        }        
+        }
 
         public static bool IsProcessAlive(int process_id)
         {
@@ -101,6 +102,44 @@ namespace Cliver
                 return null;
             }
         }
+
+        public static bool KillProcessTree(int process_id)
+        {
+            ManagementObjectSearcher searcher = new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + process_id);
+            foreach (ManagementObject mo in searcher.Get())
+                KillProcessTree(Convert.ToInt32(mo["ProcessID"]));
+
+            Process p = Process.GetProcessById(process_id);
+            if (p == null)
+                return true;
+            for (int i = 0; i < 10; i++)
+            {
+                try
+                {
+                    p.Kill();
+                }
+                catch
+                {
+                    // Process already exited.
+                    return true;
+                }
+                p.WaitForExit(1000);
+                if (!IsProcessRunning(p))
+                    return true;
+            }
+            return false;
+        }
+
+        public static bool IsProcessRunning(Process p)
+        {
+            try
+            {
+                return !p.HasExited;
+            }
+            catch
+            {//it was not started
+                return false;
+            }
+        }
     }
 }
-

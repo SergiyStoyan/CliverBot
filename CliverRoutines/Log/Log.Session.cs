@@ -66,21 +66,21 @@ namespace Cliver
             {
                 lock (this)
                 {
-                    if (names2tl == null)
+                    if (names2tl.Count < 1)
                         return;
 
-                    DefaultLog.Write("Closing the session");
+                    Default.Write("Closing the session");
 
                     string path2 = null;
                     if (new_name != null)
                     {
                         path2 = get_path(new_name);
-                        DefaultLog.Write("The session folder will be renamed to " + path2);
+                        Default.Write("The session '" + Path + "' will be renamed to '" + path2 + "'");
                     }
 
                     foreach (Thread tl in names2tl.Values)
                         tl.Close();
-                    names2tl = null;
+                    names2tl.Clear();
 
                     if (new_name != null)
                         try
@@ -170,7 +170,7 @@ namespace Cliver
             //static string download_dir = null;
             //public const string DownloadDirName = "cache";
                         
-            public NamedLog DefaultLog
+            public NamedLog Default
             {
                 get
                 {
@@ -182,52 +182,52 @@ namespace Cliver
                        
             public void Error(Exception e)
             {
-                DefaultLog.Error(e);
+                Default.Error(e);
             }
 
             public void Error(string message)
             {
-                DefaultLog.Error(message);
+                Default.Error(message);
             }
 
             public void Trace(object message = null)
             {
-                DefaultLog.Trace(message);
+                Default.Trace(message);
             }
 
             public void Exit(string message)
             {
-                DefaultLog.Error(message);
+                Default.Error(message);
             }
 
             public void Exit(Exception e)
             {
-                DefaultLog.Exit(e);
+                Default.Exit(e);
             }
 
             public void Warning(string message)
             {
-                DefaultLog.Warning(message);
+                Default.Warning(message);
             }
 
             public void Warning(Exception e)
             {
-                DefaultLog.Warning(e);
+                Default.Warning(e);
             }
 
             public void Inform(string message)
             {
-                DefaultLog.Inform(message);
+                Default.Inform(message);
             }
 
             public void Write(MessageType type, string message, string details = null)
             {
-                DefaultLog.Write(type, message, details);
+                Default.Write(type, message, details);
             }
 
             public void Write(string message)
             {
-                DefaultLog.Write(MessageType.LOG, message);
+                Default.Write(MessageType.LOG, message);
             }
         }
     }

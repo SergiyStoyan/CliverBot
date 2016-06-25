@@ -59,7 +59,7 @@ namespace Cliver
                                     default:
                                         throw new Exception("Unknown LOGGING_MODE:" + Cliver.Log.mode);
                                 }
-                                log_file += Cliver.Log.TimeMark + "_" + name + ".log";
+                                log_file += session.TimeMark + "_" + name + ".log";
 
                                 tl = new NamedLog(session, name, log_file);
                                 session.names2tl.Add(name, tl);
