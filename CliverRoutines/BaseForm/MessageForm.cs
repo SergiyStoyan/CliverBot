@@ -21,7 +21,7 @@ namespace Cliver
     /// </summary>
     public partial class MessageForm : BaseForm
     {
-        public MessageForm(string caption, Icon icon, string message, string[] buttons, int default_button, Form owner)
+        public MessageForm(string caption, Icon icon, string message, string[] buttons, int default_button, Form owner, bool button_auto_size = false)
         {
             InitializeComponent();
 
@@ -48,6 +48,7 @@ namespace Cliver
             {
                 Button b = new Button();
                 b.Tag = i;
+                b.AutoSize = button_auto_size;
                 b.Text = buttons[i];
                 b.Click += b_Click;
                 flowLayoutPanel1.Controls.Add(b);

@@ -108,10 +108,16 @@ namespace Cliver
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + process_id);
             foreach (ManagementObject mo in searcher.Get())
                 KillProcessTree(Convert.ToInt32(mo["ProcessID"]));
-
-            Process p = Process.GetProcessById(process_id);
-            if (p == null)
+            
+            Process p;
+            try
+            {
+                p = Process.GetProcessById(process_id);
+            }
+            catch
+            {
                 return true;
+            }
             for (int i = 0; i < 10; i++)
             {
                 try

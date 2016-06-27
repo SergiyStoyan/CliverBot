@@ -68,7 +68,7 @@ namespace Cliver
             return ShowDialog(Application.ProductName, SystemIcons.Question, question, new string[2] { "Yes", "No" }, 0, owner) == 0;
         }
 
-        public static int ShowDialog(string title, Icon icon, string message, string[] buttons, int default_button, Form owner)
+        public static int ShowDialog(string title, Icon icon, string message, string[] buttons, int default_button, Form owner, bool button_auto_size = false)
         {
             owner = owner ?? Owner;
             if (owner != null)
@@ -76,16 +76,16 @@ namespace Cliver
                 int r = -1;
                 ControlRoutines.Invoke(owner, () =>
                 {
-                    r = _ShowDialog(title, icon, message, buttons, default_button, owner);
+                    r = _ShowDialog(title, icon, message, buttons, default_button, owner, button_auto_size);
                 });
                 return r;
             }
             return _ShowDialog(title, icon, message, buttons, default_button, owner);
         }
-        
-        static int _ShowDialog(string title, Icon icon, string message, string[] buttons, int default_button, Form owner)
+
+        static int _ShowDialog(string title, Icon icon, string message, string[] buttons, int default_button, Form owner, bool button_auto_size = false)
         {
-            MessageForm mf = new MessageForm(title, icon, message, buttons, default_button, owner);
+            MessageForm mf = new MessageForm(title, icon, message, buttons, default_button, owner, button_auto_size);
             mf.ShowInTaskbar = ShowInTaskbar;
             return mf.ShowDialog();
         }
