@@ -67,6 +67,10 @@
       <Project>{ccd9744f-aa5d-4d39-bd63-0451c3e1e16a}</Project>
       <Name>CliverBotGui</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\CliverRoutines\CliverRoutines.csproj">
+      <Project>{aca94788-bed1-4b8e-94ef-e54293e8d139}</Project>
+      <Name>CliverRoutines</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
