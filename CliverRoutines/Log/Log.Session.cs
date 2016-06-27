@@ -19,14 +19,13 @@ using System.Reflection;
 
 namespace Cliver
 {
-    /// <summary>
-    /// Multithreaded logging routines
-    /// </summary>
     public static partial class Log
     {
         public partial class Session
         {
-            public Session(string name)
+            const string MAIN_SESSION_NAME = "";
+
+            public Session(string name = MAIN_SESSION_NAME)
             {
                 Name = name;
 
@@ -39,9 +38,9 @@ namespace Cliver
 
             string get_path(string name)
             {
-                string path = WorkDir + @"\Session" + "_" + name + "_" + TimeMark;
+                string path = WorkDir + @"\Session" + "_" + (string.IsNullOrWhiteSpace(name) ? "" : name + "_") + TimeMark;
                 for (int count = 1; Directory.Exists(path); count++)
-                    path = WorkDir + @"\Session" + "_" + name + "_" + TimeMark + "_" + count.ToString();
+                    path = WorkDir + @"\Session" + "_" + (string.IsNullOrWhiteSpace(name) ? "" : name + "_") + TimeMark + "_" + count.ToString();
                 return path;
             }
 
@@ -59,8 +58,6 @@ namespace Cliver
             public readonly string TimeMark = DateTime.Now.ToString("yyMMddHHmmss");
 
             Dictionary<string, NamedLog> names2tl = new Dictionary<string, NamedLog>();
-                        
-            internal const string SINGLE_SESSION_NAME = "";
 
             public void Close(string new_name = null)
             {

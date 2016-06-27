@@ -116,39 +116,29 @@ namespace Cliver
         public const string WorkDirPrefix = @"_Sessions";
 
         /// <summary>
-        /// Session directory for current session
+        /// Session directory for current main session
         /// </summary>
         public static string SessionDir
         {
             get
             {
-                if (session_dir == null)
-                {
-                    lock (lock_object)
-                    {
-                        if (Log.mode == Mode.ONLY_LOG)
-                            throw new Exception("SessionDir cannot be used in Log.Mode.ONLY_LOG");
-
-                        session_dir = WorkDir + @"\Session" + "_" + Log.TimeMark;
-
-                        DirectoryInfo di = new DirectoryInfo(session_dir);
-                        int count = 0;
-                        while (di.Exists)
-                        {
-                            count++;
-                            session_dir = WorkDir + @"\Session" + "_" + Log.TimeMark + "_" + count.ToString();
-                            di = new DirectoryInfo(session_dir);
-                        }
-                        di.Create();
-                    }
-                }
-                return session_dir;
+                return MainSession.Path;
             }
         }
-        static string session_dir = null;
+
+        public static Session MainSession
+        {
+            get
+            {
+                if (main_session == null)
+                    main_session = new Session();
+                return main_session;
+            }
+        }
+        static Session main_session = null;
 
         /// <summary>
-        /// Output directory for current session
+        /// Output directory for current main session
         /// </summary>
         public static string OutputDir
         {
@@ -176,7 +166,7 @@ namespace Cliver
         public static string OutputDirName = @"output";
 
         /// <summary>
-        /// Download directory for session. 
+        /// Download directory for current main session. 
         /// This dir can be used to calculate value of downloaded bytes.
         /// </summary>
         public static string DownloadDir
@@ -211,7 +201,8 @@ namespace Cliver
 
                 time_mark = null;
                 work_dir = null;
-                session_dir = null;
+                main_session.Close();
+                main_session = null;
                 output_dir = null;
                 download_dir = null;
 
@@ -247,7 +238,7 @@ namespace Cliver
                                 alert = "Session data including caches and logs older than " + FirstLogDate.ToString() + " should be deleted along the specified threshold.\n Delete?";
                                 foreach (DirectoryInfo d in di.GetDirectories())
                                 {
-                                    if (session_dir != null && d.FullName.StartsWith(session_dir, StringComparison.InvariantCultureIgnoreCase))
+                                    if (main_session != null && d.FullName.StartsWith(main_session.Path, StringComparison.InvariantCultureIgnoreCase))
                                         continue;
                                     if (d.LastWriteTime >= FirstLogDate)
                                         continue;
