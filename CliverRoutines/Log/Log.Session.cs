@@ -72,7 +72,7 @@ namespace Cliver
                     if (new_name != null && new_name != Name)
                     {
                         path2 = get_path(new_name);
-                        Default.Write("The session '" + Path + "' will be renamed to '" + path2 + "'");
+                        Default.Write("The session '" + Path + "' will be renamed to '" + path2 + "' just after closing.");
                     }
 
                     foreach (Thread tl in names2tl.Values)

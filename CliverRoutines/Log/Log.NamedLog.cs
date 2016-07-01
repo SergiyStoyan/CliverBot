@@ -24,8 +24,8 @@ namespace Cliver
         {
             public class NamedLog : Thread
             {
-                NamedLog(Session session, string name, string log_file)
-                    : base(name, log_file)
+                NamedLog(Session session, string name, string file_name)
+                    : base(name, file_name)
                 {
                     this.session = session;
                 }
@@ -35,6 +35,20 @@ namespace Cliver
                 public static NamedLog Get(Session session, string name)
                 {
                     return get_log_thread(session, name);
+                }
+
+                override protected string get_directory()
+                {
+                    switch (Log.mode)
+                    {
+                        case Cliver.Log.Mode.ONLY_LOG:
+                            return Cliver.Log.WorkDir + @"\";
+                        //case Cliver.Log.Mode.SINGLE_SESSION:
+                        case Cliver.Log.Mode.SESSIONS:
+                            return session.Path + @"\";
+                        default:
+                            throw new Exception("Unknown LOGGING_MODE:" + Cliver.Log.mode);
+                    }
                 }
                 
                 static NamedLog get_log_thread(Session session, string name)
@@ -46,24 +60,9 @@ namespace Cliver
                         {
                             try
                             {
-                                string log_file;
-                                switch (Cliver.Log.mode)
-                                {
-                                    case Cliver.Log.Mode.ONLY_LOG:
-                                        log_file = Cliver.Log.WorkDir + @"\" + Cliver.Log.EntryAssemblyName + "_";
-                                        break;
-                                    //case Cliver.Log.Mode.SINGLE_SESSION:
-                                    case Cliver.Log.Mode.SESSIONS:
-                                        log_file = session.Path + @"\";
-                                        break;
-                                    default:
-                                        throw new Exception("Unknown LOGGING_MODE:" + Cliver.Log.mode);
-                                }
-                                log_file += session.TimeMark + "_" + name + ".log";
-
-                                tl = new NamedLog(session, name, log_file);
+                                string log_name = session.TimeMark + "_" + name + ".log";
+                                tl = new NamedLog(session, name, log_name);
                                 session.names2tl.Add(name, tl);
-
                             }
                             catch (Exception e)
                             {

@@ -22,13 +22,29 @@ namespace Cliver
     {
         public class ThreadLog : Thread
         {
-            ThreadLog(int id, string log_file)
-                : base(id.ToString(), log_file)
+            ThreadLog(int id, string file_name)
+                : base(id.ToString(), file_name)
             {
                 this.Id = id;
             }
             
             internal const int MAIN_THREAD_LOG_ID = -1;
+            
+            override protected string get_directory()
+            {
+                switch (Log.mode)
+                {
+                    case Log.Mode.ONLY_LOG:
+                        return Log.WorkDir + @"\";
+                    //case Log.Mode.SINGLE_SESSION:
+                    case Log.Mode.SESSIONS:
+                        return Log.SessionDir + @"\";
+                    //case Log.Mode.SESSIONS:
+                    //    throw new Exception("ThreadLog cannot be used in Mode.SESSIONS.");
+                    default:
+                        throw new Exception("Unknown LOGGING_MODE:" + Log.mode);
+                }
+            }
             
             /// <summary>
             /// Log belonging to the first (main) thread of the process.
@@ -140,27 +156,13 @@ namespace Cliver
                                     if (log_id == id) log_id++;
                             }
 
-                            string log_file;
-                            switch (Log.mode)
-                            {
-                                case Log.Mode.ONLY_LOG:
-                                    log_file = Log.WorkDir + @"\" + Log.EntryAssemblyName;
-                                    break;
-                                //case Log.Mode.SINGLE_SESSION:
-                                case Log.Mode.SESSIONS:
-                                    log_file = Log.SessionDir + @"\" + Log.EntryAssemblyName;
-                                    break;
-                                //case Log.Mode.SESSIONS:
-                                //    throw new Exception("ThreadLog cannot be used in Mode.SESSIONS.");
-                                default:
-                                    throw new Exception("Unknown LOGGING_MODE:" + Log.mode);
-                            }
+                            string log_name = Log.EntryAssemblyName;
                             if (log_id < 0)
-                                log_file += "_" + Log.TimeMark + ".log";
+                                log_name = "_" + Log.TimeMark + ".log";
                             else
-                                log_file += "_" + log_id.ToString() + "_" + Log.TimeMark + ".log";
+                                log_name += "_" + log_id.ToString() + "_" + Log.TimeMark + ".log";
 
-                            tl = new ThreadLog(log_id, log_file);
+                            tl = new ThreadLog(log_id, log_name);
                             thread2tls.Add(thread, tl);
                         }
                         catch (Exception e)

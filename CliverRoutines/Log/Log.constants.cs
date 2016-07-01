@@ -201,7 +201,8 @@ namespace Cliver
 
                 time_mark = null;
                 work_dir = null;
-                main_session.Close();
+                if (main_session != null)
+                    main_session.Close();
                 main_session = null;
                 output_dir = null;
                 download_dir = null;

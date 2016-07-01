@@ -20,28 +20,26 @@ namespace Cliver
 {
     public partial class Log
     {
-        public class Thread
+        public abstract class Thread
         {
-            static Thread()
-            {
-            }
-
-            internal Thread(string name, string log_file)
+            internal Thread(string name, string file_name)
             {
                 Name = name;
-                this.path = log_file;
+                this.file_name = file_name;
             }
 
             public readonly string Name;
-            public readonly string FileName;
+            public string FileName
+            {
+                get
+                {
+                    return file_name;
+                }
+            }
+            string file_name = null;
 
-            //Thread(int id, string log_file)
-            //{
-            //    this.Id = id;
-            //    this.path = log_file;
-            //    Name = id.ToString();
-            //}
-
+            abstract protected string get_directory();
+            
             public static int MaxFileSize = -1;
 
             internal const string MAIN_THREAD_LOG_NAME = null;
@@ -53,10 +51,9 @@ namespace Cliver
             {
                 get
                 {
-                    return path;
+                    return get_directory() + FileName;
                 }
             }
-            protected string path;
 
             /// <summary>
             /// Used to close Log
@@ -254,7 +251,7 @@ namespace Cliver
                                 log_writer.Close();
 
                                 int counter = 0;
-                                path = Regex.Replace(path, @"(\d+_)(\d+)(\.[^\.]+)$",
+                                file_name = Regex.Replace(file_name, @"(\d+_)(\d+)(\.[^\.]+)$",
                                     (Match m) =>
                                     {
                                         counter = int.Parse(m.Groups[2].Value) + 1;
@@ -263,7 +260,7 @@ namespace Cliver
                                     RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline
                                     );
                                 if (counter < 1)
-                                    path = Regex.Replace(path, @"\.[^\.]+$", @"_1$0", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                                    file_name = Regex.Replace(file_name, @"\.[^\.]+$", @"_1$0", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
 
                                 log_writer = new StreamWriter(Path, true);
                             }
