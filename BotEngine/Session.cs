@@ -42,7 +42,7 @@ namespace Cliver.Bot
         {
             This_ = this;
             
-            Log.Thread.Exitig += ThreadLog_Exitig;
+            Log.Writer.Exitig += ThreadLog_Exitig;
 
             input_item_type_name2input_item_types = (from t in Assembly.GetEntryAssembly().GetTypes() where t.BaseType == typeof(InputItem) select t).ToDictionary(t => t.Name, t => t);
             Cliver.Bot.InputItem.Initialize(input_item_type_name2input_item_types.Values.ToList());
