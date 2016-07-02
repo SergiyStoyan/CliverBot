@@ -22,46 +22,32 @@ namespace Cliver
     {
         partial class Session
         {
-            public class NamedLog : Thread
+            public class NamedWriter : Writer
             {
-                NamedLog(Session session, string name, string file_name)
-                    : base(name, file_name)
+                NamedWriter(Session session, string name, string file_name)
+                    : base(name, file_name, session)
                 {
                     this.session = session;
                 }
 
                 readonly Session session;
 
-                public static NamedLog Get(Session session, string name)
+                public static NamedWriter Get(Session session, string name)
                 {
                     return get_log_thread(session, name);
                 }
-
-                override protected string get_directory()
+                                
+                static NamedWriter get_log_thread(Session session, string name)
                 {
-                    switch (Log.mode)
+                    lock (session)
                     {
-                        case Cliver.Log.Mode.ONLY_LOG:
-                            return Cliver.Log.WorkDir + @"\";
-                        //case Cliver.Log.Mode.SINGLE_SESSION:
-                        case Cliver.Log.Mode.SESSIONS:
-                            return session.Path + @"\";
-                        default:
-                            throw new Exception("Unknown LOGGING_MODE:" + Cliver.Log.mode);
-                    }
-                }
-                
-                static NamedLog get_log_thread(Session session, string name)
-                {
-                    lock (session.names2tl)
-                    {
-                        NamedLog tl = null;
+                        NamedWriter tl = null;
                         if (!session.names2tl.TryGetValue(name, out tl))
                         {
                             try
                             {
                                 string log_name = session.TimeMark + "_" + name + ".log";
-                                tl = new NamedLog(session, name, log_name);
+                                tl = new NamedWriter(session, name, log_name);
                                 session.names2tl.Add(name, tl);
                             }
                             catch (Exception e)

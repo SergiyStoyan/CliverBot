@@ -20,36 +20,20 @@ namespace Cliver
 {
     public partial class Log
     {
-        public class ThreadLog : Thread
+        public class ThreadWriter : Writer
         {
-            ThreadLog(int id, string file_name)
-                : base(id.ToString(), file_name)
+            ThreadWriter(int id, string file_name)
+                : base(id.ToString(), file_name, Log.MainSession)
             {
                 this.Id = id;
             }
             
             internal const int MAIN_THREAD_LOG_ID = -1;
-            
-            override protected string get_directory()
-            {
-                switch (Log.mode)
-                {
-                    case Log.Mode.ONLY_LOG:
-                        return Log.WorkDir + @"\";
-                    //case Log.Mode.SINGLE_SESSION:
-                    case Log.Mode.SESSIONS:
-                        return Log.SessionDir + @"\";
-                    //case Log.Mode.SESSIONS:
-                    //    throw new Exception("ThreadLog cannot be used in Mode.SESSIONS.");
-                    default:
-                        throw new Exception("Unknown LOGGING_MODE:" + Log.mode);
-                }
-            }
-            
+                        
             /// <summary>
             /// Log belonging to the first (main) thread of the process.
             /// </summary>
-            public static ThreadLog Main
+            public static ThreadWriter Main
             {
                 get
                 {
@@ -60,7 +44,7 @@ namespace Cliver
             ///// <summary>
             ///// Log belonging to the first (main) thread of the process.
             ///// </summary>
-            //public static ThreadLog Main
+            //public static ThreadWriter Main
             //{
             //    get
             //    {
@@ -71,7 +55,7 @@ namespace Cliver
             ///// <summary>
             ///// Log beloning to the current thread.
             ///// </summary>
-            //public static ThreadLog This
+            //public static ThreadWriter This
             //{
             //    get
             //    {
@@ -82,7 +66,7 @@ namespace Cliver
             /// <summary>
             /// Log beloning to the current thread.
             /// </summary>
-            public static ThreadLog This
+            public static ThreadWriter This
             {
                 get
                 {
@@ -97,7 +81,7 @@ namespace Cliver
                     lock (thread2tls)
                     {
                         int ec = 0;
-                        foreach (Thread tl in thread2tls.Values)
+                        foreach (Writer tl in thread2tls.Values)
                             ec += tl.ErrorCount;
                         return ec;
                     }
@@ -108,7 +92,7 @@ namespace Cliver
             {
                 lock (thread2tls)
                 {
-                    foreach (Thread tl in thread2tls.Values)
+                    foreach (Writer tl in thread2tls.Values)
                         tl.Close();
                     thread2tls.Clear();
 
@@ -121,13 +105,13 @@ namespace Cliver
             /// </summary>
             public readonly int Id = MAIN_THREAD_LOG_ID;
 
-            static Dictionary<System.Threading.Thread, ThreadLog> thread2tls = new Dictionary<System.Threading.Thread, ThreadLog>();
+            static Dictionary<System.Threading.Thread, ThreadWriter> thread2tls = new Dictionary<System.Threading.Thread, ThreadWriter>();
 
-            static ThreadLog get_thread_log(System.Threading.Thread thread)
+            static ThreadWriter get_thread_log(System.Threading.Thread thread)
             {
                 lock (thread2tls)
                 {
-                    ThreadLog tl;
+                    ThreadWriter tl;
                     if (!thread2tls.TryGetValue(thread, out tl))
                     {
                         try
@@ -162,7 +146,7 @@ namespace Cliver
                             else
                                 log_name += "_" + log_id.ToString() + "_" + Log.TimeMark + ".log";
 
-                            tl = new ThreadLog(log_id, log_name);
+                            tl = new ThreadWriter(log_id, log_name);
                             thread2tls.Add(thread, tl);
                         }
                         catch (Exception e)

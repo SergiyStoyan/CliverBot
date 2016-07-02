@@ -20,12 +20,13 @@ namespace Cliver
 {
     public partial class Log
     {
-        public abstract class Thread
+        public abstract class Writer
         {
-            internal Thread(string name, string file_name)
+            internal Writer(string name, string file_name, Session session)
             {
                 Name = name;
                 this.file_name = file_name;
+                this.session = session;
             }
 
             public readonly string Name;
@@ -38,7 +39,7 @@ namespace Cliver
             }
             string file_name = null;
 
-            abstract protected string get_directory();
+            readonly Session session;
             
             public static int MaxFileSize = -1;
 
@@ -51,7 +52,23 @@ namespace Cliver
             {
                 get
                 {
-                    return get_directory() + FileName;
+                    lock (session)//this lock is needed if Session::Close() is performing
+                    {
+                        string directory;
+                        switch (Log.mode)
+                        {
+                            case Cliver.Log.Mode.ONLY_LOG:
+                                directory =  Cliver.Log.WorkDir;
+                                break;
+                            //case Cliver.Log.Mode.SINGLE_SESSION:
+                            case Cliver.Log.Mode.SESSIONS:
+                                directory= session.Path + @"\";
+                                break;
+                            default:
+                                throw new Exception("Unknown LOGGING_MODE:" + Cliver.Log.mode);
+                        }
+                        return directory + @"\" + FileName;
+                    }
                 }
             }
 

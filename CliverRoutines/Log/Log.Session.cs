@@ -57,9 +57,32 @@ namespace Cliver
 
             public readonly string TimeMark = DateTime.Now.ToString("yyMMddHHmmss");
 
-            Dictionary<string, NamedLog> names2tl = new Dictionary<string, NamedLog>();
+            Dictionary<string, NamedWriter> names2tl = new Dictionary<string, NamedWriter>();
 
-            public void Close(string new_name = null)
+            public void Close(string new_name)
+            {
+                lock (this)
+                {
+                    if (new_name == Name)
+                        return;
+                    string path2 = get_path(new_name);
+                    Default.Write("Renaming session '" + Path + "' to '" + path2 + "'");
+
+                    Close();
+
+                    try
+                    {
+                        Directory.Move(Path, path2);
+                        path = path2;
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Main.Error(e);
+                    }
+                }
+            }
+
+            public void Close()
             {
                 lock (this)
                 {
@@ -68,27 +91,9 @@ namespace Cliver
 
                     Default.Write("Closing the session");
 
-                    string path2 = null;
-                    if (new_name != null && new_name != Name)
-                    {
-                        path2 = get_path(new_name);
-                        Default.Write("The session '" + Path + "' will be renamed to '" + path2 + "' just after closing.");
-                    }
-
-                    foreach (Thread tl in names2tl.Values)
+                    foreach (Writer tl in names2tl.Values)
                         tl.Close();
                     names2tl.Clear();
-
-                    if (new_name != null && new_name != Name)
-                        try
-                        {
-                            Directory.Move(Path, path2);
-                            path = path2;
-                        }
-                        catch (Exception e)
-                        {
-                            Log.Main.Error(e);
-                        }
                 }
             }
 
@@ -99,18 +104,18 @@ namespace Cliver
                     lock (this)
                     {
                         int ec = 0;
-                        foreach (Thread tl in names2tl.Values)
+                        foreach (Writer tl in names2tl.Values)
                             ec += tl.ErrorCount;
                         return ec;
                     }
                 }
             }
             
-            public NamedLog this[string name]
+            public NamedWriter this[string name]
             {
                 get
                 {
-                    return NamedLog.Get(this, name);
+                    return NamedWriter.Get(this, name);
                 }
             }
             
@@ -167,11 +172,11 @@ namespace Cliver
             //static string download_dir = null;
             //public const string DownloadDirName = "cache";
                         
-            public NamedLog Default
+            public NamedWriter Default
             {
                 get
                 {
-                    return NamedLog.Get(this, MAIN_NAMED_LOG);
+                    return NamedWriter.Get(this, MAIN_NAMED_LOG);
                 }
             }
 
