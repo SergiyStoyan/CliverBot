@@ -27,7 +27,7 @@ namespace Cliver
 
             public Session(string name = MAIN_SESSION_NAME)
             {
-                Name = name;
+                this.name = name;
 
                 if (Log.mode == Mode.ONLY_LOG)
                     throw new Exception("SessionDir cannot be used in Log.Mode.ONLY_LOG");
@@ -44,7 +44,14 @@ namespace Cliver
                 return path;
             }
 
-            public readonly string Name;
+            public string Name
+            {
+                get
+                {
+                    return name;
+                }
+            }
+            string name;
 
             public string Path
             {
@@ -64,16 +71,21 @@ namespace Cliver
                 lock (this)
                 {
                     if (new_name == Name)
+                    {
+                        Close();
                         return;
-                    string path2 = get_path(new_name);
-                    Default.Write("Renaming session '" + Path + "' to '" + path2 + "'");
+                    }
+
+                    string new_path = get_path(new_name);
+                    Default.Write("Renaming session: '" + Path + "' to '" + new_path + "'");
 
                     Close();
 
                     try
                     {
-                        Directory.Move(Path, path2);
-                        path = path2;
+                        Directory.Move(Path, new_path);
+                        path = new_path;
+                        name = new_name;
                     }
                     catch (Exception e)
                     {
@@ -86,10 +98,10 @@ namespace Cliver
             {
                 lock (this)
                 {
-                    if (names2tl.Count < 1)
-                        return;
-
                     Default.Write("Closing the session");
+                    
+                    if(this == Log.MainSession)
+                        Log.ThreadWriter.CloseAll();
 
                     foreach (Writer tl in names2tl.Values)
                         tl.Close();
