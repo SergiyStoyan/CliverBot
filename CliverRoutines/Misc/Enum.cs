@@ -58,22 +58,6 @@ namespace Cliver
         {
             return typeof(Enum<T>).GetFields(BindingFlags.Public | BindingFlags.Static).ToDictionary(x => x.Name, x => ((Enum<T>)x.GetValue(null)).Value);
         }
-
-        //static public implicit operator E(T value)
-        //{
-        //    return new RomanNumeral(value);
-        //}
-        //// Declare an explicit conversion from a RomanNumeral to an int:
-        //static public explicit operator int(RomanNumeral roman)
-        //{
-        //    return roman.value;
-        //}
-        //// Declare an implicit conversion from a RomanNumeral to 
-        //// a string:
-        //static public implicit operator string(RomanNumeral roman)
-        //{
-        //    return ("Conversion not yet implemented");
-        //}
     }
 }
 
