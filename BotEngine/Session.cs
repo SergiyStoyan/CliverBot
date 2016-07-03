@@ -197,6 +197,7 @@ namespace Cliver.Bot
                 Cache.ClearSession();
                 Proxies.ClearSession();
                 WebRoutine.ClearSession();
+                Log.Main.Write("Closing session.");
                 Cliver.Log.ClearSession();
 
                 This_ = null;
