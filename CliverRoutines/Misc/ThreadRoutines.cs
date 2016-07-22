@@ -70,7 +70,7 @@ namespace Cliver
         /// <summary>
         /// Waiting not freezing the app
         /// </summary>
-        public static object WaitForCondition(Func<object> check_condition, int timeout_in_mss, int poll_interval_in_mss = 20)
+        public static object WaitForObject(Func<object> check_condition, int timeout_in_mss, int poll_interval_in_mss = 20)
         {
             object o = null;
             DateTime dt = DateTime.Now + new TimeSpan(0, 0, 0, 0, timeout_in_mss);
@@ -78,6 +78,24 @@ namespace Cliver
             {
                 o = check_condition();
                 if (o != null)
+                    break;
+                Application.DoEvents();
+                Thread.Sleep(poll_interval_in_mss);
+            }
+            return o;
+        }
+
+        /// <summary>
+        /// Waiting not freezing the app
+        /// </summary>
+        public static object WaitForCondition(Func<bool> check_condition, int timeout_in_mss, int poll_interval_in_mss = 20)
+        {
+            bool o = false;
+            DateTime dt = DateTime.Now + new TimeSpan(0, 0, 0, 0, timeout_in_mss);
+            while (dt > DateTime.Now)
+            {
+                o = check_condition();
+                if (o)
                     break;
                 Application.DoEvents();
                 Thread.Sleep(poll_interval_in_mss);

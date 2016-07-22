@@ -73,12 +73,10 @@ namespace Cliver
             owner = owner ?? Owner;
             if (owner != null)
             {
-                int r = -1;
-                ControlRoutines.Invoke(owner, () =>
+                return (int)ControlRoutines.Invoke(owner, () =>
                 {
-                    r = _ShowDialog(title, icon, message, buttons, default_button, owner, button_auto_size);
+                    return _ShowDialog(title, icon, message, buttons, default_button, owner, button_auto_size);
                 });
-                return r;
             }
             return _ShowDialog(title, icon, message, buttons, default_button, owner);
         }
@@ -89,6 +87,26 @@ namespace Cliver
             mf.ShowInTaskbar = ShowInTaskbar;
             return mf.ShowDialog();
         }
+
+        static bool was_showed(string m, bool show_only_once)
+        {
+            string caller = null;
+            if (show_only_once)
+            {
+                System.Diagnostics.StackTrace st = new StackTrace(true);
+                StackFrame sf = st.GetFrame(2);
+                caller = sf.GetMethod().Name + "," + sf.GetNativeOffset().ToString();
+                string message = null;
+                lock (callers2message)
+                {
+                    if (callers2message.TryGetValue(caller, out message) && message == m)
+                        return true;
+                    callers2message[caller] = m;
+                }
+            }
+            return false;
+        }
+        static Dictionary<string, string> callers2message = new Dictionary<string, string>();
     }
 }
 
