@@ -38,17 +38,20 @@ namespace Cliver
 
             string get_path(string name)
             {
-                string path = WorkDir + @"\Session" + "_" + (string.IsNullOrWhiteSpace(name) ? "" : name + "_") + TimeMark;
-                for (int count = 1; Directory.Exists(path); count++)
-                    path = WorkDir + @"\Session" + "_" + (string.IsNullOrWhiteSpace(name) ? "" : name + "_") + TimeMark + "_" + count.ToString();
-                return path;
+                lock (this.names2nw)
+                {
+                    string path = WorkDir + @"\Session" + "_" + (string.IsNullOrWhiteSpace(name) ? "" : name + "_") + TimeMark;
+                    for (int count = 1; Directory.Exists(path); count++)
+                        path = WorkDir + @"\Session" + "_" + (string.IsNullOrWhiteSpace(name) ? "" : name + "_") + TimeMark + "_" + count.ToString();
+                    return path;
+                }
             }
 
             public string Name
             {
                 get
                 {
-                    lock (this)//this lock is needed if Session::Close(string new_name) is performing
+                    lock (this.names2nw)//this lock is needed if Session::Close(string new_name) is performing
                     {
                         return name;
                     }
@@ -60,7 +63,7 @@ namespace Cliver
             {
                 get
                 {
-                    lock (this)//this lock is needed if Session::Close(string new_name) is performing
+                    lock (this.names2nw)//this lock is needed if Session::Close(string new_name) is performing
                     {
                         return path;
                     }
@@ -74,7 +77,7 @@ namespace Cliver
 
             public void Close(string new_name)
             {
-                lock (this)
+                lock (this.names2nw)
                 {
                     if (new_name == Name)
                     {
@@ -102,7 +105,7 @@ namespace Cliver
 
             public void Close()
             {
-                lock (this)
+                lock (this.names2nw)
                 {
                     Default.Write("Closing the session");
 
@@ -120,7 +123,7 @@ namespace Cliver
             {
                 get
                 {
-                    lock (this)
+                    lock (this.names2nw)
                     {
                         int ec = 0;
                         foreach (NamedWriter nw in names2nw.Values)

@@ -34,28 +34,28 @@ namespace Cliver
 
                 public static NamedWriter Get(Session session, string name)
                 {
-                    return get_log_thread(session, name);
+                    return get_named_writer(session, name);
                 }
                                 
-                static NamedWriter get_log_thread(Session session, string name)
+                static NamedWriter get_named_writer(Session session, string name)
                 {
-                    lock (session)
+                    lock (session.names2nw)
                     {
-                        NamedWriter tl = null;
-                        if (!session.names2nw.TryGetValue(name, out tl))
+                        NamedWriter nw = null;
+                        if (!session.names2nw.TryGetValue(name, out nw))
                         {
                             try
                             {
                                 string log_name = session.TimeMark + "_" + name + ".log";
-                                tl = new NamedWriter(session, name, log_name);
-                                session.names2nw.Add(name, tl);
+                                nw = new NamedWriter(session, name, log_name);
+                                session.names2nw.Add(name, nw);
                             }
                             catch (Exception e)
                             {
                                 Cliver.Log.Main.Error(e);
                             }
                         }
-                        return tl;
+                        return nw;
                     }
                 }
             }
