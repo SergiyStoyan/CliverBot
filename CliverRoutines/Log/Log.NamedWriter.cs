@@ -27,10 +27,7 @@ namespace Cliver
                 NamedWriter(Session session, string name, string file_name)
                     : base(name, file_name, session)
                 {
-                    this.session = session;
                 }
-
-                readonly Session session;
 
                 public static NamedWriter Get(Session session, string name)
                 {
