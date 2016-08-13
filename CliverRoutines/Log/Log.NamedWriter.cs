@@ -42,13 +42,13 @@ namespace Cliver
                     lock (session)
                     {
                         NamedWriter tl = null;
-                        if (!session.names2tl.TryGetValue(name, out tl))
+                        if (!session.names2nw.TryGetValue(name, out tl))
                         {
                             try
                             {
                                 string log_name = session.TimeMark + "_" + name + ".log";
                                 tl = new NamedWriter(session, name, log_name);
-                                session.names2tl.Add(name, tl);
+                                session.names2nw.Add(name, tl);
                             }
                             catch (Exception e)
                             {

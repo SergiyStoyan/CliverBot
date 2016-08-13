@@ -40,11 +40,11 @@ namespace Cliver
             string file_name = null;
 
             readonly Session session;
-            
+
             public static int MaxFileSize = -1;
 
             internal const string MAIN_THREAD_LOG_NAME = null;
-                        
+
             /// <summary>
             /// Log path
             /// </summary>
@@ -52,23 +52,20 @@ namespace Cliver
             {
                 get
                 {
-                    lock (session)//this lock is needed if Session::Close() is performing
+                    string directory;
+                    switch (Log.mode)
                     {
-                        string directory;
-                        switch (Log.mode)
-                        {
-                            case Cliver.Log.Mode.ONLY_LOG:
-                                directory =  Cliver.Log.WorkDir;
-                                break;
-                            //case Cliver.Log.Mode.SINGLE_SESSION:
-                            case Cliver.Log.Mode.SESSIONS:
-                                directory= session.Path + @"\";
-                                break;
-                            default:
-                                throw new Exception("Unknown LOGGING_MODE:" + Cliver.Log.mode);
-                        }
-                        return directory + @"\" + FileName;
+                        case Cliver.Log.Mode.ONLY_LOG:
+                            directory = Cliver.Log.WorkDir;
+                            break;
+                        //case Cliver.Log.Mode.SINGLE_SESSION:
+                        case Cliver.Log.Mode.SESSIONS:
+                            directory = session.Path + @"\";
+                            break;
+                        default:
+                            throw new Exception("Unknown LOGGING_MODE:" + Cliver.Log.mode);
                     }
+                    return directory + @"\" + FileName;
                 }
             }
 

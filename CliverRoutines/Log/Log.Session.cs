@@ -29,8 +29,8 @@ namespace Cliver
             {
                 this.name = name;
 
-                if (Log.mode == Mode.ONLY_LOG)
-                    throw new Exception("SessionDir cannot be used in Log.Mode.ONLY_LOG");
+                //if (Log.mode == Mode.ONLY_LOG)
+                //    throw new Exception("SessionDir cannot be used in Log.Mode.ONLY_LOG");
 
                 path = get_path(name);
                 Directory.CreateDirectory(path);
@@ -48,7 +48,10 @@ namespace Cliver
             {
                 get
                 {
-                    return name;
+                    lock (this)//this lock is needed if Session::Close(string new_name) is performing
+                    {
+                        return name;
+                    }
                 }
             }
             string name;
@@ -57,14 +60,17 @@ namespace Cliver
             {
                 get
                 {
-                    return path;
+                    lock (this)//this lock is needed if Session::Close(string new_name) is performing
+                    {
+                        return path;
+                    }
                 }
             }
             string path;
 
             public readonly string TimeMark = DateTime.Now.ToString("yyMMddHHmmss");
 
-            Dictionary<string, NamedWriter> names2tl = new Dictionary<string, NamedWriter>();
+            Dictionary<string, NamedWriter> names2nw = new Dictionary<string, NamedWriter>();
 
             public void Close(string new_name)
             {
@@ -99,13 +105,14 @@ namespace Cliver
                 lock (this)
                 {
                     Default.Write("Closing the session");
-                    
+
+                    //any ThreadWriter can belong only to MainSession
                     if(this == Log.MainSession)
                         Log.ThreadWriter.CloseAll();
 
-                    foreach (Writer tl in names2tl.Values)
-                        tl.Close();
-                    names2tl.Clear();
+                    foreach (NamedWriter nw in names2nw.Values)
+                        nw.Close();
+                    names2nw.Clear();
                 }
             }
 
@@ -116,8 +123,8 @@ namespace Cliver
                     lock (this)
                     {
                         int ec = 0;
-                        foreach (Writer tl in names2tl.Values)
-                            ec += tl.ErrorCount;
+                        foreach (NamedWriter nw in names2nw.Values)
+                            ec += nw.ErrorCount;
                         return ec;
                     }
                 }

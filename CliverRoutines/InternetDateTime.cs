@@ -81,7 +81,7 @@ namespace Cliver
                 //if (for_release_only && !IsReleaseVersion(Assembly.GetEntryAssembly()))
                 //    return;
                 //LogMessage.Inform("It is a demo version that is valid until " + year + "-" + month + "-" + day);
-                Log.Inform("It is a demo version that is valid until " + year + "-" + month + "-" + day);
+                Log.Main.Inform("It is a demo version that is valid until " + year + "-" + month + "-" + day);
                 if (new DateTime(year, month, day) < InternetDateTime.GetOverHttp())
                     LogMessage.Exit("The test time expired. \nPlease contact the vendor if you want to use this software.");
             }
