@@ -60,7 +60,7 @@ namespace Cliver
                             break;
                         //case Cliver.Log.Mode.SINGLE_SESSION:
                         case Cliver.Log.Mode.SESSIONS:
-                            directory = session.Path + @"\";
+                            directory = session.Path;
                             break;
                         default:
                             throw new Exception("Unknown LOGGING_MODE:" + Cliver.Log.mode);
@@ -70,7 +70,7 @@ namespace Cliver
             }
 
             /// <summary>
-            /// Used to close Log
+            /// Close the log
             /// </summary>
             public void Close()
             {

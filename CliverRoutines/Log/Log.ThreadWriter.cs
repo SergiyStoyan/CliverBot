@@ -37,7 +37,7 @@ namespace Cliver
             {
                 get
                 {
-                    return get_thread_log(Log.MainThread);
+                    return get_thread_writer(Log.MainThread);
                 }
             }
 
@@ -70,7 +70,7 @@ namespace Cliver
             {
                 get
                 {
-                    return get_thread_log(System.Threading.Thread.CurrentThread);
+                    return get_thread_writer(System.Threading.Thread.CurrentThread);
                 }
             }
 
@@ -78,10 +78,10 @@ namespace Cliver
             {
                 get
                 {
-                    lock (thread2tls)
+                    lock (thread2tws)
                     {
                         int ec = 0;
-                        foreach (Writer tl in thread2tls.Values)
+                        foreach (Writer tl in thread2tws.Values)
                             ec += tl.ErrorCount;
                         return ec;
                     }
@@ -90,11 +90,11 @@ namespace Cliver
 
             public static void CloseAll()
             {
-                lock (thread2tls)
+                lock (thread2tws)
                 {
-                    foreach (Writer tl in thread2tls.Values)
+                    foreach (Writer tl in thread2tws.Values)
                         tl.Close();
-                    thread2tls.Clear();
+                    thread2tws.Clear();
 
                     exiting_thread = null;
                 }
@@ -105,28 +105,28 @@ namespace Cliver
             /// </summary>
             public readonly int Id = MAIN_THREAD_LOG_ID;
 
-            static Dictionary<System.Threading.Thread, ThreadWriter> thread2tls = new Dictionary<System.Threading.Thread, ThreadWriter>();
+            static Dictionary<System.Threading.Thread, ThreadWriter> thread2tws = new Dictionary<System.Threading.Thread, ThreadWriter>();
 
-            static ThreadWriter get_thread_log(System.Threading.Thread thread)
+            static ThreadWriter get_thread_writer(System.Threading.Thread thread)
             {
-                lock (thread2tls)
+                lock (thread2tws)
                 {
-                    ThreadWriter tl;
-                    if (!thread2tls.TryGetValue(thread, out tl))
+                    ThreadWriter tw;
+                    if (!thread2tws.TryGetValue(thread, out tw))
                     {
                         try
                         {
                             //cleanup for dead thread logs
-                            List<System.Threading.Thread> old_log_keys = (from t in thread2tls.Keys where !t.IsAlive select t).ToList();
+                            List<System.Threading.Thread> old_log_keys = (from t in thread2tws.Keys where !t.IsAlive select t).ToList();
                             foreach (System.Threading.Thread t in old_log_keys)
                             {
                                 if (t.ThreadState != System.Threading.ThreadState.Stopped)
                                 {
-                                    thread2tls[t].Error("This thread is detected as not alive. Aborting it...");
+                                    thread2tws[t].Error("This thread is detected as not alive. Aborting it...");
                                     t.Abort();
                                 }
-                                thread2tls[t].Close();
-                                thread2tls.Remove(t);
+                                thread2tws[t].Close();
+                                thread2tws.Remove(t);
                             }
 
                             int log_id;
@@ -135,7 +135,7 @@ namespace Cliver
                             else
                             {
                                 log_id = 1;
-                                var ids = from x in thread2tls.Keys orderby thread2tls[x].Id select thread2tls[x].Id;
+                                var ids = from x in thread2tws.Keys orderby thread2tws[x].Id select thread2tws[x].Id;
                                 foreach (int id in ids)
                                     if (log_id == id) log_id++;
                             }
@@ -146,15 +146,15 @@ namespace Cliver
                             else
                                 log_name += "_" + log_id.ToString() + "_" + Log.TimeMark + ".log";
 
-                            tl = new ThreadWriter(log_id, log_name);
-                            thread2tls.Add(thread, tl);
+                            tw = new ThreadWriter(log_id, log_name);
+                            thread2tws.Add(thread, tw);
                         }
                         catch (Exception e)
                         {
                             Log.Main.Error(e);
                         }
                     }
-                    return tl;
+                    return tw;
                 }
             }
         }
