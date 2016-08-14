@@ -54,20 +54,12 @@ namespace Cliver
 
         public static void Invoke(this Control c, MethodInvoker code)
         {
-            if (c.InvokeRequired)
-                c.Invoke(code);
-            else
-                code.Invoke();
+            c.Invoke(code);
         }
 
         public static void BeginInvoke(this Control c, MethodInvoker code)
         {
-            //c.BeginInvoke(code);
-            if (c.InvokeRequired)
-                c.BeginInvoke(code);
-            else
-                c.Invoke(code);
-                //code.BeginInvoke(null, null);
+            c.BeginInvoke(code);
         }
 
         public static void Sleep(int mss)
