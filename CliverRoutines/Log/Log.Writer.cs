@@ -17,7 +17,20 @@ using System.Text;
 using System.Text.RegularExpressions;
 
 namespace Cliver
-{
+{/*The process cannot access the file 'C:\ProgramData\CliverSoft\AwsRestorer\AwsRestorer_Sessions\Session_Customer1-AWSDC_160814101442\160814101442_Ec2DescribeConversionTasks4.log' because it is being used by another process.
+
+   at System.IO.__Error.WinIOError(Int32 errorCode, String maybeFullPath)
+   at System.IO.FileStream.Init(String path, FileMode mode, FileAccess access, Int32 rights, Boolean useRights, FileShare share, Int32 bufferSize, FileOptions options, SECURITY_ATTRIBUTES secAttrs, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.FileStream..ctor(String path, FileMode mode, FileAccess access, FileShare share, Int32 bufferSize, FileOptions options, String msgPath, Boolean bFromProxy, Boolean useLongPath, Boolean checkHost)
+   at System.IO.StreamWriter.CreateFile(String path, Boolean append, Boolean checkHost)
+   at System.IO.StreamWriter..ctor(String path, Boolean append, Encoding encoding, Int32 bufferSize, Boolean checkHost)
+   at System.IO.StreamWriter..ctor(String path, Boolean append)
+   at Cliver.Log.Writer.write(MessageType type, String message, String details)
+   at Cliver.Log.Writer.Write(MessageType type, String message, String details)
+   at Cliver.Log.Writer.Error(Exception e)
+   at Cliver.AwsRestorer.ProcessManager.Execute(Writer log, Dictionary`2 environment_keys2value, String file, String arguments, String& output, String& error, Action`1 set_progress, Action`1 add_output, Action`1 add_error) in C:\CliTools\bin\AwsRestorer\ProcessManager.cs:line 139
+   at Cliver.AwsRestorer.AwsRoutines.IsConversionCompleted(String task_id) in C:\CliTools\bin\AwsRestorer\AwsRoutines.cs:line 351
+   at Cliver.AwsRestorer.Task.monitor_conversion_state_() in C:\CliTools\bin\AwsRestorer\Task.cs:line 500*/
     public partial class Log
     {
         public abstract class Writer

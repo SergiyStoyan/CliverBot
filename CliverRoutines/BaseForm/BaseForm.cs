@@ -66,8 +66,8 @@ namespace Cliver
             if (c.InvokeRequired)
                 c.BeginInvoke(code);
             else
-                //c.Invoke(function);
-                code.BeginInvoke(null, null);
+                c.Invoke(code);
+                //code.BeginInvoke(null, null);
         }
 
         public static void Sleep(int mss)

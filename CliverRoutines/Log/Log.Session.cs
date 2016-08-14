@@ -115,7 +115,7 @@ namespace Cliver
 
                     foreach (NamedWriter nw in names2nw.Values)
                         nw.Close();
-                    names2nw.Clear();
+                    //names2nw.Clear(); !!! removing writers will bring to the duplicating if they are called after closing session
                 }
             }
 
