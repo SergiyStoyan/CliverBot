@@ -116,7 +116,7 @@ namespace Cliver
         public const string WorkDirPrefix = @"_Sessions";
 
         /// <summary>
-        /// Session directory for current main session
+        /// Directory of the current main session
         /// </summary>
         public static string SessionDir
         {
@@ -212,7 +212,7 @@ namespace Cliver
         }
 
         /// <summary>
-        /// Deletes Log data from disk that is older the specified threshold
+        /// Deletes Log data from disk that is older than the specified threshold
         /// </summary>
         public static void DeleteOldLogs()
         {

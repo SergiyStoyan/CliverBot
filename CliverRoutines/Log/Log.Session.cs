@@ -75,6 +75,10 @@ namespace Cliver
 
             Dictionary<string, NamedWriter> names2nw = new Dictionary<string, NamedWriter>();
 
+            /// <summary>
+            /// Close all writing streams and rename session and its directory. The session can be used after.
+            /// </summary>
+            /// <param name="new_name"></param>
             public void Close(string new_name)
             {
                 lock (this.names2nw)
@@ -102,7 +106,9 @@ namespace Cliver
                     }
                 }
             }
-
+            /// <summary>
+            /// Close all writing streams. The session can be used after.
+            /// </summary>
             public void Close()
             {
                 lock (this.names2nw)
@@ -115,7 +121,7 @@ namespace Cliver
 
                     foreach (NamedWriter nw in names2nw.Values)
                         nw.Close();
-                    //names2nw.Clear(); !!! removing writers will bring to the duplicating if they are called after closing session
+                    //names2nw.Clear(); !!! clearing writers will bring to duplicating of them if they are referenced alongside also.
                 }
             }
 
