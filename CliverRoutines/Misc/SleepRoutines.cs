@@ -28,25 +28,42 @@ namespace Cliver
 {
     public static class SleepRoutines
     {
-        public static object WaitForCondition(Func<object> check_condition, int mss)
+        public static object WaitForObject(Func<object> get_object, int mss, int spin_sleep_in_mss = 10)
         {
             object o = null;
             DateTime dt = DateTime.Now + new TimeSpan(0, 0, 0, 0, mss);
             while (dt > DateTime.Now)
             {
-                o = check_condition();
+                o = get_object();
                 if (o != null)
                     break;
                 Application.DoEvents();
+                Thread.Sleep(spin_sleep_in_mss);
             }
             return o;
         }
 
-        public static void Wait(int mss)
+        public static bool WaitForCondition(Func<bool> check_condition, int mss, int spin_sleep_in_mss = 10)
         {
             DateTime dt = DateTime.Now + new TimeSpan(0, 0, 0, 0, mss);
             while (dt > DateTime.Now)
+            {
+                if (check_condition())
+                    return true;
                 Application.DoEvents();
+                Thread.Sleep(spin_sleep_in_mss);
+            }
+            return false;
+        }
+
+        public static void Wait(int mss, int spin_sleep_in_mss = 10)
+        {
+            DateTime dt = DateTime.Now + new TimeSpan(0, 0, 0, 0, mss);
+            while (dt > DateTime.Now)
+            {
+                Application.DoEvents();
+                Thread.Sleep(spin_sleep_in_mss);
+            }
         }        
     }
 }

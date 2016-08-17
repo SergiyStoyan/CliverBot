@@ -57,30 +57,6 @@ namespace Cliver
         {
             c.BeginInvoke(code);
         }
-
-        public static void Sleep(int mss)
-        {
-            DateTime dt = DateTime.Now + new TimeSpan(0, 0, 0, 0, mss);
-            while (dt > DateTime.Now)
-            {
-                Application.DoEvents();
-                Thread.Sleep(10);
-            }
-        }
-
-        public static bool WaitForCondition(Func<bool> check_condition, int timeout_in_mss)
-        {
-            DateTime dt = DateTime.Now + new TimeSpan(0, 0, 0, 0, timeout_in_mss);
-            do
-            {
-                if (check_condition())
-                    return true;
-                Thread.Sleep(10);
-                Application.DoEvents();
-            }
-            while (dt > DateTime.Now);
-            return false;
-        }
     }
 }
 
