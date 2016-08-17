@@ -45,16 +45,12 @@ namespace Cliver
 
         public static object Invoke(this Control c, Func<object> function)
         {
-            if (c.InvokeRequired)
-            {
-                return c.Invoke(function);
-            }
-            return function.Invoke();
+            return c.Invoke(function);
         }
 
-        public static void Invoke(this Control c, MethodInvoker code)
+        public static object Invoke(this Control c, MethodInvoker code)
         {
-            c.Invoke(code);
+            return c.Invoke(code);
         }
 
         public static void BeginInvoke(this Control c, MethodInvoker code)

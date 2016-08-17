@@ -21,7 +21,7 @@ namespace Cliver
     /// Show MessageForm with predefined features
     /// </summary>
     public static class Message
-    { 
+    {
         /// <summary>
         /// Whether the message box must be displayed in the Windows taskbar.
         /// </summary>
@@ -31,6 +31,10 @@ namespace Cliver
         /// Owner that is used by default
         /// </summary>
         public static Form Owner = null;
+
+        public static bool ButtonAutosize = false;
+
+        public static bool NoDuplicate = true;
 
         public static void Inform(string message, Form owner = null)
         {
@@ -68,43 +72,47 @@ namespace Cliver
             return ShowDialog(Application.ProductName, SystemIcons.Question, question, new string[2] { "Yes", "No" }, 0, owner) == 0;
         }
 
-        public static int ShowDialog(string title, Icon icon, string message, string[] buttons, int default_button, Form owner, bool button_auto_size = false)
+        public static int ShowDialog(string title, Icon icon, string message, string[] buttons, int default_button, Form owner, bool? button_autosize = null, bool? no_duplicate = null)
         {
             owner = owner ?? Owner;
             if (owner != null)
             {
-                return (int)ControlRoutines.Invoke(owner, () =>
-                {
-                    return _ShowDialog(title, icon, message, buttons, default_button, owner, button_auto_size);
-                });
+                return (int)owner.Invoke(() =>
+               {
+                   return show_dialog(title, icon, message, buttons, default_button, owner, button_autosize, no_duplicate);
+               });
             }
-            return _ShowDialog(title, icon, message, buttons, default_button, owner);
+            return show_dialog(title, icon, message, buttons, default_button, owner, button_autosize, no_duplicate);
         }
 
-        static int _ShowDialog(string title, Icon icon, string message, string[] buttons, int default_button, Form owner, bool button_auto_size = false)
-        {
-            MessageForm mf = new MessageForm(title, icon, message, buttons, default_button, owner, button_auto_size);
-            mf.ShowInTaskbar = ShowInTaskbar;
-            return mf.ShowDialog();
-        }
-
-        static bool was_showed(string m, bool show_only_once)
+        static int show_dialog(string title, Icon icon, string message, string[] buttons, int default_button, Form owner, bool? button_autosize = null, bool? no_duplicate = null)
         {
             string caller = null;
-            if (show_only_once)
+            if (no_duplicate != null ? (bool)no_duplicate : NoDuplicate)
             {
                 System.Diagnostics.StackTrace st = new StackTrace(true);
                 StackFrame sf = st.GetFrame(2);
                 caller = sf.GetMethod().Name + "," + sf.GetNativeOffset().ToString();
-                string message = null;
+                string m = null;
                 lock (callers2message)
                 {
-                    if (callers2message.TryGetValue(caller, out message) && message == m)
-                        return true;
+                    if (callers2message.TryGetValue(caller, out m) && m == message)
+                        return -1;
                     callers2message[caller] = m;
                 }
             }
-            return false;
+
+            MessageForm mf = new MessageForm(title, icon, message, buttons, default_button, owner, button_autosize != null ? (bool)button_autosize : ButtonAutosize);
+            mf.ShowInTaskbar = ShowInTaskbar;
+            int result = mf.ShowDialog();
+
+            if (no_duplicate != null ? (bool)no_duplicate : NoDuplicate)
+                lock (callers2message)
+                {
+                    callers2message.Remove(caller);
+                }
+
+            return result;
         }
         static Dictionary<string, string> callers2message = new Dictionary<string, string>();
     }
