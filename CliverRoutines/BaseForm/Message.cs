@@ -32,8 +32,14 @@ namespace Cliver
         /// </summary>
         public static Form Owner = null;
 
+        /// <summary>
+        /// Autosize buttons by text
+        /// </summary>
         public static bool ButtonAutosize = false;
 
+        /// <summary>
+        /// Display only one message box for all same messages throuwn. When the first one is being diplayed, the rest are ignored.
+        /// </summary>
         public static bool NoDuplicate = true;
 
         public static void Inform(string message, Form owner = null)
@@ -75,20 +81,19 @@ namespace Cliver
         public static int ShowDialog(string title, Icon icon, string message, string[] buttons, int default_button, Form owner, bool? button_autosize = null, bool? no_duplicate = null)
         {
             owner = owner ?? Owner;
-            if (owner != null)
-            {
-                return (int)owner.Invoke(() =>
-               {
-                   return show_dialog(title, icon, message, buttons, default_button, owner, button_autosize, no_duplicate);
-               });
-            }
-            return show_dialog(title, icon, message, buttons, default_button, owner, button_autosize, no_duplicate);
+            if (owner == null)
+                return show_dialog(title, icon, message, buttons, default_button, owner, button_autosize, no_duplicate);
+
+            return (int)owner.Invoke(() =>
+           {
+               return show_dialog(title, icon, message, buttons, default_button, owner, button_autosize, no_duplicate);
+           });
         }
 
         static int show_dialog(string title, Icon icon, string message, string[] buttons, int default_button, Form owner, bool? button_autosize = null, bool? no_duplicate = null)
         {
             string caller = null;
-            if (no_duplicate != null ? (bool)no_duplicate : NoDuplicate)
+            if (no_duplicate ?? NoDuplicate)
             {
                 System.Diagnostics.StackTrace st = new StackTrace(true);
                 StackFrame sf = st.GetFrame(2);
@@ -102,11 +107,11 @@ namespace Cliver
                 }
             }
 
-            MessageForm mf = new MessageForm(title, icon, message, buttons, default_button, owner, button_autosize != null ? (bool)button_autosize : ButtonAutosize);
+            MessageForm mf = new MessageForm(title, icon, message, buttons, default_button, owner, button_autosize ?? ButtonAutosize);
             mf.ShowInTaskbar = ShowInTaskbar;
             int result = mf.ShowDialog();
 
-            if (no_duplicate != null ? (bool)no_duplicate : NoDuplicate)
+            if (no_duplicate ?? NoDuplicate)
                 lock (callers2message)
                 {
                     callers2message.Remove(caller);
