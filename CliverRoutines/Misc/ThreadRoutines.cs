@@ -23,6 +23,42 @@ namespace Cliver
     /// </summary>
     public static class ThreadRoutines
     {
+        public static Thread Start(ThreadStart code, bool background = true)
+        {
+            Thread t = new Thread(code);
+            t.IsBackground = background;
+            t.Start();
+            return t;
+        }
+
+        public delegate void ErrorHandler(Exception e);
+
+        public static Thread StartTry(MethodInvoker code, ErrorHandler on_error = null, MethodInvoker on_finally = null, bool background = true)
+        {
+            Thread t = new Thread(
+                () => {
+                    try
+                    {
+                        code.Invoke();
+                    }
+                    catch(Exception e)
+                    {
+                        if (on_error != null)
+                            on_error.Invoke(e);
+                        else
+                            Message.Error(e);
+                    }
+                    finally
+                    {
+                        on_finally?.Invoke();
+                    }
+                }
+            );
+            t.IsBackground = background;
+            t.Start();
+            return t;
+        }
+
         //static HashSet<Thread> threads = new HashSet<Thread>();
 
         //public static Thread GetThread(ThreadStart st)
@@ -54,54 +90,54 @@ namespace Cliver
         //    }
         //}
 
-        public static void Wait(long milliseconds, int poll_interval_in_mss = 20)
-        {
-            if (milliseconds / 2 < poll_interval_in_mss) poll_interval_in_mss /= 2;
-            DateTime t = DateTime.Now.AddMilliseconds(milliseconds);
-            while (t > DateTime.Now)
-            {
-                Application.DoEvents();
-                Thread.Yield();
-                if(poll_interval_in_mss > 0)
-                    Thread.Sleep(poll_interval_in_mss);
-            }
-        }
+        //public static void Wait(long milliseconds, int poll_interval_in_mss = 20)
+        //{
+        //    if (milliseconds / 2 < poll_interval_in_mss) poll_interval_in_mss /= 2;
+        //    DateTime t = DateTime.Now.AddMilliseconds(milliseconds);
+        //    while (t > DateTime.Now)
+        //    {
+        //        Application.DoEvents();
+        //        Thread.Yield();
+        //        if(poll_interval_in_mss > 0)
+        //            Thread.Sleep(poll_interval_in_mss);
+        //    }
+        //}
 
-        /// <summary>
-        /// Waiting not freezing the app
-        /// </summary>
-        public static object WaitForObject(Func<object> check_condition, int timeout_in_mss, int poll_interval_in_mss = 20)
-        {
-            object o = null;
-            DateTime dt = DateTime.Now + new TimeSpan(0, 0, 0, 0, timeout_in_mss);
-            while (dt > DateTime.Now)
-            {
-                o = check_condition();
-                if (o != null)
-                    break;
-                Application.DoEvents();
-                Thread.Sleep(poll_interval_in_mss);
-            }
-            return o;
-        }
+        ///// <summary>
+        ///// Waiting not freezing the app
+        ///// </summary>
+        //public static object WaitForObject(Func<object> check_condition, int timeout_in_mss, int poll_interval_in_mss = 20)
+        //{
+        //    object o = null;
+        //    DateTime dt = DateTime.Now + new TimeSpan(0, 0, 0, 0, timeout_in_mss);
+        //    while (dt > DateTime.Now)
+        //    {
+        //        o = check_condition();
+        //        if (o != null)
+        //            break;
+        //        Application.DoEvents();
+        //        Thread.Sleep(poll_interval_in_mss);
+        //    }
+        //    return o;
+        //}
 
-        /// <summary>
-        /// Waiting not freezing the app
-        /// </summary>
-        public static object WaitForCondition(Func<bool> check_condition, int timeout_in_mss, int poll_interval_in_mss = 20)
-        {
-            bool o = false;
-            DateTime dt = DateTime.Now + new TimeSpan(0, 0, 0, 0, timeout_in_mss);
-            while (dt > DateTime.Now)
-            {
-                o = check_condition();
-                if (o)
-                    break;
-                Application.DoEvents();
-                Thread.Sleep(poll_interval_in_mss);
-            }
-            return o;
-        }   
+        ///// <summary>
+        ///// Waiting not freezing the app
+        ///// </summary>
+        //public static object WaitForCondition(Func<bool> check_condition, int timeout_in_mss, int poll_interval_in_mss = 20)
+        //{
+        //    bool o = false;
+        //    DateTime dt = DateTime.Now + new TimeSpan(0, 0, 0, 0, timeout_in_mss);
+        //    while (dt > DateTime.Now)
+        //    {
+        //        o = check_condition();
+        //        if (o)
+        //            break;
+        //        Application.DoEvents();
+        //        Thread.Sleep(poll_interval_in_mss);
+        //    }
+        //    return o;
+        //}   
     }
 }
 

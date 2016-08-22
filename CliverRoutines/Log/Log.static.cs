@@ -24,7 +24,7 @@ namespace Cliver
     /// </summary>
     public static partial class Log
     {
-        public static void Initialize(Mode mode, string pre_work_dir, bool write_log, int delete_logs_older_days)
+        public static void Initialize(Mode mode, string pre_work_dir = null, bool write_log = true, int delete_logs_older_days = 10)
         {
             Log.ClearSession();
             //if (work_dir != null)

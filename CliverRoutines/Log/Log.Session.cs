@@ -33,17 +33,27 @@ namespace Cliver
                 //    throw new Exception("SessionDir cannot be used in Log.Mode.ONLY_LOG");
 
                 path = get_path(name);
-                Directory.CreateDirectory(path);
+                if(Log.mode == Mode.SESSIONS)
+                    Directory.CreateDirectory(path);
             }
 
             string get_path(string name)
             {
                 lock (this.names2nw)
                 {
-                    string path = WorkDir + @"\Session" + "_" + (string.IsNullOrWhiteSpace(name) ? "" : name + "_") + TimeMark;
-                    for (int count = 1; Directory.Exists(path); count++)
-                        path = WorkDir + @"\Session" + "_" + (string.IsNullOrWhiteSpace(name) ? "" : name + "_") + TimeMark + "_" + count.ToString();
-                    return path;
+                    switch (Log.mode)
+                    {
+                        case Cliver.Log.Mode.ONLY_LOG:
+                            return WorkDir;
+                        //case Cliver.Log.Mode.SINGLE_SESSION:
+                        case Cliver.Log.Mode.SESSIONS:
+                            string path = WorkDir + @"\Session" + "_" + (string.IsNullOrWhiteSpace(name) ? "" : name + "_") + TimeMark;
+                            for (int count = 1; Directory.Exists(path); count++)
+                                path = WorkDir + @"\Session" + "_" + (string.IsNullOrWhiteSpace(name) ? "" : name + "_") + TimeMark + "_" + count.ToString();
+                            return path;
+                        default:
+                            throw new Exception("Unknown LOGGING_MODE:" + Cliver.Log.mode);
+                    }
                 }
             }
 
@@ -83,6 +93,9 @@ namespace Cliver
             {
                 lock (this.names2nw)
                 {
+                    if (Log.mode == Mode.ONLY_LOG)
+                        throw new Exception("Cannot rename log folder in mode: " + Log.mode);
+
                     if (new_name == Name)
                     {
                         Close();
