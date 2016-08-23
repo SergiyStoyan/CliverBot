@@ -41,7 +41,10 @@ namespace Cliver
                     {
                         code.Invoke();
                     }
-                    catch(Exception e)
+                    catch (ThreadAbortException)
+                    {
+                    }
+                    catch (Exception e)
                     {
                         if (on_error != null)
                             on_error.Invoke(e);
