@@ -103,10 +103,13 @@ namespace Cliver
                         }
 
                         DirectoryInfo di = new DirectoryInfo(work_dir);
-                        if (!di.Exists)
-                            di.Create();
-                        else
-                            Log.DeleteOldLogs();
+                        if (write_log)
+                        {
+                            if (!di.Exists)
+                                di.Create();
+                            else
+                                Log.DeleteOldLogs();
+                        }
                     }
                 }
                 return work_dir;
