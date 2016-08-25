@@ -147,6 +147,7 @@
     <Compile Include="Log\Log.NamedWriter.cs" />
     <Compile Include="Log\Log.Session.cs" />
     <Compile Include="Log\Log.ThreadWriter.cs" />
+    <Compile Include="Misc\Crypto.cs" />
     <Compile Include="Misc\FieldPreparation.cs" />
     <Compile Include="InternetDateTime.cs" />
     <Compile Include="Misc\Enum.cs" />

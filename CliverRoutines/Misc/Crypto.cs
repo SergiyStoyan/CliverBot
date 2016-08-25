@@ -14,23 +14,23 @@ using System.Text;
 
 namespace Cliver
 {
-    static public class Crypto
+    public class Crypto
     {
-        readonly string key = "";
+        readonly string key;
 
         public Crypto(string key)
         {
             this.key = Regex.Replace(key, @"\s+", "", RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            if (key.Length < 8)
+            if (key.Length < 3)
                 throw new Exception("Key is too short.");
         }
 
-        static public string Encrypt(string str)
+        public string Encrypt(string str)
         {
             return Convert.ToBase64String(Encoding.UTF8.GetBytes(convert_by_halojoy(str)));
         }
 
-        static public string Decrypt(string str)
+        public string Decrypt(string str)
         {
             return convert_by_halojoy(Encoding.UTF8.GetString(Convert.FromBase64String(str)));
         }
@@ -40,7 +40,7 @@ namespace Cliver
         /// </summary>
         /// <param name="str"></param>
         /// <returns></returns>
-        static string convert_by_halojoy(string str)
+        string convert_by_halojoy(string str)
         {
             int kl = key.Length;
             if (kl > 32)
