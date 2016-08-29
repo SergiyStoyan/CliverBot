@@ -16,11 +16,49 @@ using System.Security.Cryptography;
 
 namespace Cliver
 {
-    public class Crypto3
+    public class CryptoRijndael
+    {
+        readonly string key;
+        readonly byte[] vector = new byte[] { 0x26, 0xdc, 0xff, 0x00, 0xad, 0xed, 0x7a, 0xee, 0xc5, 0xfe, 0x07, 0xaf, 0x4d, 0x08, 0x22, 0x3c };
+
+        public CryptoRijndael(string key)
+        {
+            if (key == null)
+                throw new ArgumentNullException("key");
+            Rfc2898DeriveBytes pdb = new Rfc2898DeriveBytes(key, vector);
+            rijndael.Key = pdb.GetBytes(32);
+            rijndael.IV = pdb.GetBytes(16);
+        }
+        Rijndael rijndael = Rijndael.Create();
+
+        public string Encrypt(string str)
+        {
+            byte[] bytes = Encoding.Unicode.GetBytes(str);
+            MemoryStream ms = new MemoryStream();
+            CryptoStream cs = new CryptoStream(ms, rijndael.CreateEncryptor(), CryptoStreamMode.Write);
+            cs.Write(bytes, 0, bytes.Length);
+            cs.Close();
+            bytes = ms.ToArray();
+            return Convert.ToBase64String(bytes);
+        }
+
+        public string Decrypt(string str)
+        {
+            byte[] bytes = Convert.FromBase64String(str);
+            MemoryStream ms = new MemoryStream();
+            CryptoStream cs = new CryptoStream(ms, rijndael.CreateDecryptor(), CryptoStreamMode.Write);
+            cs.Write(bytes, 0, bytes.Length);
+            cs.Close();
+            bytes = ms.ToArray();
+            return Encoding.Unicode.GetString(bytes);
+        }
+    }
+
+    public class CryptoAes
     {
         readonly string key = null;
         
-        public Crypto3(string key)
+        public CryptoAes(string key)
         {
             if (key == null)
                 throw new ArgumentNullException("key");
