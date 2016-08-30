@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Reflection;
 using System.Diagnostics;
-using System.IO;
+using System.Text.RegularExpressions;
 
 namespace Cliver
 {
@@ -59,13 +59,19 @@ namespace Cliver
 
         public static void Error(Exception e, Form owner = null)
         {
-            string cs = e.StackTrace;
             List<string> ms = new List<string>();
+            bool stack_trace_added = false;
             for (; e != null; e = e.InnerException)
+            {
                 ms.Add(e.Message);
-            ms.Add("\r\n" + cs);
+                if(!stack_trace_added && e.StackTrace!=null)
+                {
+                    stack_trace_added = true;
+                    ms.Add("\r\n" + e.StackTrace);
+                }
+            }
 
-            ShowDialog(Application.ProductName, SystemIcons.Error, string.Join("\r\n", ms), new string[1] { "OK" }, 0, owner);
+            ShowDialog(Application.ProductName, SystemIcons.Error, string.Join("\r\n\r\n", ms), new string[1] { "OK" }, 0, owner);
         }
 
         public static void Error(string message, Form owner = null)
@@ -81,7 +87,7 @@ namespace Cliver
         public static int ShowDialog(string title, Icon icon, string message, string[] buttons, int default_button, Form owner, bool? button_autosize = null, bool? no_duplicate = null)
         {
             owner = owner ?? Owner;
-            if (owner == null)
+            if (owner == null || !owner.InvokeRequired)
                 return show_dialog(title, icon, message, buttons, default_button, owner, button_autosize, no_duplicate);
 
             return (int)owner.Invoke(() =>
@@ -95,15 +101,22 @@ namespace Cliver
             string caller = null;
             if (no_duplicate ?? NoDuplicate)
             {
-                System.Diagnostics.StackTrace st = new StackTrace(true);
-                StackFrame sf = st.GetFrame(2);
+                StackTrace st = new StackTrace(true);
+                StackFrame sf = null;
+                for (int i = 1; i < st.FrameCount; i++)
+                {
+                    sf = st.GetFrame(i);
+                    string file_name = sf.GetFileName();
+                    if (file_name == null || !Regex.IsMatch(file_name, @"\\Message\.cs$"))
+                        break;
+                }
                 caller = sf.GetMethod().Name + "," + sf.GetNativeOffset().ToString();
                 string m = null;
                 lock (callers2message)
                 {
                     if (callers2message.TryGetValue(caller, out m) && m == message)
                         return -1;
-                    callers2message[caller] = m;
+                    callers2message[caller] = message;
                 }
             }
 
