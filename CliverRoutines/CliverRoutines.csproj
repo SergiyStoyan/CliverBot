@@ -152,6 +152,7 @@
     <Compile Include="Misc\FieldPreparation.cs" />
     <Compile Include="InternetDateTime.cs" />
     <Compile Include="Misc\Enum.cs" />
+    <Compile Include="Misc\AssemblyRoutines.cs" />
     <Compile Include="Misc\ProgramRoutines.cs" />
     <Compile Include="Misc\SerializationRoutines.cs" />
     <Compile Include="Log\Log.constants.cs" />
