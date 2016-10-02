@@ -63,15 +63,16 @@ namespace Cliver
             bool stack_trace_added = false;
             for (; e != null; e = e.InnerException)
             {
-                ms.Add(e.Message);
-                if(!stack_trace_added && e.StackTrace!=null)
+                string s = e.Message;
+                if (!stack_trace_added && e.StackTrace != null)
                 {
                     stack_trace_added = true;
-                    ms.Add("\r\n" + e.StackTrace);
+                    s += "\r\n" + e.StackTrace;
                 }
+                ms.Add(s);
             }
 
-            ShowDialog(Application.ProductName, SystemIcons.Error, string.Join("\r\n\r\n", ms), new string[1] { "OK" }, 0, owner);
+            ShowDialog(Application.ProductName, SystemIcons.Error, string.Join("\r\n=>\r\n", ms), new string[1] { "OK" }, 0, owner);
         }
 
         public static void Error(string message, Form owner = null)

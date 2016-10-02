@@ -7,7 +7,7 @@ using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace UsI9Pdf
+namespace Cliver
 {
     class ImageRoutines
     {

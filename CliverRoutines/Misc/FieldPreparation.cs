@@ -150,7 +150,7 @@ namespace Cliver
             return string.Join(separator, ss);
         }
 
-        public static string GetCsvLine(object[] values, string default_value = "", string separator = ",", string separator_substitute = ";")
+        public static string GetCsvLine(IEnumerable<object> values, string default_value = "", string separator = ",", string separator_substitute = ";")
         {
             List<string> ss = new List<string>();
             foreach (object v in values)

@@ -238,10 +238,22 @@ namespace Cliver
             return m + " \r\n\r\n" + d; ;
         }
 
+//        static public void GetExceptionMessage(Exception e, out string message, out string details)
+//        {
+//            for (; e.InnerException != null; e = e.InnerException) ;
+//            message = "Exception: \r\n" + e.Message;
+//#if DEBUG            
+//            details = "Module:" + e.TargetSite.Module + " \r\n\r\nStack:" + e.StackTrace;
+//#else       
+//            details = ""; //"Module:" + e.TargetSite.Module + " \r\n\r\nStack:" + e.StackTrace;
+//#endif
+//        }
+
         static public void GetExceptionMessage(Exception e, out string message, out string details)
         {
-            for (; e.InnerException != null; e = e.InnerException) ;
-            message = "Exception: \r\n" + e.Message;
+            message = e.Message;
+            for (; e.InnerException != null; e = e.InnerException)
+                message += "\r\n<= " + e.Message;
 #if DEBUG            
             details = "Module:" + e.TargetSite.Module + " \r\n\r\nStack:" + e.StackTrace;
 #else       
