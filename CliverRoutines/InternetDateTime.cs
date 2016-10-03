@@ -72,7 +72,7 @@ namespace Cliver
         /// <param name="month">month when the test period expires</param>
         /// <param name="day">day when the test period expires</param>
         /// <param name="for_release_only"></param>
-        static public void CHECK_TEST_PERIOD_VALIDITY(int year, int month, int day, bool for_release_only = true)
+        static public void CHECK_TEST_PERIOD_VALIDITY(int year, int month, int day, bool for_release_only = false)
         {
             try
             {
