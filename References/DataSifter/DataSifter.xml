@@ -4,60 +4,9 @@
         <name>DataSifter</name>
     </assembly>
     <members>
-        <member name="F:Cliver.DataSifter.BaseControl.components">
-            <summary> 
-            Required designer variable.
-            </summary>
-        </member>
-        <member name="M:Cliver.DataSifter.BaseControl.Dispose(System.Boolean)">
-            <summary> 
-            Clean up any resources being used.
-            </summary>
-            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        </member>
-        <member name="M:Cliver.DataSifter.BaseControl.InitializeComponent">
-            <summary> 
-            Required method for Designer support - do not modify 
-            the contents of this method with the code editor.
-            </summary>
-        </member>
-        <member name="F:Cliver.DataSifter.BaseForm.components">
-            <summary>
-            Required designer variable.
-            </summary>
-        </member>
-        <member name="M:Cliver.DataSifter.BaseForm.Dispose(System.Boolean)">
-            <summary>
-            Clean up any resources being used.
-            </summary>
-            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        </member>
-        <member name="M:Cliver.DataSifter.BaseForm.InitializeComponent">
-            <summary>
-            Required method for Designer support - do not modify
-            the contents of this method with the code editor.
-            </summary>
-        </member>
         <member name="T:Cliver.DataSifter.AgileControl">
             <summary>
             
-            </summary>
-        </member>
-        <member name="F:Cliver.DataSifter.FilterControl.components">
-            <summary> 
-            Required designer variable.
-            </summary>
-        </member>
-        <member name="M:Cliver.DataSifter.FilterControl.Dispose(System.Boolean)">
-            <summary> 
-            Clean up any resources being used.
-            </summary>
-            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        </member>
-        <member name="M:Cliver.DataSifter.FilterControl.InitializeComponent">
-            <summary> 
-            Required method for Designer support - do not modify 
-            the contents of this method with the code editor.
             </summary>
         </member>
         <member name="M:Cliver.DataSifter.AgileControl.#ctor">
@@ -77,6 +26,33 @@
             <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         </member>
         <member name="M:Cliver.DataSifter.AgileControl.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:Cliver.DataSifter.JsonControl">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.JsonControl.#ctor">
+            <summary>
+            needed for VS designer
+            </summary>
+        </member>
+        <member name="F:Cliver.DataSifter.JsonControl.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.JsonControl.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Cliver.DataSifter.JsonControl.InitializeComponent">
             <summary> 
             Required method for Designer support - do not modify 
             the contents of this method with the code editor.
@@ -191,10 +167,45 @@
             output_group_name => List
             </summary>
         </member>
+        <member name="F:Cliver.DataSifter.FilterControl.components">
+            <summary> 
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterControl.Dispose(System.Boolean)">
+            <summary> 
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:Cliver.DataSifter.FilterControl.InitializeComponent">
+            <summary> 
+            Required method for Designer support - do not modify 
+            the contents of this method with the code editor.
+            </summary>
+        </member>
         <member name="T:Cliver.DataSifter.Capture">
             <summary>
             Node of tree of captures being a node of a data parsed tree (result of parsing data with a filter tree).
             </summary>
+        </member>
+        <member name="P:Cliver.DataSifter.Capture.Item(System.String)">
+            <summary>
+            Child Capture's for the key. 
+            </summary>
+            <param name="key">group name of child filter</param>
+            <returns>child Capture's</returns>
+        </member>
+        <member name="P:Cliver.DataSifter.Capture.Item(System.String,System.Int32)">
+            <summary>
+            Child Capture for the key and the index. 
+            It is almost the same like [key][index] 
+            but more efficient since does not build an array of strings.
+            Also it is more safe in index use: returns null if index is out of range.
+            </summary>
+            <param name="key">group name of child filter</param>
+            <param name="index">index within array of captures</param>
+            <returns>child Capture</returns>
         </member>
         <member name="M:Cliver.DataSifter.Capture.LengthOf(System.String)">
             <summary>
@@ -222,6 +233,11 @@
         <member name="F:Cliver.DataSifter.Capture.Key">
             <summary>
             Key of this Capture. (Group name in the filter.)
+            </summary>
+        </member>
+        <member name="P:Cliver.DataSifter.Capture.Keys">
+            <summary>
+            Keys of child Capture's. (Group names of child filters.)
             </summary>
         </member>
         <member name="M:Cliver.DataSifter.Capture.ValueOf(System.String,System.Int32)">
@@ -296,29 +312,6 @@
             where key is a group name of child filter, index is integer or '*'</param>
             <returns>first value of last-descendant GroupCaptures</returns>
         </member>
-        <member name="P:Cliver.DataSifter.Capture.Item(System.String)">
-            <summary>
-            Child Capture's for the key. 
-            </summary>
-            <param name="key">group name of child filter</param>
-            <returns>child Capture's</returns>
-        </member>
-        <member name="P:Cliver.DataSifter.Capture.Item(System.String,System.Int32)">
-            <summary>
-            Child Capture for the key and the index. 
-            It is almost the same like [key][index] 
-            but more efficient since does not build an array of strings.
-            Also it is more safe in index use: returns null if index is out of range.
-            </summary>
-            <param name="key">group name of child filter</param>
-            <param name="index">index within array of captures</param>
-            <returns>child Capture</returns>
-        </member>
-        <member name="P:Cliver.DataSifter.Capture.Keys">
-            <summary>
-            Keys of child Capture's. (Group names of child filters.)
-            </summary>
-        </member>
         <member name="T:Cliver.DataSifter.Parser">
             <summary>
             Engine for parsing text with filter tree.
@@ -361,37 +354,6 @@
             </summary>
             <param name="text">text that is to be parsed with the tree</param>
             <returns>Zero Capture that the tree of CroupCapture's starts from</returns>
-        </member>
-        <member name="T:Cliver.DataSifter.Message">
-            <summary>
-            Show MessageForm with predefined features
-            </summary>
-        </member>
-        <member name="F:Cliver.DataSifter.Message.ShowInTaskbar">
-            <summary>
-            Whether the message box must be displayed in the Windows taskbar.
-            </summary>
-        </member>
-        <member name="T:Cliver.DataSifter.MessageForm">
-            <summary>
-            Dynamic dialog box with many answer cases
-            </summary>
-        </member>
-        <member name="F:Cliver.DataSifter.MessageForm.components">
-            <summary>
-            Required designer variable.
-            </summary>
-        </member>
-        <member name="M:Cliver.DataSifter.MessageForm.Dispose(System.Boolean)">
-            <summary>
-            Clean up any resources being used.
-            </summary>
-        </member>
-        <member name="M:Cliver.DataSifter.MessageForm.InitializeComponent">
-            <summary>
-            Required method for Designer support - do not modify
-            the contents of this method with the code editor.
-            </summary>
         </member>
         <member name="T:Cliver.DataSifter.FilterTreeForm">
             <summary>
@@ -580,6 +542,11 @@
             <param name="sender"></param>
             <param name="e"></param>
         </member>
+        <member name="P:Cliver.DataSifter.FilterTreeForm.FilterTreeChanged">
+            <summary>
+            shows if the current filter tree was modified after saving
+            </summary>
+        </member>
         <member name="M:Cliver.DataSifter.FilterTreeForm.ToSavePreviousFilterTree">
             <summary>
             ask if previous filter tree must be saved
@@ -623,43 +590,6 @@
             </summary>
             <param name="sender"></param>
             <param name="e"></param>
-        </member>
-        <member name="P:Cliver.DataSifter.FilterTreeForm.FilterTreeChanged">
-            <summary>
-            shows if the current filter tree was modified after saving
-            </summary>
-        </member>
-        <member name="T:Cliver.RtfEditor">
-            <summary>
-            Edit rtf text
-            </summary>
-        </member>
-        <member name="M:Cliver.RtfEditor.IndexOf(System.Text.StringBuilder,System.String)">
-            <summary>
-            Analog string.IndexOf for StringBuilder
-            </summary>
-            <param name="str">string where to search</param>
-            <param name="value">string what to search</param>
-            <returns>-1 if not found or value is empty</returns>
-        </member>
-        <member name="M:Cliver.RtfEditor.IndexOf(System.Text.StringBuilder,System.String,System.Int32)">
-            <summary>
-            Analog string.IndexOf for StringBuilder
-            </summary>
-            <param name="str">string where to search</param>
-            <param name="value">string what to search</param>
-            <param name="start_index">where to start serch within str</param>
-            <returns>-1 if not found or value is empty</returns>
-        </member>
-        <member name="M:Cliver.RtfEditor.IndexOf(System.Text.StringBuilder,System.String,System.Int32,System.Int32)">
-            <summary>
-            Analog string.IndexOf for StringBuilder
-            </summary>
-            <param name="str">string where to search</param>
-            <param name="value">string what to search</param>
-            <param name="start_index">where to start serch within str</param>
-            <param name="count">the number of charakter positions to examine</param>
-            <returns>-1 if not found or value is empty</returns>
         </member>
         <member name="F:Cliver.DataSifter.Document.uri">
             <summary>
@@ -709,7 +639,7 @@
             the contents of this method with the code editor.
             </summary>
         </member>
-        <member name="M:Cliver.DataSifter.Program.Main">
+        <member name="M:Cliver.DataSifter.Program.Main(System.String[])">
             <summary>
             The main entry point for the application.
             </summary>
@@ -788,27 +718,6 @@
             the contents of this method with the code editor.
             </summary>
         </member>
-        <member name="F:Cliver.DataSifter.SourceForm.CaptureLabels">
-            <summary>
-            List of parse labels to be inserted in text
-            </summary>
-        </member>
-        <member name="M:Cliver.DataSifter.SourceForm.shift_on_positions_ignored_by_rich_text_box(System.Int32@,System.Int32@)">
-            <summary>
-            shift position on positions ignored by RichTextBox
-            </summary>
-            <param name="position">position in source</param>
-            <param name="length"></param>
-            <returns>position in RichTextBox</returns>
-        </member>
-        <member name="M:Cliver.DataSifter.SourceForm.set_status_by_position(System.Int32,System.Int32)">
-            <summary>
-            Sets status bar text along the current cursor position in the parsed text box.
-            Finds the selected capture, determines its filter tree path and constructs from them status text.
-            </summary>
-            <param name="start"></param>
-            <param name="length"></param>
-        </member>
         <member name="T:Cliver.DataSifter.SourceForm.CaptureLabel">
             <summary>
             Defines label for each parse capture
@@ -855,6 +764,27 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="F:Cliver.DataSifter.SourceForm.CaptureLabels">
+            <summary>
+            List of parse labels to be inserted in text
+            </summary>
+        </member>
+        <member name="M:Cliver.DataSifter.SourceForm.shift_on_positions_ignored_by_rich_text_box(System.Int32@,System.Int32@)">
+            <summary>
+            shift position on positions ignored by RichTextBox
+            </summary>
+            <param name="position">position in source</param>
+            <param name="length"></param>
+            <returns>position in RichTextBox</returns>
+        </member>
+        <member name="M:Cliver.DataSifter.SourceForm.set_status_by_position(System.Int32,System.Int32)">
+            <summary>
+            Sets status bar text along the current cursor position in the parsed text box.
+            Finds the selected capture, determines its filter tree path and constructs from them status text.
+            </summary>
+            <param name="start"></param>
+            <param name="length"></param>
+        </member>
         <member name="T:Cliver.DataSifter.ThreadRunner">
             <summary>
             Run a function as another thread, polls if it is working too long and then asks to break it.
@@ -887,6 +817,38 @@
             <param name="target_function">delegate of the function</param>
             <param name="parameters">list of function parameters</param>
             <returns>any return from the fuction. If it is void then = null</returns>
+        </member>
+        <member name="T:Cliver.RtfEditor">
+            <summary>
+            Edit rtf text
+            </summary>
+        </member>
+        <member name="M:Cliver.RtfEditor.IndexOf(System.Text.StringBuilder,System.String)">
+            <summary>
+            Analog string.IndexOf for StringBuilder
+            </summary>
+            <param name="str">string where to search</param>
+            <param name="value">string what to search</param>
+            <returns>-1 if not found or value is empty</returns>
+        </member>
+        <member name="M:Cliver.RtfEditor.IndexOf(System.Text.StringBuilder,System.String,System.Int32)">
+            <summary>
+            Analog string.IndexOf for StringBuilder
+            </summary>
+            <param name="str">string where to search</param>
+            <param name="value">string what to search</param>
+            <param name="start_index">where to start serch within str</param>
+            <returns>-1 if not found or value is empty</returns>
+        </member>
+        <member name="M:Cliver.RtfEditor.IndexOf(System.Text.StringBuilder,System.String,System.Int32,System.Int32)">
+            <summary>
+            Analog string.IndexOf for StringBuilder
+            </summary>
+            <param name="str">string where to search</param>
+            <param name="value">string what to search</param>
+            <param name="start_index">where to start serch within str</param>
+            <param name="count">the number of charakter positions to examine</param>
+            <returns>-1 if not found or value is empty</returns>
         </member>
     </members>
 </doc>

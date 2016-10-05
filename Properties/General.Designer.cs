@@ -12,7 +12,7 @@ namespace Cliver.Bot.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "12.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "14.0.0.0")]
     public sealed partial class General : global::System.Configuration.ApplicationSettingsBase {
         
         private static General defaultInstance = ((General)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new General())));
@@ -25,7 +25,7 @@ namespace Cliver.Bot.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool RestoreBrokenSession {
             get {
                 return ((bool)(this["RestoreBrokenSession"]));
@@ -61,7 +61,7 @@ namespace Cliver.Bot.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool UseFilesFromCache {
             get {
                 return ((bool)(this["UseFilesFromCache"]));
@@ -73,7 +73,7 @@ namespace Cliver.Bot.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool WriteSessionRestoringLog {
             get {
                 return ((bool)(this["WriteSessionRestoringLog"]));
@@ -104,18 +104,6 @@ namespace Cliver.Bot.Properties {
             }
             set {
                 this["MaxTime2WaitForSessionStopInSecs"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("notepad.exe")]
-        public string InputFileViewer {
-            get {
-                return ((string)(this["InputFileViewer"]));
-            }
-            set {
-                this["InputFileViewer"] = value;
             }
         }
     }
