@@ -65,18 +65,24 @@ namespace Cliver.BotGui
                     object o = Config.Get(group_box.Text, c.Name);
                     if (o != null)
                         c.Text = o.ToString();
+                    else
+                        c.Text = "";
                 }
                 else if (t == typeof(System.Windows.Forms.CheckBox))
                 {
                     object o = Config.Get(group_box.Text, c.Name);
                     if (o != null)
                         ((System.Windows.Forms.CheckBox)c).Checked = (bool)o;
+                    else
+                        ((System.Windows.Forms.CheckBox)c).Checked = false;
                 }
                 else if (t == typeof(System.Windows.Forms.RadioButton))
                 {
                     object o = Config.Get(group_box.Text, c.Name);
                     if (o != null)
                         ((System.Windows.Forms.RadioButton)c).Checked = (bool)o;
+                    else
+                        ((System.Windows.Forms.CheckBox)c).Checked = false;
                 }
                 else if (t == typeof(System.Windows.Forms.DateTimePicker))
                 {

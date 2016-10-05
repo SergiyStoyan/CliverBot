@@ -26,6 +26,12 @@ namespace Cliver.BotGui
         {
             InitializeComponent();
             Init(NAME);
+
+            //object o = Cliver.Bot.Config.Get(NAME, "OutputFieldSeparator");
+            //if (o != null)
+            //    this.OutputFieldSeparator.Text = o.ToString();
+            //else
+            //    this.OutputFieldSeparator.Text = "\t";
         }
 
         override protected void set_tool_tip()
