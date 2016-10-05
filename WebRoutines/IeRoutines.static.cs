@@ -76,7 +76,7 @@ namespace Cliver.Bot
                 });
                 if (o != null)
                     return o;
-                ThreadRoutines.Wait(20);
+                SleepRoutines.Wait(20);
             }
             return null;
         }
@@ -273,7 +273,7 @@ namespace Cliver.Bot
             {
                 StringBuilder cookieHeader = new StringBuilder(new string(' ', 256), 256);
                 int datasize = cookieHeader.Length;
-                if (!Win32.Functions.InternetGetCookie(uri.AbsoluteUri, null, cookieHeader, ref datasize))
+                if (!Win32.InternetGetCookie(uri.AbsoluteUri, null, cookieHeader, ref datasize))
                     return null;
 
                 cookie = cookieHeader.ToString();

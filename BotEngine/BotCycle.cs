@@ -103,8 +103,7 @@ namespace Cliver.Bot
             thread = new Thread(bot_cycle);
             thread.IsBackground = true;
             thread.Start();
-            object o = ThreadRoutines.WaitForCondition(() => { if (Id < 0) return null; return Id; }, 100000);
-            if (o == null)
+            if (!SleepRoutines.WaitForCondition(() => { return Id >= 0; }, 100000))
                 throw new Exception("Could not start BotCycle thread");
         }
         readonly Thread thread;

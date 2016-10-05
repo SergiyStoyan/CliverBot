@@ -999,8 +999,8 @@ namespace Cliver
 {
     partial class Win32
     {
-        public class Messages
-        {
+        //public class Messages
+        //{
             public const uint WM_NULL = 0x0000;
             public const uint WM_CREATE = 0x0001;
             public const uint
@@ -2969,6 +2969,6 @@ namespace Cliver
                 LM_SETITEM = (WM_USER + 0x302);
             public const uint
                 LM_GETITEM = (WM_USER + 0x303);
-        }
+        //}
     }
 }

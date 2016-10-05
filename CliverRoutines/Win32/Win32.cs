@@ -15,6 +15,8 @@ namespace Cliver
 {
     public partial class Win32
     {
+        //public delegate bool EnumProc(IntPtr hwnd, int lParam);
+
         public delegate bool EnumProc(IntPtr hwnd, IntPtr lParam);
         //public delegate IntPtr HookProc(IntPtr nCode, IntPtr wParam, IntPtr lParam);
 
@@ -84,7 +86,7 @@ namespace Cliver
         public static extern int GetWindowText(IntPtr hWnd, StringBuilder text, int maxLength);
 
         [DllImport("user32.dll")]
-        public static extern int InternalGetWindowText(IntPtr hwnd, StringBuilder s, int nMaxCount);
+        public static extern int InternalGetWindowText(IntPtr hwnd, StringBuilder text, int nMaxCount);
 
         [DllImport("User32.Dll")]
         public static extern void GetClassName(IntPtr hwnd, StringBuilder s, int nMaxCount);
@@ -127,6 +129,9 @@ namespace Cliver
         public static extern int SendMessage(IntPtr hwnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
         [DllImport("User32.dll", SetLastError = true, EntryPoint = "SendMessage")]
+        public static extern int SendMessage(IntPtr hwnd, uint Msg, int wParam, int lParam);
+
+        [DllImport("User32.dll", SetLastError = true, EntryPoint = "SendMessage")]
         public static extern int SendMessage(IntPtr hwnd, uint Msg, IntPtr wParam, StringBuilder lParam);
 
         [DllImport("User32.dll", SetLastError = true, EntryPoint = "SendMessage")]
@@ -144,6 +149,7 @@ namespace Cliver
 
         [DllImport("User32.dll", EntryPoint = "PostMessage")]
         public static extern int PostMessage(IntPtr hwnd, uint Msg, IntPtr wParam, IntPtr lParam);
+        public static extern int PostMessage(IntPtr hwnd, uint Msg, int wParam, int lParam);
 
         [DllImport("user32.dll")]
         public static extern bool PostMessage(int hWnd, uint Msg, int wParam, Int64 lParam);
@@ -153,6 +159,7 @@ namespace Cliver
 
         [DllImport("user32")]
         public static extern bool EnumWindows(EnumProc cbf, int lParam);
+        //public static extern int EnumWindows(EnumProc cbf, int lParam);
 
         [DllImport("user32")]
         public static extern int EnumChildWindows(IntPtr hwnd, EnumProc cbf, int lParam);
@@ -163,7 +170,15 @@ namespace Cliver
         [DllImport("User32.dll", EntryPoint = "EnumThreadWindows")]
         public static extern bool EnumThreadWindows(uint dwThreadId, EnumProc cbf, IntPtr lParam);
 
+        [DllImport("Wininet.dll", SetLastError = true)]
+        //public static extern bool GetUrlCacheEntryInfo(string Url, StringBuilder CacheFile, ref int Size);
+        public static extern bool GetUrlCacheEntryInfo(string Url, IntPtr lpCacheEntryInfo, ref int Size);
 
+        [DllImport("User32.dll", EntryPoint = "EnumThreadWindows")]
+        public static extern bool EnumThreadWindows(uint dwThreadId, EnumProc cbf, int lParam);
+
+        [DllImport("Wininet.dll")]
+        public static extern bool InternetGetCookie(string Url, string CookieName, StringBuilder CookieData, ref int Size);
 
         public enum HookType : uint
         {
