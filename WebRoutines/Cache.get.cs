@@ -195,7 +195,8 @@ namespace Cliver.Bot
                                     string url = sr.GetAttribute("url");
                                     string response_url = sr.GetAttribute("response_url");
                                     string path = sr.GetAttribute("path");
-                                    if (!path.Contains(session_name)) path = "\\" + session_name + "\\" + Log.DownloadDirName + "\\" + path;
+                                    if (!path.Contains(session_name))
+                                        path = "\\" + session_name + "\\" + Log.DownloadDirName + "\\" + path;
                                     bool text;
                                     if (!bool.TryParse(sr.GetAttribute("text"), out text))
                                         text = true;

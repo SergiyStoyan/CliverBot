@@ -55,24 +55,32 @@ namespace Cliver
                 List<string> ss = new List<string>();
                 foreach (System.Reflection.PropertyInfo pi in o.GetType().GetProperties())
                 {
+                    string s;
                     object p = pi.GetValue(o, null);
                     if (pi.PropertyType == typeof(string))
-                        ss.Add(GetCsvField((string)p, default_value, separator, separator_substitute));
+                        s = (string)p;
+                    else if (p != null)
+                        s = p.ToString();
                     else
-                        ss.Add(p.ToString());
+                        s = null;
+                    ss.Add(GetCsvField(s, default_value, separator, separator_substitute));
                 }
                 return string.Join(separator, ss);
             }
 
-            public static string GetCsvLine(object[] values, string default_value = "", string separator = ",", string separator_substitute = ";")
+            public static string GetCsvLine(IEnumerable<object> values, string default_value = "", string separator = ",", string separator_substitute = ";")
             {
                 List<string> ss = new List<string>();
                 foreach (object v in values)
                 {
+                    string s;
                     if (v is string)
-                        ss.Add(GetCsvField((string)v, default_value, separator, separator_substitute));
+                        s = (string)v;
+                    else if (v != null)
+                        s = v.ToString();
                     else
-                        ss.Add(v.ToString());
+                        s = null;
+                    ss.Add(GetCsvField(s, default_value, separator, separator_substitute));
                 }
                 return string.Join(separator, ss);
             }
@@ -141,11 +149,15 @@ namespace Cliver
             List<string> ss = new List<string>();
             foreach (System.Reflection.PropertyInfo pi in o.GetType().GetProperties())
             {
+                string s;
                 object p = pi.GetValue(o, null);
                 if (pi.PropertyType == typeof(string))
-                    ss.Add(GetCsvField((string)p, default_value, separator, separator_substitute));
+                    s = (string)p;
+                else if (p != null)
+                    s = p.ToString();
                 else
-                    ss.Add(p.ToString());
+                    s = null;
+                ss.Add(GetCsvField(s, default_value, separator, separator_substitute));
             }
             return string.Join(separator, ss);
         }
@@ -155,10 +167,14 @@ namespace Cliver
             List<string> ss = new List<string>();
             foreach (object v in values)
             {
+                string s;
                 if (v is string)
-                    ss.Add(GetCsvField((string)v, default_value, separator, separator_substitute));
+                    s = (string)v;
+                else if (v != null)
+                    s = v.ToString();
                 else
-                    ss.Add(v.ToString());
+                    s = null;
+                ss.Add(GetCsvField(s, default_value, separator, separator_substitute));
             }
             return string.Join(separator, ss);
         }
