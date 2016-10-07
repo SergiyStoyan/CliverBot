@@ -12,7 +12,7 @@
       <Value Profile="(Default)">1000000</Value>
     </Setting>
     <Setting Name="OutputFileName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">output.csv</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="OutputFieldSeparatorSubstitute" Type="System.String" Scope="User">
       <Value Profile="(Default)" />

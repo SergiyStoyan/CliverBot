@@ -20,9 +20,32 @@ namespace Cliver.Bot.Properties
 
         void Output_SettingsLoaded(object sender, System.Configuration.SettingsLoadedEventArgs e)
         {
-            OutputFieldSeparator = EscapedOutputFieldSeparator != null ? EscapedOutputFieldSeparator.Trim('\'') : "";
-            OutputEmptyFieldSubstitute = EscapedOutputEmptyFieldSubstitute != null ? EscapedOutputEmptyFieldSubstitute.Trim('\'') : "";
-            OutputFieldSeparatorSubstitute = EscapedOutputFieldSeparatorSubstitute != null ? EscapedOutputFieldSeparatorSubstitute.Trim('\'') : "";
+            OutputFieldSeparator = EscapedOutputFieldSeparator != null ? EscapedOutputFieldSeparator.Trim('\'') : ",";
+            OutputEmptyFieldSubstitute = EscapedOutputEmptyFieldSubstitute != null ? EscapedOutputEmptyFieldSubstitute.Trim('\'') : " ";
+            OutputFieldSeparatorSubstitute = EscapedOutputFieldSeparatorSubstitute != null ? EscapedOutputFieldSeparatorSubstitute.Trim('\'') : ";";
+
+            if (string.IsNullOrWhiteSpace(OutputFileName))
+            {
+                if (OutputFieldSeparator == "\t")
+                {
+                    if (string.IsNullOrWhiteSpace(OutputFieldSeparatorSubstitute) || OutputFieldSeparatorSubstitute.Contains("\t"))
+                        OutputFieldSeparatorSubstitute = " ";
+                    OutputFileName = Cliver.Log.EntryAssemblyName + ".tsv";
+                }
+                else if (OutputFieldSeparator == ",")
+                {
+                    if (string.IsNullOrWhiteSpace(OutputFieldSeparatorSubstitute) || OutputFieldSeparatorSubstitute.Contains(","))
+                        OutputFieldSeparatorSubstitute = ";";
+                    OutputFileName = Cliver.Log.EntryAssemblyName + ".csv";
+                }
+                else
+                {
+                    if (string.IsNullOrWhiteSpace(OutputFieldSeparatorSubstitute) || OutputFieldSeparatorSubstitute.Contains(" "))
+                        OutputFieldSeparatorSubstitute = " ";
+                    if (string.IsNullOrEmpty(OutputFileName))
+                        OutputFileName = Cliver.Log.EntryAssemblyName + ".txt";
+                }
+            }
         }
 
         private void SettingsSavingEventHandler(object sender, System.ComponentModel.CancelEventArgs e)

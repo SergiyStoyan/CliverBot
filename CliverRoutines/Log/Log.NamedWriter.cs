@@ -43,7 +43,7 @@ namespace Cliver
                         {
                             try
                             {
-                                string log_name = Log.EntryAssemblyName + "_" + name + "_" + session.TimeMark + ".log";
+                                string log_name = Log.EntryAssemblyName + (string.IsNullOrWhiteSpace(name) ? "" : "_" + name) + "_" + session.TimeMark + ".log";
                                 nw = new NamedWriter(session, name, log_name);
                                 session.names2nw.Add(name, nw);
                             }

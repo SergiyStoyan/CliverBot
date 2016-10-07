@@ -51,21 +51,22 @@ namespace Cliver.BotGui
             OutputFieldSeparator.Enabled = !_1_SetTAB2OutputFieldDelimiter.Checked;
             if (this.OutputFieldSeparator.Text == "\t")
             {
-                this.OutputFieldSeparatorSubstitute.Text = " ";
+                if (string.IsNullOrWhiteSpace(OutputFieldSeparatorSubstitute.Text) || OutputFieldSeparatorSubstitute.Text.Contains("\t"))
+                    this.OutputFieldSeparatorSubstitute.Text = " ";
                 if (string.IsNullOrEmpty(this.OutputFileName.Text))
-                    this.OutputFileName.Text = "output.tsv";
+                    this.OutputFileName.Text = Log.EntryAssemblyName + ".tsv";
                 else
                     this.OutputFileName.Text = Regex.Replace(this.OutputFileName.Text, @"([^\.]*)?$", "", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline) + "tsv";
             }
-            else
-                if (this.OutputFieldSeparator.Text == ",")
-                {
+            else if (this.OutputFieldSeparator.Text == ",")
+            {
+                if (string.IsNullOrWhiteSpace(OutputFieldSeparatorSubstitute.Text) || OutputFieldSeparatorSubstitute.Text.Contains(","))
                     this.OutputFieldSeparatorSubstitute.Text = ";";
-                    if (string.IsNullOrEmpty(this.OutputFileName.Text))
-                        this.OutputFileName.Text = "output.csv";
-                    else
-                        this.OutputFileName.Text = Regex.Replace(this.OutputFileName.Text, @"([^\.]*)?$", "", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline) + "csv";
-                }
+                if (string.IsNullOrEmpty(this.OutputFileName.Text))
+                    this.OutputFileName.Text = Log.EntryAssemblyName + ".csv";
+                else
+                    this.OutputFileName.Text = Regex.Replace(this.OutputFileName.Text, @"([^\.]*)?$", "", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline) + "csv";
+            }
         }
 
         private void __SetTAB2OutputFieldDelimiter_CheckedChanged(object sender, EventArgs e)
