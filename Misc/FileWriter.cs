@@ -329,7 +329,7 @@ namespace Cliver.Bot
         {
             lock (this)
             {
-                Dictionary<string, string> hline = new Dictionary<string,string>();
+                Dictionary<string, string> hline = new Dictionary<string, string>();
                 for (int i = 0; i < name2value_pairs.Length; i += 2)
                     hline[name2value_pairs[i]] = name2value_pairs[i + 1];
                 string[] line = new string[header.Length];
@@ -339,6 +339,27 @@ namespace Cliver.Bot
                         line[i++] = hline[head];
                 }
                 PrepareAndWriteLine(line);
+            }
+        }
+
+        /// <summary>
+        /// Should be invoked after WriteHeader. 
+        /// </summary>
+        /// <param name="name2value_pairs">each odd parameter considered to be column name, each next parameter - column value</param>
+        public void PrepareAndWriteHtmlLineWithHeader(params string[] name2value_pairs)
+        {
+            lock (this)
+            {
+                Dictionary<string, string> hline = new Dictionary<string, string>();
+                for (int i = 0; i < name2value_pairs.Length; i += 2)
+                    hline[name2value_pairs[i]] = name2value_pairs[i + 1];
+                string[] line = new string[header.Length];
+                {
+                    int i = 0;
+                    foreach (string head in header)
+                        line[i++] = hline[head];
+                }
+                PrepareAndWriteHtmlLine(line);
             }
         }
     }
