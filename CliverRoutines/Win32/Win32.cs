@@ -149,6 +149,8 @@ namespace Cliver
 
         [DllImport("User32.dll", EntryPoint = "PostMessage")]
         public static extern int PostMessage(IntPtr hwnd, uint Msg, IntPtr wParam, IntPtr lParam);
+
+        [DllImport("User32.dll", EntryPoint = "PostMessage")]
         public static extern int PostMessage(IntPtr hwnd, uint Msg, int wParam, int lParam);
 
         [DllImport("user32.dll")]
