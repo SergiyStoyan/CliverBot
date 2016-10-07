@@ -98,21 +98,21 @@ namespace Cliver.Bot
 
             if (!append_output)
             {
-                string file_abs_path2 = file_abs_path;
-                FileInfo fi = new FileInfo(file_abs_path2);
-                int count = 0;
-                while (fi.Exists)
+                string fap2 = file_abs_path;
+                int counter = 0;
+                while (File.Exists(fap2))
                 {
-                    count++;                    
-                    int point = fi.Name.LastIndexOf(".");
-                    if (point < 0)
-                        file_abs_path2 = file_abs_path + "_" + count.ToString();
-                    else
-                        file_abs_path2 = fi.Directory + "/" + fi.Name.Insert(point, "_" + count.ToString());
-
-                    fi = new FileInfo(file_abs_path2);
+                    fap2 = Regex.Replace(fap2, "(" + Regex.Escape(Path.GetFileNameWithoutExtension(file_abs_path)) + @"_)(\d+)",
+                        (Match m) =>
+                        {
+                            counter = int.Parse(m.Groups[2].Value) + 1;
+                            return m.Groups[1].Value + counter;
+                        }
+                        );
+                    if (counter < 1)
+                        fap2 = Regex.Replace(fap2, @"\.[^\.]+$", @"_1$0");
                 }
-                file_abs_path = file_abs_path2;
+                file_abs_path = fap2;
             }
             return file_abs_path;
         }
