@@ -270,11 +270,10 @@ namespace Cliver
                                     {
                                         counter = int.Parse(m.Groups[2].Value) + 1;
                                         return m.Groups[1].Value + counter + m.Groups[3].Value;
-                                    },
-                                    RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline
+                                    }
                                     );
                                 if (counter < 1)
-                                    file_name = Regex.Replace(file_name, @"\.[^\.]+$", @"_1$0", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                                    file_name = Regex.Replace(file_name, @"\.[^\.]+$", @"_1$0");
 
                                 log_writer = new StreamWriter(Path, true);
                             }

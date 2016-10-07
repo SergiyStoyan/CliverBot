@@ -142,7 +142,7 @@ namespace Cliver
 
                             string log_name = Log.EntryAssemblyName;
                             if (log_id < 0)
-                                log_name = "_" + Log.TimeMark + ".log";
+                                log_name += "_" + Log.TimeMark + ".log";
                             else
                                 log_name += "_" + log_id.ToString() + "_" + Log.TimeMark + ".log";
 
