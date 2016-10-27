@@ -6,10 +6,10 @@
       <Value Profile="(Default)">input.txt</Value>
     </Setting>
     <Setting Name="InputFieldSeparator" Type="System.String" Scope="User">
-      <Value Profile="(Default)">,</Value>
+      <Value Profile="(Default)" />
     </Setting>
     <Setting Name="EscapedInputFieldSeparator" Type="System.String" Scope="User">
-      <Value Profile="(Default)">','</Value>
+      <Value Profile="(Default)">'\t'</Value>
     </Setting>
     <Setting Name="InputFileViewer" Type="System.String" Scope="User">
       <Value Profile="(Default)">notepad.exe</Value>

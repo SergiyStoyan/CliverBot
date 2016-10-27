@@ -265,24 +265,27 @@ namespace Cliver.Bot
 
             return level_hes;
         }
-
+        
         public static string RetrieveIeCookies(Uri uri)
         {
-            string cookie = null;
             try
-            {
-                StringBuilder cookieHeader = new StringBuilder(new string(' ', 256), 256);
-                int datasize = cookieHeader.Length;
-                if (!Win32.InternetGetCookie(uri.AbsoluteUri, null, cookieHeader, ref datasize))
-                    return null;
-
-                cookie = cookieHeader.ToString();
+            {                
+                int datasize = 8192 * 16;
+                StringBuilder cookie = new StringBuilder(datasize);
+                if (!Win32.InternetGetCookie(uri.AbsoluteUri, null, cookie, ref datasize))
+                //if (!Win32.InternetGetCookieEx(uri.ToString(), null, cookie, ref datasize, Win32.InternetCookieHttponly, IntPtr.Zero))
+                {
+                    //string t = (new Win32Exception(Win32.GetLastError())).Message;
+                    if(datasize < 0)
+                        return null;
+                }
+                return cookie.ToString();
             }
             catch (Exception error)
             {
                 Log.Error(error);
             }
-            return cookie;
+            return null;
         }
     }
 }

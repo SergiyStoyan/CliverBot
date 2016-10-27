@@ -37,6 +37,9 @@ namespace Cliver
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern int GetLastError();
 
+        //[DllImport("kernel32.dll", SetLastError = true)]
+        //public static extern int FormatMessage(int   dwFlags,  _In_opt_ LPCVOID lpSource,  _In_ DWORD   dwMessageId,  _In_ DWORD   dwLanguageId,  _Out_ LPTSTR  lpBuffer,  _In_ DWORD   nSize,  _In_opt_ va_list *Arguments);
+
         [DllImport("kernel32.dll")]
         public static extern uint GetCurrentThreadId();
 
@@ -178,6 +181,10 @@ namespace Cliver
 
         [DllImport("User32.dll", EntryPoint = "EnumThreadWindows")]
         public static extern bool EnumThreadWindows(uint dwThreadId, EnumProc cbf, int lParam);
+
+        [DllImport("wininet.dll", SetLastError = true)]
+        public static extern bool InternetGetCookieEx(string url, string cookieName, StringBuilder cookieData, ref int size, Int32 dwFlags, IntPtr lpReserved);
+        public const Int32 InternetCookieHttponly = 0x2000;
 
         [DllImport("Wininet.dll")]
         public static extern bool InternetGetCookie(string Url, string CookieName, StringBuilder CookieData, ref int Size);

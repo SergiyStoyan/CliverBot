@@ -61,13 +61,8 @@ namespace Cliver.Bot
             }
         }
         
-        public CookieContainer CookieContainer = new CookieContainer();
         public static CookieContainer CommonCookieContainer = new CookieContainer();
-
-        /// <summary>
-        /// Set/unset cookies used/retrieved by the bot thread are common
-        /// </summary>
-        public bool UseCommonCookieContainer = false;
+        public CookieContainer CookieContainer = CommonCookieContainer;
 
         /// <summary>
         /// Set user credentials required by some sites
@@ -207,12 +202,6 @@ namespace Cliver.Bot
 
                 if (send_cookies)
                 {
-                    if (UseCommonCookieContainer)
-                        lock (static_lock_variable)
-                        {
-                            CookieContainer = HttpRoutine.CommonCookieContainer;
-                        }
-
                     if (UseIeCookies)
                     {
                         Uri uri = new Uri(http_request.Url);
@@ -220,7 +209,8 @@ namespace Cliver.Bot
                         if (cookie.Length > 0)
                         {
                             cookie = Regex.Replace(cookie, ";", ",");
-                            CookieContainer.SetCookies(uri, cookie);
+                            lock(CookieContainer)
+                                CookieContainer.SetCookies(uri, cookie);
                         }
                     }
 
@@ -296,15 +286,8 @@ namespace Cliver.Bot
                 }
 
                 if (send_cookies)
-                {
-                    if (UseCommonCookieContainer)
-                        lock (static_lock_variable)
-                        {
-                            HttpRoutine.CommonCookieContainer.Add(HWResponse.Cookies);
-                        }
-                    else
+                    lock(CookieContainer)
                         CookieContainer.Add(HWResponse.Cookies);
-                }
 
                 string accept;
                 if (http_request.Headers.TryGetValue("Accept", out accept) 

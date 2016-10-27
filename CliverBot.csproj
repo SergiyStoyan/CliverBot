@@ -51,6 +51,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
@@ -105,6 +107,14 @@
     <Reference Include="DataSifter">
       <HintPath>References\DataSifter\DataSifter.exe</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\_PROJECTS\zillow.com_real_estate_agent_directory\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\..\_PROJECTS\zillow.com_real_estate_agent_directory\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="HtmlAgilityPack, Version=1.4.6.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>References\HtmlAgilityPack\HtmlAgilityPack.dll</HintPath>
@@ -117,9 +127,22 @@
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data">
       <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Data.SQLite, Version=1.0.103.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\..\_PROJECTS\zillow.com_real_estate_agent_directory\packages\System.Data.SQLite.Core.1.0.103\lib\net45\System.Data.SQLite.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.SQLite.EF6, Version=1.0.103.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\..\_PROJECTS\zillow.com_real_estate_agent_directory\packages\System.Data.SQLite.EF6.1.0.103\lib\net45\System.Data.SQLite.EF6.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data.SQLite.Linq, Version=1.0.103.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
+      <HintPath>..\..\_PROJECTS\zillow.com_real_estate_agent_directory\packages\System.Data.SQLite.Linq.1.0.103\lib\net45\System.Data.SQLite.Linq.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.DirectoryServices">
       <Name>System.DirectoryServices</Name>
@@ -131,6 +154,7 @@
     <Reference Include="System.Runtime.Serialization.Formatters.Soap">
       <Name>System.Runtime.Serialization.Formatters.Soap</Name>
     </Reference>
+    <Reference Include="System.Security" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms">
@@ -169,6 +193,7 @@
     <Compile Include="WebRoutines\Cache.put.cs" />
     <Compile Include="WebRoutines\AgileSpider.cs" />
     <Compile Include="WebRoutines\IeEmulation.cs" />
+    <Compile Include="WebRoutines\ChromeRoutines.cs" />
     <Compile Include="WebRoutines\Spider2.cs" />
     <Compile Include="WebRoutines\FtpRoutine.cs" />
     <Compile Include="WebRoutines\HtmlRoutines.cs" />
@@ -240,6 +265,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <BaseApplicationManifest Include="Properties\app.manifest" />
+    <None Include="packages.config" />
     <None Include="Properties\Browser.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Browser.Designer.cs</LastGenOutput>
@@ -326,4 +352,11 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\..\_PROJECTS\zillow.com_real_estate_agent_directory\packages\System.Data.SQLite.Core.1.0.103\build\net45\System.Data.SQLite.Core.targets" Condition="Exists('..\..\_PROJECTS\zillow.com_real_estate_agent_directory\packages\System.Data.SQLite.Core.1.0.103\build\net45\System.Data.SQLite.Core.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\_PROJECTS\zillow.com_real_estate_agent_directory\packages\System.Data.SQLite.Core.1.0.103\build\net45\System.Data.SQLite.Core.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\_PROJECTS\zillow.com_real_estate_agent_directory\packages\System.Data.SQLite.Core.1.0.103\build\net45\System.Data.SQLite.Core.targets'))" />
+  </Target>
 </Project>
