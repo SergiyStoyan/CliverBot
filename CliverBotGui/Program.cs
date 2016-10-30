@@ -14,7 +14,7 @@ namespace Cliver.BotGui
     public class CommandLineParameters : ProgramRoutines.CommandLineParameters
     {
         public static readonly CommandLineParameters WINDOWLESS = new CommandLineParameters("-windowless");
-        public static readonly CommandLineParameters CONFIGURE = new CommandLineParameters("-configure");//used only to edit settings while it cannot perform
+        public static readonly CommandLineParameters CONFIGURE = new CommandLineParameters("-configure");//used only to edit settings but it performance is disabled
         public static readonly CommandLineParameters AUTOMATIC = new CommandLineParameters("-automatic");
 
         public CommandLineParameters(string value) : base(value) { }

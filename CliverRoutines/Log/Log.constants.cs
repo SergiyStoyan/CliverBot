@@ -108,7 +108,7 @@ namespace Cliver
                             if (!di.Exists)
                                 di.Create();
                             else
-                                Log.DeleteOldLogs();
+                                ThreadRoutines.StartTry(Log.DeleteOldLogs);//to avoid a concurrent loop while accessing the log file from the same thread
                         }
                     }
                 }
@@ -219,6 +219,7 @@ namespace Cliver
         /// </summary>
         public static void DeleteOldLogs()
         {
+            //Log.Main.Inform("test");
             if (ignore_delete_old_logs)
                 return;
             lock (lock_object)
