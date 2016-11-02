@@ -71,14 +71,14 @@ Developed by: www.cliversoft.com";
         /// <summary>
         /// Invoked by BotCycle thread as it has been started.
         /// </summary>
-        virtual public void CycleBeginning()
+        virtual public void CycleStarting()
         {
         }
 
         /// <summary>
         /// Invoked by BotCycle thread when it is exiting.
         /// </summary>
-        virtual public void CycleFinishing()
+        virtual public void CycleExiting(bool completed = true)
         {
         }
 

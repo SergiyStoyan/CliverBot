@@ -112,6 +112,7 @@ namespace Cliver.Bot
 
         void bot_cycle()
         {
+            bool completed = false;
             try
             {
                 typeof(BotCycle).GetField("Id", BindingFlags.NonPublic| BindingFlags.Instance).SetValue(this, Log.Id);
@@ -129,7 +130,7 @@ namespace Cliver.Bot
 
                 Counter processor_errors = new Counter("processor_errors", Properties.General.Default.MaxProcessorErrorNumber);
 
-                bot.CycleBeginning();
+                bot.CycleStarting();
                 while (run)
                 {
                     current_item = Session.This.GetNext();
@@ -177,15 +178,18 @@ namespace Cliver.Bot
 
                     Start();
                 }
-                bot.CycleFinishing();
+                completed = true;
             }
-            catch (ThreadAbortException) { }
+            catch (ThreadAbortException)
+            {
+            }
             catch (Exception e)
             {
                 LogMessage.Exit(e);
             }
             finally
             {
+                bot.CycleExiting(completed);
                 close_thread(Id);
             }
         }

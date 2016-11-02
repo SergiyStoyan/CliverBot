@@ -24,8 +24,17 @@ namespace Cliver.Bot
     /// <summary>
     /// Defines methods for downloading web pages, using IE browser
     /// </summary>
-    public partial class IeRoutine : WebRoutine
+    public partial class IeRoutine : WebRoutine, IDisposable
     {
+        public void Dispose()
+        {
+            IeRoutines.Invoke(browser, () =>
+            {
+                browser.Stop();
+                browser.Dispose();
+            });
+        }
+
         public IeRoutine(WebBrowser browser)
         {
             IeRoutines.Invoke(browser, () =>
