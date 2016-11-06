@@ -13,22 +13,49 @@ namespace Cliver
     {
         static public class Json
         {
-            static public string Get(object o)
+            /// <summary>
+            /// Serialize object
+            /// </summary>
+            /// <param name="o"></param>
+            /// <returns></returns>
+            static public string Serialize(object o)
             {
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
                 return serializer.Serialize(o);
             }
 
-            static public T Get<T>(string json)
+            /// <summary>
+            /// Deserialize object
+            /// </summary>
+            /// <typeparam name="T"></typeparam>
+            /// <param name="json"></param>
+            /// <returns></returns>
+            static public T Deserialize<T>(string json)
             {
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
                 return serializer.Deserialize<T>(json);
+            }
+
+            static public void Save(string file, object o)
+            {
+                File.WriteAllText(file, Serialize(o));
+            }
+
+            static public T Load<T>(string file)
+            {
+                return Deserialize<T>(File.ReadAllText(file));
             }
         }
 
         static public class Xml
         {
-            static public string Get2<T>(T o)
+            /// <summary>
+            /// Serialize object
+            /// </summary>
+            /// <typeparam name="T"></typeparam>
+            /// <param name="o"></param>
+            /// <returns></returns>
+            static public string Serialize2<T>(T o)
             {
                 System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
                 MemoryStream ms = new MemoryStream();
@@ -37,14 +64,26 @@ namespace Cliver
                 return sr.ReadToEnd();
             }
 
-            static public T Get2<T>(string xml)
+            /// <summary>
+            /// Deserialize object
+            /// </summary>
+            /// <typeparam name="T"></typeparam>
+            /// <param name="xml"></param>
+            /// <returns></returns>
+            static public T Deserialize2<T>(string xml)
             {
                 System.Xml.Serialization.XmlSerializer serializer = new System.Xml.Serialization.XmlSerializer(typeof(T));
                 StringReader s = new StringReader(xml);
                 return (T)serializer.Deserialize(s);
             }
 
-            public static string Get<T>(T o)
+            /// <summary>
+            /// Serialize object
+            /// </summary>
+            /// <typeparam name="T"></typeparam>
+            /// <param name="o"></param>
+            /// <returns></returns>
+            public static string Serialize<T>(T o)
             {
                 var serializer = new DataContractSerializer(typeof(T));
                 using (var writer = new StringWriter())
@@ -55,7 +94,13 @@ namespace Cliver
                 }
             }
 
-            public static T Get<T>(string xml)
+            /// <summary>
+            /// Deserialize object
+            /// </summary>
+            /// <typeparam name="T"></typeparam>
+            /// <param name="xml"></param>
+            /// <returns></returns>
+            public static T Deserialize<T>(string xml)
             {
                 var serializer = new DataContractSerializer(typeof(T));
                 using (var reader = new StringReader(xml))

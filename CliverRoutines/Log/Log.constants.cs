@@ -56,6 +56,13 @@ namespace Cliver
         /// Directory where the application's data files independent on user are located.
         /// </summary>
         public static readonly string AppCommonDataDir;
+
+        public static string GetAppCommonDataDir()
+        {
+            if (!Directory.Exists(Cliver.Log.AppCommonDataDir))
+                Directory.CreateDirectory(Cliver.Log.AppCommonDataDir);
+            return AppCommonDataDir;
+        }
         
         /// <summary>
         /// Directory where the application binary is located.
