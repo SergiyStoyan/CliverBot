@@ -15,9 +15,19 @@ using System.Text;
 
 namespace Cliver
 {
-    public class Settings
+    public class SettingsBase
     {
-        static public T Load<T>(string file, bool ignore_file_content = false) where T : Settings, new()
+        static public T Load<T>(string file) where T : SettingsBase, new()
+        {
+            return get<T>(file, false);
+        }
+
+        static public T Create<T>(string file) where T : SettingsBase, new()
+        {
+            return get<T>(file, true);
+        }
+
+        static T get<T>(string file, bool ignore_file_content) where T : SettingsBase, new()
         {
             if (!file.Contains(":"))
                 file = Log.GetAppCommonDataDir() + "\\" + file;
@@ -35,6 +45,10 @@ namespace Cliver
         //    __File = file;
         //}
 
+        public string __File
+        {
+            get { return __file; }
+        }
         string __file;
 
         public void Save()
