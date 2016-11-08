@@ -140,9 +140,14 @@ namespace Cliver.Bot
                     return;
                 BotCycle.Start();
             }
-            finally
+            catch (Exception e)
             {
-                CustomizationApi.FatalError();
+                if (!(e is ThreadAbortException))
+                {
+                    //LogMessage.Error(e);
+                    CustomizationApi.FatalError();
+                }
+                throw e;
             }
         }
 
