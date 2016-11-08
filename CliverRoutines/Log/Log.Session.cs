@@ -126,7 +126,7 @@ namespace Cliver
             {
                 lock (this.names2nw)
                 {
-                    Default.Write("Closing the session");
+                    Default.Write("Closing the log session");
 
                     //any ThreadWriter can belong only to MainSession
                     if(this == Log.MainSession)

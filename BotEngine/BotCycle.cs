@@ -54,7 +54,7 @@ namespace Cliver.Bot
             }
             new BotCycle();
         }
-
+        
         internal static void Abort()
         {
             BotCycle[] bcs;
@@ -92,7 +92,7 @@ namespace Cliver.Bot
                         id2bot_cycles.Remove(id);
                     }
                     if (id2bot_cycles.Count == 0)
-                        Session.Close();
+                        Session.Close(); 
                 }
             }
             catch (ThreadAbortException) { }
@@ -127,9 +127,7 @@ namespace Cliver.Bot
                 if (bot == null)
                     throw (new Exception("Could not create Bot instance."));
                 typeof(Bot).GetField("BotCycle", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(bot, this);
-
-                Counter processor_errors = new Counter("processor_errors", Properties.General.Default.MaxProcessorErrorNumber);
-
+                
                 bot.CycleStarting();
                 while (run)
                 {
@@ -156,6 +154,9 @@ namespace Cliver.Bot
                                 case ProcessorExceptionType.ERROR:
                                     state = InputItemState.ERROR;
                                     break;
+                                //case ProcessorExceptionType.FATAL_ERROR:
+                                //    state = InputItemState.FATAL_ERROR;
+                                //    break;
                                 case ProcessorExceptionType.RESTORE_AS_NEW:
                                     state = InputItemState.ERROR_RESTORE_AS_NEW;
                                     Session.This.IsItem2Restore = true;
@@ -172,9 +173,9 @@ namespace Cliver.Bot
                     current_item.__State = state;
 
                     if (state == InputItemState.ERROR || state == InputItemState.ERROR_RESTORE_AS_NEW)
-                        processor_errors.Increment();
+                        Session.This.ProcessorErrors.Increment();
                     else
-                        processor_errors.Reset();
+                        Session.This.ProcessorErrors.Reset();
 
                     Start();
                 }
@@ -207,7 +208,7 @@ namespace Cliver.Bot
                 return null;
             }
         }
-        
+
         internal static Bot GetBotForThisThread()
         {
             lock (id2bot_cycles)
@@ -241,6 +242,7 @@ namespace Cliver.Bot
     {
         COMPLETED,
         RESTORE_AS_NEW,
-        ERROR
+        ERROR,
+        //FATAL_ERROR
     }
 }

@@ -224,7 +224,7 @@ namespace Cliver
                     break;
                 mb = sf.GetMethod();
                 dt = mb.DeclaringType;
-                if (dt != typeof(Log) && dt != typeof(Log.Writer))
+                if (dt != typeof(Log) && dt != typeof(Log.Writer) && dt != typeof(LogMessage))
                     break;
             }
             return "Stack: " + dt.ToString() + "::" + mb.Name + " \r\nfile: " + sf.GetFileName() + " \r\nline: " + sf.GetFileLineNumber();

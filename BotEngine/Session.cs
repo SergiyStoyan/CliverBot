@@ -103,6 +103,15 @@ namespace Cliver.Bot
             Close();
         }
 
+        internal readonly Counter ProcessorErrors = new Counter("processor_errors", Properties.General.Default.MaxProcessorErrorNumber, max_error_count);
+        static void max_error_count(int count)
+        {
+            LogMessage.Error("Fatal error: errors in succession " + count);
+            if (FatalError != null)
+                FatalError.Invoke();
+            Close();
+        }
+
         /// <summary>
         /// Time when the session was restored if it was.
         /// </summary>
@@ -197,7 +206,7 @@ namespace Cliver.Bot
                 Cache.ClearSession();
                 Proxies.ClearSession();
                 WebRoutine.ClearSession();
-                Log.Main.Write("Closing session.");
+                Log.Main.Write("Closing the bot session.");
                 Cliver.Log.ClearSession();
 
                 This_ = null;

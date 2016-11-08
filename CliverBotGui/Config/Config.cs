@@ -144,7 +144,7 @@ namespace Cliver.Bot
                 invoke(t, "Reload");
 
             Type[] custom_settings_types = (from x in Assembly.GetEntryAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x).ToArray();
-            foreach (Type t in settings_types)
+            foreach (Type t in custom_settings_types)
                 invoke(t, "Reload");
         }
 
@@ -155,7 +155,7 @@ namespace Cliver.Bot
                 invoke(t, "Save");
 
             Type[] custom_settings_types = (from x in Assembly.GetEntryAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x).ToArray();
-            foreach (Type t in settings_types)
+            foreach (Type t in custom_settings_types)
                 invoke(t, "Save");
         }
 
@@ -166,7 +166,7 @@ namespace Cliver.Bot
                 invoke(t, "Reset");
 
             Type[] custom_settings_types = (from x in Assembly.GetEntryAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x).ToArray();
-            foreach (Type t in settings_types)
+            foreach (Type t in custom_settings_types)
                 invoke(t, "Reset");
         }
 

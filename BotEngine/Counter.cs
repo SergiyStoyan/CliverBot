@@ -19,12 +19,13 @@ namespace Cliver.Bot
     /// <summary>
     /// Used to amass errors and brake execution when too much
     /// </summary>
-    class Counter
+    public class Counter
     {
-        public Counter(string name, int max_count)
+        public Counter(string name, int max_count, OnMaxCount on_max_count = null)
         {
             this.name = name;
             this.max_count = max_count;
+            this.on_max_count = on_max_count;
         }
         private string name;
         private int max_count;
@@ -32,23 +33,40 @@ namespace Cliver.Bot
 
         public void Increment()
         {
-            if (max_count < 0) return;
-            count++;
-            if (count > max_count)
-                throw new Exception("Counter " + name + " exceeded " + max_count);
-                //Log.Exit("Counter " + name + " exceeded " + max_count);
+            lock (this)
+            {
+                if (max_count < 0) return;
+                count++;
+                if (count > max_count)
+                {
+                    if (on_max_count != null)
+                        on_max_count(count);
+                    else
+                        throw new Exception("Counter " + name + " exceeded " + max_count);
+                    //Log.Exit("Counter " + name + " exceeded " + max_count);
+                }
+            }
         }
+
+        public delegate void OnMaxCount(int count);
+        OnMaxCount on_max_count = null;
 
         public void Reset()
         {
-            count = 0;
+            lock (this)
+            {
+                count = 0;
+            }
         }
 
         public int Count
         {
             get
             {
-                return count;
+                lock (this)
+                {
+                    return count;
+                }
             }
         }
     }
