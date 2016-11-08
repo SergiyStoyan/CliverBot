@@ -69,6 +69,14 @@ Developed by: www.cliversoft.com";
         }
 
         /// <summary>
+        /// Invoked when a fatal error occurred. The session will be terminated.
+        /// </summary>
+        static public void FatalError()
+        {
+        }
+        
+
+        /// <summary>
         /// Invoked by BotCycle thread as it has been started.
         /// </summary>
         virtual public void CycleStarting()

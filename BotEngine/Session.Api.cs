@@ -172,7 +172,7 @@ namespace Cliver.Bot
             return (from t in Assembly.GetEntryAssembly().GetTypes() where t.BaseType == typeof(InputItem) select t).FirstOrDefault();
         }
 
-        public delegate void OnFatalError();
-        static public event OnFatalError FatalError = null;
+        //public delegate void OnFatalError();
+        //static public event OnFatalError FatalError = null;
     }
 }

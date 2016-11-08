@@ -50,6 +50,14 @@ namespace Cliver.Bot
             }
             try
             {
+                fatal_error = (Action)Delegate.CreateDelegate(typeof(Action), bot_type.GetMethod("FatalError", BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Static));
+            }
+            catch
+            {
+                Log.Main.Warning("Method " + CUSTOM_NAMESPACE + "." + CUSTOM_BOT_CLASS_NAME + ".FatalError was not found.");
+            }
+            try
+            {
                 fill_start_input_item_queue = (Action<InputItemQueue, Type>)Delegate.CreateDelegate(typeof(Action<InputItemQueue, Type>), bot_type.GetMethod("FillStartInputItemQueue", BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Static));
             }
             catch
@@ -61,7 +69,8 @@ namespace Cliver.Bot
         static readonly Type bot_type;
 
         static readonly Action session_creating;
-        static readonly Action session_closing;        
+        static readonly Action session_closing;
+        static readonly Action fatal_error;
         static readonly Action<InputItemQueue, Type> fill_start_input_item_queue;
 
         /// <summary>
@@ -102,6 +111,11 @@ namespace Cliver.Bot
         internal static void SessionClosing()
         {
             session_closing.Invoke();
+        }
+
+        internal static void FatalError()
+        {
+            fatal_error.Invoke();
         }
 
         internal static void FillStartInputItemQueue(InputItemQueue start_input_item_queue, Type start_input_item_type)

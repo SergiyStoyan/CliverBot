@@ -88,6 +88,7 @@ namespace Cliver.Bot
             catch (Exception e)
             {
                 LogMessage.Error("SessionCreating: " + Log.GetExceptionMessage(e));
+                CustomizationApi.FatalError();
                 Close();
                 return;
             }
@@ -100,6 +101,7 @@ namespace Cliver.Bot
         
         void ThreadLog_Exitig(string message)
         {
+            CustomizationApi.FatalError();
             Close();
         }
 
@@ -107,8 +109,7 @@ namespace Cliver.Bot
         static void max_error_count(int count)
         {
             LogMessage.Error("Fatal error: errors in succession " + count);
-            if (FatalError != null)
-                FatalError.Invoke();
+            CustomizationApi.FatalError();
             Close();
         }
 
@@ -126,22 +127,28 @@ namespace Cliver.Bot
 
         public static void Start()
         {
-            Log.Initialize(Log.Mode.SESSIONS, Cliver.Bot.Properties.Log.Default.PreWorkDir, Cliver.Bot.Properties.Log.Default.WriteLog, Cliver.Bot.Properties.Log.Default.DeleteLogsOlderDays);
-            Log.Main.Inform("Version compiled: " + Cliver.Bot.Program.GetCustomizationCompiledTime().ToString());
-            Log.Main.Inform("Command line parameters: " + string.Join("|", Environment.GetCommandLineArgs()));
+            try
+            {
+                Log.Initialize(Log.Mode.SESSIONS, Cliver.Bot.Properties.Log.Default.PreWorkDir, Cliver.Bot.Properties.Log.Default.WriteLog, Cliver.Bot.Properties.Log.Default.DeleteLogsOlderDays);
+                Log.Main.Inform("Version compiled: " + Cliver.Bot.Program.GetCustomizationCompiledTime().ToString());
+                Log.Main.Inform("Command line parameters: " + string.Join("|", Environment.GetCommandLineArgs()));
 
-            if (This != null)
-                throw new Exception("Previous session was not closed.");
-            new Session();
-            if (This == null)
-                return;
-            BotCycle.Start();
+                if (This != null)
+                    throw new Exception("Previous session was not closed.");
+                new Session();
+                if (This == null)
+                    return;
+                BotCycle.Start();
+            }
+            finally
+            {
+                CustomizationApi.FatalError();
+            }
         }
 
         /// <summary>
         /// Closes current session: closes session logs if all input Items were processed
         /// </summary>
-        /// <param name="session_is_completed">specify whether session is completed</param>
         public static void Close()
         {
             lock (Log.MainThread)
