@@ -9,6 +9,43 @@ using System.Xml;
 
 namespace Cliver
 {
+    public class Serializable
+    {
+        static public T Load<T>(string file) where T : Serializable, new()
+        {
+            return get<T>(file, false);
+        }
+
+        static public T Create<T>(string file) where T : Serializable, new()
+        {
+            return get<T>(file, true);
+        }
+
+        static T get<T>(string file, bool ignore_file_content) where T : Serializable, new()
+        {
+            if (!file.Contains(":"))
+                file = Log.GetAppCommonDataDir() + "\\" + file;
+            T s;
+            if (!ignore_file_content && File.Exists(file))
+                s = Cliver.SerializationRoutines.Json.Load<T>(file);
+            else
+                s = new T();
+            s.__file = file;
+            return s;
+        }
+
+        public string GetFile()
+        {
+            return __file;
+        }
+        string __file;
+
+        public void Save()
+        {
+            Cliver.SerializationRoutines.Json.Save(__file, this);
+        }
+    }
+
     static public class SerializationRoutines
     {
         static public class Json
