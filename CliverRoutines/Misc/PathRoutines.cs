@@ -51,6 +51,11 @@ namespace Cliver
             return Regex.Replace(path.TrimEnd('\\'), @".*\\", "", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
         }
 
+        public static string InsertSuffixBeforeFileExtension(string path, string suffix)
+        {
+            return Regex.Replace(path, @"(.*\\.*)(\..*)", "$1" + suffix + "$2", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
+        }
+
         /// <summary>
         /// Works for any length path unlike Path.GetFileName()
         /// </summary>

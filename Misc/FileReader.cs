@@ -37,7 +37,7 @@ namespace Cliver.Bot
             if (comment_marks == null)
                 comment_marks = new string[] { "#" };
             comment_or_empty_string_regex = new Regex(@"^" + (ignore_space_lines ? @"\s*" : "") + "(" + string.Join("|", (from x in comment_marks select Regex.Escape(x)).ToArray()) + ")" + (ignore_space_lines ? @"?" : "") + "$");
-            split_regex = new Regex(@"\s*" + Regex.Escape(delimiter) + @"\s*");
+            split_regex = new Regex(Regex.Escape(delimiter));
             Stream s = File.Open(file_path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             TR = new StreamReader(s);
 
@@ -91,7 +91,7 @@ namespace Cliver.Bot
                     if (row == null) 
                         return null;
                 } while (comment_or_empty_string_regex.IsMatch(row));
-                string[] vs = split_regex.Split(row.Trim());
+                string[] vs = split_regex.Split(row);
                 return new Row(Headers, vs);
             }
         }

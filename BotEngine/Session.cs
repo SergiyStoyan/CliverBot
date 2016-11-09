@@ -147,7 +147,7 @@ namespace Cliver.Bot
                     //LogMessage.Error(e);
                     CustomizationApi.FatalError();
                 }
-                throw e;
+                throw;
             }
         }
 
