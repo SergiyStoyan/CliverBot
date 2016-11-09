@@ -101,7 +101,7 @@ namespace Cliver.Bot
         
         void ThreadLog_Exitig(string message)
         {
-            CustomizationApi.FatalError();
+            //CustomizationApi.FatalError();
             Close();
         }
 
