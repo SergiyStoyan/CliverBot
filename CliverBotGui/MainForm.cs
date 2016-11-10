@@ -90,7 +90,7 @@ namespace Cliver.BotGui
                 this.AutoSizeMode = AutoSizeMode.GrowOnly;
             }
             else
-                bTools.Text = tools_form.Text;
+                bTools.Text = tools_form.Name;
 
             listBoxStatus.BackColor = Color.FromKnownColor(KnownColor.Control);
 
