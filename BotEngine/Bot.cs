@@ -91,7 +91,7 @@ Developed by: www.cliversoft.com";
         }
 
         /// <summary>
-        /// Invoked by default if no particulare processor definition was found.
+        /// Invoked by default if no particular processor definition was found.
         /// </summary>
         virtual public void PROCESSOR(InputItem item)
         {
