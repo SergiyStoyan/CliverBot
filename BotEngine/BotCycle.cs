@@ -143,12 +143,17 @@ namespace Cliver.Bot
                     {
                         return;
                     }
+                    catch (Session.FatalException)
+                    {
+                        throw;
+                    }
                     catch (Exception e)
                     {
                         if (e is TargetInvocationException)
+                        {
                             e = e.InnerException;
-                        if (e is Session.FatalException)
                             throw;
+                        }
                         if (e is ProcessorException)
                         {
                             switch (((ProcessorException)e).Type)
@@ -170,6 +175,7 @@ namespace Cliver.Bot
                             state = InputItemState.ERROR;
                         Log.Error(e);
                     }
+
                     current_item.__State = state;
 
                     if (state == InputItemState.ERROR || state == InputItemState.ERROR_RESTORE_AS_NEW)
