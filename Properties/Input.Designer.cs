@@ -25,7 +25,7 @@ namespace Cliver.Bot.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("input.txt")]
+        [global::System.Configuration.DefaultSettingValueAttribute("input.csv")]
         public string InputFile {
             get {
                 return ((string)(this["InputFile"]));
@@ -37,7 +37,7 @@ namespace Cliver.Bot.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute(",")]
         public string InputFieldSeparator {
             get {
                 return ((string)(this["InputFieldSeparator"]));
@@ -49,7 +49,7 @@ namespace Cliver.Bot.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("\'\\t\'")]
+        [global::System.Configuration.DefaultSettingValueAttribute(",")]
         public string EscapedInputFieldSeparator {
             get {
                 return ((string)(this["EscapedInputFieldSeparator"]));

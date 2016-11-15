@@ -3,13 +3,13 @@
   <Profiles />
   <Settings>
     <Setting Name="InputFile" Type="System.String" Scope="User">
-      <Value Profile="(Default)">input.txt</Value>
+      <Value Profile="(Default)">input.csv</Value>
     </Setting>
     <Setting Name="InputFieldSeparator" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">,</Value>
     </Setting>
     <Setting Name="EscapedInputFieldSeparator" Type="System.String" Scope="User">
-      <Value Profile="(Default)">'\t'</Value>
+      <Value Profile="(Default)">,</Value>
     </Setting>
     <Setting Name="InputFileViewer" Type="System.String" Scope="User">
       <Value Profile="(Default)">notepad.exe</Value>

@@ -37,7 +37,8 @@ namespace Cliver.Bot
             if (comment_marks == null)
                 comment_marks = new string[] { "#" };
             comment_or_empty_string_regex = new Regex(@"^" + (ignore_space_lines ? @"\s*" : "") + "(" + string.Join("|", (from x in comment_marks select Regex.Escape(x)).ToArray()) + ")" + (ignore_space_lines ? @"?" : "") + "$");
-            split_regex = new Regex(Regex.Escape(delimiter));
+            //split_regex = new Regex(@"\""?" + Regex.Escape(delimiter));
+            match_regex = new Regex( @"(?'Q'\""?)(?'V'.*?)(?:\k'Q')(" + Regex.Escape(delimiter) + "|$)");
             Stream s = File.Open(file_path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             TR = new StreamReader(s);
 
@@ -52,7 +53,8 @@ namespace Cliver.Bot
                         if (row == null)
                             throw new Exception("No header found in " + file_path);
                     } while (comment_or_empty_string_regex.IsMatch(row));
-                    headers = split_regex.Split(row.Trim());
+                    //headers = split_regex.Split(row.Trim());
+                    headers = get_columns(row.Trim()).ToArray();
                 }
 
                 if ((from x in headers where string.IsNullOrWhiteSpace(x) select x).FirstOrDefault() != null)
@@ -66,7 +68,8 @@ namespace Cliver.Bot
         TextReader TR = null;
         public readonly string[] Headers;
         Regex comment_or_empty_string_regex;
-        Regex split_regex;
+        //Regex split_regex;
+        Regex match_regex;
 
         public void Close()
         {
@@ -80,6 +83,16 @@ namespace Cliver.Bot
             }
         }
 
+        List<string> get_columns(string line)
+        {
+            List<string> vs = new List<string>();
+            for (Match m = match_regex.Match(line); m.Success; m = m.NextMatch())
+                vs.Add(Regex.Replace(m.Groups["V"].Value, @"\""{2}", @"""", RegexOptions.Compiled));
+            if (vs.Count > 0)
+                vs.RemoveAt(vs.Count - 1);
+            return vs;
+        }
+
         public Row ReadLine()
         {
             lock (this)
@@ -91,7 +104,8 @@ namespace Cliver.Bot
                     if (row == null) 
                         return null;
                 } while (comment_or_empty_string_regex.IsMatch(row));
-                string[] vs = split_regex.Split(row);
+                //string[] vs = split_regex.Split(row);
+                string[] vs = get_columns(row).ToArray();
                 return new Row(Headers, vs);
             }
         }
