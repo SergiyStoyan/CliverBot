@@ -34,6 +34,9 @@ namespace Cliver.Bot
                     if (ii != null)
                         return ii;
                 }
+                foreach (InputItemQueue iiq in input_item_queue_name2input_item_queues.Values)
+                    if (iiq.CountOfNew > 0)//can be so if PickNext() in a queue was customized
+                        throw new FatalException("GetNext returned nothing while " + iiq.Name + " queue has a new item.");
                 return null;
             }
         }

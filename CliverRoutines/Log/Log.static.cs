@@ -251,9 +251,8 @@ namespace Cliver
 
         static public void GetExceptionMessage(Exception e, out string message, out string details)
         {
-            message = e.Message;
-            for (; e.InnerException != null; e = e.InnerException)
-                message += "\r\n<= " + e.Message;
+            for (message = e.Message; e.InnerException != null; message += "\r\n<= " + e.Message)
+                e = e.InnerException;
 #if DEBUG            
             details = "Module:" + e.TargetSite.Module + " \r\n\r\nStack:" + e.StackTrace;
 #else       

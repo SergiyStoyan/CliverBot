@@ -80,7 +80,7 @@ namespace Cliver.Bot
         {
             return GetInputItemQueue(typeof(ItemT).Name);
         }
-        
+
         /// <summary>
         /// Add item to queue. It is possible to create a named queue.
         /// It is the same like BotCycle.Add() but not so efficient.
@@ -174,5 +174,23 @@ namespace Cliver.Bot
 
         //public delegate void OnFatalError();
         //static public event OnFatalError FatalError = null;
+
+        public class FatalException : Exception
+        {
+            public FatalException(string message)
+                : base(message)
+            {
+            }
+
+            public FatalException(string message, Exception exception)
+                : base(message, exception)
+            {
+            }
+        }
+
+        static public void FatalError(string message, Exception e = null)
+        {
+            //TBD
+        }
     }
 }

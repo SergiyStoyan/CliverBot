@@ -9,7 +9,7 @@ using System.Drawing.Drawing2D;
 
 namespace Cliver
 {
-    class ImageRoutines
+    public class ImageRoutines
     {
         public static Image GetScaledImage(Image image, Size max_size)
         {

@@ -37,6 +37,7 @@ namespace Cliver.Bot
                 default:
                     throw new Exception("Undefined SourceType: " + Session.This.SourceType.ToString());
             }
+            PickNext = pick_next;
         }
 
         internal static void Close()
@@ -120,6 +121,41 @@ namespace Cliver.Bot
             }
         }
 
+        public System.Collections.IEnumerator GetEnnumerator()
+        {
+            return item_id2items.Values.GetEnumerator();
+        }
+
+        public delegate InputItem OnPickNext();
+        public OnPickNext PickNext
+        {
+            get
+            {
+                lock (this)
+                {
+                    return PickNext_;
+                }
+            }
+            set
+            {
+                lock (this)
+                {
+                    PickNext_ = value;
+                }
+            }
+        }
+        OnPickNext PickNext_ = null;
+
+        InputItem pick_next()
+        {
+            lock (this)
+            {
+                if (item_id2items.Count < 1)
+                    return null;
+                return (InputItem)item_id2items[0];
+            }
+        }
+
         internal InputItem GetNext()
         {
             switch (Session.This.SourceType)
@@ -131,15 +167,11 @@ namespace Cliver.Bot
                     {
                         //if (current_input_item != null && current_input_item.__State == InputItemState.NEW)
                         //    throw new Exception("The previously picked up InputItem was not marked as processed");
-                        if (item_id2items.Count < 1)
+                        InputItem current_input_item = PickNext();
+                        if (current_input_item == null)
                             return null;
-                        //do
-                        //{
-                        current_input_item = (InputItem)item_id2items[0];
-                        item_id2items.RemoveAt(0);
+                        item_id2items.Remove(current_input_item.__Id);
                         count_of_processed_items++;
-                        //}
-                        //while (current_input_item.__State != InputItemState.NEW);
                         if (Progress != null)
                             Progress.Invoke(this, CountOfProcessed + CountOfNew, CountOfProcessed);
                         return current_input_item;
@@ -148,9 +180,8 @@ namespace Cliver.Bot
                     throw new Exception("Undefined SourceType: " + Session.This.SourceType.ToString());
             }
         }
-        InputItem current_input_item = null;
 
-        internal int CountOfNew
+        public int CountOfNew
         {
             get
             {
@@ -194,4 +225,3 @@ namespace Cliver.Bot
         }
     }
 }
-

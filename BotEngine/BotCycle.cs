@@ -147,6 +147,8 @@ namespace Cliver.Bot
                     {
                         if (e is TargetInvocationException)
                             e = e.InnerException;
+                        if (e is Session.FatalException)
+                            throw;
                         if (e is ProcessorException)
                         {
                             switch (((ProcessorException)e).Type)
@@ -154,9 +156,7 @@ namespace Cliver.Bot
                                 case ProcessorExceptionType.ERROR:
                                     state = InputItemState.ERROR;
                                     break;
-                                //case ProcessorExceptionType.FATAL_ERROR:
-                                //    state = InputItemState.FATAL_ERROR;
-                                //    break;
+                                //case ProcessorExceptionType.FATAL_ERROR:                                    
                                 case ProcessorExceptionType.RESTORE_AS_NEW:
                                     state = InputItemState.ERROR_RESTORE_AS_NEW;
                                     Session.This.IsItem2Restore = true;

@@ -57,10 +57,19 @@ namespace Cliver.BotGui
         /// <summary>
         /// By deafult each item type has its own queue. But independed named queues can be created during session.
         /// </summary>
-        /// <param name="input_item_type"></param>
-        public static void BindProgressBar2InputItemQueue(Type input_item_type)
+        /// <param name="queue_name"></param>
+        public static void BindProgressBar2InputItemQueue(string queue_name)
         {
-            MainForm.This.ProgressBarInputItemQueueName = input_item_type.Name;
+            MainForm.This.ProgressBarInputItemQueueName = queue_name;
+        }
+
+        /// <summary>
+        /// By deafult each item type has its own queue. But independed named queues can be created during session.
+        /// </summary>
+        /// <typeparam name="ItemT"></typeparam>
+        public static void BindProgressBar2InputItemQueue<ItemT>() where ItemT : InputItem
+        {
+            MainForm.This.ProgressBarInputItemQueueName = typeof(ItemT).Name;
         }
 
         public static void Run()
