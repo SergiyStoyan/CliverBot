@@ -19,6 +19,14 @@ using System.Threading;
 using System.Linq;
 using System.Reflection;
 
+/*
+TBD:
+- serialize InputItems into json and thus allow arrays etc
+- change Cliver.Bot virtual members to event subscriptions
+- change settings engine to json
+- separate Web from Bot
+*/
+
 namespace Cliver.Bot
 {
     public enum ItemSourceType
