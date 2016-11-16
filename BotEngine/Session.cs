@@ -152,7 +152,6 @@ namespace Cliver.Bot
                 CustomizationApi.FatalError(e.Message);
                 //LogMessage.Exit(e);
                 Close();
-                throw;
             }
         }
         static bool started = false;
@@ -214,6 +213,7 @@ namespace Cliver.Bot
                     catch (Exception e)
                     {
                         LogMessage.Error(e);
+                        CustomizationApi.FatalError(e.Message);
                     }
 
                     try
