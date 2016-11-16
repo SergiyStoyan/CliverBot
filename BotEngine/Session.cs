@@ -41,7 +41,7 @@ namespace Cliver.Bot
         Session()
         {
             This_ = this;
-            
+
             Log.Writer.Exitig += ThreadLog_Exitig;
 
             input_item_type_name2input_item_types = (from t in Assembly.GetEntryAssembly().GetTypes() where t.BaseType == typeof(InputItem) select t).ToDictionary(t => t.Name, t => t);
@@ -81,17 +81,16 @@ namespace Cliver.Bot
                 read_input_file();
             }
 
-            try
-            {
+            //try
+            //{
                 CustomizationApi.SessionCreating();
-            }
-            catch (Exception e)
-            {
-                LogMessage.Error("SessionCreating: " + Log.GetExceptionMessage(e));
-                CustomizationApi.FatalError();
-                Close();
-                return;
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    LogMessage.Error(e);
+            //    CustomizationApi.FatalError(e.Message);
+            //    Session.Close();
+            //}
 
             set_session_state(SessionState.STARTED, "session_start_time", StartTime.ToString("yyyy-MM-dd HH:mm:ss"));
         }
@@ -108,8 +107,9 @@ namespace Cliver.Bot
         internal readonly Counter ProcessorErrors = new Counter("processor_errors", Properties.General.Default.MaxProcessorErrorNumber, max_error_count);
         static void max_error_count(int count)
         {
-            LogMessage.Error("Fatal error: errors in succession " + count);
-            CustomizationApi.FatalError();
+            string m = "Fatal error: errors in succession " + count;
+            LogMessage.Error(m);
+            CustomizationApi.FatalError(m);
             Close();
         }
 
@@ -139,15 +139,28 @@ namespace Cliver.Bot
                 if (This == null)
                     return;
                 BotCycle.Start();
+                started = true;
+            }
+            catch (ThreadAbortException)
+            {
+                Close();
+                throw;
             }
             catch (Exception e)
             {
-                if (!(e is ThreadAbortException))
-                {
-                    //LogMessage.Error(e);
-                    CustomizationApi.FatalError();
-                }
+                LogMessage.Error(e);
+                CustomizationApi.FatalError(e.Message);
+                //LogMessage.Exit(e);
+                Close();
                 throw;
+            }
+        }
+        static bool started = false;
+        public static bool Started
+        {
+            get
+            {
+                return This != null && started;
             }
         }
 
@@ -162,9 +175,7 @@ namespace Cliver.Bot
                     return;
                 if (This.closing_thread != null)
                     return;
-                This.closing_thread = new Thread(() => { This.close(); });
-                This.closing_thread.IsBackground = true;
-                This.closing_thread.Start();
+                This.closing_thread = ThreadRoutines.Start(This.close);
             }
         }
         Thread closing_thread = null;
@@ -172,56 +183,69 @@ namespace Cliver.Bot
         {
             lock (This_)
             {
-                BotCycle.Abort();
-
-                if (This.items_xtw != null)
-                {
-                    This.items_xtw.WriteEndElement();
-                    This.items_xtw.WriteEndDocument();
-                    This.items_xtw.Close();
-                }
-
-                if (This.input_item_queue_name2input_item_queues.Count > 0)
-                {
-                    if (This.IsUnprocessedInputItem)
-                        This.set_session_state(SessionState.ABORTED);
-                    else if (This.IsItem2Restore)
-                        This.set_session_state(SessionState.UNCOMPLETED);
-                    else
-                        This.set_session_state(SessionState.COMPLETED);
-                }
-                This.workflow_xtw.WriteEndElement();
-                This.workflow_xtw.WriteEndDocument();
-                This.workflow_xtw.Close();
-
                 try
                 {
-                    CustomizationApi.SessionClosing();
+                    BotCycle.Abort();
+
+                    if (This.items_xtw != null)
+                    {
+                        This.items_xtw.WriteEndElement();
+                        This.items_xtw.WriteEndDocument();
+                        This.items_xtw.Close();
+                    }
+
+                    if (This.input_item_queue_name2input_item_queues.Count > 0)
+                    {
+                        if (This.IsUnprocessedInputItem)
+                            This.set_session_state(SessionState.ABORTED);
+                        else if (This.IsItem2Restore)
+                            This.set_session_state(SessionState.UNCOMPLETED);
+                        else
+                            This.set_session_state(SessionState.COMPLETED);
+                    }
+                    This.workflow_xtw.WriteEndElement();
+                    This.workflow_xtw.WriteEndDocument();
+                    This.workflow_xtw.Close();
+
+                    try
+                    {
+                        CustomizationApi.SessionClosing();
+                    }
+                    catch (Exception e)
+                    {
+                        LogMessage.Error(e);
+                    }
+
+                    try
+                    {
+                        if (Closing != null)
+                            Closing.Invoke();
+                    }
+                    catch (Exception e)
+                    {
+                        LogMessage.Error(e);
+                    }
+
+                    InputItemQueue.Close();
+                    FileWriter.ClearSession();
+                    Cache.ClearSession();
+                    Proxies.ClearSession();
+                    WebRoutine.ClearSession();
+                    Log.Main.Write("Closing the bot session.");
+                    Cliver.Log.ClearSession();
+
+                    This_ = null;
+                    started = false;
+                }
+                catch (ThreadAbortException)
+                {
                 }
                 catch (Exception e)
                 {
                     LogMessage.Error(e);
+                    CustomizationApi.FatalError(e.Message);
+                    throw;
                 }
-
-                try
-                {
-                    if (Closing != null)
-                        Closing.Invoke();
-                }
-                catch (Exception e)
-                {
-                    LogMessage.Error(e);
-                }
-
-                InputItemQueue.Close();
-                FileWriter.ClearSession();
-                Cache.ClearSession();
-                Proxies.ClearSession();
-                WebRoutine.ClearSession();
-                Log.Main.Write("Closing the bot session.");
-                Cliver.Log.ClearSession();
-
-                This_ = null;
             }
         }
 

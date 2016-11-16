@@ -71,7 +71,7 @@ Developed by: www.cliversoft.com";
         /// <summary>
         /// Invoked when a fatal error occurred. The session will be terminated.
         /// </summary>
-        static public void FatalError()
+        static public void FatalError(string message)
         {
         }
         

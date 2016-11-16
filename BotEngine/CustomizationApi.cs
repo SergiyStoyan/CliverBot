@@ -50,7 +50,7 @@ namespace Cliver.Bot
             }
             try
             {
-                fatal_error = (Action)Delegate.CreateDelegate(typeof(Action), bot_type.GetMethod("FatalError", BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Static));
+                fatal_error = (Func<string>)Delegate.CreateDelegate(typeof(Func<string>), bot_type.GetMethod("FatalError", BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Static));
             }
             catch
             {
@@ -70,7 +70,7 @@ namespace Cliver.Bot
 
         static readonly Action session_creating;
         static readonly Action session_closing;
-        static readonly Action fatal_error;
+        static readonly Func<string> fatal_error;
         static readonly Action<InputItemQueue, Type> fill_start_input_item_queue;
 
         /// <summary>
@@ -105,17 +105,17 @@ namespace Cliver.Bot
 
         internal static void SessionCreating()
         {
-            session_creating.Invoke();
+            session_creating?.Invoke();
         }
 
         internal static void SessionClosing()
         {
-            session_closing.Invoke();
+            session_closing?.Invoke();
         }
 
-        internal static void FatalError()
+        internal static void FatalError(string message)
         {
-            fatal_error.Invoke();
+            fatal_error?.Invoke();
         }
 
         internal static void FillStartInputItemQueue(InputItemQueue start_input_item_queue, Type start_input_item_type)

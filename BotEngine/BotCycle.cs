@@ -100,9 +100,7 @@ namespace Cliver.Bot
 
         BotCycle()
         {
-            thread = new Thread(bot_cycle);
-            thread.IsBackground = true;
-            thread.Start();
+            thread = ThreadRoutines.Start(bot_cycle);
             if (!SleepRoutines.WaitForCondition(() => { return Id >= 0; }, 100000))
                 throw new Exception("Could not start BotCycle thread");
         }
@@ -115,13 +113,12 @@ namespace Cliver.Bot
             bool completed = false;
             try
             {
-                typeof(BotCycle).GetField("Id", BindingFlags.NonPublic| BindingFlags.Instance).SetValue(this, Log.Id);
+                typeof(BotCycle).GetField("Id", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(this, Log.Id);
                 lock (id2bot_cycles)
                 {
                     id2bot_cycles[Id] = this;
                 }
-                if (Created != null)
-                    Created.Invoke(Id);
+                Created?.Invoke(Id);
 
                 bot = CustomizationApi.CreateBot();
                 if (bot == null)
@@ -152,7 +149,7 @@ namespace Cliver.Bot
                         if (e is TargetInvocationException)
                         {
                             e = e.InnerException;
-                            throw;
+                            //throw;
                         }
                         if (e is ProcessorException)
                         {
@@ -172,7 +169,11 @@ namespace Cliver.Bot
                             }
                         }
                         else
+                        {
+                            if (TreatExceptionAsFatal)
+                                throw new Session.FatalException(e);
                             state = InputItemState.ERROR;
+                        }
                         Log.Error(e);
                     }
 
@@ -192,7 +193,10 @@ namespace Cliver.Bot
             }
             catch (Exception e)
             {
-                LogMessage.Exit(e);
+                LogMessage.Error(e);
+                CustomizationApi.FatalError(e.Message);
+                Session.Close();
+                //LogMessage.Exit(e);
             }
             finally
             {

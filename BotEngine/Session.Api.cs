@@ -175,22 +175,27 @@ namespace Cliver.Bot
         //public delegate void OnFatalError();
         //static public event OnFatalError FatalError = null;
 
+        //static public void FatalError(string message, Exception e = null)
+        //{
+        //    //TBD
+        //}
+
         public class FatalException : Exception
         {
             public FatalException(string message)
-                : base(message)
+                : base("FATAL. " + message)
             {
             }
 
             public FatalException(string message, Exception exception)
-                : base(message, exception)
+                : base("FATAL. " + message, exception)
             {
             }
-        }
 
-        static public void FatalError(string message, Exception e = null)
-        {
-            //TBD
+            public FatalException(Exception exception)
+                : base("FATAL. ", exception)
+            {
+            }
         }
     }
 }

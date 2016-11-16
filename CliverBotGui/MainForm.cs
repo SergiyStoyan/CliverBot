@@ -166,11 +166,7 @@ namespace Cliver.BotGui
                 DisplayStatus2("Session", "starting...");
                 DisplayStatus2("Thread Count", "0");
 
-                start_session_t = new Thread(new ThreadStart(start_session_));
-                start_session_t.IsBackground = true;
-                //start_session_.Priority = ThreadPriority.Lowest;
-                //Thread.CurrentThread.Priority = ThreadPriority.Highest;
-                start_session_t.Start();
+                start_session_t = ThreadRoutines.Start(start_session_);
 
                 /*
                  * Why does InvokeRequired return false when you'd like it to return true?
@@ -180,10 +176,10 @@ namespace Cliver.BotGui
                  */
                 IntPtr ip = BotThreadManagerForm.Handle;//that's why handle is gotten here                
             }
-            catch (ThreadAbortException)
-            {
-                Session.Close();
-            }
+            //catch (ThreadAbortException)
+            //{
+            //    Session.Close();
+            //}
             catch (Exception e)
             {
                 Session.Close();
@@ -210,16 +206,19 @@ namespace Cliver.BotGui
                     else
                         DisplayStatus2("Session", "started: " + Session.This.StartTime.ToString("dd-MM-yy HH:mm:ss"));
             }
+            catch (ThreadAbortException)
+            {
+                Session.Close();
+            }
             catch (Exception e)
             {
-                if (!(e is ThreadAbortException))
-                {
-                    if (Program.Mode == Program.ProgramMode.AUTOMATIC)
-                        LogMessage.Exit(e);
-                    else
-                        LogMessage.Error(e);
-                }
                 Session.Close();
+                if (Program.Mode == Program.ProgramMode.AUTOMATIC)
+                    System.Windows.Forms.Application.Exit();
+                    //if (Program.Mode == Program.ProgramMode.AUTOMATIC)
+                    //    LogMessage.Exit(e);
+                    //else
+                    //    LogMessage.Error(e);
             }
         }
 
@@ -229,31 +228,38 @@ namespace Cliver.BotGui
 
         void on_session_closing()
         {
-            TimeSpan duration = DateTime.Now - Session.This.RestoreTime;
-            string session_duration = Regex.Replace(duration.ToString(), @"(.*)\..*", "$1", RegexOptions.Compiled);
-            if (Session.This.IsUnprocessedInputItem)
+            if (!Session.Started)
             {
-                if (Session.This.Restored)
-                    DisplayStatus("Session", "started: " + Session.This.StartTime.ToString("dd-MM-yy HH:mm:ss") + ", last duration: " + session_duration + ", broken: " + DateTime.Now.ToString("dd-MM-yy HH:mm:ss"));
-                else
-                    DisplayStatus("Session", "started: " + Session.This.StartTime.ToString("dd-MM-yy HH:mm:ss") + ", last duration: " + session_duration + ", broken: " + DateTime.Now.ToString("dd-MM-yy HH:mm:ss"));
-                Log.Main.Write("BROKEN");
-            }
-            else if(Session.This.IsItemToRestore)
-            {
-                if (Session.This.Restored)
-                    DisplayStatus("Session", "started: " + Session.This.StartTime.ToString("dd-MM-yy HH:mm:ss") + ", last duration: " + session_duration + ", finished with errors: " + DateTime.Now.ToString("dd-MM-yy HH:mm:ss"));
-                else
-                    DisplayStatus("Session", "started: " + Session.This.StartTime.ToString("dd-MM-yy HH:mm:ss") + ", last duration: " + session_duration + ", finished with errors: " + DateTime.Now.ToString("dd-MM-yy HH:mm:ss"));
-                Log.Main.Write("UNCOMPLETED");
+                DisplayStatus("Session", "started: " + Session.This.StartTime.ToString("dd-MM-yy HH:mm:ss") + ", broken: " + DateTime.Now.ToString("dd-MM-yy HH:mm:ss"));
             }
             else
             {
-                if (Session.This.Restored)
-                    DisplayStatus("Session", "started: " + Session.This.StartTime.ToString("dd-MM-yy HH:mm:ss") + ", last duration: " + session_duration + ", completed: " + DateTime.Now.ToString("dd-MM-yy HH:mm:ss"));
+                TimeSpan duration = DateTime.Now - Session.This.RestoreTime;
+                string session_duration = Regex.Replace(duration.ToString(), @"(.*)\..*", "$1", RegexOptions.Compiled);
+                if (Session.This.IsUnprocessedInputItem)
+                {
+                    if (Session.This.Restored)
+                        DisplayStatus("Session", "started: " + Session.This.StartTime.ToString("dd-MM-yy HH:mm:ss") + ", last duration: " + session_duration + ", broken: " + DateTime.Now.ToString("dd-MM-yy HH:mm:ss"));
+                    else
+                        DisplayStatus("Session", "started: " + Session.This.StartTime.ToString("dd-MM-yy HH:mm:ss") + ", last duration: " + session_duration + ", broken: " + DateTime.Now.ToString("dd-MM-yy HH:mm:ss"));
+                    Log.Main.Write("BROKEN");
+                }
+                else if (Session.This.IsItemToRestore)
+                {
+                    if (Session.This.Restored)
+                        DisplayStatus("Session", "started: " + Session.This.StartTime.ToString("dd-MM-yy HH:mm:ss") + ", last duration: " + session_duration + ", finished with errors: " + DateTime.Now.ToString("dd-MM-yy HH:mm:ss"));
+                    else
+                        DisplayStatus("Session", "started: " + Session.This.StartTime.ToString("dd-MM-yy HH:mm:ss") + ", last duration: " + session_duration + ", finished with errors: " + DateTime.Now.ToString("dd-MM-yy HH:mm:ss"));
+                    Log.Main.Write("UNCOMPLETED");
+                }
                 else
-                    DisplayStatus("Session", "started: " + Session.This.StartTime.ToString("dd-MM-yy HH:mm:ss") + ", duration: " + session_duration + ", completed: " + DateTime.Now.ToString("dd-MM-yy HH:mm:ss"));
-                Log.Main.Write("COMPLETED");
+                {
+                    if (Session.This.Restored)
+                        DisplayStatus("Session", "started: " + Session.This.StartTime.ToString("dd-MM-yy HH:mm:ss") + ", last duration: " + session_duration + ", completed: " + DateTime.Now.ToString("dd-MM-yy HH:mm:ss"));
+                    else
+                        DisplayStatus("Session", "started: " + Session.This.StartTime.ToString("dd-MM-yy HH:mm:ss") + ", duration: " + session_duration + ", completed: " + DateTime.Now.ToString("dd-MM-yy HH:mm:ss"));
+                    Log.Main.Write("COMPLETED");
+                }
             }
 
             set_start_button(false);

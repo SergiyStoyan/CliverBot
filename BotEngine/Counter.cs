@@ -42,8 +42,7 @@ namespace Cliver.Bot
                     if (on_max_count != null)
                         on_max_count(count);
                     else
-                        throw new Exception("Counter " + name + " exceeded " + max_count);
-                    //Log.Exit("Counter " + name + " exceeded " + max_count);
+                        throw new Exception("Counter '" + name + "' exceeded " + max_count);
                 }
             }
         }

@@ -141,5 +141,7 @@ namespace Cliver.Bot
                 return null;
             }
         }
+
+        public static bool TreatExceptionAsFatal = false;
     }
 }

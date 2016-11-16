@@ -5,6 +5,9 @@
 //        http://www.cliversoft.com
 //Copyright: (C) 2006-2013, Sergey Stoyan
 //********************************************************************************************
+
+#define SERIALIZE_TO_JSON1 //not completed
+
 using System;
 using System.IO;
 using System.Collections.Generic;
@@ -52,11 +55,11 @@ namespace Cliver.Bot
 
         internal static Item Restore(Type item_type, string item_seed, int item_id)
         {
-            lock (item_types2serialized_field_names2serialized_field_fi)
+#if SERIALIZE_TO_JSON
+            lock (serializer)
             {
-                //Item item = (Item)Activator.CreateInstance(item_type);
-                Item item = (Item)FormatterServices.GetUninitializedObject(item_type);
-                item.restore_from_string(SERIALIZE_WITH_NAMES, item_seed, item_types2serialized_field_names2serialized_field_fi[item_type]); ConstructorInfo ci;
+                Item item = (Item)serializer.Deserialize(item_seed, item_type);
+                ConstructorInfo ci;
                 if (item_types2constructor_info.TryGetValue(item_type, out ci))
                 {
                     ci.Invoke(item, new object[] { });
@@ -64,6 +67,20 @@ namespace Cliver.Bot
                 typeof(Item).GetField("__Id", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(item, item_id);
                 return item;
             }
+#else
+            lock (item_types2serialized_field_names2serialized_field_fi)
+            {
+                //Item item = (Item)Activator.CreateInstance(item_type);
+                Item item = (Item)FormatterServices.GetUninitializedObject(item_type);
+                item.restore_from_string(SERIALIZE_WITH_NAMES, item_seed, item_types2serialized_field_names2serialized_field_fi[item_type]);  ConstructorInfo ci;
+                if (item_types2constructor_info.TryGetValue(item_type, out ci))
+                {
+                    ci.Invoke(item, new object[] { });
+                }
+                typeof(Item).GetField("__Id", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(item, item_id);
+                return item;
+            }
+#endif          
         }
 
         //static protected Dictionary<string, FieldInfo> GetField2FieldInfos<ItemT>()
@@ -78,11 +95,21 @@ namespace Cliver.Bot
         /// <returns></returns>
         internal string GetSeed()
         {
-            return get_as_string(SERIALIZE_WITH_NAMES, item_types2serialized_field_names2serialized_field_fi[this.GetType()]);
+#if SERIALIZE_TO_JSON          
+            lock (serializer)
+            {
+                return serializer.Serialize(this);
+            }
+#else
+            return get_as_string(SERIALIZE_WITH_NAMES, item_types2serialized_field_names2serialized_field_fi[this.GetType()]);  
+#endif
         }
+#if SERIALIZE_TO_JSON
+        static JavaScriptSerializer serializer = new JavaScriptSerializer();
+#else
         protected const bool SERIALIZE_WITH_NAMES = false;
         protected static Dictionary<Type, Dictionary<string, FieldInfo>> item_types2serialized_field_names2serialized_field_fi = new Dictionary<Type, Dictionary<string, FieldInfo>>();
-
+#endif
         protected static Dictionary<Type, ConstructorInfo> item_types2constructor_info = new Dictionary<Type, ConstructorInfo>();
 
         internal static void Initialize(List<Type> item_types)
