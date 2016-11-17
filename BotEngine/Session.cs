@@ -236,9 +236,6 @@ namespace Cliver.Bot
 
                     InputItemQueue.Close();
                     FileWriter.ClearSession();
-                    Cache.ClearSession();
-                    Proxies.ClearSession();
-                    WebRoutine.ClearSession();
                     Log.Main.Write("Closing the bot session.");
                     Cliver.Log.ClearSession();
 

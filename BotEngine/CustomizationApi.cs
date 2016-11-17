@@ -92,10 +92,10 @@ namespace Cliver.Bot
             return null;
         }
 
-        internal static ICustomCache CreateCustomCache()
-        {
-            return (ICustomCache)create_instance_of("CustomCache");
-        }
+        //internal static ICustomCache CreateCustomCache()
+        //{
+        //    return (ICustomCache)create_instance_of("CustomCache");
+        //}
 
         internal static Bot CreateBot()
         {

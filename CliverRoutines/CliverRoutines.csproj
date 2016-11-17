@@ -166,6 +166,7 @@
     <Compile Include="Log\LogMessage.cs" />
     <Compile Include="Misc\ProcessRoutines.cs" />
     <Compile Include="Misc\ReflectionRoutines.cs" />
+    <Compile Include="Misc\WindowInterceptor.cs" />
     <Compile Include="Misc\XmlRoutines.cs" />
     <Compile Include="Misc\ConsoleRoutines.cs" />
     <Compile Include="Misc\ThreadRoutines.cs" />

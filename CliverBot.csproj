@@ -104,18 +104,7 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
-    <Reference Include="DataSifter">
-      <HintPath>References\DataSifter\DataSifter.exe</HintPath>
-    </Reference>
-    <Reference Include="HtmlAgilityPack, Version=1.4.6.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>References\HtmlAgilityPack\HtmlAgilityPack.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="RegexTreeer, Version=2.6.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>References\RegexTreeer\RegexTreeer.exe</HintPath>
-    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -123,18 +112,6 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Data">
       <Name>System.Data</Name>
-    </Reference>
-    <Reference Include="System.Data.SQLite, Version=1.0.103.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\..\_PROJECTS\PdfMailer2a\packages\System.Data.SQLite.Core.1.0.103\lib\net45\System.Data.SQLite.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Data.SQLite.EF6, Version=1.0.103.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\..\_PROJECTS\PdfMailer2a\packages\System.Data.SQLite.EF6.1.0.103\lib\net45\System.Data.SQLite.EF6.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Data.SQLite.Linq, Version=1.0.103.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
-      <HintPath>..\..\_PROJECTS\PdfMailer2a\packages\System.Data.SQLite.Linq.1.0.103\lib\net45\System.Data.SQLite.Linq.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System.DirectoryServices">
       <Name>System.DirectoryServices</Name>
@@ -180,43 +157,10 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Properties\Output.cs" />
-    <Compile Include="Properties\Spider.cs" />
-    <Compile Include="WebRoutines\Cache.get.cs" />
-    <Compile Include="WebRoutines\Cache.put.cs" />
-    <Compile Include="WebRoutines\AgileSpider.cs" />
-    <Compile Include="WebRoutines\IeEmulation.cs" />
-    <Compile Include="WebRoutines\ChromeRoutines.cs" />
-    <Compile Include="WebRoutines\Spider2.cs" />
-    <Compile Include="WebRoutines\FtpRoutine.cs" />
-    <Compile Include="WebRoutines\HtmlRoutines.cs" />
-    <Compile Include="WebRoutines\HttpRoutine.cs" />
-    <Compile Include="WebRoutines\IeRoutine.cs" />
-    <Compile Include="WebRoutines\IeRoutines.static.cs" />
-    <Compile Include="WebRoutines\MhtmlRoutines.cs" />
-    <Compile Include="Properties\Browser.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Browser.settings</DependentUpon>
-    </Compile>
     <Compile Include="Misc\FileReader.cs" />
     <Compile Include="Misc\FileWriter.cs" />
     <Compile Include="Misc\FileWriter.static.cs" />
     <Compile Include="Misc\AppRegistry.cs" />
-    <Compile Include="Properties\Web.Designer.cs">
-      <DependentUpon>Web.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="Properties\Spider.Designer.cs">
-      <DependentUpon>Spider.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="Properties\Proxy.Designer.cs">
-      <DependentUpon>Proxy.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
     <Compile Include="Properties\Output.Designer.cs">
       <DependentUpon>Output.settings</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -246,10 +190,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="WebRoutines\Proxies.cs" />
-    <Compile Include="WebRoutines\Spider.cs" />
-    <Compile Include="WebRoutines\Spider.static.cs" />
-    <Compile Include="WebRoutines\WebRoutine.cs" />
     <Compile Include="Misc\WindowInterceptor.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>
@@ -257,29 +197,12 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <BaseApplicationManifest Include="Properties\app.manifest" />
-    <None Include="packages.config" />
-    <None Include="Properties\Browser.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Browser.Designer.cs</LastGenOutput>
-    </None>
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
     <None Include="Properties\Log.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Log.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Properties\Web.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Web.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Properties\Spider.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Spider.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Properties\Proxy.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Proxy.Designer.cs</LastGenOutput>
     </None>
     <None Include="Properties\Output.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
@@ -344,5 +267,4 @@
     <PostBuildEvent>
     </PostBuildEvent>
   </PropertyGroup>
- 
 </Project>

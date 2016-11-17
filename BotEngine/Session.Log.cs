@@ -272,7 +272,7 @@ namespace Cliver.Bot
                 return false;
             }
         }
-        internal class CompareDirectoryInfo : IComparer<DirectoryInfo>
+        public class CompareDirectoryInfo : IComparer<DirectoryInfo>
         {
             public int Compare(DirectoryInfo d1, DirectoryInfo d2)
             {

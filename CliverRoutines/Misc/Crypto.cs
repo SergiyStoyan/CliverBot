@@ -18,7 +18,7 @@ namespace Cliver
 {
     public class CryptoRijndael
     {
-        readonly string key;
+        //readonly string key;
         readonly byte[] vector = new byte[] { 0x26, 0xdc, 0xff, 0x00, 0xad, 0xed, 0x7a, 0xee, 0xc5, 0xfe, 0x07, 0xaf, 0x4d, 0x08, 0x22, 0x3c };
 
         public CryptoRijndael(string key)

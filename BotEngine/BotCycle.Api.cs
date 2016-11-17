@@ -143,5 +143,16 @@ namespace Cliver.Bot
         }
 
         public static bool TreatExceptionAsFatal = false;
+
+        public static string GetCurrentInputItemQueueNameThisThread()
+        {
+            lock (id2bot_cycles)
+            {
+                BotCycle bc;
+                if (id2bot_cycles.TryGetValue(Log.Id, out bc))
+                    return bc.current_item.__Queue.Name;
+                return null;
+            }
+        }
     }
 }

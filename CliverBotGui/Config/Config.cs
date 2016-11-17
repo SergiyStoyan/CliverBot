@@ -8,7 +8,7 @@
 //********************************************************************************************
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Text.RegularExpressions;
 using System.Configuration;
 using System.Collections;
 using System.IO;
@@ -25,10 +25,18 @@ namespace Cliver.Bot
     {
         static Config()
         {
+            setting_sections2fi = new Dictionary<string, FieldInfo>();
+            List<Assembly> sas = new List<Assembly>();
+            sas.Add(Assembly.GetEntryAssembly());
+            foreach (AssemblyName an in Assembly.GetEntryAssembly().GetReferencedAssemblies().Where(an => Regex.IsMatch(an.Name, @"^Cliver")))
+                sas.Add(Assembly.Load(an));
+            foreach (Assembly sa in sas)
+                foreach (Type st in sa.GetExportedTypes().Where(t => t.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase))))
+                    setting_sections2fi[st.Name] = st.GetField("defaultInstance", BindingFlags.NonPublic | BindingFlags.Static); 
+
             Reload();
         }
-        static Assembly bot_assembly = Assembly.Load("CliverBot");
-        //static Assembly routines_assembly = Assembly.Load("CliverRoutines");
+        static readonly Dictionary<string, FieldInfo> setting_sections2fi;
 
         public static void Initialize()
         {
@@ -37,25 +45,10 @@ namespace Cliver.Bot
 
         public static void Set(string section, string parameter, object value)
         {
-            string error;
-            FieldInfo fi = get_setting_for_namespace(bot_assembly, "Cliver.Bot.Properties", section);
-            if (set_(fi, parameter, value, out error))
-                return;
-            //fi = get_setting_for_namespace(routines_assembly, "Cliver.Properties", section);
-            //if (set_(fi, parameter, value, out error))
-            //    return;
-            fi = get_setting_for_namespace(Assembly.GetEntryAssembly(), CustomizationApi.CUSTOM_NAMESPACE, section);
-            if (set_(fi, parameter, value, out error))
-                return;
-            fi = get_setting_for_namespace(Assembly.GetEntryAssembly(), CustomizationApi.CUSTOM_NAMESPACE + ".Properties", section);
-            if (set_(fi, parameter, value, out error))
+            string error = null;
+            if (set_(setting_sections2fi[section], parameter, value, out error))
                 return;
             LogMessage.Error("Could not set '" + section + "." + parameter + "' to " + value.ToString() + "\r\n\r\n" + error);
-
-            //Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            ////config.AppSettings.Settings
-            //ClientSettingsSection cs = (ClientSettingsSection)config.GetSectionGroup("userSettings").Sections["Cliver.Properties.General.Default"];
-            //string t = cs.Settings.Get("RestoreErrorItemsAsNew").Value.ValueXml.InnerText;
         }
 
         static bool set_(FieldInfo fi, string parameter, object value, out string error)
@@ -84,20 +77,10 @@ namespace Cliver.Bot
         public static object Get(string section, string parameter)
         {
             object value;
-            string error;
-            FieldInfo fi = get_setting_for_namespace(bot_assembly, "Cliver.Bot.Properties", section);
-            if (get_(fi, parameter, out value, out error))
+            string error; 
+            if (get_(setting_sections2fi[section], parameter, out value, out error))
                 return value;
-            //fi = get_setting_for_namespace(routines_assembly, "Cliver.Properties", section);
-            //if (get_(fi, parameter, out value, out error))
-            //    return value;
-            fi = get_setting_for_namespace(Assembly.GetEntryAssembly(), CustomizationApi.CUSTOM_NAMESPACE, section);
-            if (get_(fi, parameter, out value, out error))
-                return value;
-            fi = get_setting_for_namespace(Assembly.GetEntryAssembly(), CustomizationApi.CUSTOM_NAMESPACE + ".Properties", section);
-            if (get_(fi, parameter, out value, out error))
-                return value;
-            LogMessage.Error("Could not find setting '" + section + "." + parameter + "'");
+            LogMessage.Error("Could not find setting '" + section + "." + parameter + "'\r\n\r\n" + error);
             return null;
         }
 
@@ -118,87 +101,28 @@ namespace Cliver.Bot
             return false;
         }
 
-        static FieldInfo get_setting_for_namespace(Assembly assembly, string ns, string section)
+        static void invoke(System.Reflection.FieldInfo fi, string method)
         {
-            Type settings_type = assembly.GetType(ns + "." + section);
-            if (settings_type == null)
-                return null;
-            return settings_type.GetField("defaultInstance", BindingFlags.NonPublic | BindingFlags.Static);
-        }
-
-        //public static T Get<T>(string section, string parameter)
-        //{
-        //    return (T)((global::System.Configuration.ApplicationSettingsBase)typeof(Config).GetField(section).GetValue(null))[parameter];
-        //}
-
-        static void invoke(Type settings_type, string method)
-        {
-            object di = settings_type.GetField("defaultInstance", BindingFlags.NonPublic | BindingFlags.Static).GetValue(null);
-            settings_type.GetMethod(method).Invoke(di, null);
+            object di = fi.GetValue(null);
+            fi.FieldType.GetMethod(method).Invoke(di, null);
         }
 
         public static void Reload()
         {
-            Type[] settings_types = (from x in bot_assembly.GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x).ToArray();
-            foreach (Type t in settings_types)
-                invoke(t, "Reload");
-
-            Type[] custom_settings_types = (from x in Assembly.GetEntryAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x).ToArray();
-            foreach (Type t in custom_settings_types)
-                invoke(t, "Reload");
+            foreach (System.Reflection.FieldInfo fi in setting_sections2fi.Values)
+                invoke(fi, "Reload");
         }
 
         public static void Save()
         {
-            Type[] settings_types = (from x in bot_assembly.GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x).ToArray();
-            foreach (Type t in settings_types)
-                invoke(t, "Save");
-
-            Type[] custom_settings_types = (from x in Assembly.GetEntryAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x).ToArray();
-            foreach (Type t in custom_settings_types)
-                invoke(t, "Save");
+            foreach (System.Reflection.FieldInfo fi in setting_sections2fi.Values)
+                invoke(fi, "Save");
         }
 
         public static void Reset()
         {
-            Type[] settings_types = (from x in bot_assembly.GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x).ToArray();
-            foreach (Type t in settings_types)
-                invoke(t, "Reset");
-
-            Type[] custom_settings_types = (from x in Assembly.GetEntryAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x).ToArray();
-            foreach (Type t in custom_settings_types)
-                invoke(t, "Reset");
+            foreach (System.Reflection.FieldInfo fi in setting_sections2fi.Values)
+                invoke(fi, "Reset");
         }
-
-        //public static void Save()
-        //{
-        //    FieldInfo[] default_settings_section_fis = (from x in bot_assembly.GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x.GetField("defaultInstance", BindingFlags.NonPublic | BindingFlags.Static)).ToArray();
-        //    foreach (FieldInfo fi in default_settings_section_fis)
-        //        ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null)).Save();
-        //    FieldInfo[] custom_settings_section_fis = (from x in Assembly.GetEntryAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x.GetField("defaultInstance", BindingFlags.NonPublic | BindingFlags.Static)).ToArray();
-        //    foreach (FieldInfo fi in custom_settings_section_fis)
-        //        ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null)).Save();
-        //}
-
-        //public static void Reload()
-        //{
-        //    FieldInfo[] default_settings_section_fis = (from x in bot_assembly.GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x.GetField("defaultInstance", BindingFlags.NonPublic | BindingFlags.Static)).ToArray();
-        //    foreach (FieldInfo fi in default_settings_section_fis)
-        //        ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null)).Reload();
-        //    //Properties.Log.Default.Reload();
-        //    FieldInfo[] custom_settings_section_fis = (from x in Assembly.GetEntryAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x.GetField("defaultInstance", BindingFlags.NonPublic | BindingFlags.Static)).ToArray();
-        //    foreach (FieldInfo fi in custom_settings_section_fis)
-        //        ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null)).Reload();
-        //}
-
-        //public static void Reset()
-        //{
-        //    FieldInfo[] default_settings_section_fis = (from x in bot_assembly.GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x.GetField("defaultInstance", BindingFlags.NonPublic | BindingFlags.Static)).ToArray();
-        //    foreach (FieldInfo fi in default_settings_section_fis)
-        //        ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null)).Reset();
-        //    FieldInfo[] custom_settings_section_fis = (from x in Assembly.GetEntryAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase)) select x.GetField("defaultInstance", BindingFlags.NonPublic | BindingFlags.Static)).ToArray();
-        //    foreach (FieldInfo fi in custom_settings_section_fis)
-        //        ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null)).Reset();
-        //}
     }
 }

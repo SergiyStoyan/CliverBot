@@ -78,7 +78,7 @@ Developed by: www.cliversoft.com";
         /// </summary>
         new static public void SessionCreating()
         {
-            Cliver.BotGui.Program.BindProgressBar2InputItemQueue(typeof(Site));
+            Cliver.BotGui.Program.BindProgressBar2InputItemQueue<Site>();
             FileWriter.This.WriteHeader("Parent Page", "Broken Link");
             domain2page_count = Session.GetSingleValueWorkItemDictionary<PageCounter, int>();
         }
@@ -96,7 +96,7 @@ Developed by: www.cliversoft.com";
         /// <summary>
         /// Invoked by BotCycle thread as it has been started.
         /// </summary>
-        public override void CycleBeginning()
+        public override void CycleStarting()
         {
             ((WebRoutineBotThreadControl)BotThreadControl.GetInstanceForThisThread()).WR = hr;
         }
@@ -106,7 +106,7 @@ Developed by: www.cliversoft.com";
         /// <summary>
         /// Invoked by BotCycle thread when it is exiting.
         /// </summary>
-        public override void CycleFinishing()
+        public override void CycleExiting(bool completed)
         {
         }
         

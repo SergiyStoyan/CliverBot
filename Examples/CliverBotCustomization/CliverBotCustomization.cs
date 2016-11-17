@@ -79,7 +79,7 @@ Developed by: www.cliversoft.com";
             Session.SetInputItemQueuesOrder(typeof(Product), typeof(Category), typeof(Site));
 
             //Set the queue which the progress bar will reflect. 
-            Cliver.BotGui.Program.BindProgressBar2InputItemQueue(typeof(Product));
+            Cliver.BotGui.Program.BindProgressBar2InputItemQueue<Product>();
             
             //It is possible to add InputItems to queues before BotCycle started            
             Session.Add<Site>(new { Url = "www.google.com" });
@@ -97,14 +97,14 @@ Developed by: www.cliversoft.com";
         /// <summary>
         /// Invoked by BotCycle thread as it has been started.
         /// </summary>
-        public override void CycleBeginning()
+        public override void CycleStarting()
         {
         }
 
         /// <summary>
         /// Invoked by BotCycle thread when it is exiting.
         /// </summary>
-        public override void CycleFinishing()
+        public override void CycleExiting(bool completed)
         {
         }
 
