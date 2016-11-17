@@ -34,6 +34,13 @@ namespace Cliver.Bot
             bc.Bot.PROCESSOR(this);
         }
 
+        //static public InputItem PICK_NEXT(InputItemQueue item_queue, System.Collections.IEnumerator items_ennumerator)
+        //{
+        //    items_ennumerator.Reset();
+        //    items_ennumerator.MoveNext();
+        //    return (InputItem)items_ennumerator.Current;
+        //}
+
         static internal bool Add2Queue<ItemT>(InputItemQueue queue, InputItem parent_item, object anonymous_object) where ItemT : InputItem
         {
             ItemT item = Item.Create<ItemT>(anonymous_object);

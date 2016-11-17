@@ -81,10 +81,18 @@ Developed by: www.cliversoft.com";
             Cliver.BotGui.Program.BindProgressBar2InputItemQueue<Site>();
             FileWriter.This.WriteHeader("Parent Page", "Broken Link");
             domain2page_count = Session.GetSingleValueWorkItemDictionary<PageCounter, int>();
+            //only for demo purpose. It is doing the default routing.
+            Session.GetInputItemQueue<Link>().PickNext = Link.PICK_NEXT;
         }
-
         public class PageCounter : SingleValueWorkItem<int> { }
         static SingleValueWorkItemDictionary<PageCounter, int> domain2page_count;
+                
+        /// <summary>
+        /// Invoked when a fatal error happened and session is aborting.
+        /// </summary>
+        new static public void FatalError(string message)
+        {
+        }
 
         /// <summary>
         /// Invoked when the session is closing.
@@ -140,6 +148,14 @@ Developed by: www.cliversoft.com";
                 Url = url;
                 Depth = depth;
                 Download = download;
+            }
+
+            //only for demo purpose. It is doing the default routing.
+            static public InputItem PICK_NEXT(System.Collections.IEnumerator items_ennumerator)
+            {
+                items_ennumerator.Reset();
+                items_ennumerator.MoveNext();
+                return (InputItem)items_ennumerator.Current;
             }
 
             override public void PROCESSOR(BotCycle bc)

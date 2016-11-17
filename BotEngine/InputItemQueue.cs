@@ -37,7 +37,7 @@ namespace Cliver.Bot
                 default:
                     throw new Exception("Undefined SourceType: " + Session.This.SourceType.ToString());
             }
-            PickNext = pick_next;
+            PickNext = default_pick_next;
         }
 
         internal static void Close()
@@ -121,32 +121,33 @@ namespace Cliver.Bot
             }
         }
 
-        public System.Collections.IEnumerator GetEnnumerator()
+        //thread safe method that can be called from a custom code to enumerate through items
+        public object Enumerate(OnEnumerate on_enum)
         {
-            return item_id2items.Values.GetEnumerator();
+            lock (this)
+            {
+                return on_enum.Invoke(item_id2items.Values.GetEnumerator());
+            }
         }
+        public delegate object OnEnumerate(System.Collections.IEnumerator items_ennumerator);
 
-        public delegate InputItem OnPickNext();
         public OnPickNext PickNext
         {
-            get
+            internal get
             {
-                lock (this)
-                {
-                    return PickNext_;
-                }
+                return _PickNext;
             }
             set
             {
-                lock (this)
-                {
-                    PickNext_ = value;
-                }
+                if (Session.Started)
+                    throw new Session.FatalException("PickNext should be set before bot cycle started.");
+                _PickNext = value;
             }
         }
-        OnPickNext PickNext_ = null;
+        public delegate InputItem OnPickNext(System.Collections.IEnumerator items_ennumerator);
+        OnPickNext _PickNext = null;
 
-        InputItem pick_next()
+        InputItem default_pick_next(System.Collections.IEnumerator items_ennumerator)
         {
             lock (this)
             {
@@ -167,7 +168,7 @@ namespace Cliver.Bot
                     {
                         //if (current_input_item != null && current_input_item.__State == InputItemState.NEW)
                         //    throw new Exception("The previously picked up InputItem was not marked as processed");
-                        InputItem current_input_item = PickNext();
+                        InputItem current_input_item = PickNext(item_id2items.Values.GetEnumerator());
                         if (current_input_item == null)
                             return null;
                         item_id2items.Remove(current_input_item.__Id);

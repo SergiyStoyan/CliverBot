@@ -352,7 +352,7 @@ namespace Cliver.Bot
 
                 return true;
             }
-            catch (ThreadAbortException e)
+            catch (ThreadAbortException)
             {
             }
             catch (System.Net.WebException error)
