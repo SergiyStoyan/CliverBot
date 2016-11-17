@@ -91,7 +91,7 @@ namespace Cliver.Bot
 
             //try
             //{
-                CustomizationApi.SessionCreating();
+            CustomizationApi.SessionCreating();
             //}
             //catch (Exception e)
             //{
@@ -105,7 +105,7 @@ namespace Cliver.Bot
         Dictionary<string, Type> input_item_type_name2input_item_types;
         Dictionary<string, Type> work_item_type_name2work_item_types;
         Dictionary<string, Type> tag_item_type_name2tag_item_types;
-        
+
         void ThreadLog_Exitig(string message)
         {
             //CustomizationApi.FatalError();
@@ -259,6 +259,27 @@ namespace Cliver.Bot
             Type start_input_item_type = (from t in Assembly.GetEntryAssembly().GetTypes() where t.IsSubclassOf(typeof(InputItem)) && !t.IsGenericType select t).First();
             InputItemQueue start_input_item_queue = GetInputItemQueue(start_input_item_type.Name);
             CustomizationApi.FillStartInputItemQueue(start_input_item_queue, start_input_item_type);
+        }
+
+        public enum States
+        {
+            NULL,
+            STARTING,
+            STARTED,
+            RUNNING,
+            CLOSING,
+            FATAL_ERROR
+        }
+        States state = States.NULL;
+
+        public static States State
+        {
+            get
+            {
+                if (This == null)
+                    return States.NULL;
+                return This.state;
+            }
         }
     }
 }
