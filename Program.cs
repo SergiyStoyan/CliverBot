@@ -54,13 +54,8 @@ namespace Cliver.Bot
             AppDomain.CurrentDomain.UnhandledException += delegate(object sender, UnhandledExceptionEventArgs args)
             {
                 Exception e = (Exception)args.ExceptionObject;
-                Log.Main.Exit(e);
+                LogMessage.Exit(e);
             };
-        }
-
-        static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            LogMessage.Exit("Unhandled exception: " + e.ExceptionObject.ToString());
         }
 
         static public readonly string Title;

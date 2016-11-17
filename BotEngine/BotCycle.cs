@@ -188,8 +188,9 @@ namespace Cliver.Bot
                 }
                 completed = true;
             }
-            catch (ThreadAbortException)
+            catch (ThreadAbortException e)
             {
+                Thread.ResetAbort();
             }
             catch (Exception e)
             {
