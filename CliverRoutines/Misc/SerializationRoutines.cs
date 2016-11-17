@@ -13,12 +13,16 @@ namespace Cliver
     {
         static public T Load<T>(string file) where T : Serializable, new()
         {
-            return get<T>(file, false);
+            T t = get<T>(file, false);
+            t.Loaded();
+            return t;
         }
 
         static public T Create<T>(string file) where T : Serializable, new()
         {
-            return get<T>(file, true);
+            T t = get<T>(file, true);
+            t.Created();
+            return t;
         }
 
         static T get<T>(string file, bool ignore_file_content) where T : Serializable, new()
@@ -42,7 +46,23 @@ namespace Cliver
 
         public void Save()
         {
+            Saving();
             Cliver.SerializationRoutines.Json.Save(__file, this);
+        }
+
+        virtual public void Loaded()
+        {
+
+        }
+
+        virtual public void Created()
+        {
+
+        }
+
+        virtual public void Saving()
+        {
+
         }
     }
 
