@@ -196,22 +196,15 @@ namespace Cliver.Bot
             public FatalException(string message)
                 : base("FATAL. " + message)
             {
-                set();
             }
 
             public FatalException(string message, Exception exception)
                 : base("FATAL. " + message, exception)
             {
-                set();
             }
 
             public FatalException(Exception exception)
                 : base("FATAL. ", exception)
-            {
-                set();
-            }
-
-            void set()
             {
             }
         }
