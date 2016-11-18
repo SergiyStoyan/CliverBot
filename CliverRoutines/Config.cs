@@ -55,12 +55,12 @@ namespace Cliver
                     sas.Add(Assembly.Load(an));
                 foreach (Assembly sa in sas)
                 {
-                    Type[] ets = sa.GetExportedTypes();
+                    Type[] ets = sa.GetTypes();
                     foreach (Type st in ets.Where(t => t.IsSubclassOf(typeof(Settings))))
                     {
                         List<FieldInfo> fis = new List<FieldInfo>();
                         foreach (Type et in ets)
-                            fis.AddRange(et.GetFields(BindingFlags.Static | BindingFlags.Public).Where(a => a.FieldType == st));
+                            fis.AddRange(et.GetFields(BindingFlags.Static|BindingFlags.NonPublic|BindingFlags.Public).Where(a => a.FieldType == st));
                         if (fis.Count < 1)
                             throw new Exception("No field of type '" + st.FullName + "' was found.");
                         if (fis.Count > 1)
