@@ -7,6 +7,7 @@ using System.Configuration;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Web.Script.Serialization;
 
 namespace Cliver.Bot
 {
@@ -18,9 +19,11 @@ namespace Cliver.Bot
         {
             public string FileName = null;
             public FileFormatEnum FileFormat = FileFormatEnum.NULL;
-            public int OutputFileChunkSizeInBytes = 1000000;
+            public int FileChunkSizeInBytes = 1000000;
             public bool Append = false;
             public bool Write2CommonFolder = false;
+            [ScriptIgnore]
+            public Cliver.FieldPreparation.FieldSeparator FieldSeparator;
 
             override public void Loaded()
             {
@@ -42,7 +45,6 @@ namespace Cliver.Bot
                             break;
                         case FileFormatEnum.XLS:
                             throw new Exception("XLS format not implemented.");
-                            break;
                         default:
                             throw new Exception("Unknown option: " + FileFormat);
                     }
@@ -66,6 +68,22 @@ namespace Cliver.Bot
                         }
                     }
                 }
+                switch (FileFormat)
+                {
+                    case FileFormatEnum.CSV:
+                        FieldSeparator = Cliver.FieldPreparation.FieldSeparator.COMMA;
+                        break;
+                    case FileFormatEnum.TSV:
+                        FieldSeparator = Cliver.FieldPreparation.FieldSeparator.TAB;
+                        break;
+                    case FileFormatEnum.XLS:
+                        throw new Exception("XLS format not implemented.");
+                    case FileFormatEnum.NULL:
+                        throw new Exception("File format not defined.");
+                    default:
+                        throw new Exception("Unknown option: " + FileFormat);
+                }
+                
             }
         }
     }

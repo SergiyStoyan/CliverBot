@@ -26,7 +26,7 @@ namespace Cliver.BotGui
             Init(NAME);
         }
 
-        override protected void set_tool_tip()
+        override protected void SetToolTip()
         {
             toolTip1.SetToolTip(this.ProxiesFileUri, "Absolute path or only name or url of file that contains a list of proxies to be used. Can be empty if no proxy used.");
             toolTip1.SetToolTip(this.ProxyLogin, "Name of proxy user if needed.");

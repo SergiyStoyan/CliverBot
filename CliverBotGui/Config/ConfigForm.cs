@@ -19,10 +19,11 @@ using System.Reflection;
 using System.Configuration;
 using Cliver.Bot;
 using System.Linq;
+using System.Diagnostics;
 
 namespace Cliver.BotGui
 {
-    internal partial class ConfigForm : BaseForm
+    internal partial class ConfigForm :Form// BaseForm//
     {
         public ConfigForm()
         {
@@ -175,6 +176,11 @@ namespace Cliver.BotGui
                 //Config.Save();
                 ConfigForm_Load(null, null);
             }
+        }
+
+        private void bStore_Click(object sender, EventArgs e)
+        {
+            Process.Start(Cliver.Config.StorageDir);
         }
     }
 }

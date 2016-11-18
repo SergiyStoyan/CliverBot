@@ -27,23 +27,23 @@ namespace Cliver.Bot
         {
             public static string PrepareField(string str)
             {
-                return Cliver.FieldPreparation.Html.GetCsvField(str, Properties.Output.Default.OutputEmptyFieldSubstitute, Properties.Output.Default.OutputFieldSeparator, Properties.Output.Default.OutputFieldSeparatorSubstitute);
+                return Cliver.FieldPreparation.Html.GetCsvField(str, Settings.Output.FieldSeparator);
             }
 
             public static string PrepareFields(params string[] strs)
             {
-                return Cliver.FieldPreparation.Html.GetCsvLine(strs, Properties.Output.Default.OutputEmptyFieldSubstitute, Properties.Output.Default.OutputFieldSeparator, Properties.Output.Default.OutputFieldSeparatorSubstitute);
+                return Cliver.FieldPreparation.Html.GetCsvLine(strs, Settings.Output.FieldSeparator);
             }
         }        
 
         public static string PrepareField(string str)
         {
-            return Cliver.FieldPreparation.GetCsvField(str, Properties.Output.Default.OutputEmptyFieldSubstitute, Properties.Output.Default.OutputFieldSeparator, Properties.Output.Default.OutputFieldSeparatorSubstitute);
+            return Cliver.FieldPreparation.GetCsvField(str, Settings.Output.FieldSeparator);
         }
         
         public static string PrepareFields(params string[] strs)
         {
-            return Cliver.FieldPreparation.GetCsvLine(strs, Properties.Output.Default.OutputEmptyFieldSubstitute, Properties.Output.Default.OutputFieldSeparator, Properties.Output.Default.OutputFieldSeparatorSubstitute);
+            return Cliver.FieldPreparation.GetCsvLine(strs, Settings.Output.FieldSeparator);
         }
 
         public static string Write(string file, byte[] binary)

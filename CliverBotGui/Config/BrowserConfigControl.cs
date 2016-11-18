@@ -26,7 +26,7 @@ namespace Cliver.BotGui
             Init(NAME);
         }
         
-        override protected void set_tool_tip()
+        override protected void SetToolTip()
         {
             toolTip1.SetToolTip(this.PageCompletedTimeoutInSeconds, "Timeout for waiting IE completed downloading page event.");
             toolTip1.SetToolTip(this.CloseWebBrowserDialogsAutomatically, "When checked the bot will close IE dialog boxes automatically.");

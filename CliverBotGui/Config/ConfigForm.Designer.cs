@@ -52,6 +52,7 @@ namespace Cliver.BotGui
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.bReset = new System.Windows.Forms.Button();
+            this.bStore = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.SuspendLayout();
@@ -133,6 +134,7 @@ namespace Cliver.BotGui
             this.flowLayoutPanel1.Controls.Add(this.Cancel);
             this.flowLayoutPanel1.Controls.Add(this.Save);
             this.flowLayoutPanel1.Controls.Add(this.bReset);
+            this.flowLayoutPanel1.Controls.Add(this.bStore);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 337);
@@ -152,9 +154,20 @@ namespace Cliver.BotGui
             this.bReset.Text = "Reset";
             this.bReset.Click += new System.EventHandler(this.bReset_Click);
             // 
+            // bStore
+            // 
+            this.bStore.FlatAppearance.BorderColor = System.Drawing.Color.Red;
+            this.bStore.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.bStore.Location = new System.Drawing.Point(239, 0);
+            this.bStore.Margin = new System.Windows.Forms.Padding(0);
+            this.bStore.Name = "bStore";
+            this.bStore.Size = new System.Drawing.Size(90, 24);
+            this.bStore.TabIndex = 18;
+            this.bStore.Text = "Store";
+            this.bStore.Click += new System.EventHandler(this.bStore_Click);
+            // 
             // ConfigForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(599, 362);
             this.Controls.Add(this.splitContainer);
@@ -185,8 +198,7 @@ namespace Cliver.BotGui
         private GroupBox groupBox1;
         private ToolTip toolTip1;
         private FlowLayoutPanel flowLayoutPanel1;
-        private Button bReset;		
-
-		
-	}
+        private Button bReset;
+        private Button bStore;
+    }
 }

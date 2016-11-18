@@ -26,7 +26,7 @@ namespace Cliver.BotGui
             Init(NAME);
         }
 
-        override protected void set_tool_tip()
+        override protected void SetToolTip()
         {
             toolTip1.SetToolTip(this.MaxBotThreadNumber, "Maximal work thread count that the bot may run.");
             toolTip1.SetToolTip(this.UseFilesFromCache, "Define whether the bot will use files from the cache rather then download them from the net.");

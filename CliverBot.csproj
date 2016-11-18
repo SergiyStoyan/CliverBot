@@ -157,16 +157,10 @@
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Properties\Output.cs" />
     <Compile Include="Misc\FileReader.cs" />
     <Compile Include="Misc\FileWriter.cs" />
     <Compile Include="Misc\FileWriter.static.cs" />
     <Compile Include="Misc\AppRegistry.cs" />
-    <Compile Include="Properties\Output.Designer.cs">
-      <DependentUpon>Output.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
     <Compile Include="Properties\General.Designer.cs">
       <DependentUpon>General.settings</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -199,10 +193,6 @@
     <None Include="Properties\Log.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Log.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Properties\Output.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Output.Designer.cs</LastGenOutput>
     </None>
     <None Include="Properties\General.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>

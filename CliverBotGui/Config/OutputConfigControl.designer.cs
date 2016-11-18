@@ -28,41 +28,33 @@ namespace Cliver.BotGui
         /// </summary>
         private void InitializeComponent()
         {
-            this.WriteOutputFile2CommonFolder = new System.Windows.Forms.CheckBox();
-            this.label36 = new System.Windows.Forms.Label();
-            this.OutputEmptyFieldSubstitute = new System.Windows.Forms.TextBox();
-            this.label35 = new System.Windows.Forms.Label();
-            this.OutputFieldSeparatorSubstitute = new System.Windows.Forms.TextBox();
-            this._1_SetTAB2OutputFieldDelimiter = new System.Windows.Forms.CheckBox();
+            this.Write2CommonFolder = new System.Windows.Forms.CheckBox();
             this.label33 = new System.Windows.Forms.Label();
             this.label29 = new System.Windows.Forms.Label();
-            this.OutputFileChunkSizeInBytes = new System.Windows.Forms.TextBox();
-            this.OutputFileName = new System.Windows.Forms.TextBox();
+            this.FileChunkSizeInBytes = new System.Windows.Forms.TextBox();
+            this.FileName = new System.Windows.Forms.TextBox();
             this.label27 = new System.Windows.Forms.Label();
             this.label26 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.OutputFieldSeparator = new System.Windows.Forms.TextBox();
-            this.AppendOutputFile = new System.Windows.Forms.CheckBox();
+            this.Append = new System.Windows.Forms.CheckBox();
+            this._1_CsvFormat = new System.Windows.Forms.RadioButton();
+            this._1_TsvFormat = new System.Windows.Forms.RadioButton();
+            this.label20 = new System.Windows.Forms.Label();
             this.group_box.SuspendLayout();
             this.SuspendLayout();
             // 
             // group_box
             // 
-            this.group_box.Controls.Add(this.AppendOutputFile);
-            this.group_box.Controls.Add(this.WriteOutputFile2CommonFolder);
-            this.group_box.Controls.Add(this.label36);
-            this.group_box.Controls.Add(this.OutputEmptyFieldSubstitute);
-            this.group_box.Controls.Add(this.label35);
-            this.group_box.Controls.Add(this.OutputFieldSeparatorSubstitute);
-            this.group_box.Controls.Add(this._1_SetTAB2OutputFieldDelimiter);
+            this.group_box.Controls.Add(this._1_CsvFormat);
+            this.group_box.Controls.Add(this._1_TsvFormat);
+            this.group_box.Controls.Add(this.label20);
+            this.group_box.Controls.Add(this.Append);
+            this.group_box.Controls.Add(this.Write2CommonFolder);
             this.group_box.Controls.Add(this.label33);
             this.group_box.Controls.Add(this.label29);
-            this.group_box.Controls.Add(this.OutputFileChunkSizeInBytes);
-            this.group_box.Controls.Add(this.OutputFileName);
+            this.group_box.Controls.Add(this.FileChunkSizeInBytes);
+            this.group_box.Controls.Add(this.FileName);
             this.group_box.Controls.Add(this.label27);
             this.group_box.Controls.Add(this.label26);
-            this.group_box.Controls.Add(this.label13);
-            this.group_box.Controls.Add(this.OutputFieldSeparator);
             this.group_box.Text = "TestCustom";
             // 
             // toolTip1
@@ -71,61 +63,15 @@ namespace Cliver.BotGui
             this.toolTip1.InitialDelay = 500;
             this.toolTip1.ReshowDelay = 100;
             // 
-            // WriteOutputFile2CommonFolder
+            // Write2CommonFolder
             // 
-            this.WriteOutputFile2CommonFolder.AutoSize = true;
-            this.WriteOutputFile2CommonFolder.Location = new System.Drawing.Point(35, 56);
-            this.WriteOutputFile2CommonFolder.Name = "WriteOutputFile2CommonFolder";
-            this.WriteOutputFile2CommonFolder.Size = new System.Drawing.Size(259, 17);
-            this.WriteOutputFile2CommonFolder.TabIndex = 68;
-            this.WriteOutputFile2CommonFolder.Text = "Write Output File to WorkDir (irrelative of Session)";
-            this.WriteOutputFile2CommonFolder.UseVisualStyleBackColor = true;
-            // 
-            // label36
-            // 
-            this.label36.Location = new System.Drawing.Point(43, 254);
-            this.label36.Name = "label36";
-            this.label36.Size = new System.Drawing.Size(138, 17);
-            this.label36.TabIndex = 67;
-            this.label36.Text = "Empty Field Substitute:";
-            this.label36.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // OutputEmptyFieldSubstitute
-            // 
-            this.OutputEmptyFieldSubstitute.Location = new System.Drawing.Point(190, 252);
-            this.OutputEmptyFieldSubstitute.Name = "OutputEmptyFieldSubstitute";
-            this.OutputEmptyFieldSubstitute.Size = new System.Drawing.Size(144, 20);
-            this.OutputEmptyFieldSubstitute.TabIndex = 66;
-            this.OutputEmptyFieldSubstitute.Text = " ";
-            // 
-            // label35
-            // 
-            this.label35.Location = new System.Drawing.Point(43, 222);
-            this.label35.Name = "label35";
-            this.label35.Size = new System.Drawing.Size(138, 17);
-            this.label35.TabIndex = 65;
-            this.label35.Text = "Field Delimiter Substitute:";
-            this.label35.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // OutputFieldSeparatorSubstitute
-            // 
-            this.OutputFieldSeparatorSubstitute.Location = new System.Drawing.Point(190, 220);
-            this.OutputFieldSeparatorSubstitute.Name = "OutputFieldSeparatorSubstitute";
-            this.OutputFieldSeparatorSubstitute.Size = new System.Drawing.Size(17, 20);
-            this.OutputFieldSeparatorSubstitute.TabIndex = 64;
-            this.OutputFieldSeparatorSubstitute.Text = " ";
-            // 
-            // _1_SetTAB2OutputFieldDelimiter
-            // 
-            this._1_SetTAB2OutputFieldDelimiter.Appearance = System.Windows.Forms.Appearance.Button;
-            this._1_SetTAB2OutputFieldDelimiter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this._1_SetTAB2OutputFieldDelimiter.Location = new System.Drawing.Point(213, 188);
-            this._1_SetTAB2OutputFieldDelimiter.Name = "_1_SetTAB2OutputFieldDelimiter";
-            this._1_SetTAB2OutputFieldDelimiter.Size = new System.Drawing.Size(121, 23);
-            this._1_SetTAB2OutputFieldDelimiter.TabIndex = 63;
-            this._1_SetTAB2OutputFieldDelimiter.Text = "Use TAB as delimiter";
-            this._1_SetTAB2OutputFieldDelimiter.UseVisualStyleBackColor = true;
-            this._1_SetTAB2OutputFieldDelimiter.CheckedChanged += new System.EventHandler(this.@__SetTAB2OutputFieldDelimiter_CheckedChanged);
+            this.Write2CommonFolder.AutoSize = true;
+            this.Write2CommonFolder.Location = new System.Drawing.Point(35, 56);
+            this.Write2CommonFolder.Name = "Write2CommonFolder";
+            this.Write2CommonFolder.Size = new System.Drawing.Size(259, 17);
+            this.Write2CommonFolder.TabIndex = 68;
+            this.Write2CommonFolder.Text = "Write Output File to WorkDir (irrelative of Session)";
+            this.Write2CommonFolder.UseVisualStyleBackColor = true;
             // 
             // label33
             // 
@@ -144,20 +90,20 @@ namespace Cliver.BotGui
             this.label29.Text = "Output File Chunk Size (bytes):";
             this.label29.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // OutputFileChunkSizeInBytes
+            // FileChunkSizeInBytes
             // 
-            this.OutputFileChunkSizeInBytes.Location = new System.Drawing.Point(190, 133);
-            this.OutputFileChunkSizeInBytes.Name = "OutputFileChunkSizeInBytes";
-            this.OutputFileChunkSizeInBytes.Size = new System.Drawing.Size(141, 20);
-            this.OutputFileChunkSizeInBytes.TabIndex = 60;
-            this.OutputFileChunkSizeInBytes.Text = "0";
+            this.FileChunkSizeInBytes.Location = new System.Drawing.Point(190, 133);
+            this.FileChunkSizeInBytes.Name = "FileChunkSizeInBytes";
+            this.FileChunkSizeInBytes.Size = new System.Drawing.Size(141, 20);
+            this.FileChunkSizeInBytes.TabIndex = 60;
+            this.FileChunkSizeInBytes.Text = "0";
             // 
-            // OutputFileName
+            // FileName
             // 
-            this.OutputFileName.Location = new System.Drawing.Point(130, 28);
-            this.OutputFileName.Name = "OutputFileName";
-            this.OutputFileName.Size = new System.Drawing.Size(342, 20);
-            this.OutputFileName.TabIndex = 59;
+            this.FileName.Location = new System.Drawing.Point(130, 28);
+            this.FileName.Name = "FileName";
+            this.FileName.Size = new System.Drawing.Size(342, 20);
+            this.FileName.TabIndex = 59;
             // 
             // label27
             // 
@@ -176,33 +122,48 @@ namespace Cliver.BotGui
             this.label26.TabIndex = 57;
             this.label26.Text = "Output File Name:";
             // 
-            // label13
+            // Append
             // 
-            this.label13.Location = new System.Drawing.Point(95, 193);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(83, 17);
-            this.label13.TabIndex = 56;
-            this.label13.Text = "Field Delimiter:";
-            this.label13.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.Append.AutoSize = true;
+            this.Append.Location = new System.Drawing.Point(35, 79);
+            this.Append.Name = "Append";
+            this.Append.Size = new System.Drawing.Size(117, 17);
+            this.Append.TabIndex = 69;
+            this.Append.Text = "Append Output File";
+            this.Append.UseVisualStyleBackColor = true;
             // 
-            // OutputFieldSeparator
+            // _1_CsvFormat
             // 
-            this.OutputFieldSeparator.Location = new System.Drawing.Point(190, 191);
-            this.OutputFieldSeparator.Name = "OutputFieldSeparator";
-            this.OutputFieldSeparator.Size = new System.Drawing.Size(17, 20);
-            this.OutputFieldSeparator.TabIndex = 55;
-            this.OutputFieldSeparator.Text = ",";
-            this.OutputFieldSeparator.TextChanged += new System.EventHandler(this.OutputFieldSeparator_TextChanged);
+            this._1_CsvFormat.AutoSize = true;
+            this._1_CsvFormat.Location = new System.Drawing.Point(426, 221);
+            this._1_CsvFormat.Name = "_1_CsvFormat";
+            this._1_CsvFormat.Size = new System.Drawing.Size(46, 17);
+            this._1_CsvFormat.TabIndex = 75;
+            this._1_CsvFormat.TabStop = true;
+            this._1_CsvFormat.Text = "CSV";
+            this._1_CsvFormat.UseVisualStyleBackColor = true;
+            this._1_CsvFormat.CheckedChanged += new System.EventHandler(this._1_CsvFormat_CheckedChanged);
             // 
-            // AppendOutputFile
+            // _1_TsvFormat
             // 
-            this.AppendOutputFile.AutoSize = true;
-            this.AppendOutputFile.Location = new System.Drawing.Point(35, 79);
-            this.AppendOutputFile.Name = "AppendOutputFile";
-            this.AppendOutputFile.Size = new System.Drawing.Size(117, 17);
-            this.AppendOutputFile.TabIndex = 69;
-            this.AppendOutputFile.Text = "Append Output File";
-            this.AppendOutputFile.UseVisualStyleBackColor = true;
+            this._1_TsvFormat.AutoSize = true;
+            this._1_TsvFormat.Location = new System.Drawing.Point(426, 244);
+            this._1_TsvFormat.Name = "_1_TsvFormat";
+            this._1_TsvFormat.Size = new System.Drawing.Size(46, 17);
+            this._1_TsvFormat.TabIndex = 74;
+            this._1_TsvFormat.TabStop = true;
+            this._1_TsvFormat.Text = "TSV";
+            this._1_TsvFormat.UseVisualStyleBackColor = true;
+            this._1_TsvFormat.CheckedChanged += new System.EventHandler(this._1_TsvFormat_CheckedChanged);
+            // 
+            // label20
+            // 
+            this.label20.Location = new System.Drawing.Point(359, 194);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(113, 16);
+            this.label20.TabIndex = 73;
+            this.label20.Text = "File Format:";
+            this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // OutputConfigControl
             // 
@@ -217,23 +178,16 @@ namespace Cliver.BotGui
 
         #endregion
 
-        private System.Windows.Forms.CheckBox WriteOutputFile2CommonFolder;
-        private System.Windows.Forms.Label label36;
-        private System.Windows.Forms.TextBox OutputEmptyFieldSubstitute;
-        private System.Windows.Forms.Label label35;
-        private System.Windows.Forms.TextBox OutputFieldSeparatorSubstitute;
-        private System.Windows.Forms.CheckBox _1_SetTAB2OutputFieldDelimiter;
+        private System.Windows.Forms.CheckBox Write2CommonFolder;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.Label label29;
-        private System.Windows.Forms.TextBox OutputFileChunkSizeInBytes;
-        private System.Windows.Forms.TextBox OutputFileName;
+        private System.Windows.Forms.TextBox FileChunkSizeInBytes;
+        private System.Windows.Forms.TextBox FileName;
         private System.Windows.Forms.Label label27;
         private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.TextBox OutputFieldSeparator;
-        private System.Windows.Forms.CheckBox AppendOutputFile;
-
-
-
+        private System.Windows.Forms.CheckBox Append;
+        private System.Windows.Forms.RadioButton _1_CsvFormat;
+        private System.Windows.Forms.RadioButton _1_TsvFormat;
+        private System.Windows.Forms.Label label20;
     }
 }

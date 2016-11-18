@@ -56,18 +56,7 @@ namespace Cliver.Bot
         /// <summary>
         /// Position in the queue order.
         /// </summary>
-        public int Position
-        {
-            get
-            {
-                return position;
-            }
-            internal set
-            {
-                position = value;
-            }
-        }
-        int position = -1;
+        public int Position { get; internal set; }
 
         readonly string table;
         OrderedDictionary item_id2items;

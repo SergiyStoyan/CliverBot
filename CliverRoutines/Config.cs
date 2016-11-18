@@ -37,6 +37,8 @@ namespace Cliver
 
         const string FILE_EXTENSION = "json";
 
+        public readonly static string StorageDir = Log.GetAppCommonDataDir();
+
         public static void Initialize()
         {
             //dummy to trigger static constructor
@@ -56,24 +58,33 @@ namespace Cliver
                     Type[] ets = sa.GetExportedTypes();
                     foreach (Type st in ets.Where(t => t.IsSubclassOf(typeof(Settings))))
                     {
-                        Serializable t;
-                        string f = Log.GetAppCommonDataDir() + "\\" + st.FullName + "." + FILE_EXTENSION;
-                        if (reset)
-                            t = Serializable.Create(st, f);
-                        else
-                            t = Serializable.Load(st, f);
-
                         List<FieldInfo> fis = new List<FieldInfo>();
                         foreach (Type et in ets)
-                            fis.AddRange(et.GetFields(BindingFlags.Static | BindingFlags.Public).Where(a => a.FieldType.IsSubclassOf(typeof(Settings))));                        
+                            fis.AddRange(et.GetFields(BindingFlags.Static | BindingFlags.Public).Where(a => a.FieldType == st));
                         if (fis.Count < 1)
                             throw new Exception("No field of type '" + st.FullName + "' was found.");
                         if (fis.Count > 1)
                             throw new Exception("More then 1 field of type '" + st.FullName + "' was found.");
                         FieldInfo fi = fis[0];
+                        string name = fi.Name;
+
+                        Serializable t;
+                        string file = StorageDir + "\\" + name + "." + st.FullName + "." + FILE_EXTENSION;
+                        if (reset)
+                            t = Serializable.Create(st, file);
+                        else
+                            try
+                            {
+                                t = Serializable.Load(st, file);
+                            }
+                            catch (Exception e)
+                            {
+                                LogMessage.Error2(e);
+                                t = Serializable.Create(st, file);
+                            }
+
                         fi.SetValue(null, t);
 
-                        string name = fi.Name;
                         if (object_names2serializable.ContainsKey(name))
                             throw new Exception("More then 1 field named '" + name + "' was found.");
                         object_names2serializable[name] = t;

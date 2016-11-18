@@ -15,6 +15,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Cliver.Bot;
 
 namespace Cliver.BotGui
 {
@@ -26,71 +27,61 @@ namespace Cliver.BotGui
         {
             InitializeComponent();
             Init(NAME);
-
-            //object o = Cliver.Bot.Config.Get(NAME, "OutputFieldSeparator");
-            //if (o != null)
-            //    this.OutputFieldSeparator.Text = o.ToString();
-            //else
-            //    this.OutputFieldSeparator.Text = "\t";
         }
 
-        override protected void set_tool_tip()
+        override protected void Setting()
         {
-            toolTip1.SetToolTip(this.OutputFileChunkSizeInBytes, "Output data will be recorded in files with this size.");
-            toolTip1.SetToolTip(this.OutputFileName, "Name of output file.");
-            //toolTip1.SetToolTip(this.OutputFile, ".");
-            toolTip1.SetToolTip(this.OutputFieldSeparator, "Char/string used to separate values in the output file.");
-            toolTip1.SetToolTip(this.OutputFieldSeparatorSubstitute, "Char/string that substitutes the output field separator found within values in the output file.");
-            toolTip1.SetToolTip(this.OutputEmptyFieldSubstitute, "String that substitutes an output field if it is empty.");
-            toolTip1.SetToolTip(this.WriteOutputFile2CommonFolder, "Write output file to root of Work Dir irrelatively to sessions.");          
-        }
-
-        private void OutputFieldSeparator_TextChanged(object sender, EventArgs e)
-        {
-            _1_SetTAB2OutputFieldDelimiter.Checked = this.OutputFieldSeparator.Text == "\t";
-            OutputFieldSeparator.Enabled = !_1_SetTAB2OutputFieldDelimiter.Checked;
-            if (this.OutputFieldSeparator.Text == "\t")
+            switch (Cliver.Bot.Settings.Output.FileFormat)
             {
-                if (string.IsNullOrWhiteSpace(OutputFieldSeparatorSubstitute.Text) || OutputFieldSeparatorSubstitute.Text.Contains("\t"))
-                    this.OutputFieldSeparatorSubstitute.Text = " ";
-                if (string.IsNullOrEmpty(this.OutputFileName.Text))
-                    this.OutputFileName.Text = Log.EntryAssemblyName + ".tsv";
-                else
-                    this.OutputFileName.Text = Regex.Replace(this.OutputFileName.Text, @"([^\.]*)?$", "", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline) + "tsv";
-            }
-            else if (this.OutputFieldSeparator.Text == ",")
-            {
-                if (string.IsNullOrWhiteSpace(OutputFieldSeparatorSubstitute.Text) || OutputFieldSeparatorSubstitute.Text.Contains(","))
-                    this.OutputFieldSeparatorSubstitute.Text = ";";
-                if (string.IsNullOrEmpty(this.OutputFileName.Text))
-                    this.OutputFileName.Text = Log.EntryAssemblyName + ".csv";
-                else
-                    this.OutputFileName.Text = Regex.Replace(this.OutputFileName.Text, @"([^\.]*)?$", "", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline) + "csv";
+                case FileFormatEnum.NULL:
+                    _1_CsvFormat.Checked = false;
+                    _1_TsvFormat.Checked = false;
+                    break;
+                case FileFormatEnum.CSV:
+                    _1_CsvFormat.Checked = true;
+                    break;
+                case FileFormatEnum.TSV:
+                    _1_TsvFormat.Checked = true;
+                    break;
             }
         }
 
-        private void __SetTAB2OutputFieldDelimiter_CheckedChanged(object sender, EventArgs e)
+        override protected bool Getting()
         {
-            if (_1_SetTAB2OutputFieldDelimiter.Checked)
-                this.OutputFieldSeparator.Text = "\t";
+            if (_1_CsvFormat.Checked)
+                Bot.Settings.Output.FileFormat = FileFormatEnum.CSV;
+            else if (_1_TsvFormat.Checked)
+                Bot.Settings.Output.FileFormat = FileFormatEnum.TSV;
             else
-                this.OutputFieldSeparator.Text = "";
+            {
+                Message.Error("File format is not defined.");
+                return false;
+            }
+            return true;
         }
 
-        //private void flagWriteOutputFile2WorkFolder_CheckedChanged(object sender, EventArgs e)
-        //{
-        //    this.OutputFileName.Text = Regex.Replace(this.OutputFileName.Text, @"..\", "", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline);
-        //    if(WriteOutputFile2CommonFolder)
-        //        this.OutputFileName.Text = @"\..\.." + this.OutputFileName.Text;
-        //}
+        override protected void SetToolTip()
+        {
+            toolTip1.SetToolTip(this.FileChunkSizeInBytes, "Output data will be recorded in files with this size.");
+            toolTip1.SetToolTip(this.FileName, "Name of output file.");
+            //toolTip1.SetToolTip(this.OutputFile, ".");
+            //toolTip1.SetToolTip(this.OutputFieldSeparator, "Char/string used to separate values in the output file.");
+            //toolTip1.SetToolTip(this.OutputFieldSeparatorSubstitute, "Char/string that substitutes the output field separator found within values in the output file.");
+            //toolTip1.SetToolTip(this.OutputEmptyFieldSubstitute, "String that substitutes an output field if it is empty.");
+            toolTip1.SetToolTip(this.Write2CommonFolder, "Write output file to root of Work Dir irrelatively to sessions.");          
+        }
 
-        //private void chooseOutputFolder_Click(object sender, EventArgs e)
-        //{
-        //    FolderBrowserDialog d = new FolderBrowserDialog();
-        //    d.ShowDialog();
-        //    this.OutputFile.Text = d.SelectedPath + "\\output";
-        //    OutputFieldSeparator_TextChanged(null, null);
-        //}
+        private void _1_CsvFormat_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_1_CsvFormat.Checked)
+                FileName.Text = Cliver.PathRoutines.ReplaceFileExtention(FileName.Text, "csv");
+        }
+
+        private void _1_TsvFormat_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_1_TsvFormat.Checked)
+                FileName.Text = Cliver.PathRoutines.ReplaceFileExtention(FileName.Text, "tsv");
+        }
     }
 }
 

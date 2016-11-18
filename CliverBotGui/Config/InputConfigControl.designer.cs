@@ -35,11 +35,15 @@ namespace Cliver.BotGui
             this._0_bViewInputFile = new System.Windows.Forms.Button();
             this._1_TsvFormat = new System.Windows.Forms.RadioButton();
             this._1_CsvFormat = new System.Windows.Forms.RadioButton();
+            this.label27 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.group_box.SuspendLayout();
             this.SuspendLayout();
             // 
             // group_box
             // 
+            this.group_box.Controls.Add(this.label1);
+            this.group_box.Controls.Add(this.label27);
             this.group_box.Controls.Add(this._1_CsvFormat);
             this.group_box.Controls.Add(this._1_TsvFormat);
             this.group_box.Controls.Add(this._0_bViewInputFile);
@@ -57,7 +61,7 @@ namespace Cliver.BotGui
             // 
             // label20
             // 
-            this.label20.Location = new System.Drawing.Point(353, 121);
+            this.label20.Location = new System.Drawing.Point(353, 127);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(113, 16);
             this.label20.TabIndex = 55;
@@ -104,24 +108,42 @@ namespace Cliver.BotGui
             // _1_TsvFormat
             // 
             this._1_TsvFormat.AutoSize = true;
-            this._1_TsvFormat.Location = new System.Drawing.Point(420, 171);
+            this._1_TsvFormat.Location = new System.Drawing.Point(420, 177);
             this._1_TsvFormat.Name = "_1_TsvFormat";
             this._1_TsvFormat.Size = new System.Drawing.Size(46, 17);
             this._1_TsvFormat.TabIndex = 71;
             this._1_TsvFormat.TabStop = true;
             this._1_TsvFormat.Text = "TSV";
             this._1_TsvFormat.UseVisualStyleBackColor = true;
+            this._1_TsvFormat.CheckedChanged += new System.EventHandler(this._1_TsvFormat_CheckedChanged);
             // 
             // _1_CsvFormat
             // 
             this._1_CsvFormat.AutoSize = true;
-            this._1_CsvFormat.Location = new System.Drawing.Point(420, 148);
+            this._1_CsvFormat.Location = new System.Drawing.Point(420, 154);
             this._1_CsvFormat.Name = "_1_CsvFormat";
             this._1_CsvFormat.Size = new System.Drawing.Size(46, 17);
             this._1_CsvFormat.TabIndex = 72;
             this._1_CsvFormat.TabStop = true;
             this._1_CsvFormat.Text = "CSV";
             this._1_CsvFormat.UseVisualStyleBackColor = true;
+            this._1_CsvFormat.CheckedChanged += new System.EventHandler(this._1_CsvFormat_CheckedChanged);
+            // 
+            // label27
+            // 
+            this.label27.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label27.Location = new System.Drawing.Point(15, 111);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(483, 2);
+            this.label27.TabIndex = 73;
+            // 
+            // label1
+            // 
+            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label1.Location = new System.Drawing.Point(15, 215);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(483, 2);
+            this.label1.TabIndex = 74;
             // 
             // InputConfigControl
             // 
@@ -142,5 +164,7 @@ namespace Cliver.BotGui
         private System.Windows.Forms.Button _0_bViewInputFile;
         private System.Windows.Forms.RadioButton _1_CsvFormat;
         private System.Windows.Forms.RadioButton _1_TsvFormat;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.Label label1;
     }
 }

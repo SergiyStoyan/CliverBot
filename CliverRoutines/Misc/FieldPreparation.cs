@@ -10,6 +10,7 @@
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Collections.Generic;
+using System;
 
 namespace Cliver
 {
@@ -17,40 +18,39 @@ namespace Cliver
     {
         public class Html
         {
-            public static string GetCsvField(string value, string default_value = "", string separator = ",", string separator_substitute = ";")
+            public static string GetCsvField(string value, FieldSeparator separator, bool prepare = true)
             {
                 if (value == null)
-                    return default_value;
+                    return "";
+                if (prepare)
+                {
+                    value = Regex.Replace(value, "<!--.*?-->|<script .*?</script>", "", RegexOptions.Compiled | RegexOptions.Singleline);
+                    value = Regex.Replace(value, "<.*?>", " ", RegexOptions.Compiled | RegexOptions.Singleline);
+                    value = HttpUtility.HtmlDecode(value);
+                    value = remove_notprintables_regex.Replace(value, " ");
+                    value = Regex.Replace(value, @"\s+", " ", RegexOptions.Compiled | RegexOptions.Singleline);//strip from more than 1 spaces
+                    value = value.Trim();
+                }
+                if (Regex.IsMatch(value, separator.Value, RegexOptions.Compiled | RegexOptions.Singleline))
+                    value = "\"" + value + "\"";
+                return value;
+            }
+
+            public static string GetDbField(string value)
+            {
+                if (value == null)
+                    return "";
 
                 value = Regex.Replace(value, "<!--.*?-->|<script .*?</script>", "", RegexOptions.Compiled | RegexOptions.Singleline);
                 value = Regex.Replace(value, "<.*?>", " ", RegexOptions.Compiled | RegexOptions.Singleline);
                 value = HttpUtility.HtmlDecode(value);
                 value = remove_notprintables_regex.Replace(value, " ");
-                value = Regex.Replace(value, separator, separator_substitute, RegexOptions.Compiled | RegexOptions.Singleline);
                 value = Regex.Replace(value, @"\s+", " ", RegexOptions.Compiled | RegexOptions.Singleline);//strip from more than 1 spaces	
                 value = value.Trim();
-                if (value == "")
-                    return default_value;
                 return value;
             }
 
-            public static string GetDbField(string value, string default_value = "")
-            {
-                if (value == null)
-                    return default_value;
-
-                value = Regex.Replace(value, "<!--.*?-->|<script .*?</script>", "", RegexOptions.Compiled | RegexOptions.Singleline);
-                value = Regex.Replace(value, "<.*?>", " ", RegexOptions.Compiled | RegexOptions.Singleline);
-                value = HttpUtility.HtmlDecode(value);
-                value = remove_notprintables_regex.Replace(value, " ");
-                value = Regex.Replace(value, @"\s+", " ", RegexOptions.Compiled | RegexOptions.Singleline);//strip from more than 1 spaces	
-                value = value.Trim();
-                if (value == "")
-                    return default_value;
-                return value;
-            }
-
-            public static string GetCsvLine(dynamic o, string default_value = "", string separator = ",", string separator_substitute = ";")
+            public static string GetCsvLine(dynamic o, FieldSeparator separator, bool prepare = true)
             {
                 List<string> ss = new List<string>();
                 foreach (System.Reflection.PropertyInfo pi in o.GetType().GetProperties())
@@ -63,12 +63,12 @@ namespace Cliver
                         s = p.ToString();
                     else
                         s = null;
-                    ss.Add(GetCsvField(s, default_value, separator, separator_substitute));
+                    ss.Add(GetCsvField(s, separator, prepare));
                 }
-                return string.Join(separator, ss);
+                return string.Join(separator.Value, ss);
             }
 
-            public static string GetCsvLine(IEnumerable<object> values, string default_value = "", string separator = ",", string separator_substitute = ";")
+            public static string GetCsvLine(IEnumerable<object> values, FieldSeparator separator, bool prepare = true)
             {
                 List<string> ss = new List<string>();
                 foreach (object v in values)
@@ -80,25 +80,25 @@ namespace Cliver
                         s = v.ToString();
                     else
                         s = null;
-                    ss.Add(GetCsvField(s, default_value, separator, separator_substitute));
+                    ss.Add(GetCsvField(s, separator, prepare));
                 }
-                return string.Join(separator, ss);
+                return string.Join(separator.Value, ss);
             }
 
-            public static Dictionary<string, object> GetDbObject(dynamic o, string default_value = "")
+            public static Dictionary<string, object> GetDbObject(dynamic o)
             {
                 Dictionary<string, object> d = new Dictionary<string, object>();
                 foreach (System.Reflection.PropertyInfo pi in o.GetType().GetProperties())
                 {
                     object p = pi.GetValue(o, null);
                     if (pi.PropertyType == typeof(string))
-                        p = GetDbField((string)p, default_value);
+                        p = GetDbField((string)p);
                     d[pi.Name] = p;
                 }
                 return d;
             }
 
-            public static string GetDbCellKeepingFormat(string value, string default_value = "")
+            public static string GetDbCellKeepingFormat(string value)
             {
                 if (value == null)
                     return "";
@@ -111,24 +111,37 @@ namespace Cliver
                 value = remove_notprintables_regex.Replace(value, " ");
                 value = Regex.Replace(value, @"[ ]+", " ", RegexOptions.Compiled | RegexOptions.Singleline);//strip from more than 1 spaces	
                 value = value.Trim();
-                if (value == "")
-                    return default_value;
                 return (HttpUtility.HtmlDecode(value)).Trim();
             }
         }
 
-        public static string GetCsvField(string value, string default_value = "", string separator = ",", string separator_substitute = ";")
+        public static string GetCsvField(string value, FieldSeparator separator, bool prepare = true)
         {
             if (value == null)
-                return default_value;
-
-            value = remove_notprintables_regex.Replace(value, " ");
-            value = Regex.Replace(value, separator, separator_substitute, RegexOptions.Compiled | RegexOptions.Singleline);
-            value = Regex.Replace(value, @"\s+", " ", RegexOptions.Compiled | RegexOptions.Singleline);
-            value = value.Trim();
-            if (value == "")
-                return default_value;
+                return "";
+            if (prepare)
+            {
+                value = remove_notprintables_regex.Replace(value, " ");
+                value = Regex.Replace(value, @"\s+", " ", RegexOptions.Compiled | RegexOptions.Singleline);
+                value = value.Trim();
+            }
+            if (Regex.IsMatch(value, separator.Value, RegexOptions.Compiled | RegexOptions.Singleline))
+                value = "\"" + value + "\"";
             return value;
+        }
+
+        //public enum FieldSeparatorType
+        //{
+        //    COMMA,
+        //    TAB,
+        //}
+
+        public class FieldSeparator : Cliver.Enum<string>
+        {
+            FieldSeparator(string value) : base(value) { }
+
+            public readonly static FieldSeparator COMMA = new FieldSeparator(",");
+            public readonly static FieldSeparator TAB = new FieldSeparator("\t");
         }
 
         public static string GetDbField(string value, string default_value = "")
@@ -144,7 +157,7 @@ namespace Cliver
             return value;
         }
 
-        public static string GetCsvLine(dynamic o, string default_value = "", string separator = ",", string separator_substitute = ";")
+        public static string GetCsvLine(dynamic o, FieldSeparator separator, bool prepare = true)
         {
             List<string> ss = new List<string>();
             foreach (System.Reflection.PropertyInfo pi in o.GetType().GetProperties())
@@ -157,12 +170,12 @@ namespace Cliver
                     s = p.ToString();
                 else
                     s = null;
-                ss.Add(GetCsvField(s, default_value, separator, separator_substitute));
+                ss.Add(GetCsvField(s, separator, prepare));
             }
-            return string.Join(separator, ss);
+            return string.Join(separator.Value, ss);
         }
 
-        public static string GetCsvLine(IEnumerable<object> values, string default_value = "", string separator = ",", string separator_substitute = ";")
+        public static string GetCsvLine(IEnumerable<object> values, FieldSeparator separator, bool prepare = true)
         {
             List<string> ss = new List<string>();
             foreach (object v in values)
@@ -174,9 +187,9 @@ namespace Cliver
                     s = v.ToString();
                 else
                     s = null;
-                ss.Add(GetCsvField(s, default_value, separator, separator_substitute));
+                ss.Add(GetCsvField(s, separator, prepare));
             }
-            return string.Join(separator, ss);
+            return string.Join(separator.Value, ss);
         }
 
         public static Dictionary<string, object> GetDbObject(dynamic o, string default_value = "")

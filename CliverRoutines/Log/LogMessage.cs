@@ -150,6 +150,11 @@ namespace Cliver
             Error(Log.GetExceptionMessage(e));
         }
 
+        public static void Error2(Exception e)
+        {
+            Error2(Log.GetExceptionMessage(e));
+        }
+
         public static void Exit(string message)
         {
             Exit_(message);

@@ -26,7 +26,7 @@ namespace Cliver.BotGui
             Init(NAME);
         }
 
-        override protected void set_tool_tip()
+        override protected void SetToolTip()
         {
             toolTip1.SetToolTip(this.HttpRequestTimeoutInSeconds, "Http request timeout in seconds.");
             toolTip1.SetToolTip(this.CrawlTimeIntervalInMss, "Time interval in miliseconds between http requests within the same work thread.");

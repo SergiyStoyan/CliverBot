@@ -245,7 +245,7 @@ namespace Cliver.Bot
                                     foreach (FileInfo fi in output_di.GetFiles())
                                     {
                                         string old_output_file2;
-                                        if (!Properties.Output.Default.WriteOutputFile2CommonFolder)
+                                        if (!Settings.Output.Write2CommonFolder)
                                             old_output_file2 = Log.OutputDir + "\\" + fi.Name;
                                         else
                                             old_output_file2 = Log.WorkDir + "\\" + fi.Name;

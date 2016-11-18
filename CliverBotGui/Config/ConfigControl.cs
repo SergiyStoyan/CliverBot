@@ -27,7 +27,7 @@ namespace Cliver.BotGui
             Name = name;
         }        
 
-        virtual protected void set_tool_tip()
+        virtual protected void SetToolTip()
         {
         }
 
@@ -46,18 +46,23 @@ namespace Cliver.BotGui
         private void ConfigControl_Load(object sender, EventArgs e)
         {
             toolTip1.AutoPopDelay = 100000;
-            set_tool_tip();
-            set_group_box_values_from_config();
+            SetToolTip();
+            Set();
         }
 
-        virtual protected void Loading()
+        virtual protected void Setting()
         {
 
+        }
+
+        virtual protected void Set()
+        {
+            Setting();
+            set_group_box_values_from_config();
         }
 
         void set_group_box_values_from_config()
         {
-            Loading();
 
             foreach (Control c in group_box.Controls)
             {
@@ -103,16 +108,16 @@ namespace Cliver.BotGui
             }
         }
 
-        virtual protected bool Saving()
+        virtual protected bool Getting()
         {
             return true;
         }
 
-        internal bool PutValues2Properties()
+        virtual protected bool Get()
         {
             try
             {
-                if(!Saving())
+                if (!Getting())
                     return false;
                 put_values_of_control_to_config(Name, group_box);
             }
@@ -122,6 +127,11 @@ namespace Cliver.BotGui
                 return false;
             }
             return true;
+        }
+
+        internal bool PutValues2Properties()
+        {
+            return Get();
         }
 
         void put_values_of_control_to_config(string section, Control control)

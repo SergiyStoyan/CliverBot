@@ -26,7 +26,7 @@ namespace Cliver.BotGui
             Init(NAME);
         }
 
-        override protected void set_tool_tip()
+        override protected void SetToolTip()
         {
             toolTip1.SetToolTip(this.UnchangableDomainPartNumber, "Number of domain parts that should be the same for any url crawled by the bot. Usually it is 2 so that i.e. www.google.com is acceptable for google.com but google.co.uk is not.");
             //toolTip1.SetToolTip(this.NonSpideredExtensions, "Downloaded files mathed to this regex pattern will not be scraped for links.");

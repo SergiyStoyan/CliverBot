@@ -95,6 +95,14 @@ namespace Cliver
                 Write(Log.MessageType.ERROR, m, d);
             }
 
+            public void Error2(Exception e)
+            {
+                string m;
+                string d;
+                Log.GetExceptionMessage(e, out m, out d);
+                Write(Log.MessageType.ERROR, m);
+            }
+
             /// <summary>
             /// Write the error to the current thread's log
             /// </summary>

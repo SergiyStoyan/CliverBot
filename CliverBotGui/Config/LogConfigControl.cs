@@ -26,7 +26,7 @@ namespace Cliver.BotGui
             Init(NAME);
         }
 
-        override protected void set_tool_tip()
+        override protected void SetToolTip()
         {
             toolTip1.SetToolTip(this.DeleteLogsOlderDays, "Old session folders contaning Log files and downloaded pages, that are older than this day number will be deleted.");
             toolTip1.SetToolTip(this.LogDownloadedFiles, "When checked, the bot will store all downloaded files to disk.");

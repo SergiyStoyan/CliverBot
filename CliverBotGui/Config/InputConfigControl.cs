@@ -21,7 +21,7 @@ namespace Cliver.BotGui
             Init(NAME);
         }
 
-        override protected void Loading()
+        override protected void Setting()
         {
             switch (Cliver.Bot.Settings.Input.FileFormat)
             {
@@ -38,7 +38,7 @@ namespace Cliver.BotGui
             }
         }
 
-        override protected bool Saving()
+        override protected bool Getting()
         {
             if (_1_CsvFormat.Checked)
                 Bot.Settings.Input.FileFormat = FileFormatEnum.CSV;
@@ -52,7 +52,7 @@ namespace Cliver.BotGui
             return true;
         }
 
-        override protected void set_tool_tip()
+        override protected void SetToolTip()
         {
             //toolTip1.SetToolTip(this.InputFieldSeparator, "Char/string used to separate values in the input file.");
             toolTip1.SetToolTip(this.File, "Absolute path or only name of the input file.");
@@ -77,6 +77,18 @@ namespace Cliver.BotGui
             {
                 LogMessage.Error(ex);
             }
+        }
+
+        private void _1_CsvFormat_CheckedChanged(object sender, EventArgs e)
+        {
+            if(_1_CsvFormat.Checked)
+                File.Text = Cliver.PathRoutines.ReplaceFileExtention(File.Text, "csv");
+        }
+
+        private void _1_TsvFormat_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_1_TsvFormat.Checked)
+                File.Text = Cliver.PathRoutines.ReplaceFileExtention(File.Text, "tsv");
         }
     }
 }

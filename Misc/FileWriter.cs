@@ -35,10 +35,10 @@ namespace Cliver.Bot
                     if (_this == null)
                     {
                         _this = new FileWriter(
-                            Properties.Output.Default.WriteOutputFile2CommonFolder ? Log.WorkDir + @"\" + Properties.Output.Default.OutputFileName : Properties.Output.Default.OutputFileName,
-                            Properties.Output.Default.AppendOutputFile,
-                            !Properties.Output.Default.WriteOutputFile2CommonFolder,
-                            Properties.Output.Default.OutputFileChunkSizeInBytes
+                            (Settings.Output.Write2CommonFolder ? Log.WorkDir + @"\":"") + Settings.Output.FileName,
+                            Settings.Output.Append,
+                            !Settings.Output.Write2CommonFolder,
+                            Settings.Output.FileChunkSizeInBytes
                             );
                     }
 
@@ -222,17 +222,7 @@ namespace Cliver.Bot
         {
             lock (this)
             {                
-                string line = null;
-                foreach (string str in values)
-                {
-                    string s = "";
-                    if (str != null)
-                        s = str.Replace(Properties.Output.Default.OutputFieldSeparator, Properties.Output.Default.OutputFieldSeparatorSubstitute);
-                    if (line == null)
-                        line = s;
-                    else
-                        line += Properties.Output.Default.OutputFieldSeparator + s;
-                }
+                string line = FieldPreparation.GetCsvLine(values, Settings.Output.FieldSeparator, false);
                 WriteLine(line);
             }
         }        

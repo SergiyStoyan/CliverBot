@@ -47,16 +47,16 @@ namespace Cliver
             return Value.ToString();
         }
 
-        public Enum(T value)
+        protected Enum(T value)
         {
             this.Value = value;
         }
 
         public T Value { get; private set; }
 
-        static public Dictionary<string, T> ToDictionary()
+        public Dictionary<string, T> ToDictionary()
         {
-            return typeof(Enum<T>).GetFields(BindingFlags.Public | BindingFlags.Static).ToDictionary(x => x.Name, x => ((Enum<T>)x.GetValue(null)).Value);
+            return this.GetType().GetFields(BindingFlags.Public | BindingFlags.Static).ToDictionary(x => x.Name, x => ((Enum<T>)x.GetValue(this)).Value);
         }
     }
 }
