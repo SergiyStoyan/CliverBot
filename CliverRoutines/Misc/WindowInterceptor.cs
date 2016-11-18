@@ -7,7 +7,7 @@ using System.Windows.Forms;
 using System.Collections;
 using Cliver;
 
-namespace Cliver.Bot
+namespace Cliver
 {    
     /// <summary>
     /// Intercept dialog box creation

@@ -25,7 +25,7 @@ using System.Net.NetworkInformation;
 using System.Data.SQLite;
 using System.Net;
 
-namespace Cliver.Bot
+namespace Cliver.BotWeb
 {
     public static class ChromeRoutines
     {

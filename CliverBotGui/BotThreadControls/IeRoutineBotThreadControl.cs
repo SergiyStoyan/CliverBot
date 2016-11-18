@@ -14,7 +14,7 @@ using System.Drawing;
 using System.Data;
 using System.Text;
 using System.Windows.Forms;
-using Cliver.Bot;
+using Cliver.BotWeb;
 
 namespace Cliver.BotCustomization
 {

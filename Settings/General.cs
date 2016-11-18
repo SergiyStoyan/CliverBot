@@ -20,7 +20,6 @@ namespace Cliver.Bot
             public bool RestoreBrokenSession = true;
             public int MaxBotThreadNumber = 1;
             public bool RestoreErrorItemsAsNew = false;
-            public bool UseFilesFromCache = true;
             public bool WriteSessionRestoringLog = true;
             public int MaxProcessorErrorNumber = 5;
             public int MaxTime2WaitForSessionStopInSecs = 90;

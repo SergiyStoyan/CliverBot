@@ -16,7 +16,7 @@ using System.Web;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Cliver.Bot
+namespace Cliver.BotWeb
 {
     public class AgileSpider
     {

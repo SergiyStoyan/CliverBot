@@ -1,4 +1,4 @@
-﻿namespace Cliver.Bot.Properties {
+﻿namespace Cliver.BotWeb.Properties {
     
     
     // This class allows you to handle specific events on the settings class:

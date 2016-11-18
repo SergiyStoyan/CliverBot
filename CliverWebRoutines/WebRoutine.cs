@@ -20,7 +20,7 @@ using System.Collections;
 using System.Collections.Specialized;
 using System.Linq;
 
-namespace Cliver.Bot
+namespace Cliver.BotWeb
 {
     /// <summary>
     /// Defines base methods for web methods for a sinlge thread
@@ -29,10 +29,13 @@ namespace Cliver.Bot
     {
         static WebRoutine()
         {
-            Session.Closing += clear_session;
+            Cliver.Bot.Session.Closing += clear_session;
+            
+            if (ProgramRoutines.IsParameterSet(Cliver.Bot.CommandLineParameters.PRODUCTION))
+                Settings.Web.UseFilesFromCache = false;
         }
 
-        public bool UseCache = Settings.General.UseFilesFromCache;
+        public bool UseCache = Settings.Web.UseFilesFromCache;
         
         /// <summary>
         /// Used to suspend bot thread until user allow (e.g. until he have filled/submitted fields in IE)
@@ -51,7 +54,7 @@ namespace Cliver.Bot
         /// <summary>
         /// Maximal redirection count
         /// </summary>
-        public int MaxAutoRedirectionCount = Properties.Web.Default.MaxHttpRedirectionCount;//-1;
+        public int MaxAutoRedirectionCount = Settings.Web.MaxHttpRedirectionCount;//-1;
 
         /// <summary>
         /// page counter in order to Log pages
@@ -86,7 +89,7 @@ namespace Cliver.Bot
             {
                 if (!string.IsNullOrEmpty(CycleIdentifier))
                     return CycleIdentifier;
-                string iiqn = BotCycle.GetCurrentInputItemQueueNameThisThread();
+                string iiqn = Cliver.Bot.BotCycle.GetCurrentInputItemQueueNameThisThread();
                 if (iiqn == null)//it can be so while using iebrowser
                     return "undefined";
                 return iiqn;
@@ -180,7 +183,7 @@ namespace Cliver.Bot
         /// </summary>
         public bool AutoRotateProxy = true;
 
-        public int MaxAttemptCount = Properties.Web.Default.MaxAttemptCount;
+        public int MaxAttemptCount = Settings.Web.MaxAttemptCount;
 
         ///// <summary>
         ///// get next proxy from proxy queue
@@ -238,10 +241,10 @@ namespace Cliver.Bot
 
         internal void delay(string url)
         {
-            if (Properties.Web.Default.CrawlTimeIntervalInMss <= 0)
+            if (Settings.Web.CrawlTimeIntervalInMss <= 0)
                 return;
 
-            DateTime old_time = DateTime.Now - TimeSpan.FromMilliseconds(Properties.Web.Default.CrawlTimeIntervalInMss);
+            DateTime old_time = DateTime.Now - TimeSpan.FromMilliseconds(Settings.Web.CrawlTimeIntervalInMss);
             lock (last_domains)
             {
                 while (last_domains.Count > 0)

@@ -18,7 +18,7 @@ using System.Windows.Forms;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Cliver.Bot
+namespace Cliver.BotWeb
 {
     /// <summary>
     /// Defines methods for getting files from web, using .NET http client
@@ -95,7 +95,7 @@ namespace Cliver.Bot
         /// <returns>reqest status</returns>
         public bool GetPage(string url, bool send_cookies = true)
         {
-            return Do(new HttpRequest(url, new Dictionary<string, string>() { { "Accept", Properties.Web.Default.TextModeHttpRequestAcceptHeader } }), send_cookies);
+            return Do(new HttpRequest(url, new Dictionary<string, string>() { { "Accept", Settings.Web.TextModeHttpRequestAcceptHeader } }), send_cookies);
         }
         
         /// <summary>
@@ -106,7 +106,7 @@ namespace Cliver.Bot
         /// <returns>reqest status</returns>
         public bool PostPage(HtmlForm form, bool send_cookies = true)
         {
-            return Do(new HttpRequest(form, new Dictionary<string, string>() { { "Accept", Properties.Web.Default.TextModeHttpRequestAcceptHeader } }), send_cookies);
+            return Do(new HttpRequest(form, new Dictionary<string, string>() { { "Accept", Settings.Web.TextModeHttpRequestAcceptHeader } }), send_cookies);
         }
 
         /// <summary>
@@ -220,8 +220,8 @@ namespace Cliver.Bot
                 if (Proxy != null)
                     req.Proxy = Proxy.WebProxy;
 
-                req.Timeout = Properties.Web.Default.HttpRequestTimeoutInSeconds * 1000;
-                req.ReadWriteTimeout = Properties.Web.Default.HttpRequestTimeoutInSeconds * 1000;
+                req.Timeout = Settings.Web.HttpRequestTimeoutInSeconds * 1000;
+                req.ReadWriteTimeout = Settings.Web.HttpRequestTimeoutInSeconds * 1000;
 
                 if (HttpRequest.MaxAutoRedirectionCount == 0)
                     req.AllowAutoRedirect = false;
@@ -291,8 +291,8 @@ namespace Cliver.Bot
 
                 string accept;
                 if (http_request.Headers.TryGetValue("Accept", out accept) 
-                    && accept == Properties.Web.Default.TextModeHttpRequestAcceptHeader
-                    && !Regex.IsMatch(HWResponse.ContentType, Properties.Web.Default.TextModeDownloadableContentTypePattern, RegexOptions.Compiled | RegexOptions.IgnoreCase)
+                    && accept == Settings.Web.TextModeHttpRequestAcceptHeader
+                    && !Regex.IsMatch(HWResponse.ContentType, Settings.Web.TextModeDownloadableContentTypePattern, RegexOptions.Compiled | RegexOptions.IgnoreCase)
                 )
                 {
                     web_routine_status = WebRoutineStatus.UNACCEPTABLE_CONTENT_TYPE;
@@ -320,8 +320,8 @@ namespace Cliver.Bot
 
                     show_progress(progress_max, total_byte_count);
 
-                    if (Properties.Web.Default.MaxDownloadedFileLength > 0
-                        && total_byte_count > Properties.Web.Default.MaxDownloadedFileLength
+                    if (Settings.Web.MaxDownloadedFileLength > 0
+                        && total_byte_count > Settings.Web.MaxDownloadedFileLength
                         )
                     {
                         web_routine_status = WebRoutineStatus.FILE_TRUNCATED;
@@ -410,7 +410,7 @@ namespace Cliver.Bot
                     Headers[h.Key] = h.Value;
         }
 
-        public HttpRequest(Cliver.Bot.HtmlForm html_form, Dictionary<string, string> headers = null)
+        public HttpRequest(HtmlForm html_form, Dictionary<string, string> headers = null)
         {
             if (headers != null)
                 foreach (KeyValuePair<string, string> h in headers)
@@ -465,11 +465,11 @@ namespace Cliver.Bot
         /// <summary>
         /// Maximal redirection count
         /// </summary>
-        static public int MaxAutoRedirectionCount = Properties.Web.Default.MaxHttpRedirectionCount;//-1;
+        static public int MaxAutoRedirectionCount = Settings.Web.MaxHttpRedirectionCount;//-1;
         
         /// <summary>
         /// Predefined header collection in each request
         /// </summary>
-        static public Dictionary<string, string> DefaultHeaders = new Dictionary<string, string>() { {"User-Agent", Properties.Web.Default.HttpUserAgent}};
+        static public Dictionary<string, string> DefaultHeaders = new Dictionary<string, string>() { {"User-Agent", Settings.Web.HttpUserAgent}};
     }
 }

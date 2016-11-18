@@ -18,7 +18,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Collections;
 
-namespace Cliver.Bot
+namespace Cliver.BotWeb
 {
     /// <summary>
     /// Defines methods for 

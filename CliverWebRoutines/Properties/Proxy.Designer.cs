@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Cliver.Bot.Properties {
+namespace Cliver.BotWeb.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -74,9 +74,9 @@ namespace Cliver.Bot.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("HTTP")]
-        public global::Cliver.Bot.ProxyType ProxyType {
+        public global::Cliver.BotWeb.ProxyType ProxyType {
             get {
-                return ((global::Cliver.Bot.ProxyType)(this["ProxyType"]));
+                return ((global::Cliver.BotWeb.ProxyType)(this["ProxyType"]));
             }
             set {
                 this["ProxyType"] = value;

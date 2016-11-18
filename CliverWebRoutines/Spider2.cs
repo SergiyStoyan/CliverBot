@@ -15,7 +15,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Collections.Generic;
 
-namespace Cliver.Bot
+namespace Cliver.BotWeb
 {
     public class Spider2
     {

@@ -37,8 +37,6 @@ namespace Cliver.Bot
                 Settings.General.RestoreBrokenSession = true;
                 Settings.General.RestoreErrorItemsAsNew = false;
                 Settings.General.WriteSessionRestoringLog = true;
-                Settings.Log.LogDownloadedFiles = false;
-                Settings.General.UseFilesFromCache = false;
             }
             
             AssemblyName ean = Assembly.GetEntryAssembly().GetName();

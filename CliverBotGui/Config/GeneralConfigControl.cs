@@ -29,7 +29,6 @@ namespace Cliver.BotGui
         override protected void SetToolTip()
         {
             toolTip1.SetToolTip(this.MaxBotThreadNumber, "Maximal work thread count that the bot may run.");
-            toolTip1.SetToolTip(this.UseFilesFromCache, "Define whether the bot will use files from the cache rather then download them from the net.");
             toolTip1.SetToolTip(this.RestoreErrorItemsAsNew, "Define whether items marked with error during the previous session will be reprocessed in the next session as new.");
             toolTip1.SetToolTip(this.WriteSessionRestoringLog, "Define whether the bot will write files needed to restore session.");
             toolTip1.SetToolTip(this.RestoreBrokenSession, "Define whether the bot will restore the previous session if it was broken.");

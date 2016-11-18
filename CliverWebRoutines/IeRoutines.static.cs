@@ -24,7 +24,7 @@ using System.Web;
 using System.Net.NetworkInformation;
 
 
-namespace Cliver.Bot
+namespace Cliver.BotWeb
 {
     public static class IeRoutines
     {

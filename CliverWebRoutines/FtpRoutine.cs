@@ -4,7 +4,7 @@ using System.Net;
 using System.IO;
 using System.Text.RegularExpressions;
 
-namespace Cliver.Bot
+namespace Cliver.BotWeb
 {
     public class FtpRoutine
     {

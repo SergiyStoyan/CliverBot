@@ -17,7 +17,7 @@ using System.Web;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Cliver.Bot
+namespace Cliver.BotWeb
 {
 	/// <summary>
 	/// It is a spider. Finds web links within web page. 

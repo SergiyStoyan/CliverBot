@@ -28,41 +28,34 @@ namespace Cliver.BotGui
         /// </summary>
         private void InitializeComponent()
         {
-            this.LogPostRequestParameters = new System.Windows.Forms.CheckBox();
             this.bPickDir = new System.Windows.Forms.Button();
-            this.label23 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.DeleteLogsOlderDays = new System.Windows.Forms.TextBox();
             this.WriteLog = new System.Windows.Forms.CheckBox();
-            this.LogDownloadedFiles = new System.Windows.Forms.CheckBox();
             this.label9 = new System.Windows.Forms.Label();
             this.PreWorkDir = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
             this.group_box.SuspendLayout();
             this.SuspendLayout();
             // 
             // group_box
             // 
-            this.group_box.Controls.Add(this.LogPostRequestParameters);
+            this.group_box.Controls.Add(this.label1);
+            this.group_box.Controls.Add(this.label2);
             this.group_box.Controls.Add(this.bPickDir);
-            this.group_box.Controls.Add(this.label23);
             this.group_box.Controls.Add(this.label14);
             this.group_box.Controls.Add(this.DeleteLogsOlderDays);
             this.group_box.Controls.Add(this.WriteLog);
-            this.group_box.Controls.Add(this.LogDownloadedFiles);
             this.group_box.Controls.Add(this.label9);
             this.group_box.Controls.Add(this.PreWorkDir);
             this.group_box.Text = "TestCustom";
             // 
-            // LogPostRequestParameters
+            // toolTip1
             // 
-            this.LogPostRequestParameters.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.LogPostRequestParameters.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.LogPostRequestParameters.Location = new System.Drawing.Point(251, 126);
-            this.LogPostRequestParameters.Name = "LogPostRequestParameters";
-            this.LogPostRequestParameters.Size = new System.Drawing.Size(219, 26);
-            this.LogPostRequestParameters.TabIndex = 50;
-            this.LogPostRequestParameters.Text = "Log Post Request Parameters";
-            this.LogPostRequestParameters.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.toolTip1.AutoPopDelay = 100000;
+            this.toolTip1.InitialDelay = 500;
+            this.toolTip1.ReshowDelay = 100;
             // 
             // bPickDir
             // 
@@ -74,17 +67,9 @@ namespace Cliver.BotGui
             this.bPickDir.UseVisualStyleBackColor = true;
             this.bPickDir.Click += new System.EventHandler(this.bPickDir_Click);
             // 
-            // label23
-            // 
-            this.label23.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label23.Location = new System.Drawing.Point(248, 89);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(2, 153);
-            this.label23.TabIndex = 48;
-            // 
             // label14
             // 
-            this.label14.Location = new System.Drawing.Point(27, 99);
+            this.label14.Location = new System.Drawing.Point(290, 107);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(159, 16);
             this.label14.TabIndex = 47;
@@ -93,7 +78,7 @@ namespace Cliver.BotGui
             // 
             // DeleteLogsOlderDays
             // 
-            this.DeleteLogsOlderDays.Location = new System.Drawing.Point(192, 96);
+            this.DeleteLogsOlderDays.Location = new System.Drawing.Point(455, 104);
             this.DeleteLogsOlderDays.Name = "DeleteLogsOlderDays";
             this.DeleteLogsOlderDays.Size = new System.Drawing.Size(44, 20);
             this.DeleteLogsOlderDays.TabIndex = 46;
@@ -104,23 +89,12 @@ namespace Cliver.BotGui
             this.WriteLog.Checked = true;
             this.WriteLog.CheckState = System.Windows.Forms.CheckState.Checked;
             this.WriteLog.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.WriteLog.Location = new System.Drawing.Point(128, 127);
+            this.WriteLog.Location = new System.Drawing.Point(391, 135);
             this.WriteLog.Name = "WriteLog";
             this.WriteLog.Size = new System.Drawing.Size(108, 26);
             this.WriteLog.TabIndex = 44;
             this.WriteLog.Text = "Write Log";
             this.WriteLog.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // LogDownloadedFiles
-            // 
-            this.LogDownloadedFiles.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.LogDownloadedFiles.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.LogDownloadedFiles.Location = new System.Drawing.Point(326, 98);
-            this.LogDownloadedFiles.Name = "LogDownloadedFiles";
-            this.LogDownloadedFiles.Size = new System.Drawing.Size(144, 26);
-            this.LogDownloadedFiles.TabIndex = 45;
-            this.LogDownloadedFiles.Text = "Log Downloaded Files";
-            this.LogDownloadedFiles.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // label9
             // 
@@ -140,6 +114,22 @@ namespace Cliver.BotGui
             this.PreWorkDir.TabIndex = 43;
             this.PreWorkDir.Text = "c:\\temp";
             // 
+            // label2
+            // 
+            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label2.Location = new System.Drawing.Point(15, 172);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(483, 2);
+            this.label2.TabIndex = 69;
+            // 
+            // label1
+            // 
+            this.label1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label1.Location = new System.Drawing.Point(17, 91);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(483, 2);
+            this.label1.TabIndex = 70;
+            // 
             // LogConfigControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -152,18 +142,13 @@ namespace Cliver.BotGui
         }
 
         #endregion
-
-        private System.Windows.Forms.CheckBox LogPostRequestParameters;
         private System.Windows.Forms.Button bPickDir;
-        private System.Windows.Forms.Label label23;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox DeleteLogsOlderDays;
         private System.Windows.Forms.CheckBox WriteLog;
-        private System.Windows.Forms.CheckBox LogDownloadedFiles;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox PreWorkDir;
-
-
-
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }

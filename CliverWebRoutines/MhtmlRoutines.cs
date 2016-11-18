@@ -24,7 +24,7 @@
 //using System.Collections;
 //using mshtml;
 
-//namespace Cliver.Bot
+//namespace Cliver.BotWeb
 //{
 //    public partial class IeRoutine
 //    {

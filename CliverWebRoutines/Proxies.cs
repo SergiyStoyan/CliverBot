@@ -14,7 +14,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Net;
 
-namespace Cliver.Bot
+namespace Cliver.BotWeb
 {
     /// <summary>
     /// Creates and manages web proxy list
@@ -55,7 +55,7 @@ namespace Cliver.Bot
     {
         static Proxies()
         {
-            Session.Closing += clear_session;
+            Cliver.Bot.Session.Closing += clear_session;
         }
 
         //static Queue proxies = new Queue();

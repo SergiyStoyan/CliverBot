@@ -16,7 +16,7 @@ using System.Xml;
 using System.Text;
 using System.Text.RegularExpressions;
  
-namespace Cliver.Bot
+namespace Cliver.BotWeb
 {
     /// <summary>
     /// Interface used to customize Cache. May be not implemented.
@@ -56,7 +56,10 @@ namespace Cliver.Bot
     {
         static Cache()
         {
-            Session.Closing += clear_session;
+            Cliver.Bot.Session.Closing += clear_session;
+            
+            if (ProgramRoutines.IsParameterSet(Cliver.Bot.CommandLineParameters.PRODUCTION))
+                Settings.Web.LogDownloadedFiles = false;
         }
 
         static object static_lock_variable = new object();
@@ -154,7 +157,7 @@ namespace Cliver.Bot
             set
             {
                 if (cache_map != null)
-                    throw new Session.FatalException("CustomCache should be set before cache_map is created.");
+                    throw new Cliver.Bot.Session.FatalException("CustomCache should be set before cache_map is created.");
                 custom_cache = value;
             }
         }
@@ -185,7 +188,7 @@ namespace Cliver.Bot
                     //custom_cache = (ICustomCache)CustomizationApi.CreateCustomCache();
                     DirectoryInfo di = new DirectoryInfo(Log.WorkDir);
                     DirectoryInfo[] session_dis = di.GetDirectories("Session*", SearchOption.TopDirectoryOnly);
-                    Array.Sort(session_dis, new Session.CompareDirectoryInfo());
+                    Array.Sort(session_dis, new Cliver.Bot.Session.CompareDirectoryInfo());
                     for (int i = session_dis.Length - 1; i >= 0; i--)
                     {
                         DirectoryInfo d = session_dis[i];

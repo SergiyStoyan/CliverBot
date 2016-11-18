@@ -9,7 +9,7 @@ using Microsoft.Win32;
 // Additional Resources:
 // http://msdn.microsoft.com/en-us/library/ee330730%28v=vs.85%29.aspx#browser_emulation
 
-namespace Cliver.Bot
+namespace Cliver.BotWeb
 {
     /// <summary>
     /// Internet Explorer browser emulation versions

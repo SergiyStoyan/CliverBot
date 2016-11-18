@@ -1,4 +1,4 @@
-﻿namespace Cliver.Bot.Properties
+﻿namespace Cliver.BotWeb.Properties
 {
     
     

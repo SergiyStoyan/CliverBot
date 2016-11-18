@@ -41,11 +41,21 @@ namespace Cliver.BotGui
             this.label3 = new System.Windows.Forms.Label();
             this.l1 = new System.Windows.Forms.Label();
             this.HttpRequestTimeoutInSeconds = new System.Windows.Forms.TextBox();
+            this.UseFilesFromCache = new System.Windows.Forms.CheckBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.LogPostRequestParameters = new System.Windows.Forms.CheckBox();
+            this.LogDownloadedFiles = new System.Windows.Forms.CheckBox();
+            this.label23 = new System.Windows.Forms.Label();
             this.group_box.SuspendLayout();
             this.SuspendLayout();
             // 
             // group_box
             // 
+            this.group_box.Controls.Add(this.label23);
+            this.group_box.Controls.Add(this.LogPostRequestParameters);
+            this.group_box.Controls.Add(this.LogDownloadedFiles);
+            this.group_box.Controls.Add(this.label2);
+            this.group_box.Controls.Add(this.UseFilesFromCache);
             this.group_box.Controls.Add(this.MaxAttemptCount);
             this.group_box.Controls.Add(this.label15);
             this.group_box.Controls.Add(this.MaxHttpRedirectionCount);
@@ -61,6 +71,12 @@ namespace Cliver.BotGui
             this.group_box.Controls.Add(this.HttpRequestTimeoutInSeconds);
             this.group_box.Text = "TestCustom";
             // 
+            // toolTip1
+            // 
+            this.toolTip1.AutoPopDelay = 100000;
+            this.toolTip1.InitialDelay = 500;
+            this.toolTip1.ReshowDelay = 100;
+            // 
             // MaxAttemptCount
             // 
             this.MaxAttemptCount.Location = new System.Drawing.Point(459, 210);
@@ -71,7 +87,7 @@ namespace Cliver.BotGui
             // 
             // label15
             // 
-            this.label15.Location = new System.Drawing.Point(238, 214);
+            this.label15.Location = new System.Drawing.Point(240, 214);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(216, 16);
             this.label15.TabIndex = 66;
@@ -88,7 +104,7 @@ namespace Cliver.BotGui
             // 
             // label10
             // 
-            this.label10.Location = new System.Drawing.Point(237, 183);
+            this.label10.Location = new System.Drawing.Point(240, 183);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(216, 16);
             this.label10.TabIndex = 64;
@@ -147,7 +163,7 @@ namespace Cliver.BotGui
             // 
             // label3
             // 
-            this.label3.Location = new System.Drawing.Point(194, 154);
+            this.label3.Location = new System.Drawing.Point(200, 154);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(232, 16);
             this.label3.TabIndex = 57;
@@ -156,7 +172,7 @@ namespace Cliver.BotGui
             // 
             // l1
             // 
-            this.l1.Location = new System.Drawing.Point(262, 122);
+            this.l1.Location = new System.Drawing.Point(269, 122);
             this.l1.Name = "l1";
             this.l1.Size = new System.Drawing.Size(183, 16);
             this.l1.TabIndex = 54;
@@ -170,6 +186,54 @@ namespace Cliver.BotGui
             this.HttpRequestTimeoutInSeconds.Size = new System.Drawing.Size(40, 20);
             this.HttpRequestTimeoutInSeconds.TabIndex = 55;
             this.HttpRequestTimeoutInSeconds.Text = "30";
+            // 
+            // UseFilesFromCache
+            // 
+            this.UseFilesFromCache.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.UseFilesFromCache.Location = new System.Drawing.Point(41, 175);
+            this.UseFilesFromCache.Name = "UseFilesFromCache";
+            this.UseFilesFromCache.Size = new System.Drawing.Size(172, 20);
+            this.UseFilesFromCache.TabIndex = 67;
+            this.UseFilesFromCache.Text = "Use Cached Files";
+            this.UseFilesFromCache.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label2
+            // 
+            this.label2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label2.Location = new System.Drawing.Point(15, 257);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(483, 2);
+            this.label2.TabIndex = 68;
+            // 
+            // LogPostRequestParameters
+            // 
+            this.LogPostRequestParameters.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.LogPostRequestParameters.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.LogPostRequestParameters.Location = new System.Drawing.Point(11, 143);
+            this.LogPostRequestParameters.Name = "LogPostRequestParameters";
+            this.LogPostRequestParameters.Size = new System.Drawing.Size(203, 26);
+            this.LogPostRequestParameters.TabIndex = 70;
+            this.LogPostRequestParameters.Text = "Log Post Request Parameters";
+            this.LogPostRequestParameters.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // LogDownloadedFiles
+            // 
+            this.LogDownloadedFiles.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.LogDownloadedFiles.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.LogDownloadedFiles.Location = new System.Drawing.Point(70, 115);
+            this.LogDownloadedFiles.Name = "LogDownloadedFiles";
+            this.LogDownloadedFiles.Size = new System.Drawing.Size(144, 26);
+            this.LogDownloadedFiles.TabIndex = 69;
+            this.LogDownloadedFiles.Text = "Log Downloaded Files";
+            this.LogDownloadedFiles.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // label23
+            // 
+            this.label23.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label23.Location = new System.Drawing.Point(223, 109);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(2, 130);
+            this.label23.TabIndex = 71;
             // 
             // WebConfigControl
             // 
@@ -197,8 +261,10 @@ namespace Cliver.BotGui
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label l1;
         private System.Windows.Forms.TextBox HttpRequestTimeoutInSeconds;
-
-
-
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox UseFilesFromCache;
+        private System.Windows.Forms.CheckBox LogPostRequestParameters;
+        private System.Windows.Forms.CheckBox LogDownloadedFiles;
+        private System.Windows.Forms.Label label23;
     }
 }

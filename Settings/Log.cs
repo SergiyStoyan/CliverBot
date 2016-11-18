@@ -19,10 +19,7 @@ namespace Cliver.Bot
         {
             public int DeleteLogsOlderDays = 3;
             public string PreWorkDir = null;
-            public int LogFileChunkSizeInBytes = 2000000;
             public string PrefWorkDirName = "CliverBotSessions";
-            public bool LogDownloadedFiles = true;
-            public bool LogPostRequestParameters = true;
             public bool WriteLog = true;
 
             override public void Loaded()

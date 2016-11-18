@@ -15,7 +15,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Cliver.Bot
+namespace Cliver.BotWeb
 {
     public static partial class Cache
     {
@@ -29,7 +29,7 @@ namespace Cliver.Bot
         /// <returns>full name of the saved file</returns>
         internal static string SaveDownloadedFile(bool content_is_text, byte[] binary, int page_count, string cycle_identifier)
         {
-            if (!Settings.Log.LogDownloadedFiles)
+            if (!Settings.Web.LogDownloadedFiles)
                 return null;
 
             if (binary == null)
@@ -69,7 +69,7 @@ namespace Cliver.Bot
         internal static string CacheDownloadedFile(bool content_is_text, string url, string post_parameters, string response_url, byte[] binary, int page_count, string cycle_identifier, WebRoutineStatus state)
         {
             string file = SaveDownloadedFile(content_is_text, binary, page_count, cycle_identifier);
-            if (!Settings.Log.LogPostRequestParameters)
+            if (!Settings.Web.LogPostRequestParameters)
                 post_parameters = null;
             Cache.AddFile2CacheMap(url, post_parameters, file, response_url, state, false);
             return file;
@@ -84,7 +84,7 @@ namespace Cliver.Bot
         /// <returns></returns>
         internal static string SaveDownloadedFile(string text, int page_count, string cycle_identifier)
         {
-            if (!Settings.Log.LogDownloadedFiles)
+            if (!Settings.Web.LogDownloadedFiles)
                 return null;
 
             if (text == null)
@@ -107,7 +107,7 @@ namespace Cliver.Bot
         internal static string CacheDownloadedFile(string url, string post_parameters, string response_url, string text, int page_count, string cycle_identifier, WebRoutineStatus state)
         {
             string file = SaveDownloadedFile(text, page_count, cycle_identifier);
-            if (!Settings.Log.LogPostRequestParameters)
+            if (!Settings.Web.LogPostRequestParameters)
                 post_parameters = null;
             Cache.AddFile2CacheMap(url, post_parameters, file, response_url, state, true);
             return file;

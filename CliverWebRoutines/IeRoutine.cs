@@ -18,7 +18,7 @@ using System.Windows.Forms;
 using System.Collections;
 using System.Drawing;
 
-namespace Cliver.Bot
+namespace Cliver.BotWeb
 {
     /// <summary>
     /// Defines methods for downloading web pages, using IE browser
@@ -47,7 +47,7 @@ namespace Cliver.Bot
                 browser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(Browser_DocumentCompleted);
                 browser.NewWindow += new System.ComponentModel.CancelEventHandler(browser_NewWindow);
                 browser.ProgressChanged += new WebBrowserProgressChangedEventHandler(browser_ProgressChanged);
-                //browser.ScriptErrorsSuppressed = Properties.Web.Default.flagWebBrowserScriptErrorsSuppressed;   
+                //browser.ScriptErrorsSuppressed = Settings.Web.flagWebBrowserScriptErrorsSuppressed;   
                 this.browser = browser;
 
                 //needed to make google (and probably other sites) work correctly
@@ -235,8 +235,8 @@ namespace Cliver.Bot
 
         void browser_ProgressChanged(object sender, WebBrowserProgressChangedEventArgs e)
         {
-            if (Properties.Web.Default.MaxDownloadedFileLength > 0
-                && e.CurrentProgress > Properties.Web.Default.MaxDownloadedFileLength
+            if (Settings.Web.MaxDownloadedFileLength > 0
+                && e.CurrentProgress > Settings.Web.MaxDownloadedFileLength
                 && e.MaximumProgress > e.CurrentProgress
                 )
             {
@@ -358,7 +358,7 @@ namespace Cliver.Bot
         /// </summary>
         //public void WaitUntilIEDocumentCompleted2()
         //{
-        //    DateTime t = DateTime.Now.Add(new TimeSpan(0, 0, Properties.Web.Default.WebBrowserPageCompletedTimeoutInSeconds));
+        //    DateTime t = DateTime.Now.Add(new TimeSpan(0, 0, Settings.Web.WebBrowserPageCompletedTimeoutInSeconds));
         //    while (navigating_count > 0)
         //    {
         //        Application.DoEvents();
@@ -472,7 +472,7 @@ namespace Cliver.Bot
                 //    return;
                 //}
 
-                //ThreadRoutines.Wait(Properties.Web.Default.CrawlTimeIntervalInMss);
+                //ThreadRoutines.Wait(Settings.Web.CrawlTimeIntervalInMss);
 
                 HtmlDoc = browser.Document;
 
@@ -566,7 +566,7 @@ namespace Cliver.Bot
                 //init_loading(url);
 
                 //need to watch if browser works too long
-                //timer.Interval = Properties.Web.Default.WebBrowserPageCompletedTimeoutInSeconds * 1000;
+                //timer.Interval = Settings.Web.WebBrowserPageCompletedTimeoutInSeconds * 1000;
                 //timer.Start();
                 //timer.Tick += new EventHandler(timer_Tick);
             }
