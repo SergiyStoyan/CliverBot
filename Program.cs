@@ -27,7 +27,8 @@ namespace Cliver.Bot
 
         static Program()
         {
-            Log.Initialize(Log.Mode.SESSIONS, Cliver.Bot.Properties.Log.Default.PreWorkDir, Cliver.Bot.Properties.Log.Default.WriteLog, Cliver.Bot.Properties.Log.Default.DeleteLogsOlderDays);
+            Config.Initialize();
+            Log.Initialize(Log.Mode.SESSIONS, Cliver.Bot.Settings.Log.PreWorkDir, Cliver.Bot.Settings.Log.WriteLog, Cliver.Bot.Settings.Log.DeleteLogsOlderDays);
 
             LogMessage.DisableStumblingDialogs = true;
 
@@ -36,7 +37,7 @@ namespace Cliver.Bot
                 Properties.General.Default.RestoreBrokenSession = true;
                 Properties.General.Default.RestoreErrorItemsAsNew = false;
                 Properties.General.Default.WriteSessionRestoringLog = true;
-                Properties.Log.Default.LogDownloadedFiles = false;
+                Settings.Log.LogDownloadedFiles = false;
                 Properties.General.Default.UseFilesFromCache = false;
             }
             

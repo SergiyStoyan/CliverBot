@@ -163,7 +163,7 @@ namespace Cliver.BotGui
             this.bStore.Name = "bStore";
             this.bStore.Size = new System.Drawing.Size(90, 24);
             this.bStore.TabIndex = 18;
-            this.bStore.Text = "Store";
+            this.bStore.Text = "Storage";
             this.bStore.Click += new System.EventHandler(this.bStore_Click);
             // 
             // ConfigForm
@@ -172,7 +172,6 @@ namespace Cliver.BotGui
             this.ClientSize = new System.Drawing.Size(599, 362);
             this.Controls.Add(this.splitContainer);
             this.Controls.Add(this.flowLayoutPanel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;

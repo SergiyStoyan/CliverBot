@@ -136,7 +136,7 @@ namespace Cliver.Bot
         {
             try
             {
-                Log.Initialize(Log.Mode.SESSIONS, Cliver.Bot.Properties.Log.Default.PreWorkDir, Cliver.Bot.Properties.Log.Default.WriteLog, Cliver.Bot.Properties.Log.Default.DeleteLogsOlderDays);
+                Log.Initialize(Log.Mode.SESSIONS, Cliver.Bot.Settings.Log.PreWorkDir, Cliver.Bot.Settings.Log.WriteLog, Cliver.Bot.Settings.Log.DeleteLogsOlderDays);
                 Log.Main.Inform("Version compiled: " + Cliver.Bot.Program.GetCustomizationCompiledTime().ToString());
                 Log.Main.Inform("Command line parameters: " + string.Join("|", Environment.GetCommandLineArgs()));
 
