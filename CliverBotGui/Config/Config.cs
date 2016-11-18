@@ -19,7 +19,7 @@ using System.Linq;
 namespace Cliver.BotGui
 {
     /// <summary>
-    /// Syncronizes controls and settings
+    /// Syncronizes controls and settings. Supports both: the native .NET settings and Cliver.Settings
     /// </summary>
     public static class Config
     {
@@ -33,15 +33,10 @@ namespace Cliver.BotGui
             foreach (Assembly sa in sas)
                 foreach (Type st in sa.GetExportedTypes().Where(t => t.IsSubclassOf(typeof(global::System.Configuration.ApplicationSettingsBase))))
                     setting_sections2fi[st.Name] = st.GetField("defaultInstance", BindingFlags.NonPublic | BindingFlags.Static);
-            setting_sections2fi2 = new Dictionary<string, FieldInfo>();
-            foreach (Assembly sa in sas)
-                foreach (Type st in sa.GetExportedTypes().Where(t => t.IsSubclassOf(typeof(Cliver.Settings))))
-                    setting_sections2fi2[st.Name] = st.GetField("This", BindingFlags.Public | BindingFlags.Static);
-
+            
             Reload();
         }
         static readonly Dictionary<string, FieldInfo> setting_sections2fi;
-        static readonly Dictionary<string, FieldInfo> setting_sections2fi2;
 
         public static void Initialize()
         {
@@ -65,16 +60,19 @@ namespace Cliver.BotGui
                     ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null))[parameter] = value;
                     return;
                 }
-                fi = setting_sections2fi2[section];
+
+                Serializable f = Cliver.Config.GetInstance(section);
+                if (f == null)
+                    throw new Exception("No object '" + section + "' was found.");
                 {
-                    FieldInfo pi = fi.FieldType.GetField(parameter);
+                    FieldInfo pi = f.GetType().GetField(parameter);
                     if (pi.FieldType == typeof(int) && value is string)
                         value = int.Parse((string)value);
                     else if (pi.FieldType == typeof(double) && value is string)
                         value = double.Parse((string)value);
                     else if (pi.FieldType == typeof(long) && value is string)
                         value = long.Parse((string)value);
-                    pi.SetValue(fi.GetValue(null), value);
+                    pi.SetValue(f, value);
                 }
             }
             catch (Exception e)
@@ -91,9 +89,12 @@ namespace Cliver.BotGui
                 FieldInfo fi;
                 if (setting_sections2fi.TryGetValue(section, out fi))
                     return ((global::System.Configuration.ApplicationSettingsBase)fi.GetValue(null))[parameter];
-                fi = setting_sections2fi2[section];
-                FieldInfo pi = fi.FieldType.GetField(parameter);
-                return pi.GetValue(fi.GetValue(null));
+
+                Serializable f = Cliver.Config.GetInstance(section);
+                if (f == null)
+                    throw new Exception("No object '" + section + "' was found.");
+                FieldInfo pi = f.GetType().GetField(parameter);
+                return pi.GetValue(f);
             }
             catch (Exception e)
             {

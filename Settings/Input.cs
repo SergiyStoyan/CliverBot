@@ -8,38 +8,41 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
 
-namespace Cliver.Bot.Settings
+namespace Cliver.Bot
 {
-    public class Input : Cliver.Settings
+    public partial class Settings
     {
-        public static readonly Input This;
+        public static readonly InputClass Input;
 
-        public string File = "input.csv";
-        public FileFormats FileFormat = FileFormats.NULL;
-
-        override public void Loaded()
+        public class InputClass : Cliver.Settings
         {
-            if (!File.Contains(":"))
+            public string File = "input.csv";
+            public FileFormats FileFormat = FileFormats.NULL;
+
+            override public void Loaded()
             {
-                string file2 = Cliver.Log.GetAppCommonDataDir() + "\\" + File;
-                if (!System.IO.File.Exists(file2))
-                    if (System.IO.File.Exists(File))
-                        System.IO.File.Copy(File, file2);
-                File = file2;
-                Save();
-            }
-            if (FileFormat == FileFormats.NULL)
-            {
-                switch (PathRoutines.GetFileExtensionFromPath(File).ToLower())
+                if (!File.Contains(":"))
                 {
-                    case "csv":
-                        FileFormat = FileFormats.CSV;
-                        break;
-                    case "txt":
-                    case "tsv":
-                    case "tab":
-                        FileFormat = FileFormats.TSV;
-                        break;
+                    string file2 = Cliver.Log.GetAppCommonDataDir() + "\\" + File;
+                    if (!System.IO.File.Exists(file2))
+                        if (System.IO.File.Exists(File))
+                            System.IO.File.Copy(File, file2);
+                    File = file2;
+                    Save();
+                }
+                if (FileFormat == FileFormats.NULL)
+                {
+                    switch (PathRoutines.GetFileExtensionFromPath(File).ToLower())
+                    {
+                        case "csv":
+                            FileFormat = FileFormats.CSV;
+                            break;
+                        case "txt":
+                        case "tsv":
+                        case "tab":
+                            FileFormat = FileFormats.TSV;
+                            break;
+                    }
                 }
             }
         }
