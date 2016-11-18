@@ -245,7 +245,7 @@ namespace Cliver.Bot
 
         internal static bool GetCachedFile(string url, string post_parameters, out byte[] binary, out string response_url, out string cached_file)
         {
-            //if (!Properties.General.Default.flagUseFilesFromCache || url == null)
+            //if (!Settings.General.flagUseFilesFromCache || url == null)
             //{
             //    binary = null;
             //    response_url = null;

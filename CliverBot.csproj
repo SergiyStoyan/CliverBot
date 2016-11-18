@@ -150,17 +150,13 @@
     <Compile Include="BotEngine\WorkItem.cs" />
     <Compile Include="BotEngine\WorkItemDictionary.cs" />
     <Compile Include="Settings\Log.cs" />
+    <Compile Include="Settings\General.cs" />
     <Compile Include="Settings\Output.cs" />
     <Compile Include="Settings\Input.cs" />
     <Compile Include="Misc\FileReader.cs" />
     <Compile Include="Misc\FileWriter.cs" />
     <Compile Include="Misc\FileWriter.static.cs" />
     <Compile Include="Misc\AppRegistry.cs" />
-    <Compile Include="Properties\General.Designer.cs">
-      <DependentUpon>General.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
     <Compile Include="Properties\App.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -184,10 +180,6 @@
     <BaseApplicationManifest Include="Properties\app.manifest" />
     <None Include="app.config">
       <SubType>Designer</SubType>
-    </None>
-    <None Include="Properties\General.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>General.Designer.cs</LastGenOutput>
     </None>
     <None Include="Properties\App.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>

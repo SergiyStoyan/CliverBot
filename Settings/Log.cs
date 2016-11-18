@@ -25,9 +25,6 @@ namespace Cliver.Bot
             public bool LogPostRequestParameters = true;
             public bool WriteLog = true;
 
-            [ScriptIgnore]
-            public Cliver.FieldPreparation.FieldSeparator FieldSeparator;
-
             override public void Loaded()
             {
                 if (string.IsNullOrEmpty(PreWorkDir))

@@ -410,7 +410,7 @@ namespace Cliver.BotGui
                 //Process p = new Process();
                 //if (System.Environment.OSVersion.Version.Major >= 6)
                 //    p.StartInfo.Verb = "runas";
-                //p.StartInfo.FileName = Cliver.Bot.Properties.General.Default.InputFileViewer;
+                //p.StartInfo.FileName = Cliver.Bot.Settings.General.InputFileViewer;
                 //p.StartInfo.Arguments = "\"" + Bot.Log.AppDir + Bot.Properties.Input.Default.InputFile + "\"";
                 ////the following is required to run the process as administrator without Windows Prompt
                 ////p.StartInfo.UseShellExecute = false;

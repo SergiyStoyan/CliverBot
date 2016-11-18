@@ -32,7 +32,7 @@ namespace Cliver.Bot
             Session.Closing += clear_session;
         }
 
-        public bool UseCache = Properties.General.Default.UseFilesFromCache;
+        public bool UseCache = Settings.General.UseFilesFromCache;
         
         /// <summary>
         /// Used to suspend bot thread until user allow (e.g. until he have filled/submitted fields in IE)
