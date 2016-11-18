@@ -97,7 +97,7 @@ namespace Cliver.Bot
         }
 
         public readonly InputItemQueue __Queue = null;
-        internal readonly InputItem __ParentItem = null;
+        public readonly InputItem __ParentItem = null;
 
         bool add2queue(InputItemQueue queue)
         {
@@ -119,25 +119,25 @@ namespace Cliver.Bot
 
         void set_parent_members(InputItem parent_item)
         {
-            lock (item_type2parent_field_fis)
-            {
-                this.GetType().GetField("__ParentItem", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(this, parent_item);
+            //lock (item_type2parent_field_fis)
+            //{
+                this.GetType().GetField("__ParentItem", BindingFlags.Instance | BindingFlags.Public).SetValue(this, parent_item);
 
-                foreach (FieldInfo fi in item_type2parent_field_fis[this.GetType()])
-                {
-                    for (InputItem ii = __ParentItem; ii != null; ii = ii.__ParentItem)
-                    {
-                        if (fi.FieldType != ii.GetType())
-                            continue;
-                        fi.SetValue(this, ii);
-                        break;
-                    }
-                    //if (fi.GetValue(this) == null)
-                    //    throw new Exception("Field " + fi.Name + " of " + fi.FieldType + " type is not parent for " + this.GetType());
-                }
-            }
+                //foreach (FieldInfo fi in item_type2parent_field_fis[this.GetType()])
+                //{
+                //    for (InputItem ii = __ParentItem; ii != null; ii = ii.__ParentItem)
+                //    {
+                //        if (fi.FieldType != ii.GetType())
+                //            continue;
+                //        fi.SetValue(this, ii);
+                //        break;
+                //    }
+                //    //if (fi.GetValue(this) == null)
+                //    //    throw new Exception("Field " + fi.Name + " of " + fi.FieldType + " type is not parent for " + this.GetType());
+                //}
+            //}
         }
-        static Dictionary<Type, List<FieldInfo>> item_type2parent_field_fis = new Dictionary<Type, List<FieldInfo>>();
+        //static Dictionary<Type, List<FieldInfo>> item_type2parent_field_fis = new Dictionary<Type, List<FieldInfo>>();
 
         /// <summary>
         /// Key may deffer from Seed as some fields may be excluded from Key 
@@ -200,7 +200,7 @@ namespace Cliver.Bot
             foreach (Type item_type in item_types)
             {
                 //create dictionaries
-                item_type2parent_field_fis[item_type] = (from x in item_type.GetFields() where !x.IsStatic && x.FieldType.IsSubclassOf(typeof(InputItem)) select x).ToList();
+                //item_type2parent_field_fis[item_type] = (from x in item_type.GetFields() where !x.IsStatic && x.FieldType.IsSubclassOf(typeof(InputItem)) select x).ToList();
                 item_type2tag_item_fis[item_type] = (from x in item_type.GetFields() where x.FieldType.BaseType == typeof(TagItem) select x).ToList();
 
                 //fill item_type2key_field_fis
