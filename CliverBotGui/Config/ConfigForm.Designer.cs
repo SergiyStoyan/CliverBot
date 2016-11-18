@@ -168,6 +168,7 @@ namespace Cliver.BotGui
             // 
             // ConfigForm
             // 
+            this.AutoSize = true;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(599, 362);
             this.Controls.Add(this.splitContainer);

@@ -47,6 +47,7 @@ namespace Cliver.BotGui
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.Controls.Add(this.group_box);
             this.Name = "ConfigControl";
             this.Size = new System.Drawing.Size(513, 338);
