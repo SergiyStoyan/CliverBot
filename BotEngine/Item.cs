@@ -148,12 +148,12 @@ namespace Cliver.Bot
                 throw new Exception("The following fields in " + item_type + " cannot be static: " + fs.Aggregate((total, x) => total + ", " + x));
 
             fs = (from x in item_type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
-                  where !(x.FieldType.IsValueType || x.FieldType == typeof(string)) && !ALLOWED_PARENT_ITEM_TYPES.Contains(x.FieldType.BaseType) && (x.GetCustomAttributes(typeof(ConstructedField)).FirstOrDefault() == null)
+                  where !(x.FieldType.IsValueType || x.FieldType == typeof(string)) && !ALLOWED_ITEM_TYPES.Contains(x.FieldType.BaseType) && (x.GetCustomAttributes(typeof(ConstructedField)).FirstOrDefault() == null)
                   select x.Name).ToList();
             if (fs.Count > 0)
                 throw new Exception("The following fields in " + item_type + " have not supported type: " + fs.Aggregate((total, x) => total + ", " + x));
         }
-        static readonly Type[] ALLOWED_PARENT_ITEM_TYPES = new Type[] { typeof(InputItem), typeof(TagItem)/*, typeof(SingleValueTagItem<>)*/ };
+        static readonly Type[] ALLOWED_ITEM_TYPES = new Type[] { /*typeof(InputItem),*/ typeof(TagItem)/*, typeof(SingleValueTagItem<>)*/ };
 
         //string CreateCacheKey()
         //{
