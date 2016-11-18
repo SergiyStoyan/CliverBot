@@ -214,7 +214,6 @@ namespace Cliver.Bot
                         Session.State = StateEnum.FATAL_ERROR;
                         LogMessage.Error(e);
                         FatalError?.Invoke(e.Message);
-                        CustomizationApi.FatalError(e.Message);
                     }
 
                     try
@@ -242,7 +241,6 @@ namespace Cliver.Bot
                     Session.State = StateEnum.FATAL_ERROR;
                     LogMessage.Error(e);
                     FatalError?.Invoke(e.Message);
-                    CustomizationApi.FatalError(e.Message);
                 }
             }
         }
