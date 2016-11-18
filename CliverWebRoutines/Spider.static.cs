@@ -149,7 +149,7 @@ namespace Cliver.BotWeb
             beyond_domain_web_links = new List<WebLink>();
 
             string[] ubase_parts = new string[0];
-            if (Properties.Spider.Default.UnchangableDomainPartNumber > 0)
+            if (Settings.Spider.UnchangableDomainPartNumber > 0)
             {
                 string domain = parent_uri.Host;
                 ubase_parts = domain.Split('.');
@@ -167,8 +167,8 @@ namespace Cliver.BotWeb
 
                 bool beyond_domain = false;
                 string[] u_parts = u.Host.Split('.');
-                int length = Properties.Spider.Default.UnchangableDomainPartNumber;
-                if (Properties.Spider.Default.UnchangableDomainPartNumber > ubase_parts.Length)
+                int length = Settings.Spider.UnchangableDomainPartNumber;
+                if (Settings.Spider.UnchangableDomainPartNumber > ubase_parts.Length)
                     length = ubase_parts.Length;
                 if (ubase_parts.Length > u_parts.Length)
                     length = u_parts.Length;
@@ -208,7 +208,7 @@ namespace Cliver.BotWeb
         public static string GetDomain(string url)
         {
             Uri parent_uri = new Uri(url);
-            Match m = Regex.Match(parent_uri.Host, @"([^\.]+\.?){" + Properties.Spider.Default.UnchangableDomainPartNumber.ToString() + "}$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.RightToLeft);
+            Match m = Regex.Match(parent_uri.Host, @"([^\.]+\.?){" + Settings.Spider.UnchangableDomainPartNumber.ToString() + "}$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.RightToLeft);
             if (m.Success)
                 return m.Groups[0].Value;
             return url;

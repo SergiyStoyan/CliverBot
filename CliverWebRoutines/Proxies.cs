@@ -79,7 +79,7 @@ namespace Cliver.BotWeb
         {
             lock (proxies)
             {
-                string file_uri = Properties.Proxy.Default.ProxiesFileUri;
+                string file_uri = Settings.Proxy.ProxiesFileUri;
                 if (file_uri == null || file_uri == "")
                 {
                     use_proxy = false;
@@ -108,17 +108,17 @@ namespace Cliver.BotWeb
                     Proxy p = new Proxy();
                     p.Ip = m.Result("$1");
                     p.Port = m.Result("$2");
-                    p.Login = Properties.Proxy.Default.ProxyLogin;
-                    p.Password = Properties.Proxy.Default.ProxyPassword;
-                    p.Type = Properties.Proxy.Default.ProxyType;
+                    p.Login = Settings.Proxy.ProxyLogin;
+                    p.Password = Settings.Proxy.ProxyPassword;
+                    p.Type = Settings.Proxy.ProxyType;
                     Add(p);
                     m = m.NextMatch();
                 }
 
                 Log.Main.Inform("Proxy file was read: " + file_path);
 
-                if (Properties.Proxy.Default.ReloadProxyFileInSeconds > 0)
-                    refresh_proxy_time = DateTime.Now.AddSeconds(Properties.Proxy.Default.ReloadProxyFileInSeconds);
+                if (Settings.Proxy.ReloadProxyFileInSeconds > 0)
+                    refresh_proxy_time = DateTime.Now.AddSeconds(Settings.Proxy.ReloadProxyFileInSeconds);
             }
         }
 

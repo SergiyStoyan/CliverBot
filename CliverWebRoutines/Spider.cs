@@ -118,7 +118,7 @@ namespace Cliver.BotWeb
         //    }
         //}
         Dictionary<string, int> page_counts = new Dictionary<string, int>();
-        Regex base_domain_regex = new Regex(@"([^\.]+\.?){"+ Properties.Spider.Default.UnchangableDomainPartNumber.ToString() +"}$", RegexOptions.Compiled| RegexOptions.IgnoreCase| RegexOptions.Singleline| RegexOptions.RightToLeft);
+        Regex base_domain_regex = new Regex(@"([^\.]+\.?){"+ Settings.Spider.UnchangableDomainPartNumber.ToString() +"}$", RegexOptions.Compiled| RegexOptions.IgnoreCase| RegexOptions.Singleline| RegexOptions.RightToLeft);
 
         /// <summary>
         /// Retrieve links from the page and add them to the InputItems

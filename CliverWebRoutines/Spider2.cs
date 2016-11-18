@@ -180,7 +180,7 @@ namespace Cliver.BotWeb
         public static string GetDomain(string url)
         {
             Uri parent_uri = new Uri(url);
-            Match m = Regex.Match(parent_uri.Host, @"([^\.]+\.?){" + Properties.Spider.Default.UnchangableDomainPartNumber.ToString() + "}$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.RightToLeft);
+            Match m = Regex.Match(parent_uri.Host, @"([^\.]+\.?){" + Settings.Spider.UnchangableDomainPartNumber.ToString() + "}$", RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.RightToLeft);
             if (m.Success)
                 return m.Groups[0].Value;
             return url;

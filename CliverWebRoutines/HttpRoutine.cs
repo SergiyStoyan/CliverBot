@@ -156,7 +156,7 @@ namespace Cliver.BotWeb
                         break;
 
                     Proxies.Delete(Proxy);
-                    if (attempt_count >= Properties.Proxy.Default.MaxAttemptCountWithNewProxy)
+                    if (attempt_count >= Settings.Proxy.MaxAttemptCountWithNewProxy)
                     {
                         Log.Error("Attempt quota exeeded: " + attempt_count.ToString());
                         break;

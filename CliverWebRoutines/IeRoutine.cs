@@ -231,7 +231,7 @@ namespace Cliver.BotWeb
                     WindowInterceptor.Stop();
             }
         }
-        bool _CloseWebBrowserDialogsAutomatically = Properties.Browser.Default.CloseWebBrowserDialogsAutomatically;
+        bool _CloseWebBrowserDialogsAutomatically = Settings.Browser.CloseWebBrowserDialogsAutomatically;
 
         void browser_ProgressChanged(object sender, WebBrowserProgressChangedEventArgs e)
         {
@@ -308,7 +308,7 @@ namespace Cliver.BotWeb
                         IE_result = WaitForCompletion(timeout_in_mss);
                     else
                     {
-                        if (timeout_in_mss < 0) timeout_in_mss = Properties.Browser.Default.PageCompletedTimeoutInSeconds * 1000;
+                        if (timeout_in_mss < 0) timeout_in_mss = Settings.Browser.PageCompletedTimeoutInSeconds * 1000;
                         IE_result = (IeRoutines.WaitForCondition(browser, return_if_exists, timeout_in_mss) != null);
                     }
                     browser.Invoke(() => { HtmlDoc = browser.Document; });
@@ -333,7 +333,7 @@ namespace Cliver.BotWeb
         public bool WaitForCompletion(int timeout_in_mss = -1)
         {
             if (timeout_in_mss < 0)
-                timeout_in_mss = Properties.Browser.Default.PageCompletedTimeoutInSeconds * 1000;
+                timeout_in_mss = Settings.Browser.PageCompletedTimeoutInSeconds * 1000;
             return browser.WaitForCompletion(timeout_in_mss);
         }
 
