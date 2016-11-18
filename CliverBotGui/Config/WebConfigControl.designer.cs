@@ -190,7 +190,7 @@ namespace Cliver.BotGui
             // UseFilesFromCache
             // 
             this.UseFilesFromCache.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.UseFilesFromCache.Location = new System.Drawing.Point(41, 175);
+            this.UseFilesFromCache.Location = new System.Drawing.Point(28, 183);
             this.UseFilesFromCache.Name = "UseFilesFromCache";
             this.UseFilesFromCache.Size = new System.Drawing.Size(172, 20);
             this.UseFilesFromCache.TabIndex = 67;
@@ -209,9 +209,9 @@ namespace Cliver.BotGui
             // 
             this.LogPostRequestParameters.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.LogPostRequestParameters.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.LogPostRequestParameters.Location = new System.Drawing.Point(11, 143);
+            this.LogPostRequestParameters.Location = new System.Drawing.Point(18, 148);
             this.LogPostRequestParameters.Name = "LogPostRequestParameters";
-            this.LogPostRequestParameters.Size = new System.Drawing.Size(203, 26);
+            this.LogPostRequestParameters.Size = new System.Drawing.Size(182, 26);
             this.LogPostRequestParameters.TabIndex = 70;
             this.LogPostRequestParameters.Text = "Log Post Request Parameters";
             this.LogPostRequestParameters.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -220,7 +220,7 @@ namespace Cliver.BotGui
             // 
             this.LogDownloadedFiles.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.LogDownloadedFiles.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.LogDownloadedFiles.Location = new System.Drawing.Point(70, 115);
+            this.LogDownloadedFiles.Location = new System.Drawing.Point(56, 116);
             this.LogDownloadedFiles.Name = "LogDownloadedFiles";
             this.LogDownloadedFiles.Size = new System.Drawing.Size(144, 26);
             this.LogDownloadedFiles.TabIndex = 69;
@@ -230,7 +230,7 @@ namespace Cliver.BotGui
             // label23
             // 
             this.label23.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label23.Location = new System.Drawing.Point(223, 109);
+            this.label23.Location = new System.Drawing.Point(210, 109);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(2, 130);
             this.label23.TabIndex = 71;

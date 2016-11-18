@@ -86,7 +86,7 @@ Developed by: www.cliversoft.com";
         /// <summary>
         /// Invoked by BotCycle thread when it is exiting.
         /// </summary>
-        virtual public void CycleExiting(bool completed = true)
+        virtual public void CycleExiting()
         {
         }
 

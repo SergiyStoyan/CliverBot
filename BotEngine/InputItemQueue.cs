@@ -128,7 +128,7 @@ namespace Cliver.Bot
             }
             set
             {
-                if (Session.Started)
+                if (Session.State > Session.StateEnum.STARTING)
                     throw new Session.FatalException("PickNext should be set before bot cycle started.");
                 _PickNext = value;
             }

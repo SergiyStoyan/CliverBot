@@ -145,7 +145,7 @@ namespace Cliver.Bot
                 if (This == null)
                     return;
                 BotCycle.Start();
-                started = true;
+                Session.State = StateEnum.STARTED;
             }
             catch (ThreadAbortException)
             {
@@ -158,14 +158,6 @@ namespace Cliver.Bot
                 CustomizationApi.FatalError(e.Message);
                 //LogMessage.Exit(e);
                 Close();
-            }
-        }
-        static bool started = false;
-        public static bool Started
-        {
-            get
-            {
-                return This != null && started;
             }
         }
 
@@ -212,6 +204,13 @@ namespace Cliver.Bot
                     This.workflow_xtw.WriteEndDocument();
                     This.workflow_xtw.Close();
 
+                    if (This.IsUnprocessedInputItem)
+                        Session.State = StateEnum.BROKEN;
+                    else if (This.IsItem2Restore)
+                        Session.State = StateEnum.UNCOMPLETED;
+                    else
+                        Session.State = StateEnum.COMPLETED;
+
                     try
                     {
                         CustomizationApi.SessionClosing();
@@ -234,11 +233,10 @@ namespace Cliver.Bot
 
                     InputItemQueue.Close();
                     FileWriter.ClearSession();
-                    Log.Main.Write("Closing the bot session.");
+                    Log.Main.Write("Closing the bot session: " + Session.State.ToString());
                     Cliver.Log.ClearSession();
 
                     This_ = null;
-                    started = false;
                 }
                 catch (ThreadAbortException)
                 {
@@ -259,25 +257,38 @@ namespace Cliver.Bot
             CustomizationApi.FillStartInputItemQueue(start_input_item_queue, start_input_item_type);
         }
 
-        public enum States
+        public enum StateEnum
         {
             NULL,
             STARTING,
             STARTED,
             RUNNING,
             CLOSING,
+            COMPLETED,
+            UNCOMPLETED,
+            BROKEN,
             FATAL_ERROR
         }
-        States state = States.NULL;
 
-        public static States State
+        public static StateEnum State
         {
             get
             {
                 if (This == null)
-                    return States.NULL;
-                return This.state;
+                    return StateEnum.NULL;
+                return This._state;
+            }
+            private  set
+            {
+                if (This == null)
+                    return;
+                if (This._state >= StateEnum.COMPLETED)
+                    return;
+                if (This._state > value)
+                    throw new Exception("Session state cannot change from " + This._state + " to " + value);
+                This._state = value;
             }
         }
+        StateEnum _state = StateEnum.NULL;
     }
 }

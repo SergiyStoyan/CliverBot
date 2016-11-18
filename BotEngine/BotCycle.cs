@@ -110,87 +110,97 @@ namespace Cliver.Bot
 
         void bot_cycle()
         {
-            bool completed = false;
             try
             {
-                typeof(BotCycle).GetField("Id", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(this, Log.Id);
-                lock (id2bot_cycles)
+                try
                 {
-                    id2bot_cycles[Id] = this;
-                }
-                Created?.Invoke(Id);
+                    typeof(BotCycle).GetField("Id", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(this, Log.Id);
+                    lock (id2bot_cycles)
+                    {
+                        id2bot_cycles[Id] = this;
+                    }
+                    Created?.Invoke(Id);
 
-                bot = CustomizationApi.CreateBot();
-                if (bot == null)
-                    throw (new Exception("Could not create Bot instance."));
-                typeof(Bot).GetField("BotCycle", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(bot, this);
-                
-                bot.CycleStarting();
-                while (run)
-                {
-                    current_item = Session.This.GetNext();
-                    if (current_item == null)
-                        return;
-                    InputItemState state = InputItemState.COMPLETED;
-                    try
+                    bot = CustomizationApi.CreateBot();
+                    if (bot == null)
+                        throw (new Exception("Could not create Bot instance."));
+                    typeof(Bot).GetField("BotCycle", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(bot, this);
+
+                    bot.CycleStarting();
+                    while (run)
                     {
-                        current_item.PROCESSOR(this);
-                    }
-                    catch (ThreadAbortException)
-                    {
-                        return;
-                    }
-                    catch (Session.FatalException)
-                    {
-                        throw;
-                    }
-                    catch (Exception e)
-                    {
-                        if (e is TargetInvocationException)
+                        current_item = Session.This.GetNext();
+                        if (current_item == null)
+                            return;
+                        InputItemState state = InputItemState.COMPLETED;
+                        try
                         {
-                            e = e.InnerException;
-                            //throw;
+                            current_item.PROCESSOR(this);
                         }
-                        if (e is ProcessorException)
+                        catch (ThreadAbortException)
                         {
-                            switch (((ProcessorException)e).Type)
+                            return;
+                        }
+                        catch (Session.FatalException)
+                        {
+                            throw;
+                        }
+                        catch (Exception e)
+                        {
+                            if (e is TargetInvocationException)
                             {
-                                case ProcessorExceptionType.ERROR:
-                                    state = InputItemState.ERROR;
-                                    break;
-                                //case ProcessorExceptionType.FATAL_ERROR:                                    
-                                case ProcessorExceptionType.RESTORE_AS_NEW:
-                                    state = InputItemState.ERROR_RESTORE_AS_NEW;
-                                    Session.This.IsItem2Restore = true;
-                                    break;
-                                case ProcessorExceptionType.COMPLETED:
-                                    break;
-                                default: throw new Exception("No case for " + ((ProcessorException)e).Type.ToString());
+                                e = e.InnerException;
+                                //throw;
                             }
+                            if (e is ProcessorException)
+                            {
+                                switch (((ProcessorException)e).Type)
+                                {
+                                    case ProcessorExceptionType.ERROR:
+                                        state = InputItemState.ERROR;
+                                        break;
+                                    //case ProcessorExceptionType.FATAL_ERROR:                                    
+                                    case ProcessorExceptionType.RESTORE_AS_NEW:
+                                        state = InputItemState.ERROR_RESTORE_AS_NEW;
+                                        Session.This.IsItem2Restore = true;
+                                        break;
+                                    case ProcessorExceptionType.COMPLETED:
+                                        break;
+                                    default: throw new Exception("No case for " + ((ProcessorException)e).Type.ToString());
+                                }
+                            }
+                            else
+                            {
+                                if (TreatExceptionAsFatal)
+                                    throw new Session.FatalException(e);
+                                state = InputItemState.ERROR;
+                            }
+                            Log.Error(e);
                         }
+
+                        current_item.__State = state;
+
+                        if (state == InputItemState.ERROR || state == InputItemState.ERROR_RESTORE_AS_NEW)
+                            Session.This.ProcessorErrors.Increment();
                         else
-                        {
-                            if (TreatExceptionAsFatal)
-                                throw new Session.FatalException(e);
-                            state = InputItemState.ERROR;
-                        }
-                        Log.Error(e);
+                            Session.This.ProcessorErrors.Reset();
+
+                        Start();
                     }
-
-                    current_item.__State = state;
-
-                    if (state == InputItemState.ERROR || state == InputItemState.ERROR_RESTORE_AS_NEW)
-                        Session.This.ProcessorErrors.Increment();
-                    else
-                        Session.This.ProcessorErrors.Reset();
-
-                    Start();
                 }
-                completed = true;
-            }
-            catch (ThreadAbortException)
-            {
-                Thread.ResetAbort();
+                catch (ThreadAbortException)
+                {
+                    Thread.ResetAbort();
+                }
+                catch (Exception e)
+                {
+                    throw new Session.FatalException(e);
+                }
+                finally
+                {
+                    bot.CycleExiting();
+                }
+                close_thread(Id);
             }
             catch (Exception e)
             {
@@ -198,11 +208,6 @@ namespace Cliver.Bot
                 CustomizationApi.FatalError(e.Message);
                 Session.Close();
                 //LogMessage.Exit(e);
-            }
-            finally
-            {
-                bot.CycleExiting(completed);
-                close_thread(Id);
             }
         }
         InputItem current_item;

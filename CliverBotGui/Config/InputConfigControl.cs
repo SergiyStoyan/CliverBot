@@ -81,14 +81,14 @@ namespace Cliver.BotGui
 
         private void _1_CsvFormat_CheckedChanged(object sender, EventArgs e)
         {
-            if(_1_CsvFormat.Checked)
-                File.Text = Cliver.PathRoutines.ReplaceFileExtention(File.Text, "csv");
+            //if(_1_CsvFormat.Checked)
+            //    File.Text = Cliver.PathRoutines.ReplaceFileExtention(File.Text, "csv");
         }
 
         private void _1_TsvFormat_CheckedChanged(object sender, EventArgs e)
         {
-            if (_1_TsvFormat.Checked)
-                File.Text = Cliver.PathRoutines.ReplaceFileExtention(File.Text, "tsv");
+            //if (_1_TsvFormat.Checked)
+            //    File.Text = Cliver.PathRoutines.ReplaceFileExtention(File.Text, "tsv");
         }
     }
 }
