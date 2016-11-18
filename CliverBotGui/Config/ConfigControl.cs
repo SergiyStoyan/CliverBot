@@ -18,19 +18,16 @@ namespace Cliver.BotGui
         public ConfigControl()
         {
             InitializeComponent();
-            Init(NAME/*, Assembly.GetEntryAssembly() != Assembly.GetExecutingAssembly()*/);
+            Init(NAME);
         }
 
-        protected void Init(string name/*, bool custom_section*/)
+        protected void Init(string name)
         {
             group_box.Text = name;
             Name = name;
-            //this.custom_section = custom_section;
-        }
+        }        
 
-        //bool custom_section = false;
-
-        protected virtual void set_tool_tip()
+        virtual protected void set_tool_tip()
         {
         }
 
@@ -53,8 +50,15 @@ namespace Cliver.BotGui
             set_group_box_values_from_config();
         }
 
+        virtual protected void Loading()
+        {
+
+        }
+
         void set_group_box_values_from_config()
         {
+            Loading();
+
             foreach (Control c in group_box.Controls)
             {
                 if (Regex.IsMatch(c.Name, "^_1_"))
@@ -82,7 +86,7 @@ namespace Cliver.BotGui
                     if (o != null)
                         ((System.Windows.Forms.RadioButton)c).Checked = (bool)o;
                     else
-                        ((System.Windows.Forms.CheckBox)c).Checked = false;
+                        ((System.Windows.Forms.RadioButton)c).Checked = false;
                 }
                 else if (t == typeof(System.Windows.Forms.DateTimePicker))
                 {
@@ -99,16 +103,25 @@ namespace Cliver.BotGui
             }
         }
 
-        internal void PutValues2Properties()
+        virtual protected bool Saving()
+        {
+            return true;
+        }
+
+        internal bool PutValues2Properties()
         {
             try
             {
+                if(!Saving())
+                    return false;
                 put_values_of_control_to_config(Name, group_box);
             }
             catch (Exception ex)
             {
                 LogMessage.Error(ex);
+                return false;
             }
+            return true;
         }
 
         void put_values_of_control_to_config(string section, Control control)

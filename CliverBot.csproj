@@ -149,7 +149,7 @@
     <Compile Include="BotEngine\TagItem.cs" />
     <Compile Include="BotEngine\WorkItem.cs" />
     <Compile Include="BotEngine\WorkItemDictionary.cs" />
-    <Compile Include="Properties\Input.cs" />
+    <Compile Include="Settings\Input.cs" />
     <Compile Include="Properties\Log.cs" />
     <Compile Include="Properties\Log.Designer.cs">
       <DependentUpon>Log.settings</DependentUpon>
@@ -168,11 +168,6 @@
     </Compile>
     <Compile Include="Properties\General.Designer.cs">
       <DependentUpon>General.settings</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-    </Compile>
-    <Compile Include="Properties\Input.Designer.cs">
-      <DependentUpon>Input.settings</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
@@ -211,10 +206,6 @@
     <None Include="Properties\General.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>General.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Properties\Input.settings">
-      <Generator>PublicSettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Input.Designer.cs</LastGenOutput>
     </None>
     <None Include="Properties\App.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>

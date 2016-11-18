@@ -50,13 +50,13 @@ Developed by: www.cliversoft.com";
         {            
             Log.Main.Write("Filling queue of " + start_input_item_queue.Name + " with input file.");
 
-            if (!File.Exists(Properties.Input.Default.InputFile))
-                throw (new Exception("Input file " + Properties.Input.Default.InputFile + " does not exist."));
+            if (!File.Exists(Settings.Input.This.File))
+                throw (new Exception("Input file " + Settings.Input.This.File + " does not exist."));
 
-            if (Path.GetExtension(Properties.Input.Default.InputFile).StartsWith(".xls", StringComparison.InvariantCultureIgnoreCase))
+            if (Path.GetExtension(Settings.Input.This.File).StartsWith(".xls", StringComparison.InvariantCultureIgnoreCase))
                 throw new Exception("Reading excel was not implemented");
 
-            FileReader fr = new FileReader(Properties.Input.Default.InputFile, Properties.Input.Default.InputFieldSeparator);
+            FileReader fr = new FileReader(Settings.Input.This.File, Settings.Input.This.FileFormat);
             for (FileReader.Row r = fr.ReadLine(); r != null; r = fr.ReadLine())
                 InputItem.Add2QueueBeforeStart(start_input_item_queue, start_input_item_type, r.Headers.ToDictionary(x => x, x => r[x]));
         }

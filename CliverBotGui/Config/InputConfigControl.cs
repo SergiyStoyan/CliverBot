@@ -21,40 +21,57 @@ namespace Cliver.BotGui
             Init(NAME);
         }
 
+        override protected void Loading()
+        {
+            switch (Cliver.Bot.Settings.Input.This.FileFormat)
+            {
+                case FileFormats.NULL:
+                    _1_CsvFormat.Checked = false;
+                    _1_TsvFormat.Checked = false;
+                    break;
+                case FileFormats.CSV:
+                    _1_CsvFormat.Checked = true;
+                    break;
+                case FileFormats.TSV:
+                    _1_TsvFormat.Checked = true;
+                    break;
+            }
+        }
+
+        override protected bool Saving()
+        {
+            if (_1_CsvFormat.Checked)
+                Bot.Settings.Input.This.FileFormat = FileFormats.CSV;
+            else if (_1_TsvFormat.Checked)
+                Bot.Settings.Input.This.FileFormat = FileFormats.TSV;
+            else
+            {
+                Message.Error("File format is not defined.");
+                return false;
+            }
+            return true;
+        }
+
         override protected void set_tool_tip()
         {
-            toolTip1.SetToolTip(this.InputFieldSeparator, "Char/string used to separate values in the input file.");
-            toolTip1.SetToolTip(this.InputFile, "Absolute path or only name of the input file.");
+            //toolTip1.SetToolTip(this.InputFieldSeparator, "Char/string used to separate values in the input file.");
+            toolTip1.SetToolTip(this.File, "Absolute path or only name of the input file.");
         }
 
         private void ChooseInputFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog d = new OpenFileDialog();
-            d.InitialDirectory = PathRoutines.GetDirFromPath(InputFile.Text);
+            d.InitialDirectory = PathRoutines.GetDirFromPath(File.Text);
             d.ShowDialog();
             if (!string.IsNullOrWhiteSpace(d.FileName))
-                InputFile.Text = d.FileName;
-        }
-
-        private void __SetTAB2InputFieldDelimiter_CheckedChanged(object sender, EventArgs e)
-        {
-            if (_1_SetTAB2InputFieldDelimiter.Checked)
-                this.InputFieldSeparator.Text = "\t";
-            else
-                this.InputFieldSeparator.Text = "";
-        }
-
-        private void InputFieldSeparator_TextChanged(object sender, EventArgs e)
-        {
-            _1_SetTAB2InputFieldDelimiter.Checked = InputFieldSeparator.Text == "\t";
-            InputFieldSeparator.Enabled = !_1_SetTAB2InputFieldDelimiter.Checked;
+                File.Text = d.FileName;
         }
 
         private void bInputFile_Click(object sender, EventArgs e)
         {
             try
             {
-                Process.Start(InputFile.Text);
+                Process.Start(File.Text);
             }
             catch (Exception ex)
             {
@@ -63,4 +80,3 @@ namespace Cliver.BotGui
         }
     }
 }
-

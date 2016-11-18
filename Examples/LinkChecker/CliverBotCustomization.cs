@@ -33,6 +33,16 @@ namespace Cliver.BotCustomization
         [STAThread]
         static void Main()
         {
+            try
+            {
+                Config.Initialize();
+                string f = Bot.Settings.Input.This.File;
+                Config.Save();
+            }
+            catch(Exception e)
+            {
+
+            }
             //Bot.Properties.General.Default.RestoreBrokenSession = true;
             //Bot.Properties.General.Default.WriteSessionRestoringLog = true;
             //Bot.Properties.General.Default.Save();

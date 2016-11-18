@@ -20,11 +20,20 @@ using System.Collections.Generic;
 
 namespace Cliver.Bot
 {
+        public enum FileFormats
+        {
+            NULL,
+            CSV,
+            TSV,
+            XLS
+        }
+
     /// <summary>
     /// Read delimitered file routines. Thread-safe.
     /// </summary>
     public partial class FileReader
     {
+
         /// <summary>
         /// 
         /// </summary>
@@ -32,13 +41,25 @@ namespace Cliver.Bot
         /// <param name="delimiter"></param>
         /// <param name="headers">if null, then the first line is considered to be a header</param>
         /// <param name="comment_marks">lines that begins with a comment mark is omitted</param>
-        public FileReader(string file_path, string delimiter, string[] headers = null, bool ignore_space_lines = true, string[] comment_marks = null, bool no_headers = false)
+        public FileReader(string file_path, FileFormats file_format, string[] headers = null, bool ignore_space_lines = true, string[] comment_marks = null, bool no_headers = false)
         {
             if (comment_marks == null)
                 comment_marks = new string[] { "#" };
             comment_or_empty_string_regex = new Regex(@"^" + (ignore_space_lines ? @"\s*" : "") + "(" + string.Join("|", (from x in comment_marks select Regex.Escape(x)).ToArray()) + ")" + (ignore_space_lines ? @"?" : "") + "$");
-            //split_regex = new Regex(@"\""?" + Regex.Escape(delimiter));
-            match_regex = new Regex( @"(?'Q'\""?)(?'V'.*?)(?:\k'Q')(" + Regex.Escape(delimiter) + "|$)");
+            switch(file_format)
+            {
+                case FileFormats.CSV:
+                    match_regex = new Regex(@"(?'Q'\""?)(?'V'.*?)(?:\k'Q')(,|$)");
+                    break;
+                case FileFormats.TSV:
+                    match_regex = new Regex(@"(?'Q'\""?)(?'V'.*?)(?:\k'Q')(\t|$)");
+                    break;
+                case FileFormats.XLS:
+                    throw new Exception("XLS format not implemented.");
+                    break;
+                default:
+                    throw new Exception("Unknown option: " + file_format);
+            }
             Stream s = File.Open(file_path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
             TR = new StreamReader(s);
 

@@ -425,7 +425,7 @@ namespace Cliver.BotGui
                 //    LogMessage.Error(ex);
                 //}
 
-                Process.Start(Bot.Properties.Input.Default.InputFile);
+                Process.Start(Bot.Settings.Input.This.File);
             }
             catch (Exception ex)
             {

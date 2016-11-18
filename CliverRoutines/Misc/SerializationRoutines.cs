@@ -38,6 +38,33 @@ namespace Cliver
             return s;
         }
 
+        static public Serializable Load(Type serializable_type, string file)
+        {
+            Serializable t = get(serializable_type, file, false);
+            t.Loaded();
+            return t;
+        }
+
+        static public Serializable Create(Type serializable_type, string file)
+        {
+            Serializable t = get(serializable_type, file, true);
+            t.Loaded();
+            return t;
+        }
+
+        static Serializable get(Type serializable_type, string file, bool ignore_file_content)
+        {
+            if (!file.Contains(":"))
+                file = Log.GetAppCommonDataDir() + "\\" + file;
+            Serializable s;
+            if (!ignore_file_content && File.Exists(file))
+                s = (Serializable)Cliver.SerializationRoutines.Json.Load(serializable_type, file);
+            else
+                s = (Serializable)Activator.CreateInstance(serializable_type);
+            s.__file = file;
+            return s;
+        }
+
         public string GetFile()
         {
             return __file;
@@ -93,6 +120,12 @@ namespace Cliver
                 return serializer.Deserialize<T>(json);
             }
 
+            static public object Deserialize(Type type, string json)
+            {
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                return serializer.Deserialize(json, type);
+            }
+
             static public void Save(string file, object o)
             {
                 File.WriteAllText(file, Serialize(o));
@@ -101,6 +134,11 @@ namespace Cliver
             static public T Load<T>(string file)
             {
                 return Deserialize<T>(File.ReadAllText(file));
+            }
+
+            static public object Load(Type type, string file)
+            {
+                return Deserialize(type, File.ReadAllText(file));
             }
         }
 

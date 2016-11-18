@@ -62,7 +62,8 @@ namespace Cliver.BotGui
                     return;
                 }
                 foreach (ConfigControlItem cci in listConfigTabs.Items)
-                    cci.CC.PutValues2Properties();
+                    if(!cci.CC.PutValues2Properties())
+                        return;
                 Config.Save();
                 Config.Reload();
                 Close();

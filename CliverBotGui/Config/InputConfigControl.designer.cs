@@ -28,28 +28,24 @@ namespace Cliver.BotGui
         /// </summary>
         private void InitializeComponent()
         {
-            this._1_SetTAB2InputFieldDelimiter = new System.Windows.Forms.CheckBox();
             this.label20 = new System.Windows.Forms.Label();
-            this.InputFieldSeparator = new System.Windows.Forms.TextBox();
             this.ChooseInputFile = new System.Windows.Forms.Button();
-            this.InputFile = new System.Windows.Forms.TextBox();
+            this.File = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this._0_bViewInputFile = new System.Windows.Forms.Button();
-            this.label40 = new System.Windows.Forms.Label();
-            this.InputFileViewer = new System.Windows.Forms.TextBox();
+            this._1_TsvFormat = new System.Windows.Forms.RadioButton();
+            this._1_CsvFormat = new System.Windows.Forms.RadioButton();
             this.group_box.SuspendLayout();
             this.SuspendLayout();
             // 
             // group_box
             // 
-            this.group_box.Controls.Add(this.label40);
-            this.group_box.Controls.Add(this.InputFileViewer);
+            this.group_box.Controls.Add(this._1_CsvFormat);
+            this.group_box.Controls.Add(this._1_TsvFormat);
             this.group_box.Controls.Add(this._0_bViewInputFile);
-            this.group_box.Controls.Add(this._1_SetTAB2InputFieldDelimiter);
             this.group_box.Controls.Add(this.label20);
-            this.group_box.Controls.Add(this.InputFieldSeparator);
             this.group_box.Controls.Add(this.ChooseInputFile);
-            this.group_box.Controls.Add(this.InputFile);
+            this.group_box.Controls.Add(this.File);
             this.group_box.Controls.Add(this.label17);
             this.group_box.Text = "TestCustom";
             // 
@@ -59,36 +55,14 @@ namespace Cliver.BotGui
             this.toolTip1.InitialDelay = 500;
             this.toolTip1.ReshowDelay = 100;
             // 
-            // _1_SetTAB2InputFieldDelimiter
-            // 
-            this._1_SetTAB2InputFieldDelimiter.Appearance = System.Windows.Forms.Appearance.Button;
-            this._1_SetTAB2InputFieldDelimiter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this._1_SetTAB2InputFieldDelimiter.Location = new System.Drawing.Point(342, 118);
-            this._1_SetTAB2InputFieldDelimiter.Name = "_1_SetTAB2InputFieldDelimiter";
-            this._1_SetTAB2InputFieldDelimiter.Size = new System.Drawing.Size(124, 23);
-            this._1_SetTAB2InputFieldDelimiter.TabIndex = 56;
-            this._1_SetTAB2InputFieldDelimiter.Text = "Use TAB as delimiter";
-            this._1_SetTAB2InputFieldDelimiter.UseVisualStyleBackColor = true;
-            this._1_SetTAB2InputFieldDelimiter.CheckedChanged += new System.EventHandler(this.@__SetTAB2InputFieldDelimiter_CheckedChanged);
-            // 
             // label20
             // 
-            this.label20.Location = new System.Drawing.Point(200, 124);
+            this.label20.Location = new System.Drawing.Point(353, 121);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(113, 16);
             this.label20.TabIndex = 55;
-            this.label20.Text = "Field Delimiter:";
+            this.label20.Text = "File Format:";
             this.label20.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // InputFieldSeparator
-            // 
-            this.InputFieldSeparator.AcceptsTab = true;
-            this.InputFieldSeparator.Location = new System.Drawing.Point(319, 120);
-            this.InputFieldSeparator.Name = "InputFieldSeparator";
-            this.InputFieldSeparator.Size = new System.Drawing.Size(17, 20);
-            this.InputFieldSeparator.TabIndex = 54;
-            this.InputFieldSeparator.Text = ",";
-            this.InputFieldSeparator.TextChanged += new System.EventHandler(this.InputFieldSeparator_TextChanged);
             // 
             // ChooseInputFile
             // 
@@ -100,13 +74,13 @@ namespace Cliver.BotGui
             this.ChooseInputFile.UseVisualStyleBackColor = true;
             this.ChooseInputFile.Click += new System.EventHandler(this.ChooseInputFile_Click);
             // 
-            // InputFile
+            // File
             // 
-            this.InputFile.Location = new System.Drawing.Point(6, 45);
-            this.InputFile.Multiline = true;
-            this.InputFile.Name = "InputFile";
-            this.InputFile.Size = new System.Drawing.Size(460, 47);
-            this.InputFile.TabIndex = 52;
+            this.File.Location = new System.Drawing.Point(6, 45);
+            this.File.Multiline = true;
+            this.File.Name = "File";
+            this.File.Size = new System.Drawing.Size(460, 47);
+            this.File.TabIndex = 52;
             // 
             // label17
             // 
@@ -127,21 +101,27 @@ namespace Cliver.BotGui
             this._0_bViewInputFile.UseVisualStyleBackColor = true;
             this._0_bViewInputFile.Click += new System.EventHandler(this.bInputFile_Click);
             // 
-            // label40
+            // _1_TsvFormat
             // 
-            this.label40.Location = new System.Drawing.Point(20, 168);
-            this.label40.Name = "label40";
-            this.label40.Size = new System.Drawing.Size(169, 16);
-            this.label40.TabIndex = 70;
-            this.label40.Text = "Input File Viewer Application:";
-            this.label40.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this._1_TsvFormat.AutoSize = true;
+            this._1_TsvFormat.Location = new System.Drawing.Point(420, 171);
+            this._1_TsvFormat.Name = "_1_TsvFormat";
+            this._1_TsvFormat.Size = new System.Drawing.Size(46, 17);
+            this._1_TsvFormat.TabIndex = 71;
+            this._1_TsvFormat.TabStop = true;
+            this._1_TsvFormat.Text = "TSV";
+            this._1_TsvFormat.UseVisualStyleBackColor = true;
             // 
-            // InputFileViewer
+            // _1_CsvFormat
             // 
-            this.InputFileViewer.Location = new System.Drawing.Point(197, 165);
-            this.InputFileViewer.Name = "InputFileViewer";
-            this.InputFileViewer.Size = new System.Drawing.Size(299, 20);
-            this.InputFileViewer.TabIndex = 69;
+            this._1_CsvFormat.AutoSize = true;
+            this._1_CsvFormat.Location = new System.Drawing.Point(420, 148);
+            this._1_CsvFormat.Name = "_1_CsvFormat";
+            this._1_CsvFormat.Size = new System.Drawing.Size(46, 17);
+            this._1_CsvFormat.TabIndex = 72;
+            this._1_CsvFormat.TabStop = true;
+            this._1_CsvFormat.Text = "CSV";
+            this._1_CsvFormat.UseVisualStyleBackColor = true;
             // 
             // InputConfigControl
             // 
@@ -155,18 +135,12 @@ namespace Cliver.BotGui
         }
 
         #endregion
-
-        private System.Windows.Forms.CheckBox _1_SetTAB2InputFieldDelimiter;
         private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.TextBox InputFieldSeparator;
         private System.Windows.Forms.Button ChooseInputFile;
-        private System.Windows.Forms.TextBox InputFile;
+        private System.Windows.Forms.TextBox File;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Button _0_bViewInputFile;
-        private System.Windows.Forms.Label label40;
-        private System.Windows.Forms.TextBox InputFileViewer;
-
-
-
+        private System.Windows.Forms.RadioButton _1_CsvFormat;
+        private System.Windows.Forms.RadioButton _1_TsvFormat;
     }
 }

@@ -146,6 +146,7 @@
     <Compile Include="BaseForm\MessageForm.Designer.cs">
       <DependentUpon>MessageForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Config.cs" />
     <Compile Include="Misc\Crypto.cs" />
     <Compile Include="Db\DbCommand.cs" />
     <Compile Include="Db\DbConnection.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="Misc\ImageRoutines.cs" />
     <Compile Include="Misc\ProgramRoutines.cs" />
     <Compile Include="Misc\ConvertionRoutines.cs" />
+    <Compile Include="Misc\SettingsBase.cs" />
     <Compile Include="Misc\SerializationRoutines.cs" />
     <Compile Include="Log\Log.constants.cs" />
     <Compile Include="Log\Log.static.cs" />
