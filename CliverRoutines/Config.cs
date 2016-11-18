@@ -18,6 +18,9 @@ using System.Linq;
 
 namespace Cliver
 {
+    /// <summary>
+    /// inheritors of this class are automatically managed by Config
+    /// </summary>
     public class Settings : Serializable
     {
     }
