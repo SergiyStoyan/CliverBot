@@ -20,7 +20,7 @@ using System.Collections.Generic;
 
 namespace Cliver.Bot
 {
-        public enum FileFormats
+        public enum FileFormatEnum
         {
             NULL,
             CSV,
@@ -41,20 +41,20 @@ namespace Cliver.Bot
         /// <param name="delimiter"></param>
         /// <param name="headers">if null, then the first line is considered to be a header</param>
         /// <param name="comment_marks">lines that begins with a comment mark is omitted</param>
-        public FileReader(string file_path, FileFormats file_format, string[] headers = null, bool ignore_space_lines = true, string[] comment_marks = null, bool no_headers = false)
+        public FileReader(string file_path, FileFormatEnum file_format, string[] headers = null, bool ignore_space_lines = true, string[] comment_marks = null, bool no_headers = false)
         {
             if (comment_marks == null)
                 comment_marks = new string[] { "#" };
             comment_or_empty_string_regex = new Regex(@"^" + (ignore_space_lines ? @"\s*" : "") + "(" + string.Join("|", (from x in comment_marks select Regex.Escape(x)).ToArray()) + ")" + (ignore_space_lines ? @"?" : "") + "$");
             switch(file_format)
             {
-                case FileFormats.CSV:
+                case FileFormatEnum.CSV:
                     match_regex = new Regex(@"(?'Q'\""?)(?'V'.*?)(?:\k'Q')(,|$)");
                     break;
-                case FileFormats.TSV:
+                case FileFormatEnum.TSV:
                     match_regex = new Regex(@"(?'Q'\""?)(?'V'.*?)(?:\k'Q')(\t|$)");
                     break;
-                case FileFormats.XLS:
+                case FileFormatEnum.XLS:
                     throw new Exception("XLS format not implemented.");
                     break;
                 default:

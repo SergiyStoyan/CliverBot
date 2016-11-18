@@ -17,7 +17,7 @@ namespace Cliver.Bot
         public class InputClass : Cliver.Settings
         {
             public string File = "input.csv";
-            public FileFormats FileFormat = FileFormats.NULL;
+            public FileFormatEnum FileFormat = FileFormatEnum.NULL;
 
             override public void Loaded()
             {
@@ -30,18 +30,20 @@ namespace Cliver.Bot
                     File = file2;
                     Save();
                 }
-                if (FileFormat == FileFormats.NULL)
+                if (FileFormat == FileFormatEnum.NULL)
                 {
                     switch (PathRoutines.GetFileExtensionFromPath(File).ToLower())
                     {
                         case "csv":
-                            FileFormat = FileFormats.CSV;
+                            FileFormat = FileFormatEnum.CSV;
                             break;
                         case "txt":
                         case "tsv":
                         case "tab":
-                            FileFormat = FileFormats.TSV;
+                            FileFormat = FileFormatEnum.TSV;
                             break;
+                        default:
+                            throw new Exception("Unknown option: " + PathRoutines.GetFileExtensionFromPath(File).ToLower());
                     }
                 }
             }

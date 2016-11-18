@@ -25,14 +25,14 @@ namespace Cliver.BotGui
         {
             switch (Cliver.Bot.Settings.Input.FileFormat)
             {
-                case FileFormats.NULL:
+                case FileFormatEnum.NULL:
                     _1_CsvFormat.Checked = false;
                     _1_TsvFormat.Checked = false;
                     break;
-                case FileFormats.CSV:
+                case FileFormatEnum.CSV:
                     _1_CsvFormat.Checked = true;
                     break;
-                case FileFormats.TSV:
+                case FileFormatEnum.TSV:
                     _1_TsvFormat.Checked = true;
                     break;
             }
@@ -41,9 +41,9 @@ namespace Cliver.BotGui
         override protected bool Saving()
         {
             if (_1_CsvFormat.Checked)
-                Bot.Settings.Input.FileFormat = FileFormats.CSV;
+                Bot.Settings.Input.FileFormat = FileFormatEnum.CSV;
             else if (_1_TsvFormat.Checked)
-                Bot.Settings.Input.FileFormat = FileFormats.TSV;
+                Bot.Settings.Input.FileFormat = FileFormatEnum.TSV;
             else
             {
                 Message.Error("File format is not defined.");
