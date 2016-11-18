@@ -137,10 +137,6 @@ namespace Cliver.Bot
                         {
                             current_item.PROCESSOR(this);
                         }
-                        catch (ThreadAbortException)
-                        {
-                            return;
-                        }
                         catch (Session.FatalException)
                         {
                             throw;
@@ -192,10 +188,10 @@ namespace Cliver.Bot
                 {
                     Thread.ResetAbort();
                 }
-                catch (Exception e)
-                {
-                    throw new Session.FatalException(e);
-                }
+                //catch (Exception e)
+                //{
+                //    throw new Session.FatalException(e);
+                //}
                 finally
                 {
                     bot.CycleExiting();
@@ -204,10 +200,7 @@ namespace Cliver.Bot
             }
             catch (Exception e)
             {
-                LogMessage.Error(e);
-                CustomizationApi.FatalError(e.Message);
-                Session.Close();
-                //LogMessage.Exit(e);
+                Session.FatalErrorClose(e);
             }
         }
         InputItem current_item;

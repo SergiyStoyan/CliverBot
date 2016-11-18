@@ -172,13 +172,26 @@ namespace Cliver.Bot
             return (from t in Assembly.GetEntryAssembly().GetTypes() where t.BaseType == typeof(InputItem) select t).FirstOrDefault();
         }
 
-        //public delegate void OnFatalError();
-        //static public event OnFatalError FatalError = null;
+        public delegate void OnFatalError(string message);
+        static public event OnFatalError FatalError = null;
 
-        //static public void FatalError(string message, Exception e = null)
-        //{
-        //    //TBD
-        //}
+        static public void FatalErrorClose(string message)
+        {
+            Session.State = StateEnum.FATAL_ERROR;
+            LogMessage.Error(message);
+            FatalError?.Invoke(message);
+            CustomizationApi.FatalError(message);
+            Session.Close();
+        }
+
+        static public void FatalErrorClose(Exception e)
+        {
+            Session.State = StateEnum.FATAL_ERROR;
+            LogMessage.Error(e);
+            FatalError?.Invoke(e.Message);
+            CustomizationApi.FatalError(e.Message);
+            Session.Close();
+        }
 
         public class FatalException : Exception
         {
@@ -202,7 +215,6 @@ namespace Cliver.Bot
 
             void set()
             {
-                Session.State = StateEnum.FATAL_ERROR;
             }
         }
     }

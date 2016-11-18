@@ -134,21 +134,21 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BotEngine\BotCycle.Api.cs" />
-    <Compile Include="BotEngine\BotCycle.cs" />
-    <Compile Include="BotEngine\Counter.cs" />
-    <Compile Include="BotEngine\Bot.cs" />
-    <Compile Include="BotEngine\CustomizationApi.cs" />
-    <Compile Include="BotEngine\InputItem.cs" />
-    <Compile Include="BotEngine\InputItemQueue.cs" />
-    <Compile Include="BotEngine\Item.cs" />
-    <Compile Include="BotEngine\Session.Api.cs" />
-    <Compile Include="BotEngine\Session.cs" />
-    <Compile Include="BotEngine\Session.Items.cs" />
-    <Compile Include="BotEngine\Session.Log.cs" />
-    <Compile Include="BotEngine\TagItem.cs" />
-    <Compile Include="BotEngine\WorkItem.cs" />
-    <Compile Include="BotEngine\WorkItemDictionary.cs" />
+    <Compile Include="Engine\BotCycle.Api.cs" />
+    <Compile Include="Engine\BotCycle.cs" />
+    <Compile Include="Engine\Counter.cs" />
+    <Compile Include="Engine\Bot.cs" />
+    <Compile Include="Engine\CustomizationApi.cs" />
+    <Compile Include="Engine\InputItem.cs" />
+    <Compile Include="Engine\InputItemQueue.cs" />
+    <Compile Include="Engine\Item.cs" />
+    <Compile Include="Engine\Session.Api.cs" />
+    <Compile Include="Engine\Session.cs" />
+    <Compile Include="Engine\Session.Items.cs" />
+    <Compile Include="Engine\Session.Log.cs" />
+    <Compile Include="Engine\TagItem.cs" />
+    <Compile Include="Engine\WorkItem.cs" />
+    <Compile Include="Engine\WorkItemDictionary.cs" />
     <Compile Include="Settings\Log.cs" />
     <Compile Include="Settings\General.cs" />
     <Compile Include="Settings\Output.cs" />

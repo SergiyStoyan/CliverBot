@@ -113,10 +113,7 @@ namespace Cliver.Bot
         internal readonly Counter ProcessorErrors = new Counter("processor_errors", Settings.General.MaxProcessorErrorNumber, max_error_count);
         static void max_error_count(int count)
         {
-            string m = "Fatal error: errors in succession " + count;
-            LogMessage.Error(m);
-            CustomizationApi.FatalError(m);
-            Close();
+            Session.FatalErrorClose("Fatal error: errors in succession " + count);
         }
 
         /// <summary>
@@ -154,10 +151,7 @@ namespace Cliver.Bot
             }
             catch (Exception e)
             {
-                LogMessage.Error(e);
-                CustomizationApi.FatalError(e.Message);
-                //LogMessage.Exit(e);
-                Close();
+                Session.FatalErrorClose(e);
             }
         }
 
@@ -217,7 +211,9 @@ namespace Cliver.Bot
                     }
                     catch (Exception e)
                     {
+                        Session.State = StateEnum.FATAL_ERROR;
                         LogMessage.Error(e);
+                        FatalError?.Invoke(e.Message);
                         CustomizationApi.FatalError(e.Message);
                     }
 
@@ -243,9 +239,10 @@ namespace Cliver.Bot
                 }
                 catch (Exception e)
                 {
+                    Session.State = StateEnum.FATAL_ERROR;
                     LogMessage.Error(e);
+                    FatalError?.Invoke(e.Message);
                     CustomizationApi.FatalError(e.Message);
-                    throw;
                 }
             }
         }
