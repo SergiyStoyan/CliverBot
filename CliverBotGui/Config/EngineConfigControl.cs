@@ -16,14 +16,13 @@ using System.Reflection;
 
 namespace Cliver.BotGui
 {
-    public partial class GeneralConfigControl : Cliver.BotGui.ConfigControl
+    public partial class EngineConfigControl : Cliver.BotGui.ConfigControl
     {
-        new public const string NAME = "General";
+        override public string Section { get { return "Engine"; } }
 
-        public GeneralConfigControl()
+        public EngineConfigControl()
         {
             InitializeComponent();
-            Init(NAME);
         }
 
         override protected void SetToolTip()

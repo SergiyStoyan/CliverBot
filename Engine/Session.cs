@@ -65,7 +65,7 @@ namespace Cliver.Bot
             workflow_xtw.WriteStartDocument();
             workflow_xtw.WriteStartElement("Session");
 
-            if (Settings.General.WriteSessionRestoringLog)
+            if (Settings.Engine.WriteSessionRestoringLog)
             {
                 items_xtw = new XmlTextWriter(Log.SessionDir + "\\" + ITEMS_FILE_NAME, Encoding.UTF8);
                 items_xtw.Formatting = Formatting.Indented;
@@ -74,7 +74,7 @@ namespace Cliver.Bot
             }
 
             Restored = false;
-            if (Settings.General.RestoreBrokenSession && !ProgramRoutines.IsParameterSet(CommandLineParameters.NOT_RESTORE_SESSION))
+            if (Settings.Engine.RestoreBrokenSession && !ProgramRoutines.IsParameterSet(CommandLineParameters.NOT_RESTORE_SESSION))
             {
                 Restored = this.restore(ref StartTime);
                 if (This == null)
@@ -110,7 +110,7 @@ namespace Cliver.Bot
             Close();
         }
 
-        internal readonly Counter ProcessorErrors = new Counter("processor_errors", Settings.General.MaxProcessorErrorNumber, max_error_count);
+        internal readonly Counter ProcessorErrors = new Counter("processor_errors", Settings.Engine.MaxProcessorErrorNumber, max_error_count);
         static void max_error_count(int count)
         {
             Session.FatalErrorClose("Fatal error: errors in succession " + count);

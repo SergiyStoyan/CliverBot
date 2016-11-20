@@ -11,12 +11,11 @@ namespace Cliver.BotGui
 {
     public partial class DatabaseConfigControl : Cliver.BotGui.ConfigControl
     {
-        new public const string NAME = "Database";
+        override public string Section { get { return "Database"; } }
 
         public DatabaseConfigControl()
         {
             InitializeComponent();
-            Init(NAME);
         }
 
         override protected void SetToolTip()

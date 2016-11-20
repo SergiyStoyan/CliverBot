@@ -18,12 +18,11 @@ namespace Cliver.BotGui
 {
     public partial class SpiderConfigControl : Cliver.BotGui.ConfigControl
     {
-        new public const string NAME = "Spider";
+        override public string Section { get { return "Spider"; } }
 
         public SpiderConfigControl()
         {
             InitializeComponent();
-            Init(NAME);
         }
 
         override protected void SetToolTip()

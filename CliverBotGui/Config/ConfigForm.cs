@@ -23,7 +23,7 @@ using System.Diagnostics;
 
 namespace Cliver.BotGui
 {
-    internal partial class ConfigForm :Form// BaseForm//
+    internal partial class ConfigForm : BaseForm//Form// 
     {
         public ConfigForm()
         {
@@ -63,8 +63,11 @@ namespace Cliver.BotGui
                     return;
                 }
                 foreach (ConfigControlItem cci in listConfigTabs.Items)
-                    if(!cci.CC.PutValues2Properties())
+                    if (!cci.CC.GetData())
+                    {
+                        listConfigTabs.SelectedItem = cci;
                         return;
+                    }
                 Config.Save();
                 Config.Reload();
                 Close();
@@ -102,32 +105,22 @@ namespace Cliver.BotGui
         {
             try
             {
-                Type[] custom_ConfigControl_types = (from x in Assembly.GetEntryAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(ConfigControl)) select x).ToArray();
-                Dictionary<string, ConfigControl> cccn2cc = new Dictionary<string, ConfigControl>();
-                foreach (Type cct in custom_ConfigControl_types)
+                List<Type> default_ConfigControl_types = (from x in Assembly.GetExecutingAssembly().GetTypes() where x.BaseType == typeof(ConfigControl) select x).ToList();
+                List<Type> custom_ConfigControl_types = (from x in Assembly.GetEntryAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(ConfigControl)) select x).ToList();
+                List<Type> ConfigControl_types = new List<Type>(default_ConfigControl_types);
+                ConfigControl_types.AddRange(custom_ConfigControl_types);
+                Dictionary<string, ConfigControl> sections2cc = new Dictionary<string, ConfigControl>();
+                foreach (Type cct in ConfigControl_types)
                 {
                     ConfigControl cc = (ConfigControl)Activator.CreateInstance(cct);
-                    if (cccn2cc.ContainsKey(cc.Name))
-                        throw new Exception("There is one more ConfigControl named '" + cc.Name + "'");
-                    cccn2cc.Add(cc.Name, cc);
+                    sections2cc[cc.Section] = cc;
                 }
-
-                Type[] default_ConfigControl_types = (from x in Assembly.GetExecutingAssembly().GetTypes() where x.BaseType == typeof(ConfigControl) select x).ToArray();
-                Dictionary<string, ConfigControl> dccn2cc = new Dictionary<string, ConfigControl>();
-                foreach (Type cct in default_ConfigControl_types)
-                {
-                    ConfigControl cc = (ConfigControl)Activator.CreateInstance(cct);
-                    if (dccn2cc.ContainsKey(cc.Name))
-                        throw new Exception("There is one more ConfigControl named '" + cc.Name + "'");
-                    dccn2cc.Add(cc.Name, cc);
-                }
-
-                foreach (string name in CustomizationGuiApi.BotGui.GetConfigControlNames())
+                
+                foreach (string section in CustomizationGuiApi.BotGui.GetConfigControlNames())
                 {
                     ConfigControl cc = null;
-                    if (!cccn2cc.TryGetValue(name, out cc))
-                        if (!dccn2cc.TryGetValue(name, out cc))
-                            LogMessage.Error("No ConfigControl found for name '" + name + "'");
+                    if (!sections2cc.TryGetValue(section, out cc))
+                        LogMessage.Error("No ConfigControl found for section '" + section + "'");
                     add_ConfigControl(cc);
                 }
 

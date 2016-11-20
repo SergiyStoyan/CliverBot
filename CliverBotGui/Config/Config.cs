@@ -92,7 +92,7 @@ namespace Cliver.BotGui
 
                 Serializable f = Cliver.Config.GetInstance(section);
                 if (f == null)
-                    throw new Exception("No object '" + section + "' was found.");
+                    throw new Exception("No instance for settings section '" + section + "' was found.");
                 FieldInfo pi = f.GetType().GetField(parameter);
                 return pi.GetValue(f);
             }

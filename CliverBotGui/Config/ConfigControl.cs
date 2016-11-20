@@ -13,19 +13,15 @@ namespace Cliver.BotGui
 {
     public partial class ConfigControl : UserControl
     {
-        public readonly string NAME = "empty";
+        virtual public string Section
+        {
+            get;
+        }
 
         public ConfigControl()
         {
             InitializeComponent();
-            Init(NAME);
         }
-
-        protected void Init(string name)
-        {
-            group_box.Text = name;
-            Name = name;
-        }        
 
         virtual protected void SetToolTip()
         {
@@ -45,25 +41,20 @@ namespace Cliver.BotGui
 
         private void ConfigControl_Load(object sender, EventArgs e)
         {
+            group_box.Text = Section;
+            Name = Section;
             toolTip1.AutoPopDelay = 100000;
             SetToolTip();
             Set();
         }
 
-        virtual protected void Setting()
-        {
-
-        }
-
         virtual protected void Set()
         {
-            Setting();
             set_group_box_values_from_config();
         }
 
-        void set_group_box_values_from_config()
+        protected void set_group_box_values_from_config()
         {
-
             foreach (Control c in group_box.Controls)
             {
                 if (Regex.IsMatch(c.Name, "^_1_"))
@@ -99,42 +90,29 @@ namespace Cliver.BotGui
                     if (o != null)
                         ((System.Windows.Forms.DateTimePicker)c).Value = (DateTime)o;
                 }
-                else if (t == typeof(System.Windows.Forms.GroupBox)) { }
-                else if (t == typeof(System.Windows.Forms.Panel)) { }
-                else if (t == typeof(System.Windows.Forms.Label)) { }
-                else if (t == typeof(System.Windows.Forms.Button)) { }
-                else
-                    throw new Exception("No case for type " + t.Name);
             }
         }
-
-        virtual protected bool Getting()
+        
+        virtual protected bool Get()
         {
+            put_control_values_to_config(Name, group_box);
             return true;
         }
 
-        virtual protected bool Get()
+        internal bool GetData()
         {
             try
             {
-                if (!Getting())
-                    return false;
-                put_values_of_control_to_config(Name, group_box);
+                return Get();
             }
             catch (Exception ex)
             {
                 LogMessage.Error(ex);
                 return false;
             }
-            return true;
         }
 
-        internal bool PutValues2Properties()
-        {
-            return Get();
-        }
-
-        void put_values_of_control_to_config(string section, Control control)
+        protected void put_control_values_to_config(string section, Control control)
         {
             try
             {
@@ -142,7 +120,7 @@ namespace Cliver.BotGui
                 {
                     if (c.Controls.Count > 0)
                     {
-                        put_values_of_control_to_config(section, c);
+                        put_control_values_to_config(section, c);
                         continue;
                     }
                     object o = get_value_for_config(c);

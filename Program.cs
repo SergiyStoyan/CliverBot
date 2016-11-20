@@ -34,9 +34,9 @@ namespace Cliver.Bot
 
             if (ProgramRoutines.IsParameterSet(CommandLineParameters.PRODUCTION))
             {
-                Settings.General.RestoreBrokenSession = true;
-                Settings.General.RestoreErrorItemsAsNew = false;
-                Settings.General.WriteSessionRestoringLog = true;
+                Settings.Engine.RestoreBrokenSession = true;
+                Settings.Engine.RestoreErrorItemsAsNew = false;
+                Settings.Engine.WriteSessionRestoringLog = true;
             }
             
             AssemblyName ean = Assembly.GetEntryAssembly().GetName();

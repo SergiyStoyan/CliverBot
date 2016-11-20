@@ -13,9 +13,9 @@ namespace Cliver.Bot
 {
     public partial class Settings
     {
-        public static readonly GeneralClass General;
+        public static readonly EngineClass Engine;
 
-        public class GeneralClass : Cliver.Settings
+        public class EngineClass : Cliver.Settings
         {
             public bool RestoreBrokenSession = true;
             public int MaxBotThreadNumber = 1;

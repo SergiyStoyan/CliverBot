@@ -18,12 +18,11 @@ namespace Cliver.BotGui
 {
     public partial class LogConfigControl : Cliver.BotGui.ConfigControl
     {
-        new public const string NAME = "Log";
+        override public string Section { get { return "Log"; } }
 
         public LogConfigControl()
         {
             InitializeComponent();
-            Init(NAME);
         }
 
         override protected void SetToolTip()

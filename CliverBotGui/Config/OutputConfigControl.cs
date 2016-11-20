@@ -21,16 +21,17 @@ namespace Cliver.BotGui
 {
     public partial class OutputConfigControl : Cliver.BotGui.ConfigControl
     {
-        new public readonly string NAME = "Output";
+        override public string Section { get { return "Output"; } }
 
         public OutputConfigControl()
         {
             InitializeComponent();
-            Init(NAME);
         }
 
-        override protected void Setting()
+        override protected void Set()
         {
+            set_group_box_values_from_config();
+
             switch (Cliver.Bot.Settings.Output.FileFormat)
             {
                 case FileFormatEnum.NULL:
@@ -46,7 +47,7 @@ namespace Cliver.BotGui
             }
         }
 
-        override protected bool Getting()
+        override protected bool Get()
         {
             if (_1_CsvFormat.Checked)
                 Bot.Settings.Output.FileFormat = FileFormatEnum.CSV;
@@ -57,6 +58,8 @@ namespace Cliver.BotGui
                 Message.Error("File format is not defined.");
                 return false;
             }
+
+            put_control_values_to_config(Name, group_box);
             return true;
         }
 

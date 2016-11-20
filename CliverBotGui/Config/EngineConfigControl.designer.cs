@@ -1,6 +1,6 @@
 namespace Cliver.BotGui
 {
-    partial class GeneralConfigControl
+    partial class EngineConfigControl
     {
         /// <summary>
         /// Required designer variable.

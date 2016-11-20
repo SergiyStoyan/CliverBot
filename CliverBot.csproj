@@ -150,7 +150,7 @@
     <Compile Include="Engine\WorkItem.cs" />
     <Compile Include="Engine\WorkItemDictionary.cs" />
     <Compile Include="Settings\Log.cs" />
-    <Compile Include="Settings\General.cs" />
+    <Compile Include="Settings\Engine.cs" />
     <Compile Include="Settings\Output.cs" />
     <Compile Include="Settings\Input.cs" />
     <Compile Include="Misc\FileReader.cs" />

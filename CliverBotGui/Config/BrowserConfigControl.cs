@@ -18,12 +18,11 @@ namespace Cliver.BotGui
 {
     public partial class BrowserConfigControl : Cliver.BotGui.ConfigControl
     {
-        new public const string NAME = "Browser";
+       override public string Section { get { return "Browser"; } }
 
         public BrowserConfigControl()
         {
             InitializeComponent();
-            Init(NAME);
         }
         
         override protected void SetToolTip()

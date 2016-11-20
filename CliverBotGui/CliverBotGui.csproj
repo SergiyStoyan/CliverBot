@@ -114,11 +114,11 @@
     <Compile Include="Config\LogConfigControl.designer.cs">
       <DependentUpon>LogConfigControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Config\GeneralConfigControl.cs">
+    <Compile Include="Config\EngineConfigControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Config\GeneralConfigControl.designer.cs">
-      <DependentUpon>GeneralConfigControl.cs</DependentUpon>
+    <Compile Include="Config\EngineConfigControl.designer.cs">
+      <DependentUpon>EngineConfigControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Config\DatabaseConfigControl.cs">
       <SubType>UserControl</SubType>
@@ -202,8 +202,8 @@
     <EmbeddedResource Include="Config\LogConfigControl.resx">
       <DependentUpon>LogConfigControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Config\GeneralConfigControl.resx">
-      <DependentUpon>GeneralConfigControl.cs</DependentUpon>
+    <EmbeddedResource Include="Config\EngineConfigControl.resx">
+      <DependentUpon>EngineConfigControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Config\DatabaseConfigControl.resx">
       <DependentUpon>DatabaseConfigControl.cs</DependentUpon>

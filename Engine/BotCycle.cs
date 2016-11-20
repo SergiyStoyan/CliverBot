@@ -49,7 +49,7 @@ namespace Cliver.Bot
         {
             lock (id2bot_cycles)
             {
-                if (id2bot_cycles.Count >= Settings.General.MaxBotThreadNumber)
+                if (id2bot_cycles.Count >= Settings.Engine.MaxBotThreadNumber)
                     return;
             }
             new BotCycle();

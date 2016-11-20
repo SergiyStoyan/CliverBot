@@ -362,7 +362,7 @@ namespace Cliver.Bot
                         if(queue == null)
                             queue = type_name;
                         InputItemState state = (InputItemState)Enum.Parse(typeof(InputItemState), xtr.GetAttribute("state"), true);
-                        if (state == InputItemState.ERROR_RESTORE_AS_NEW && !Settings.General.RestoreErrorItemsAsNew)
+                        if (state == InputItemState.ERROR_RESTORE_AS_NEW && !Settings.Engine.RestoreErrorItemsAsNew)
                             state = InputItemState.ERROR;
 
                         switch (state)

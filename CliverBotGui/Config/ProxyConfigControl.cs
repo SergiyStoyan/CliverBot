@@ -18,12 +18,11 @@ namespace Cliver.BotGui
 {
     public partial class ProxyConfigControl : Cliver.BotGui.ConfigControl
     {
-        new public const string NAME = "Proxy";
+        override public string Section { get { return "Proxy"; } }
 
         public ProxyConfigControl()
         {
             InitializeComponent();
-            Init(NAME);
         }
 
         override protected void SetToolTip()
