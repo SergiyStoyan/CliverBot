@@ -44,8 +44,15 @@ namespace Cliver.BotGui
             group_box.Text = Section;
             Name = Section;
             toolTip1.AutoPopDelay = 100000;
-            SetToolTip();
-            Set();
+            try
+            {
+                SetToolTip();
+                Set();
+            }
+            catch(Exception ex)
+            {
+                LogMessage.Error(ex);
+            }
         }
 
         virtual protected void Set()

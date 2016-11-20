@@ -37,7 +37,9 @@ namespace Cliver
 
         const string FILE_EXTENSION = "json";
 
-        public readonly static string StorageDir = Log.GetAppCommonDataDir();
+        public readonly static string DefaultStorageDir = Log.GetAppCommonDataDir();
+        public static string StorageDir { get { return _StorageDir; } private set { _StorageDir = value; } }
+        static string _StorageDir = DefaultStorageDir;
 
         public static void Initialize()
         {
@@ -94,8 +96,10 @@ namespace Cliver
         }
         static Dictionary<string, Serializable> object_names2serializable = new Dictionary<string, Serializable>();
 
-        static public void Reload()
+        static public void Reload(string storage_directory = null)
         {
+            StorageDir = storage_directory;
+            Log.Inform("Loading configuration from " + StorageDir);
             get(false);
         }
 
@@ -120,6 +124,15 @@ namespace Cliver
                 Serializable s = null;
                 object_names2serializable.TryGetValue(object_name, out s);
                 return s;
+            }
+        }
+
+        static public void CopyFiles(string to_directory)
+        {
+            lock (object_names2serializable)
+            {
+                foreach (Serializable s in object_names2serializable.Values)
+                    File.Copy(s.GetFile(), to_directory + "\\" + PathRoutines.GetFileNameFromPath(s.GetFile()));
             }
         }
     }

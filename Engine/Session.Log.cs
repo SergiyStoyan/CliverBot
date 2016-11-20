@@ -208,12 +208,15 @@ namespace Cliver.Bot
                                 if (!LogMessage.AskYesNo("Previous session " + previous_broken_session_dir + " was not completed. Restore it?", true))
                                     return false;
 
+                                Config.Reload(previous_broken_session_dir);
+
                                 FileInfo broken_session_items_fi = new FileInfo(previous_broken_session_dir + "\\" + ITEMS_FILE_NAME);
                                 if (!broken_session_items_fi.Exists)
                                 {
                                     string str = "Could not find " + broken_session_items_fi.Name + " in " + previous_broken_session_dir + "!";
                                     if (LogMessage.AskYesNo(str + " Proceed without session restoring?", true))
                                     {
+                                        Config.Reload(Config.DefaultStorageDir);
                                         return false;
                                     }
                                     else

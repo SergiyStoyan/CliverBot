@@ -87,6 +87,11 @@ namespace Cliver.Bot
                 read_input_file();
             }
 
+            if(Settings.Engine.WriteSessionRestoringLog)
+            {
+                Config.CopyFiles(Log.SessionDir);
+            }
+
             //try
             //{
             CustomizationApi.SessionCreating();

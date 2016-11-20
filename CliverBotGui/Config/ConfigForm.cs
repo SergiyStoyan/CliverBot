@@ -23,7 +23,7 @@ using System.Diagnostics;
 
 namespace Cliver.BotGui
 {
-    internal partial class ConfigForm : BaseForm//Form// 
+    internal partial class ConfigForm : Form// BaseForm//
     {
         public ConfigForm()
         {
@@ -86,6 +86,7 @@ namespace Cliver.BotGui
 
         private void Cancel_Click(object sender, EventArgs e)
         {
+            Config.Reload();
             this.Close();
         }
 
