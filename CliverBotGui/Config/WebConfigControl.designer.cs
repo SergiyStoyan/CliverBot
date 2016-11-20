@@ -82,7 +82,7 @@ namespace Cliver.BotGui
             this.MaxAttemptCount.Location = new System.Drawing.Point(459, 210);
             this.MaxAttemptCount.Name = "MaxAttemptCount";
             this.MaxAttemptCount.Size = new System.Drawing.Size(40, 20);
-            this.MaxAttemptCount.TabIndex = 65;
+            this.MaxAttemptCount.TabIndex = 8;
             this.MaxAttemptCount.Text = "5";
             // 
             // label15
@@ -99,7 +99,7 @@ namespace Cliver.BotGui
             this.MaxHttpRedirectionCount.Location = new System.Drawing.Point(458, 179);
             this.MaxHttpRedirectionCount.Name = "MaxHttpRedirectionCount";
             this.MaxHttpRedirectionCount.Size = new System.Drawing.Size(40, 20);
-            this.MaxHttpRedirectionCount.TabIndex = 63;
+            this.MaxHttpRedirectionCount.TabIndex = 7;
             this.MaxHttpRedirectionCount.Text = "5";
             // 
             // label10
@@ -124,7 +124,7 @@ namespace Cliver.BotGui
             this.CrawlTimeIntervalInMss.Location = new System.Drawing.Point(458, 24);
             this.CrawlTimeIntervalInMss.Name = "CrawlTimeIntervalInMss";
             this.CrawlTimeIntervalInMss.Size = new System.Drawing.Size(40, 20);
-            this.CrawlTimeIntervalInMss.TabIndex = 60;
+            this.CrawlTimeIntervalInMss.TabIndex = 0;
             this.CrawlTimeIntervalInMss.Text = "0";
             // 
             // label1
@@ -142,7 +142,7 @@ namespace Cliver.BotGui
             this.HttpUserAgent.Multiline = true;
             this.HttpUserAgent.Name = "HttpUserAgent";
             this.HttpUserAgent.Size = new System.Drawing.Size(402, 20);
-            this.HttpUserAgent.TabIndex = 59;
+            this.HttpUserAgent.TabIndex = 1;
             // 
             // label5
             // 
@@ -158,7 +158,7 @@ namespace Cliver.BotGui
             this.MaxDownloadedFileLength.Location = new System.Drawing.Point(433, 149);
             this.MaxDownloadedFileLength.Name = "MaxDownloadedFileLength";
             this.MaxDownloadedFileLength.Size = new System.Drawing.Size(65, 20);
-            this.MaxDownloadedFileLength.TabIndex = 56;
+            this.MaxDownloadedFileLength.TabIndex = 6;
             this.MaxDownloadedFileLength.Text = "50000";
             // 
             // label3
@@ -184,7 +184,7 @@ namespace Cliver.BotGui
             this.HttpRequestTimeoutInSeconds.Location = new System.Drawing.Point(458, 119);
             this.HttpRequestTimeoutInSeconds.Name = "HttpRequestTimeoutInSeconds";
             this.HttpRequestTimeoutInSeconds.Size = new System.Drawing.Size(40, 20);
-            this.HttpRequestTimeoutInSeconds.TabIndex = 55;
+            this.HttpRequestTimeoutInSeconds.TabIndex = 5;
             this.HttpRequestTimeoutInSeconds.Text = "30";
             // 
             // UseFilesFromCache
@@ -193,7 +193,7 @@ namespace Cliver.BotGui
             this.UseFilesFromCache.Location = new System.Drawing.Point(28, 183);
             this.UseFilesFromCache.Name = "UseFilesFromCache";
             this.UseFilesFromCache.Size = new System.Drawing.Size(172, 20);
-            this.UseFilesFromCache.TabIndex = 67;
+            this.UseFilesFromCache.TabIndex = 4;
             this.UseFilesFromCache.Text = "Use Cached Files";
             this.UseFilesFromCache.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -212,7 +212,7 @@ namespace Cliver.BotGui
             this.LogPostRequestParameters.Location = new System.Drawing.Point(18, 148);
             this.LogPostRequestParameters.Name = "LogPostRequestParameters";
             this.LogPostRequestParameters.Size = new System.Drawing.Size(182, 26);
-            this.LogPostRequestParameters.TabIndex = 70;
+            this.LogPostRequestParameters.TabIndex = 3;
             this.LogPostRequestParameters.Text = "Log Post Request Parameters";
             this.LogPostRequestParameters.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -223,7 +223,7 @@ namespace Cliver.BotGui
             this.LogDownloadedFiles.Location = new System.Drawing.Point(56, 116);
             this.LogDownloadedFiles.Name = "LogDownloadedFiles";
             this.LogDownloadedFiles.Size = new System.Drawing.Size(144, 26);
-            this.LogDownloadedFiles.TabIndex = 69;
+            this.LogDownloadedFiles.TabIndex = 2;
             this.LogDownloadedFiles.Text = "Log Downloaded Files";
             this.LogDownloadedFiles.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 

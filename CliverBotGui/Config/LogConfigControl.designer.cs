@@ -62,7 +62,7 @@ namespace Cliver.BotGui
             this.bPickDir.Location = new System.Drawing.Point(476, 47);
             this.bPickDir.Name = "bPickDir";
             this.bPickDir.Size = new System.Drawing.Size(24, 23);
-            this.bPickDir.TabIndex = 49;
+            this.bPickDir.TabIndex = 1;
             this.bPickDir.Text = "...";
             this.bPickDir.UseVisualStyleBackColor = true;
             this.bPickDir.Click += new System.EventHandler(this.bPickDir_Click);
@@ -81,7 +81,7 @@ namespace Cliver.BotGui
             this.DeleteLogsOlderDays.Location = new System.Drawing.Point(455, 104);
             this.DeleteLogsOlderDays.Name = "DeleteLogsOlderDays";
             this.DeleteLogsOlderDays.Size = new System.Drawing.Size(44, 20);
-            this.DeleteLogsOlderDays.TabIndex = 46;
+            this.DeleteLogsOlderDays.TabIndex = 2;
             // 
             // WriteLog
             // 
@@ -92,7 +92,7 @@ namespace Cliver.BotGui
             this.WriteLog.Location = new System.Drawing.Point(391, 135);
             this.WriteLog.Name = "WriteLog";
             this.WriteLog.Size = new System.Drawing.Size(108, 26);
-            this.WriteLog.TabIndex = 44;
+            this.WriteLog.TabIndex = 3;
             this.WriteLog.Text = "Write Log";
             this.WriteLog.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -111,7 +111,7 @@ namespace Cliver.BotGui
             this.PreWorkDir.Multiline = true;
             this.PreWorkDir.Name = "PreWorkDir";
             this.PreWorkDir.Size = new System.Drawing.Size(467, 20);
-            this.PreWorkDir.TabIndex = 43;
+            this.PreWorkDir.TabIndex = 0;
             this.PreWorkDir.Text = "c:\\temp";
             // 
             // label2

@@ -41,8 +41,9 @@ namespace Cliver
                     {
                         code.Invoke();
                     }
-                    catch (ThreadAbortException)
+                    catch (ThreadAbortException e)
                     {
+                        Thread.ResetAbort();
                     }
                     catch (Exception e)
                     {

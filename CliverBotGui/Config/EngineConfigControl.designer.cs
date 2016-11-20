@@ -79,7 +79,7 @@ namespace Cliver.BotGui
             this.MaxProcessorErrorNumber.Location = new System.Drawing.Point(455, 149);
             this.MaxProcessorErrorNumber.Name = "MaxProcessorErrorNumber";
             this.MaxProcessorErrorNumber.Size = new System.Drawing.Size(40, 20);
-            this.MaxProcessorErrorNumber.TabIndex = 64;
+            this.MaxProcessorErrorNumber.TabIndex = 5;
             this.MaxProcessorErrorNumber.Text = "5";
             // 
             // label37
@@ -96,7 +96,7 @@ namespace Cliver.BotGui
             this.MaxTime2WaitForSessionStopInSecs.Location = new System.Drawing.Point(455, 179);
             this.MaxTime2WaitForSessionStopInSecs.Name = "MaxTime2WaitForSessionStopInSecs";
             this.MaxTime2WaitForSessionStopInSecs.Size = new System.Drawing.Size(40, 20);
-            this.MaxTime2WaitForSessionStopInSecs.TabIndex = 62;
+            this.MaxTime2WaitForSessionStopInSecs.TabIndex = 6;
             this.MaxTime2WaitForSessionStopInSecs.Text = "100";
             // 
             // RestoreErrorItemsAsNew
@@ -105,7 +105,7 @@ namespace Cliver.BotGui
             this.RestoreErrorItemsAsNew.Location = new System.Drawing.Point(309, 53);
             this.RestoreErrorItemsAsNew.Name = "RestoreErrorItemsAsNew";
             this.RestoreErrorItemsAsNew.Size = new System.Drawing.Size(186, 20);
-            this.RestoreErrorItemsAsNew.TabIndex = 58;
+            this.RestoreErrorItemsAsNew.TabIndex = 3;
             this.RestoreErrorItemsAsNew.Text = "Restore Error Items As New";
             this.RestoreErrorItemsAsNew.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -123,7 +123,7 @@ namespace Cliver.BotGui
             this.WriteSessionRestoringLog.Location = new System.Drawing.Point(274, 79);
             this.WriteSessionRestoringLog.Name = "WriteSessionRestoringLog";
             this.WriteSessionRestoringLog.Size = new System.Drawing.Size(221, 20);
-            this.WriteSessionRestoringLog.TabIndex = 56;
+            this.WriteSessionRestoringLog.TabIndex = 4;
             this.WriteSessionRestoringLog.Text = "Write Current Session Restoring Log";
             this.WriteSessionRestoringLog.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -133,7 +133,7 @@ namespace Cliver.BotGui
             this.RestoreBrokenSession.Location = new System.Drawing.Point(309, 27);
             this.RestoreBrokenSession.Name = "RestoreBrokenSession";
             this.RestoreBrokenSession.Size = new System.Drawing.Size(186, 20);
-            this.RestoreBrokenSession.TabIndex = 55;
+            this.RestoreBrokenSession.TabIndex = 2;
             this.RestoreBrokenSession.Text = "Restore Broken Session";
             this.RestoreBrokenSession.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -142,7 +142,7 @@ namespace Cliver.BotGui
             this.label2.Location = new System.Drawing.Point(74, 31);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(113, 16);
-            this.label2.TabIndex = 53;
+            this.label2.TabIndex = 0;
             this.label2.Text = "Thread Number:";
             this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
@@ -151,7 +151,7 @@ namespace Cliver.BotGui
             this.MaxBotThreadNumber.Location = new System.Drawing.Point(199, 26);
             this.MaxBotThreadNumber.Name = "MaxBotThreadNumber";
             this.MaxBotThreadNumber.Size = new System.Drawing.Size(40, 20);
-            this.MaxBotThreadNumber.TabIndex = 52;
+            this.MaxBotThreadNumber.TabIndex = 1;
             this.MaxBotThreadNumber.Text = "1";
             // 
             // label3
@@ -170,10 +170,10 @@ namespace Cliver.BotGui
             this.label1.Size = new System.Drawing.Size(483, 2);
             this.label1.TabIndex = 71;
             // 
-            // GeneralConfigControl
+            // EngineConfigControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.Name = "GeneralConfigControl";
+            this.Name = "EngineConfigControl";
             this.group_box.ResumeLayout(false);
             this.group_box.PerformLayout();
             this.ResumeLayout(false);

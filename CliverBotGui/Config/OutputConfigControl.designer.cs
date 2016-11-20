@@ -69,7 +69,7 @@ namespace Cliver.BotGui
             this.Write2CommonFolder.Location = new System.Drawing.Point(35, 56);
             this.Write2CommonFolder.Name = "Write2CommonFolder";
             this.Write2CommonFolder.Size = new System.Drawing.Size(259, 17);
-            this.Write2CommonFolder.TabIndex = 68;
+            this.Write2CommonFolder.TabIndex = 1;
             this.Write2CommonFolder.Text = "Write Output File to WorkDir (irrelative of Session)";
             this.Write2CommonFolder.UseVisualStyleBackColor = true;
             // 
@@ -95,7 +95,7 @@ namespace Cliver.BotGui
             this.FileChunkSizeInBytes.Location = new System.Drawing.Point(190, 133);
             this.FileChunkSizeInBytes.Name = "FileChunkSizeInBytes";
             this.FileChunkSizeInBytes.Size = new System.Drawing.Size(141, 20);
-            this.FileChunkSizeInBytes.TabIndex = 60;
+            this.FileChunkSizeInBytes.TabIndex = 3;
             this.FileChunkSizeInBytes.Text = "0";
             // 
             // FileName
@@ -103,7 +103,7 @@ namespace Cliver.BotGui
             this.FileName.Location = new System.Drawing.Point(130, 28);
             this.FileName.Name = "FileName";
             this.FileName.Size = new System.Drawing.Size(342, 20);
-            this.FileName.TabIndex = 59;
+            this.FileName.TabIndex = 0;
             // 
             // label27
             // 
@@ -128,7 +128,7 @@ namespace Cliver.BotGui
             this.Append.Location = new System.Drawing.Point(35, 79);
             this.Append.Name = "Append";
             this.Append.Size = new System.Drawing.Size(117, 17);
-            this.Append.TabIndex = 69;
+            this.Append.TabIndex = 2;
             this.Append.Text = "Append Output File";
             this.Append.UseVisualStyleBackColor = true;
             // 
@@ -138,7 +138,7 @@ namespace Cliver.BotGui
             this._1_CsvFormat.Location = new System.Drawing.Point(426, 221);
             this._1_CsvFormat.Name = "_1_CsvFormat";
             this._1_CsvFormat.Size = new System.Drawing.Size(46, 17);
-            this._1_CsvFormat.TabIndex = 75;
+            this._1_CsvFormat.TabIndex = 4;
             this._1_CsvFormat.TabStop = true;
             this._1_CsvFormat.Text = "CSV";
             this._1_CsvFormat.UseVisualStyleBackColor = true;
@@ -150,7 +150,7 @@ namespace Cliver.BotGui
             this._1_TsvFormat.Location = new System.Drawing.Point(426, 244);
             this._1_TsvFormat.Name = "_1_TsvFormat";
             this._1_TsvFormat.Size = new System.Drawing.Size(46, 17);
-            this._1_TsvFormat.TabIndex = 74;
+            this._1_TsvFormat.TabIndex = 5;
             this._1_TsvFormat.TabStop = true;
             this._1_TsvFormat.Text = "TSV";
             this._1_TsvFormat.UseVisualStyleBackColor = true;

@@ -49,12 +49,18 @@ namespace Cliver.BotGui
             this.group_box.Controls.Add(this.label16);
             this.group_box.Text = "TestCustom";
             // 
+            // toolTip1
+            // 
+            this.toolTip1.AutoPopDelay = 100000;
+            this.toolTip1.InitialDelay = 500;
+            this.toolTip1.ReshowDelay = 100;
+            // 
             // MaxPageCountPerSite
             // 
             this.MaxPageCountPerSite.Location = new System.Drawing.Point(448, 89);
             this.MaxPageCountPerSite.Name = "MaxPageCountPerSite";
             this.MaxPageCountPerSite.Size = new System.Drawing.Size(40, 20);
-            this.MaxPageCountPerSite.TabIndex = 66;
+            this.MaxPageCountPerSite.TabIndex = 2;
             this.MaxPageCountPerSite.Text = "100";
             // 
             // label34
@@ -73,7 +79,7 @@ namespace Cliver.BotGui
             this.ComplyRobotProtocol.Location = new System.Drawing.Point(291, 223);
             this.ComplyRobotProtocol.Name = "ComplyRobotProtocol";
             this.ComplyRobotProtocol.Size = new System.Drawing.Size(197, 17);
-            this.ComplyRobotProtocol.TabIndex = 65;
+            this.ComplyRobotProtocol.TabIndex = 3;
             this.ComplyRobotProtocol.Text = "Comply With Robot Protocol";
             this.ComplyRobotProtocol.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.ComplyRobotProtocol.UseVisualStyleBackColor = true;
@@ -83,7 +89,7 @@ namespace Cliver.BotGui
             this.UnchangableDomainPartNumber.Location = new System.Drawing.Point(448, 58);
             this.UnchangableDomainPartNumber.Name = "UnchangableDomainPartNumber";
             this.UnchangableDomainPartNumber.Size = new System.Drawing.Size(40, 20);
-            this.UnchangableDomainPartNumber.TabIndex = 63;
+            this.UnchangableDomainPartNumber.TabIndex = 1;
             this.UnchangableDomainPartNumber.Text = "2";
             // 
             // label12
@@ -100,7 +106,7 @@ namespace Cliver.BotGui
             this.MaxDownloadLinkDepth.Location = new System.Drawing.Point(448, 26);
             this.MaxDownloadLinkDepth.Name = "MaxDownloadLinkDepth";
             this.MaxDownloadLinkDepth.Size = new System.Drawing.Size(40, 20);
-            this.MaxDownloadLinkDepth.TabIndex = 61;
+            this.MaxDownloadLinkDepth.TabIndex = 0;
             this.MaxDownloadLinkDepth.Text = "2";
             // 
             // label16
@@ -112,10 +118,10 @@ namespace Cliver.BotGui
             this.label16.Text = "Maximal Depth Of Open Link:";
             this.label16.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
-            // CustomConfigControlExample
+            // SpiderConfigControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.Name = "CustomConfigControlExample";
+            this.Name = "SpiderConfigControl";
             this.group_box.ResumeLayout(false);
             this.group_box.PerformLayout();
             this.ResumeLayout(false);

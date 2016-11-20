@@ -82,7 +82,7 @@ namespace Cliver.BotGui
             this.MaxAttemptCountWithNewProxy.Location = new System.Drawing.Point(445, 230);
             this.MaxAttemptCountWithNewProxy.Name = "MaxAttemptCountWithNewProxy";
             this.MaxAttemptCountWithNewProxy.Size = new System.Drawing.Size(52, 20);
-            this.MaxAttemptCountWithNewProxy.TabIndex = 82;
+            this.MaxAttemptCountWithNewProxy.TabIndex = 6;
             this.MaxAttemptCountWithNewProxy.Text = "10";
             // 
             // label21
@@ -100,7 +100,7 @@ namespace Cliver.BotGui
             this.ReloadProxyFileInSeconds.Location = new System.Drawing.Point(445, 204);
             this.ReloadProxyFileInSeconds.Name = "ReloadProxyFileInSeconds";
             this.ReloadProxyFileInSeconds.Size = new System.Drawing.Size(52, 20);
-            this.ReloadProxyFileInSeconds.TabIndex = 80;
+            this.ReloadProxyFileInSeconds.TabIndex = 5;
             this.ReloadProxyFileInSeconds.Text = "-1";
             // 
             // label30
@@ -118,7 +118,7 @@ namespace Cliver.BotGui
             this._1_ProxyTypeSocks5.Location = new System.Drawing.Point(419, 55);
             this._1_ProxyTypeSocks5.Name = "_1_ProxyTypeSocks5";
             this._1_ProxyTypeSocks5.Size = new System.Drawing.Size(67, 17);
-            this._1_ProxyTypeSocks5.TabIndex = 77;
+            this._1_ProxyTypeSocks5.TabIndex = 1;
             this._1_ProxyTypeSocks5.TabStop = true;
             this._1_ProxyTypeSocks5.Text = "SOCKS5";
             this._1_ProxyTypeSocks5.UseVisualStyleBackColor = true;
@@ -129,7 +129,7 @@ namespace Cliver.BotGui
             this._1_ProxyTypeHttp.Location = new System.Drawing.Point(419, 32);
             this._1_ProxyTypeHttp.Name = "_1_ProxyTypeHttp";
             this._1_ProxyTypeHttp.Size = new System.Drawing.Size(54, 17);
-            this._1_ProxyTypeHttp.TabIndex = 76;
+            this._1_ProxyTypeHttp.TabIndex = 0;
             this._1_ProxyTypeHttp.TabStop = true;
             this._1_ProxyTypeHttp.Text = "HTTP";
             this._1_ProxyTypeHttp.UseVisualStyleBackColor = true;
@@ -139,7 +139,7 @@ namespace Cliver.BotGui
             this.ProxyLogin.Location = new System.Drawing.Point(357, 140);
             this.ProxyLogin.Name = "ProxyLogin";
             this.ProxyLogin.Size = new System.Drawing.Size(140, 20);
-            this.ProxyLogin.TabIndex = 75;
+            this.ProxyLogin.TabIndex = 3;
             // 
             // ProxiesFileUri
             // 
@@ -147,7 +147,7 @@ namespace Cliver.BotGui
             this.ProxiesFileUri.Multiline = true;
             this.ProxiesFileUri.Name = "ProxiesFileUri";
             this.ProxiesFileUri.Size = new System.Drawing.Size(402, 20);
-            this.ProxiesFileUri.TabIndex = 71;
+            this.ProxiesFileUri.TabIndex = 2;
             // 
             // label4
             // 
@@ -181,7 +181,7 @@ namespace Cliver.BotGui
             this.ProxyPassword.Location = new System.Drawing.Point(357, 166);
             this.ProxyPassword.Name = "ProxyPassword";
             this.ProxyPassword.Size = new System.Drawing.Size(140, 20);
-            this.ProxyPassword.TabIndex = 73;
+            this.ProxyPassword.TabIndex = 4;
             // 
             // ProxyConfigControl
             // 

@@ -73,7 +73,7 @@ namespace Cliver.BotGui
             this.ChooseInputFile.Location = new System.Drawing.Point(472, 45);
             this.ChooseInputFile.Name = "ChooseInputFile";
             this.ChooseInputFile.Size = new System.Drawing.Size(24, 23);
-            this.ChooseInputFile.TabIndex = 53;
+            this.ChooseInputFile.TabIndex = 2;
             this.ChooseInputFile.Text = "...";
             this.ChooseInputFile.UseVisualStyleBackColor = true;
             this.ChooseInputFile.Click += new System.EventHandler(this.ChooseInputFile_Click);
@@ -84,7 +84,7 @@ namespace Cliver.BotGui
             this.File.Multiline = true;
             this.File.Name = "File";
             this.File.Size = new System.Drawing.Size(460, 47);
-            this.File.TabIndex = 52;
+            this.File.TabIndex = 1;
             // 
             // label17
             // 
@@ -100,7 +100,7 @@ namespace Cliver.BotGui
             this._0_bViewInputFile.Location = new System.Drawing.Point(74, 19);
             this._0_bViewInputFile.Name = "_0_bViewInputFile";
             this._0_bViewInputFile.Size = new System.Drawing.Size(76, 23);
-            this._0_bViewInputFile.TabIndex = 59;
+            this._0_bViewInputFile.TabIndex = 0;
             this._0_bViewInputFile.Text = "View";
             this._0_bViewInputFile.UseVisualStyleBackColor = true;
             this._0_bViewInputFile.Click += new System.EventHandler(this.bInputFile_Click);
@@ -111,7 +111,7 @@ namespace Cliver.BotGui
             this._1_TsvFormat.Location = new System.Drawing.Point(420, 177);
             this._1_TsvFormat.Name = "_1_TsvFormat";
             this._1_TsvFormat.Size = new System.Drawing.Size(46, 17);
-            this._1_TsvFormat.TabIndex = 71;
+            this._1_TsvFormat.TabIndex = 4;
             this._1_TsvFormat.TabStop = true;
             this._1_TsvFormat.Text = "TSV";
             this._1_TsvFormat.UseVisualStyleBackColor = true;
@@ -123,7 +123,7 @@ namespace Cliver.BotGui
             this._1_CsvFormat.Location = new System.Drawing.Point(420, 154);
             this._1_CsvFormat.Name = "_1_CsvFormat";
             this._1_CsvFormat.Size = new System.Drawing.Size(46, 17);
-            this._1_CsvFormat.TabIndex = 72;
+            this._1_CsvFormat.TabIndex = 3;
             this._1_CsvFormat.TabStop = true;
             this._1_CsvFormat.Text = "CSV";
             this._1_CsvFormat.UseVisualStyleBackColor = true;
