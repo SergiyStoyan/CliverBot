@@ -137,6 +137,11 @@ namespace Cliver.Bot
                         {
                             current_item.PROCESSOR(this);
                         }
+                        catch (ThreadAbortException)
+                        {
+                            Thread.ResetAbort();
+                            return;
+                        }
                         catch (Session.FatalException)
                         {
                             throw;

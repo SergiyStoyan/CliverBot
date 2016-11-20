@@ -98,8 +98,8 @@ namespace Cliver
 
         static public void Reload(string storage_directory = null)
         {
-            StorageDir = storage_directory;
-            Log.Inform("Loading configuration from " + StorageDir);
+            if(storage_directory != null)
+                StorageDir = storage_directory;
             get(false);
         }
 

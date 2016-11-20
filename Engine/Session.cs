@@ -48,6 +48,9 @@ namespace Cliver.Bot
         {
             This_ = this;
 
+            Log.Inform("Loading configuration from " + Config.DefaultStorageDir);
+            Config.Reload(Config.DefaultStorageDir);
+
             Log.Writer.Exitig += ThreadLog_Exitig;
 
             input_item_type_name2input_item_types = (from t in Assembly.GetEntryAssembly().GetTypes() where t.BaseType == typeof(InputItem) select t).ToDictionary(t => t.Name, t => t);
