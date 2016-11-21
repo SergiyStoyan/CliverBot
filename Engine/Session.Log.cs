@@ -208,7 +208,7 @@ namespace Cliver.Bot
                                 if (!LogMessage.AskYesNo("Previous session " + previous_broken_session_dir + " was not completed. Restore it?", true))
                                     return false;
 
-                                Log.Inform("Loading configuration from " + previous_broken_session_dir);
+                                Log.Main.Write("Loading configuration from " + previous_broken_session_dir);
                                 Config.Reload(previous_broken_session_dir);
 
                                 FileInfo broken_session_items_fi = new FileInfo(previous_broken_session_dir + "\\" + ITEMS_FILE_NAME);
@@ -217,7 +217,7 @@ namespace Cliver.Bot
                                     string str = "Could not find " + broken_session_items_fi.Name + " in " + previous_broken_session_dir + "!";
                                     if (LogMessage.AskYesNo(str + " Proceed without session restoring?", true))
                                     {
-                                        Log.Inform("Loading configuration from " + Config.DefaultStorageDir);
+                                        Log.Main.Write("Loading configuration from " + Config.DefaultStorageDir);
                                         Config.Reload(Config.DefaultStorageDir);
                                         return false;
                                     }
@@ -227,8 +227,6 @@ namespace Cliver.Bot
                                         return false;
                                     }
                                 }
-
-                                Log.Main.Write("Restoring session " + previous_broken_session_dir);
 
                                 set_session_state(SessionState.RESTORING, "source_session", previous_broken_session_dir);
                                 Log.Main.Write("Restoring session from " + previous_broken_session_dir);

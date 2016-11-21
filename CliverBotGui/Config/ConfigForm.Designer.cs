@@ -68,7 +68,7 @@ namespace Cliver.BotGui
             this.Cancel.Margin = new System.Windows.Forms.Padding(0);
             this.Cancel.Name = "Cancel";
             this.Cancel.Size = new System.Drawing.Size(90, 24);
-            this.Cancel.TabIndex = 16;
+            this.Cancel.TabIndex = 0;
             this.Cancel.Text = "Cancel";
             this.Cancel.Click += new System.EventHandler(this.Cancel_Click);
             // 
@@ -80,7 +80,7 @@ namespace Cliver.BotGui
             this.Save.Margin = new System.Windows.Forms.Padding(0);
             this.Save.Name = "Save";
             this.Save.Size = new System.Drawing.Size(90, 24);
-            this.Save.TabIndex = 15;
+            this.Save.TabIndex = 3;
             this.Save.Text = "Save";
             this.Save.Click += new System.EventHandler(this.Save_Click);
             // 
@@ -95,7 +95,7 @@ namespace Cliver.BotGui
             this.splitContainer.Panel1.Controls.Add(this.groupBox1);
             this.splitContainer.Size = new System.Drawing.Size(599, 337);
             this.splitContainer.SplitterDistance = 82;
-            this.splitContainer.TabIndex = 19;
+            this.splitContainer.TabIndex = 0;
             // 
             // groupBox1
             // 
@@ -150,7 +150,7 @@ namespace Cliver.BotGui
             this.bReset.Margin = new System.Windows.Forms.Padding(0);
             this.bReset.Name = "bReset";
             this.bReset.Size = new System.Drawing.Size(90, 24);
-            this.bReset.TabIndex = 17;
+            this.bReset.TabIndex = 2;
             this.bReset.Text = "Reset";
             this.bReset.Click += new System.EventHandler(this.bReset_Click);
             // 
@@ -162,7 +162,7 @@ namespace Cliver.BotGui
             this.bStore.Margin = new System.Windows.Forms.Padding(0);
             this.bStore.Name = "bStore";
             this.bStore.Size = new System.Drawing.Size(90, 24);
-            this.bStore.TabIndex = 18;
+            this.bStore.TabIndex = 1;
             this.bStore.Text = "Storage";
             this.bStore.Click += new System.EventHandler(this.bStore_Click);
             // 

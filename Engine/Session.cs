@@ -48,7 +48,7 @@ namespace Cliver.Bot
         {
             This_ = this;
 
-            Log.Inform("Loading configuration from " + Config.DefaultStorageDir);
+            Log.Main.Write("Loading configuration from " + Config.DefaultStorageDir);
             Config.Reload(Config.DefaultStorageDir);
 
             Log.Writer.Exitig += ThreadLog_Exitig;
@@ -90,10 +90,7 @@ namespace Cliver.Bot
                 read_input_file();
             }
 
-            if(Settings.Engine.WriteSessionRestoringLog)
-            {
-                Config.CopyFiles(Log.SessionDir);
-            }
+            Config.CopyFiles(Log.SessionDir);
 
             //try
             //{

@@ -23,7 +23,7 @@ using System.Diagnostics;
 
 namespace Cliver.BotGui
 {
-    internal partial class ConfigForm : Form// BaseForm//
+    internal partial class ConfigForm : BaseForm//Form// 
     {
         public ConfigForm()
         {
