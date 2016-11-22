@@ -71,9 +71,6 @@ namespace Cliver
         public void Save()
         {
             Saving();
-            string d = PathRoutines.GetDirFromPath(__File);
-            if (!Directory.Exists(d))
-                Directory.CreateDirectory(d);
             Cliver.SerializationRoutines.Json.Save(__File, this);
         }
 
@@ -128,6 +125,7 @@ namespace Cliver
 
             static public void Save(string file, object o)
             {
+                PathRoutines.CreateDirectory(PathRoutines.GetDirFromPath(file));
                 File.WriteAllText(file, Serialize(o));
             }
 

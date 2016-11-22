@@ -43,15 +43,13 @@ namespace Cliver.Bot
             }
         }
         static Session This_;
-
-        const string CONFIG_FOLDER_NAME = "config";
-
+        
         Session()
         {
             This_ = this;
 
-            Log.Main.Write("Loading configuration from " + Config.DefaultStorageDir);
-            Config.Reload(Config.DefaultStorageDir + "\\" + CONFIG_FOLDER_NAME);
+            Log.Main.Inform("Loading configuration from " + Config.DefaultStorageDir);
+            Config.Reload(Config.DefaultStorageDir);
 
             Log.Writer.Exitig += ThreadLog_Exitig;
 
@@ -91,8 +89,8 @@ namespace Cliver.Bot
                 Log.Main.Write("No session was restored so reading input Items from the input file");
                 read_input_file();
             }
-
-            Config.CopyFiles(Log.SessionDir + "\\" + CONFIG_FOLDER_NAME);
+            
+            Config.CopyFiles(Log.SessionDir);
 
             //try
             //{

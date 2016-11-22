@@ -143,8 +143,10 @@ namespace Cliver
         {
             lock (object_names2serializable)
             {
+                string d = PathRoutines.CreateDirectory(to_directory + "\\" + CONFIG_FOLDER_NAME);
                 foreach (Serializable s in object_names2serializable.Values)
-                    File.Copy(s.__File, to_directory + "\\" + PathRoutines.GetFileNameFromPath(s.__File));
+                    if(File.Exists(s.__File))//it can be absent if default settings used still
+                        File.Copy(s.__File, d + "\\" + PathRoutines.GetFileNameFromPath(s.__File));
             }
         }
     }

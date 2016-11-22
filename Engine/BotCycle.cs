@@ -201,11 +201,14 @@ namespace Cliver.Bot
                 {
                     bot.CycleExiting();
                 }
-                close_thread(Id);
             }
             catch (Exception e)
             {
                 Session.FatalErrorClose(e);
+            }
+            finally
+            {
+                close_thread(Id);
             }
         }
         InputItem current_item;
