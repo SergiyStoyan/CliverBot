@@ -34,7 +34,7 @@ namespace Cliver
                 s = Cliver.SerializationRoutines.Json.Load<T>(file);
             else
                 s = new T();
-            s.__file = file;
+            s.__File = file;
             return s;
         }
 
@@ -61,20 +61,20 @@ namespace Cliver
                 s = (Serializable)Cliver.SerializationRoutines.Json.Load(serializable_type, file);
             else
                 s = (Serializable)Activator.CreateInstance(serializable_type);
-            s.__file = file;
+            s.__File = file;
             return s;
         }
 
-        public string GetFile()
-        {
-            return __file;
-        }
-        string __file;
+        [ScriptIgnore]
+        public string __File { get; private set; }
 
         public void Save()
         {
             Saving();
-            Cliver.SerializationRoutines.Json.Save(__file, this);
+            string d = PathRoutines.GetDirFromPath(__File);
+            if (!Directory.Exists(d))
+                Directory.CreateDirectory(d);
+            Cliver.SerializationRoutines.Json.Save(__File, this);
         }
 
         virtual public void Loaded()

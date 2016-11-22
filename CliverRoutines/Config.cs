@@ -32,21 +32,16 @@ namespace Cliver
     {
         static Config()
         {
-            Reload();
+            DefaultStorageDir = Log.GetAppCommonDataDir();
         }
-
+        
+        const string CONFIG_FOLDER_NAME = "config";
         const string FILE_EXTENSION = "json";
 
-        public readonly static string DefaultStorageDir = Log.GetAppCommonDataDir();
-        public static string StorageDir { get { return _StorageDir; } private set { _StorageDir = value; } }
-        static string _StorageDir = DefaultStorageDir;
+        public static readonly string DefaultStorageDir;
+        public static string StorageDir { get; private set; }
 
-        public static void Initialize()
-        {
-            //dummy to trigger static constructor
-        }
-
-        static void get(bool reset)
+        static void get(bool reset, HashSet<string> required_object_names = null)
         {
             lock (object_names2serializable)
             {
@@ -70,8 +65,11 @@ namespace Cliver
                         FieldInfo fi = fis[0];
                         string name = fi.Name;
 
+                        if (required_object_names != null && !required_object_names.Remove(name))
+                            continue;
+
                         Serializable t;
-                        string file = StorageDir + "\\" + name + "." + st.FullName + "." + FILE_EXTENSION;
+                        string file = StorageDir + "\\" + CONFIG_FOLDER_NAME + "\\" + name + "." + st.FullName + "." + FILE_EXTENSION;
                         if (reset)
                             t = Serializable.Create(st, file);
                         else
@@ -92,15 +90,16 @@ namespace Cliver
                         object_names2serializable[name] = t;
                     }
                 }
+                if (required_object_names != null && required_object_names.Count > 0)
+                    throw new Exception("The following settings objects where not found: " + string.Join(", ", required_object_names));
             }
         }
         static Dictionary<string, Serializable> object_names2serializable = new Dictionary<string, Serializable>();
 
-        static public void Reload(string storage_directory = null)
+        static public void Reload(string storage_dir = null, IEnumerable<string> required_object_names = null)
         {
-            if(storage_directory != null)
-                StorageDir = storage_directory;
-            get(false);
+            StorageDir = storage_dir != null ? storage_dir : DefaultStorageDir;
+            get(false, required_object_names != null ? new HashSet<string>(required_object_names) : null);
         }
 
         static public void Reset()
@@ -132,7 +131,7 @@ namespace Cliver
             lock (object_names2serializable)
             {
                 foreach (Serializable s in object_names2serializable.Values)
-                    File.Copy(s.GetFile(), to_directory + "\\" + PathRoutines.GetFileNameFromPath(s.GetFile()));
+                    File.Copy(s.__File, to_directory + "\\" + PathRoutines.GetFileNameFromPath(s.__File));
             }
         }
     }
