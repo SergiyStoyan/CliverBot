@@ -24,31 +24,38 @@ namespace Cliver.Bot
     {
         internal static Bot Create()
         {
-            if (Type == null)
-            {
-                _Type = Assembly.GetEntryAssembly().ExportedTypes.Where(t => t.IsSubclassOf(typeof(Cliver.Bot.Bot))).FirstOrDefault();
-                if (Type == null)
-                    throw new Exception("Bot type is not defined and could not be detected.");
-                Log.Main.Warning("Bot type is not defined. Detected: " + Type);
-            }
             Bot cb = (Bot)Activator.CreateInstance(Type);
             cb.__InitializePROCESSORs();
             return cb;
         }
-
+        
         public static Type Type
         {
-            get { return _Type; }
+            get
+            {
+                if (_Type == null)
+                {
+                    _Type = Assembly.GetEntryAssembly().ExportedTypes.Where(t => t.IsSubclassOf(typeof(Cliver.Bot.Bot))).FirstOrDefault();
+                    if (_Type == null)
+                        throw new Exception("Bot type was not specified and could not be detected.");
+                    Log.Main.Warning("Bot type was not specified. Using detected: " + Type);
+                }
+                return _Type;
+            }
             set
             {
                 if (Session.State != Session.StateEnum.NULL)
-                    throw new Exception("_Type cannot be set.");
+                    throw new Exception("Bot type cannot be set.");
                 _Type = value;
             }                
         }
         static Type _Type = null;
-
-        static public string About = @"Created: " + Program.GetCustomizationCompiledTime().ToString() + @"
+                
+        public static string GetAbout()
+        {
+            return (string)Type.GetField("About", BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Static).GetValue(null);
+        }
+        static public readonly string About = @"Created: " + Program.GetCustomizationCompiledTime().ToString() + @"
 Developed by: www.cliversoft.com";
 
         /// <summary>

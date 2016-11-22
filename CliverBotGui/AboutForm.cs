@@ -216,7 +216,7 @@ namespace Cliver.BotGui
 
             try
             {
-                CustomBox.Text = Bot.Bot.About;
+                CustomBox.Text = Bot.Bot.GetAbout();
                 CustomBox.SelectAll();
                 CustomBox.SelectionAlignment = HorizontalAlignment.Center;
             }
