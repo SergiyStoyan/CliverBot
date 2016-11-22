@@ -22,7 +22,6 @@ using System.Reflection;
 /*
 TBD:
 - serialize InputItems into json and thus allow arrays etc
-- change Cliver.Bot virtual members to event subscriptions
 */
 
 namespace Cliver.Bot
