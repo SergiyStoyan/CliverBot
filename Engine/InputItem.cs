@@ -83,7 +83,7 @@ namespace Cliver.Bot
                 }
                 catch (Exception e)
                 {
-                    throw new Exception("Field '" + field + "' does not exist.\n" + e.Message);
+                    throw new Exception("An error while setting field '" + field + "'.", e);
                 }
 
             ConstructorInfo ci;
