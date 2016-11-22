@@ -34,14 +34,21 @@ namespace Cliver
         {
             DefaultStorageDir = Log.GetAppCommonDataDir();
         }
-        
+
+        public static void Initialize(IEnumerable<string> required_object_names = null)
+        {
+            Config.required_object_names = required_object_names != null ? new HashSet<string>(required_object_names) : null;
+        }
+        static HashSet<string> required_object_names = null;
+
         const string CONFIG_FOLDER_NAME = "config";
         const string FILE_EXTENSION = "json";
 
         public static readonly string DefaultStorageDir;
         public static string StorageDir { get; private set; }
+        public static string CompleteStorageDir { get { return StorageDir + "\\" + CONFIG_FOLDER_NAME; } }
 
-        static void get(bool reset, HashSet<string> required_object_names = null)
+        static void get(bool reset)
         {
             lock (object_names2serializable)
             {
@@ -69,7 +76,7 @@ namespace Cliver
                             continue;
 
                         Serializable t;
-                        string file = StorageDir + "\\" + CONFIG_FOLDER_NAME + "\\" + name + "." + st.FullName + "." + FILE_EXTENSION;
+                        string file = CompleteStorageDir + "\\" + name + "." + st.FullName + "." + FILE_EXTENSION;
                         if (reset)
                             t = Serializable.Create(st, file);
                         else
@@ -96,10 +103,10 @@ namespace Cliver
         }
         static Dictionary<string, Serializable> object_names2serializable = new Dictionary<string, Serializable>();
 
-        static public void Reload(string storage_dir = null, IEnumerable<string> required_object_names = null)
+        static public void Reload(string storage_dir = null)
         {
             StorageDir = storage_dir != null ? storage_dir : DefaultStorageDir;
-            get(false, required_object_names != null ? new HashSet<string>(required_object_names) : null);
+            get(false);
         }
 
         static public void Reset()
