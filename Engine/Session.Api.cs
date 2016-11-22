@@ -161,8 +161,27 @@ namespace Cliver.Bot
             return Session.This.GetSingleValueWorkItemDictionary_<WorkItemT, ValueT>();
         }
 
-        //public delegate void OnStarted();
-        //static public event OnStarted Started = null;
+        public delegate void OnStarting();
+        static public event OnStarting Starting = null;
+
+        public delegate void OnFillStartInputItemQueue(InputItemQueue start_input_item_queue, Type start_input_item_type);
+        public static OnFillStartInputItemQueue FillStartInputItemQueue = (InputItemQueue start_input_item_queue, Type start_input_item_type) =>
+        {
+            Log.Main.Write("Filling queue of " + start_input_item_queue.Name + " with input file.");
+
+            if (!File.Exists(Settings.Input.File))
+                throw (new Exception("Input file " + Settings.Input.File + " does not exist."));
+
+            if (Path.GetExtension(Settings.Input.File).StartsWith(".xls", StringComparison.InvariantCultureIgnoreCase))
+                throw new Exception("Reading excel is not supported");
+
+            FileReader fr = new FileReader(Settings.Input.File, Settings.Input.FileFormat);
+            for (FileReader.Row r = fr.ReadLine(); r != null; r = fr.ReadLine())
+                InputItem.Add2QueueBeforeStart(start_input_item_queue, start_input_item_type, r.Headers.ToDictionary(x => x, x => r[x]));
+
+            if (start_input_item_queue.CountOfNew < 1)
+                LogMessage.Error("Input queue is empty so nothing is to do. Check your input data.");
+        };
 
         public delegate void OnClosing();
         static public event OnClosing Closing = null;

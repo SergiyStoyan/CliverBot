@@ -22,12 +22,34 @@ namespace Cliver.Bot
     /// </summary>
     public class Bot
     {
-        static public string GetAbout()
+        internal static Bot Create()
         {
-            return @"WEB CRAWLER
-Created: " + Program.GetCustomizationCompiledTime().ToString() + @"
-Developed by: www.cliversoft.com";
+            if (Type == null)
+            {
+                _Type = Assembly.GetEntryAssembly().ExportedTypes.Where(t => t.IsSubclassOf(typeof(Cliver.Bot.Bot))).FirstOrDefault();
+                if (Type == null)
+                    throw new Exception("Bot type is not defined and could not be detected.");
+                Log.Main.Warning("Bot type is not defined. Detected: " + Type);
+            }
+            Bot cb = (Bot)Activator.CreateInstance(Type);
+            cb.__InitializePROCESSORs();
+            return cb;
         }
+
+        public static Type Type
+        {
+            get { return _Type; }
+            set
+            {
+                if (Session.State != Session.StateEnum.NULL)
+                    throw new Exception("_Type cannot be set.");
+                _Type = value;
+            }                
+        }
+        static Type _Type = null;
+
+        static public string About = @"Created: " + Program.GetCustomizationCompiledTime().ToString() + @"
+Developed by: www.cliversoft.com";
 
         /// <summary>
         /// Allows to access to CliverBot api
@@ -38,35 +60,6 @@ Developed by: www.cliversoft.com";
         {
             return BotCycle.GetBotForThisThread<BotT>();
         }
-
-        /// <summary>
-        /// Invoked when the session is in creating stage. Can be not defined. If throw an Exception, the session is stopped and closed.
-        /// </summary>
-        static public void SessionCreating()
-        {
-        }
-
-        static public void FillStartInputItemQueue(InputItemQueue start_input_item_queue, Type start_input_item_type)
-        {            
-            Log.Main.Write("Filling queue of " + start_input_item_queue.Name + " with input file.");
-
-            if (!File.Exists(Settings.Input.File))
-                throw (new Exception("Input file " + Settings.Input.File + " does not exist."));
-
-            if (Path.GetExtension(Settings.Input.File).StartsWith(".xls", StringComparison.InvariantCultureIgnoreCase))
-                throw new Exception("Reading excel was not implemented");
-
-            FileReader fr = new FileReader(Settings.Input.File, Settings.Input.FileFormat);
-            for (FileReader.Row r = fr.ReadLine(); r != null; r = fr.ReadLine())
-                InputItem.Add2QueueBeforeStart(start_input_item_queue, start_input_item_type, r.Headers.ToDictionary(x => x, x => r[x]));
-        }
-
-        /// <summary>
-        /// Invoked while closing the session.
-        /// </summary>
-        static public void SessionClosing()
-        {
-        }    
 
         /// <summary>
         /// Invoked by BotCycle thread as it has been started.

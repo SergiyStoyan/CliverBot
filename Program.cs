@@ -63,7 +63,7 @@ namespace Cliver.Bot
 
         public static DateTime GetCustomizationCompiledTime()
         {
-            string filePath = CustomizationApi.CustomAssembly.Location;
+            string filePath = Assembly.GetEntryAssembly().Location;
             const int c_PeHeaderOffset = 60;
             const int c_LinkerTimestampOffset = 8;
             byte[] b = new byte[2048];

@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using Cliver;
 using System.Diagnostics;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace Cliver.BotGui
 {
@@ -32,7 +33,7 @@ namespace Cliver.BotGui
             get { return _ConfigControlSections; }
             set
             {
-                if (MainForm.This.Visible)
+                if (Application.OpenForms.OfType<MainForm>().Any())
                     throw new Exception("_ConfigControlSections cannot be set.");
                 _ConfigControlSections = value;
             }
@@ -44,7 +45,7 @@ namespace Cliver.BotGui
             get { return _ToolsForm; }
             set
             {
-                if (MainForm.This.Visible)
+                if (Application.OpenForms.OfType<MainForm>().Any())
                     throw new Exception("_ToolsForm cannot be set.");
                 _ToolsForm = value;
             }

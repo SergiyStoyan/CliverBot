@@ -43,7 +43,7 @@ namespace Cliver.Bot
             }
         }
         static Session This_;
-        
+
         Session()
         {
             This_ = this;
@@ -89,19 +89,10 @@ namespace Cliver.Bot
                 Log.Main.Write("No session was restored so reading input Items from the input file");
                 read_input_file();
             }
-            
+
             Config.CopyFiles(Log.SessionDir);
 
-            //try
-            //{
-            CustomizationApi.SessionCreating();
-            //}
-            //catch (Exception e)
-            //{
-            //    LogMessage.Error(e);
-            //    CustomizationApi.FatalError(e.Message);
-            //    Session.Close();
-            //}
+            Starting?.Invoke();
 
             set_session_state(SessionState.STARTED, "session_start_time", StartTime.ToString("yyyy-MM-dd HH:mm:ss"));
         }
@@ -212,23 +203,13 @@ namespace Cliver.Bot
 
                     try
                     {
-                        CustomizationApi.SessionClosing();
+                        Closing?.Invoke();
                     }
                     catch (Exception e)
                     {
                         Session.State = StateEnum.FATAL_ERROR;
                         LogMessage.Error(e);
                         FatalError?.Invoke(e.Message);
-                    }
-
-                    try
-                    {
-                        if (Closing != null)
-                            Closing.Invoke();
-                    }
-                    catch (Exception e)
-                    {
-                        LogMessage.Error(e);
                     }
 
                     InputItemQueue.Close();
@@ -254,7 +235,7 @@ namespace Cliver.Bot
         {
             Type start_input_item_type = (from t in Assembly.GetEntryAssembly().GetTypes() where t.IsSubclassOf(typeof(InputItem)) && !t.IsGenericType select t).First();
             InputItemQueue start_input_item_queue = GetInputItemQueue(start_input_item_type.Name);
-            CustomizationApi.FillStartInputItemQueue(start_input_item_queue, start_input_item_type);
+            FillStartInputItemQueue(start_input_item_queue, start_input_item_type);
         }
 
         public enum StateEnum
