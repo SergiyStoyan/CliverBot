@@ -31,6 +31,7 @@ namespace Cliver
                     value = Regex.Replace(value, @"\s+", " ", RegexOptions.Compiled | RegexOptions.Singleline);//strip from more than 1 spaces
                     value = value.Trim();
                 }
+                value = Regex.Replace(value, "\"", "\"\"", RegexOptions.Compiled | RegexOptions.Singleline);
                 if (Regex.IsMatch(value, separator.Value, RegexOptions.Compiled | RegexOptions.Singleline))
                     value = "\"" + value + "\"";
                 return value;
@@ -125,6 +126,7 @@ namespace Cliver
                 value = Regex.Replace(value, @"\s+", " ", RegexOptions.Compiled | RegexOptions.Singleline);
                 value = value.Trim();
             }
+            value = Regex.Replace(value, "\"", "\"\"", RegexOptions.Compiled | RegexOptions.Singleline);
             if (Regex.IsMatch(value, separator.Value, RegexOptions.Compiled | RegexOptions.Singleline))
                 value = "\"" + value + "\"";
             return value;

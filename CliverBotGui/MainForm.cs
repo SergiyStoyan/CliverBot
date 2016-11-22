@@ -71,7 +71,7 @@ namespace Cliver.BotGui
         
         private void MainForm_Load(object sender, EventArgs e)
         {
-            tools_form = CustomizationGuiApi.BotGui.GetToolsForm();
+            tools_form = Api.ToolsForm;
             if (tools_form == null)
             {//hide Tools button if no Tools exists
                 bTools.Enabled = false;
