@@ -72,7 +72,7 @@ namespace Cliver
                         FieldInfo fi = fis[0];
                         string name = fi.Name;
 
-                        if (required_object_names != null && !required_object_names.Remove(name))
+                        if (required_object_names != null && !required_object_names.Contains(name))
                             continue;
 
                         Serializable t;
@@ -97,8 +97,14 @@ namespace Cliver
                         object_names2serializable[name] = t;
                     }
                 }
-                if (required_object_names != null && required_object_names.Count > 0)
-                    throw new Exception("The following settings objects where not found: " + string.Join(", ", required_object_names));
+                if (required_object_names != null && required_object_names.Count != object_names2serializable.Count)
+                {
+                    List<string> not_found_names = new List<string>();
+                    foreach (string ron in required_object_names)
+                        if (!object_names2serializable.ContainsKey(ron))
+                            not_found_names.Add(ron);
+                    throw new Exception("The following settings objects where not found: " + string.Join(", ", not_found_names));
+                }
             }
         }
         static Dictionary<string, Serializable> object_names2serializable = new Dictionary<string, Serializable>();
