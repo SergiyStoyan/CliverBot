@@ -121,7 +121,7 @@ namespace Cliver.Bot
                     }
                     Created?.Invoke(Id);
 
-                    bot = Bot.Create();
+                    bot = Bot.__Create();
                     if (bot == null)
                         throw (new Exception("Could not create Bot instance."));
                     typeof(Bot).GetField("BotCycle", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(bot, this);

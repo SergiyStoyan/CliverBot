@@ -138,7 +138,7 @@
     <Compile Include="Engine\BotCycle.cs" />
     <Compile Include="Engine\Counter.cs" />
     <Compile Include="Engine\Bot.cs" />
-    <Compile Include="Engine\CustomizationApi.cs" />
+    <Compile Include="Engine\Bot.Initilizer.cs" />
     <Compile Include="Engine\InputItem.cs" />
     <Compile Include="Engine\InputItemQueue.cs" />
     <Compile Include="Engine\Item.cs" />

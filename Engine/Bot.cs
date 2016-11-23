@@ -20,43 +20,27 @@ namespace Cliver.Bot
     /// <summary>
     /// Most important interface that defines certain routines of CliverBot customization.
     /// </summary>
-    public class Bot
+    public partial class Bot
     {
-        internal static Bot Create()
-        {
-            Bot cb = (Bot)Activator.CreateInstance(Type);
-            cb.__InitializePROCESSORs();
-            return cb;
-        }
-        
-        public static Type Type
-        {
-            get
-            {
-                if (_Type == null)
-                {
-                    _Type = Assembly.GetEntryAssembly().ExportedTypes.Where(t => t.IsSubclassOf(typeof(Cliver.Bot.Bot))).FirstOrDefault();
-                    if (_Type == null)
-                        throw new Exception("Bot type was not specified and could not be detected.");
-                    Log.Main.Warning("Bot type was not specified. Using detected: " + Type);
-                }
-                return _Type;
-            }
-            set
-            {
-                if (Session.State != Session.StateEnum.NULL)
-                    throw new Exception("Bot type cannot be set.");
-                _Type = value;
-            }                
-        }
-        static Type _Type = null;
-                
         public static string GetAbout()
         {
-            return (string)Type.GetField("About", BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Static).GetValue(null);
-        }
-        static public readonly string About = @"Created: " + Program.GetCustomizationCompiledTime().ToString() + @"
+            MethodInfo mi = __Type.GetMethod("GetAbout", BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Static);
+            if (mi != null)
+                return (string)mi.Invoke(null, null);
+            return @"Created: " + Program.GetCustomizationCompiledTime().ToString() + @"
 Developed by: www.cliversoft.com";
+        }
+
+        //internal static ICustomCache CreateCustomCache()
+        //{
+        //    return (ICustomCache)create_instance_of("CustomCache");
+        //}
+
+        public static void FatalError(string message) { }
+
+        public static void SessionCreating() { }
+        
+        public static void SessionClosing() { }
 
         /// <summary>
         /// Allows to access to CliverBot api
@@ -88,7 +72,7 @@ Developed by: www.cliversoft.com";
         virtual public void PROCESSOR(InputItem item)
         {
             //__input_item_type2processor_actions[item.GetType()](item);
-            try 
+            try
             {
                 __input_item_type2processor_mis[item.GetType()].Invoke(this, new object[] { item });
             }
@@ -97,27 +81,5 @@ Developed by: www.cliversoft.com";
                 throw e.InnerException;
             }
         }
-        
-        internal void __InitializePROCESSORs()
-        {
-            List<Type> input_item_types = (from t in Assembly.GetEntryAssembly().GetTypes() where t.BaseType == typeof(InputItem) select t).ToList();
-            foreach (Type item_type in input_item_types)
-            {
-                string processor_name = "PROCESSOR";
-                MethodInfo mi = item_type.GetMethod(processor_name, BindingFlags.Instance | BindingFlags.ExactBinding | BindingFlags.DeclaredOnly | BindingFlags.Public, null, new Type[] { typeof(BotCycle) }, null);
-                if (mi != null)
-                    continue;
-                mi = this.GetType().GetMethod(processor_name, BindingFlags.Instance | BindingFlags.ExactBinding | BindingFlags.DeclaredOnly | BindingFlags.Public, null, new Type[] { item_type }, null);
-                if (mi == null)
-                {
-                    mi = this.GetType().GetMethod(processor_name, BindingFlags.Instance | BindingFlags.ExactBinding | BindingFlags.DeclaredOnly | BindingFlags.Public, null, new Type[] { typeof(InputItem) }, null);
-                    if (mi == null)
-                        throw new Exception("No '" + processor_name + "' for '" + item_type.Name + "' is found in " + this.GetType().Name);
-                }
-                __input_item_type2processor_mis[item_type] = mi;
-            }
-        }
-        //internal protected readonly Dictionary<Type, Action<InputItem>> __input_item_type2processor_actions = new Dictionary<Type, Action<InputItem>>();
-        internal protected readonly Dictionary<Type, MethodInfo> __input_item_type2processor_mis = new Dictionary<Type, MethodInfo>();
     }
 }

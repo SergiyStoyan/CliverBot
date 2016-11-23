@@ -161,8 +161,8 @@ namespace Cliver.Bot
             return Session.This.GetSingleValueWorkItemDictionary_<WorkItemT, ValueT>();
         }
 
-        public delegate void OnStarting();
-        static public event OnStarting Starting = null;
+        public delegate void OnCreating();
+        static public event OnCreating Creating = null;
 
         public delegate void OnFillStartInputItemQueue(InputItemQueue start_input_item_queue, Type start_input_item_type);
         public static OnFillStartInputItemQueue FillStartInputItemQueue = (InputItemQueue start_input_item_queue, Type start_input_item_type) =>

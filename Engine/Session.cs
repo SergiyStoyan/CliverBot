@@ -91,7 +91,7 @@ namespace Cliver.Bot
 
             Config.CopyFiles(Log.SessionDir);
 
-            Starting?.Invoke();
+            Creating?.Invoke();
 
             set_session_state(SessionState.STARTED, "session_start_time", StartTime.ToString("yyyy-MM-dd HH:mm:ss"));
         }
@@ -127,6 +127,7 @@ namespace Cliver.Bot
         {
             try
             {
+                Bot.__Initialize();
                 Log.Initialize(Log.Mode.SESSIONS, Cliver.Bot.Settings.Log.PreWorkDir, Cliver.Bot.Settings.Log.WriteLog, Cliver.Bot.Settings.Log.DeleteLogsOlderDays);
                 Log.Main.Inform("Version compiled: " + Cliver.Bot.Program.GetCustomizationCompiledTime().ToString());
                 Log.Main.Inform("Command line parameters: " + string.Join("|", Environment.GetCommandLineArgs()));
