@@ -23,6 +23,7 @@ using System.Reflection;
 TBD:
 - serialize InputItems into json and thus allow arrays etc
 - log clean question - is it possible to make synchrone?
+- ? Bot static session methods move to a session subclass singleton within CustomBot
 */
 
 namespace Cliver.Bot
@@ -229,9 +230,17 @@ namespace Cliver.Bot
                     InputItemQueue.Close();
                     FileWriter.ClearSession();
                     Log.Main.Write("Closing the bot session: " + Session.State.ToString());
-                    Cliver.Log.ClearSession();
-
                     This_ = null;
+
+                    try
+                    {
+                        Closed?.Invoke();
+                    }
+                    catch (Exception e)
+                    {
+                        LogMessage.Error(e);
+                        Bot.FatalError(e.Message);
+                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -241,6 +250,10 @@ namespace Cliver.Bot
                     Session.State = StateEnum.FATAL_ERROR;
                     LogMessage.Error(e);
                     Bot.FatalError(e.Message);
+                }
+                finally
+                {
+                    Cliver.Log.ClearSession();
                 }
             }
         }
