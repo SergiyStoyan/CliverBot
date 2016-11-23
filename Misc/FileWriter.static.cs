@@ -25,20 +25,10 @@ namespace Cliver.Bot
     {
         public class Html
         {
-            public static string PrepareField(string str)
-            {
-                return Cliver.FieldPreparation.Html.GetCsvField(str, Settings.Output.FieldSeparator);
-            }
-
             public static string PrepareFields(params string[] strs)
             {
                 return Cliver.FieldPreparation.Html.GetCsvLine(strs, Settings.Output.FieldSeparator);
             }
-        }        
-
-        public static string PrepareField(string str)
-        {
-            return Cliver.FieldPreparation.GetCsvField(str, Settings.Output.FieldSeparator);
         }
         
         public static string PrepareFields(params string[] strs)

@@ -28,42 +28,43 @@ namespace Cliver.Bot
             __Type = Assembly.GetEntryAssembly().ExportedTypes.Where(t => t.IsSubclassOf(typeof(Cliver.Bot.Bot))).FirstOrDefault();
             if (__Type == null)
                 throw new Exception("No Bot type subclass was detected.");
-
-            Session.OnFatalError FatalError = null;
+            
             try
             {
-                FatalError = (Session.OnFatalError)Delegate.CreateDelegate(typeof(Session.OnFatalError), __Type.GetMethod("FatalError", BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Static));
+                __FatalError = (OnFatalError)Delegate.CreateDelegate(typeof(OnFatalError), __Type.GetMethod("FatalError", BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Static));
             }
-            catch 
+            catch
             {
                 Log.Main.Warning("Method " + __Type.FullName + "::FatalError is not defined.");
             }
-            Session.FatalError += FatalError != null ? FatalError : Bot.FatalError;
-
-            Session.OnCreating SessionCreating = null;
+            
             try
             {
-                SessionCreating = (Session.OnCreating)Delegate.CreateDelegate(typeof(Session.OnCreating), __Type.GetMethod("SessionCreating", BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Static));
+                __SessionCreating = (OnSessionCreating)Delegate.CreateDelegate(typeof(OnSessionCreating), __Type.GetMethod("SessionCreating", BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Static));
             }
             catch
             {
                 Log.Main.Warning("Method " + __Type.FullName + "::SessionCreating is not defined.");
             }
-            Session.Creating += SessionCreating != null ? SessionCreating : Bot.SessionCreating;
-
-            Session.OnClosing SessionClosing = null;
+            
             try
             {
-                SessionClosing = (Session.OnClosing)Delegate.CreateDelegate(typeof(Session.OnClosing), __Type.GetMethod("SessionClosing", BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Static));
+                __SessionClosing = (OnSessionClosing)Delegate.CreateDelegate(typeof(OnSessionClosing), __Type.GetMethod("SessionClosing", BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Static));
             }
             catch
             {
                 Log.Main.Warning("Method " + __Type.FullName + "::SessionClosing is not defined.");
             }
-            Session.Closing += SessionClosing != null ? SessionClosing : Bot.SessionClosing;
         }
 
         internal static readonly Type __Type = null;
+
+        internal delegate void OnFatalError(string message);
+        internal static OnFatalError __FatalError = null;
+        internal delegate void OnSessionCreating();
+        internal static OnSessionCreating __SessionCreating = null;
+        internal delegate void OnSessionClosing();
+        internal static OnSessionClosing __SessionClosing = null;
 
         internal static Bot __Create()
         {

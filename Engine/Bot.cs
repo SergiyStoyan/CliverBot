@@ -36,11 +36,20 @@ Developed by: www.cliversoft.com";
         //    return (ICustomCache)create_instance_of("CustomCache");
         //}
 
-        public static void FatalError(string message) { }
+        public static void FatalError(string message)
+        {
+            __FatalError?.Invoke(message);
+        }
 
-        public static void SessionCreating() { }
+        public static void SessionCreating()
+        {
+            __SessionCreating?.Invoke();
+        }
         
-        public static void SessionClosing() { }
+        public static void SessionClosing()
+        {
+            __SessionClosing?.Invoke();
+        }
 
         /// <summary>
         /// Allows to access to CliverBot api

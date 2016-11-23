@@ -18,19 +18,25 @@ namespace Cliver
     {
         public class Html
         {
+            public static string Prepare(string value)
+            {
+                if (value == null)
+                    return "";
+                value = Regex.Replace(value, "<!--.*?-->|<script .*?</script>", "", RegexOptions.Compiled | RegexOptions.Singleline);
+                value = Regex.Replace(value, "<.*?>", " ", RegexOptions.Compiled | RegexOptions.Singleline);
+                value = HttpUtility.HtmlDecode(value);
+                value = remove_notprintables_regex.Replace(value, " ");
+                value = Regex.Replace(value, @"\s+", " ", RegexOptions.Compiled | RegexOptions.Singleline);//strip from more than 1 spaces
+                value = value.Trim();
+                return value;
+            }
+
             public static string GetCsvField(string value, FieldSeparator separator, bool prepare = true)
             {
                 if (value == null)
                     return "";
                 if (prepare)
-                {
-                    value = Regex.Replace(value, "<!--.*?-->|<script .*?</script>", "", RegexOptions.Compiled | RegexOptions.Singleline);
-                    value = Regex.Replace(value, "<.*?>", " ", RegexOptions.Compiled | RegexOptions.Singleline);
-                    value = HttpUtility.HtmlDecode(value);
-                    value = remove_notprintables_regex.Replace(value, " ");
-                    value = Regex.Replace(value, @"\s+", " ", RegexOptions.Compiled | RegexOptions.Singleline);//strip from more than 1 spaces
-                    value = value.Trim();
-                }
+                    value = Prepare(value);
                 value = Regex.Replace(value, "\"", "\"\"", RegexOptions.Compiled | RegexOptions.Singleline);
                 if (Regex.IsMatch(value, separator.Value, RegexOptions.Compiled | RegexOptions.Singleline))
                     value = "\"" + value + "\"";
@@ -116,16 +122,22 @@ namespace Cliver
             }
         }
 
+        public static string Prepare(string value)
+        {
+            if (value == null)
+                return "";
+            value = remove_notprintables_regex.Replace(value, " ");
+            value = Regex.Replace(value, @"\s+", " ", RegexOptions.Compiled | RegexOptions.Singleline);
+            value = value.Trim();
+            return value;
+        }
+
         public static string GetCsvField(string value, FieldSeparator separator, bool prepare = true)
         {
             if (value == null)
                 return "";
             if (prepare)
-            {
-                value = remove_notprintables_regex.Replace(value, " ");
-                value = Regex.Replace(value, @"\s+", " ", RegexOptions.Compiled | RegexOptions.Singleline);
-                value = value.Trim();
-            }
+                value = Prepare(value);
             value = Regex.Replace(value, "\"", "\"\"", RegexOptions.Compiled | RegexOptions.Singleline);
             if (Regex.IsMatch(value, separator.Value, RegexOptions.Compiled | RegexOptions.Singleline))
                 value = "\"" + value + "\"";

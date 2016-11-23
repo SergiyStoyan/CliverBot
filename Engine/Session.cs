@@ -22,6 +22,7 @@ using System.Reflection;
 /*
 TBD:
 - serialize InputItems into json and thus allow arrays etc
+- log clean question - is it possible to make synchrone?
 */
 
 namespace Cliver.Bot
@@ -92,6 +93,8 @@ namespace Cliver.Bot
             Config.CopyFiles(Log.SessionDir);
 
             Creating?.Invoke();
+
+            Bot.SessionCreating();
 
             set_session_state(SessionState.STARTED, "session_start_time", StartTime.ToString("yyyy-MM-dd HH:mm:ss"));
         }
@@ -203,13 +206,24 @@ namespace Cliver.Bot
 
                     try
                     {
+                        Bot.SessionClosing();
+                    }
+                    catch (Exception e)
+                    {
+                        Session.State = StateEnum.FATAL_ERROR;
+                        LogMessage.Error(e);
+                        Bot.FatalError(e.Message);
+                    }
+
+                    try
+                    {
                         Closing?.Invoke();
                     }
                     catch (Exception e)
                     {
                         Session.State = StateEnum.FATAL_ERROR;
                         LogMessage.Error(e);
-                        FatalError?.Invoke(e.Message);
+                        Bot.FatalError(e.Message);
                     }
 
                     InputItemQueue.Close();
@@ -226,7 +240,7 @@ namespace Cliver.Bot
                 {
                     Session.State = StateEnum.FATAL_ERROR;
                     LogMessage.Error(e);
-                    FatalError?.Invoke(e.Message);
+                    Bot.FatalError(e.Message);
                 }
             }
         }

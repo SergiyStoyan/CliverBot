@@ -191,14 +191,14 @@ namespace Cliver.Bot
             return (from t in Assembly.GetEntryAssembly().GetTypes() where t.BaseType == typeof(InputItem) select t).FirstOrDefault();
         }
 
-        public delegate void OnFatalError(string message);
-        static public event OnFatalError FatalError = null;
+        //public delegate void OnFatalError(string message);
+        //static public event OnFatalError FatalError = null;
 
         static public void FatalErrorClose(string message)
         {
             Session.State = StateEnum.FATAL_ERROR;
             LogMessage.Error(message);
-            FatalError?.Invoke(message);
+            Bot.FatalError(message);
             Session.Close();
         }
 
@@ -206,7 +206,7 @@ namespace Cliver.Bot
         {
             Session.State = StateEnum.FATAL_ERROR;
             LogMessage.Error(e);
-            FatalError?.Invoke(e.Message);
+            Bot.FatalError(e.Message);
             Session.Close();
         }
 
