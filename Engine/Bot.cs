@@ -36,6 +36,10 @@ Developed by: www.cliversoft.com";
         //    return (ICustomCache)create_instance_of("CustomCache");
         //}
 
+            /// <summary>
+            /// Called on any error considered fatal
+            /// </summary>
+            /// <param name="message"></param>
         public static void FatalError(string message)
         {
             __FatalError?.Invoke(message);
@@ -52,7 +56,7 @@ Developed by: www.cliversoft.com";
         }
 
         /// <summary>
-        /// Allows to access to CliverBot api
+        /// Allows access to CliverBot api
         /// </summary>
         readonly protected BotCycle BotCycle;
 
