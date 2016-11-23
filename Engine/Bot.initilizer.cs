@@ -19,9 +19,9 @@ namespace Cliver.Bot
 {
     public partial class Bot
     {
-        internal static void __Initialize()
-        {
-        }
+        //internal static void __Initialize()
+        //{
+        //}
 
         static Bot()
         {
