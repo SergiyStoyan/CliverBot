@@ -38,7 +38,14 @@ namespace Cliver.BotGui
 
             ProgressBarInputItemQueueName = Session.GetFirstDeclaredInputItemType().Name;
             Session.Closing += Session_Closing;
+            Session.Closed += Session_Closed;
             InputItemQueue.Progress += new InputItemQueue.OnProgress(Session_InputItemQueueProgress);
+        }
+
+        private void Session_Closed()
+        {
+            if (Program.Mode == Program.ProgramMode.AUTOMATIC)
+                System.Windows.Forms.Application.Exit();
         }
 
         void Session_Closing()
@@ -47,8 +54,6 @@ namespace Cliver.BotGui
             {
                 this.Invoke(() => {
                     on_session_closing();
-                    if (Program.Mode == Program.ProgramMode.AUTOMATIC)
-                        System.Windows.Forms.Application.Exit();
                 });
             }
             catch (Exception e)
@@ -71,7 +76,7 @@ namespace Cliver.BotGui
         
         private void MainForm_Load(object sender, EventArgs e)
         {
-            tools_form = Api.ToolsForm;
+            tools_form = BotGui.ToolsForm;
             if (tools_form == null)
             {//hide Tools button if no Tools exists
                 bTools.Enabled = false;

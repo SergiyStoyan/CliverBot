@@ -117,7 +117,7 @@ namespace Cliver.BotGui
                     sections2cc[cc.Section] = cc;
                 }
                 
-                foreach (string section in Api.ConfigControlSections)
+                foreach (string section in BotGui.ConfigControlSections)
                 {
                     ConfigControl cc = null;
                     if (!sections2cc.TryGetValue(section, out cc))

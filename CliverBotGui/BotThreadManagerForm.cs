@@ -64,7 +64,7 @@ namespace Cliver.BotGui
 
         void _BotCycle_Created(int id)
         {
-            BotThreadControl btc = Api.CreateBotThreadControl(id);
+            BotThreadControl btc = BotGui.CreateBotThreadControl(id);
             btc.AutoSize = true;
             btc.Dock = System.Windows.Forms.DockStyle.Fill;
             btc.Location = new System.Drawing.Point(3, 16);
