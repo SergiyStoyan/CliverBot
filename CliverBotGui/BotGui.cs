@@ -44,7 +44,7 @@ namespace Cliver.BotGui
 
         public static Type BotThreadControlType
         {
-            get { return _BotThreadControlType; }
+            get { return _BotThreadControlType!=null? _BotThreadControlType: typeof(BotThreadControl); }
             set
             {
                 if (Bot.Session.State != Bot.Session.StateEnum.NULL)
