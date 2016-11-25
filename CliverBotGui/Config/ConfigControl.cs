@@ -11,9 +11,7 @@ using System.Text.RegularExpressions;
 
 namespace Cliver.BotGui
 {
-    abstract public partial class ConfigControl : UserControl
     {
-        abstract public string Section
         {
             get;
         }
