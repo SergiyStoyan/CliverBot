@@ -23,6 +23,8 @@ namespace Cliver
     /// </summary>
     public class Settings : Serializable
     {
+        public class Obligatory : Attribute
+        { }
     }
 
     /// <summary>
@@ -64,7 +66,7 @@ namespace Cliver
                     {
                         List<FieldInfo> fis = new List<FieldInfo>();
                         foreach (Type et in ets)
-                            fis.AddRange(et.GetFields(BindingFlags.Static|BindingFlags.NonPublic|BindingFlags.Public).Where(a => a.FieldType == st));
+                            fis.AddRange(et.GetFields(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public).Where(a => a.FieldType == st));
                         if (fis.Count < 1)
                             throw new Exception("No field of type '" + st.FullName + "' was found.");
                         if (fis.Count > 1)
@@ -72,7 +74,7 @@ namespace Cliver
                         FieldInfo fi = fis[0];
                         string name = fi.Name;
 
-                        if (required_object_names != null && !required_object_names.Contains(name))
+                        if (null == fi.GetCustomAttributes(typeof(Settings.Obligatory), false).FirstOrDefault() && required_object_names != null && !required_object_names.Contains(name))
                             continue;
 
                         Serializable t;
@@ -97,13 +99,14 @@ namespace Cliver
                         object_names2serializable[name] = t;
                     }
                 }
-                if (required_object_names != null && required_object_names.Count != object_names2serializable.Count)
+                if (required_object_names != null)
                 {
                     List<string> not_found_names = new List<string>();
                     foreach (string ron in required_object_names)
                         if (!object_names2serializable.ContainsKey(ron))
                             not_found_names.Add(ron);
-                    throw new Exception("The following settings objects where not found: " + string.Join(", ", not_found_names));
+                    if (not_found_names.Count > 0)
+                        throw new Exception("The following settings objects where not found: " + string.Join(", ", not_found_names));
                 }
             }
         }
@@ -145,7 +148,7 @@ namespace Cliver
             {
                 string d = PathRoutines.CreateDirectory(to_directory + "\\" + CONFIG_FOLDER_NAME);
                 foreach (Serializable s in object_names2serializable.Values)
-                    if(File.Exists(s.__File))//it can be absent if default settings used still
+                    if (File.Exists(s.__File))//it can be absent if default settings used still
                         File.Copy(s.__File, d + "\\" + PathRoutines.GetFileNameFromPath(s.__File));
             }
         }

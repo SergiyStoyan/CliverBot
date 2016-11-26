@@ -13,6 +13,7 @@ namespace Cliver.Bot
 {
     public partial class Settings
     {
+        [Cliver.Settings.Obligatory]
         public static readonly EngineClass Engine;
 
         public class EngineClass : Cliver.Settings

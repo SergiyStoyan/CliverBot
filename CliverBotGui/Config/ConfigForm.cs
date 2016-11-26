@@ -116,7 +116,7 @@ namespace Cliver.BotGui
                     ConfigControl cc = (ConfigControl)Activator.CreateInstance(cct);
                     sections2cc[cc.Section] = cc;
                 }
-                
+
                 foreach (string section in BotGui.ConfigControlSections)
                 {
                     ConfigControl cc = null;
@@ -125,10 +125,10 @@ namespace Cliver.BotGui
                     add_ConfigControl(cc);
                 }
 
-                int last_open_config_tab_index = 0;
-                int.TryParse(ConfigurationManager.AppSettings["LastOpenConfigTabIndex"], out last_open_config_tab_index);
-                if (listConfigTabs.Items.Count > last_open_config_tab_index)
-                    listConfigTabs.SelectedIndex = last_open_config_tab_index;
+                if (Settings.Gui.ConfigFormSize != System.Drawing.Size.Empty)
+                    this.Size = Settings.Gui.ConfigFormSize;
+                if (Settings.Gui.LastOpenConfigTabIndex >= 0)
+                    listConfigTabs.SelectedIndex = Settings.Gui.LastOpenConfigTabIndex;
             }
             catch (Exception ex)
             {
@@ -157,7 +157,9 @@ namespace Cliver.BotGui
 
         private void ConfigForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            ConfigurationManager.AppSettings["LastOpenConfigTabIndex"] = listConfigTabs.SelectedIndex.ToString();
+            Settings.Gui.ConfigFormSize = this.Size;
+            Settings.Gui.LastOpenConfigTabIndex = listConfigTabs.SelectedIndex;
+            Settings.Gui.Save();
         }
 
         private void bReset_Click(object sender, EventArgs e)

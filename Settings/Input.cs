@@ -12,6 +12,7 @@ namespace Cliver.Bot
 {
     public partial class Settings
     {
+        [Cliver.Settings.Obligatory]
         public static readonly InputClass Input;
 
         public class InputClass : Cliver.Settings
