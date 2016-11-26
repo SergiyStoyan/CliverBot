@@ -23,6 +23,9 @@ namespace Cliver
     /// </summary>
     public class Settings : Serializable
     {
+        /// <summary>
+        /// this object is ever be loaded
+        /// </summary>
         public class Obligatory : Attribute
         { }
     }
