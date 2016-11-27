@@ -42,9 +42,13 @@ namespace Cliver
 
         public static void Initialize(IEnumerable<string> required_object_names = null)
         {
-            Config.required_object_names = required_object_names != null ? new HashSet<string>(required_object_names) : null;
+            Config.required_object_names.Clear();
+            if (required_object_names == null)
+                return;
+            foreach(string name in required_object_names)
+                Config.required_object_names.Add(name);
         }
-        static HashSet<string> required_object_names = null;
+        static readonly HashSet<string> required_object_names = new HashSet<string>();
 
         const string CONFIG_FOLDER_NAME = "config";
         const string FILE_EXTENSION = "json";
@@ -77,7 +81,7 @@ namespace Cliver
                         FieldInfo fi = fis[0];
                         string name = fi.Name;
 
-                        if (null == fi.GetCustomAttributes(typeof(Settings.Obligatory), false).FirstOrDefault() && required_object_names != null && !required_object_names.Contains(name))
+                        if (null == fi.GetCustomAttributes(typeof(Settings.Obligatory), false).FirstOrDefault() && !required_object_names.Contains(name))
                             continue;
 
                         Serializable t;
@@ -102,15 +106,12 @@ namespace Cliver
                         object_names2serializable[name] = t;
                     }
                 }
-                if (required_object_names != null)
-                {
-                    List<string> not_found_names = new List<string>();
-                    foreach (string ron in required_object_names)
-                        if (!object_names2serializable.ContainsKey(ron))
-                            not_found_names.Add(ron);
-                    if (not_found_names.Count > 0)
-                        throw new Exception("The following settings objects where not found: " + string.Join(", ", not_found_names));
-                }
+                List<string> not_found_names = new List<string>();
+                foreach (string ron in required_object_names)
+                    if (!object_names2serializable.ContainsKey(ron))
+                        not_found_names.Add(ron);
+                if (not_found_names.Count > 0)
+                    throw new Exception("The following settings objects where not found: " + string.Join(", ", not_found_names));
             }
         }
         static Dictionary<string, Serializable> object_names2serializable = new Dictionary<string, Serializable>();
