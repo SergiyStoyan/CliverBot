@@ -40,6 +40,11 @@ namespace Cliver
             DefaultStorageDir = Log.GetAppCommonDataDir();
         }
 
+        /// <summary>
+        /// It allows to load only certain settings objects, while ignoring unneeded ones.
+        /// However, objects attributed with [Settings.Obligatory] will be loaded any way.
+        /// </summary>
+        /// <param name="required_object_names"></param>
         public static void Initialize(IEnumerable<string> required_object_names = null)
         {
             Config.required_object_names.Clear();
