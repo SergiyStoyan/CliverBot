@@ -216,17 +216,17 @@ namespace Cliver.Bot
         public class FatalException : Exception
         {
             public FatalException(string message)
-                : base("FATAL. " + message)
+                : base("FATAL EXCEPTION. " + message)
             {
             }
 
             public FatalException(string message, Exception exception)
-                : base("FATAL. " + message, exception)
+                : base("FATAL EXCEPTION. " + message, exception)
             {
             }
 
             public FatalException(Exception exception)
-                : base("FATAL. ", exception)
+                : base("FATAL EXCEPTION. ", exception)
             {
             }
         }
