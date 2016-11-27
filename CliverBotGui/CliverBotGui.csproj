@@ -83,12 +83,6 @@
     <Compile Include="BotThreadControls\BotThreadControl.Api.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="BotThreadControls\IeRoutineBotThreadControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="BotThreadControls\IeRoutineBotThreadControl.designer.cs">
-      <DependentUpon>IeRoutineBotThreadControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="Config\Config.cs" />
     <Compile Include="Config\BrowserConfigControl.cs">
       <SubType>UserControl</SubType>
@@ -138,12 +132,6 @@
     <Compile Include="Config\WebConfigControl.designer.cs">
       <DependentUpon>WebConfigControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="BotThreadControls\WebRoutineBotThreadControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="BotThreadControls\WebRoutineBotThreadControl.designer.cs">
-      <DependentUpon>WebRoutineBotThreadControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="BotThreadControls\BotThreadControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -187,9 +175,6 @@
     <EmbeddedResource Include="AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="BotThreadControls\IeRoutineBotThreadControl.resx">
-      <DependentUpon>IeRoutineBotThreadControl.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Config\BrowserConfigControl.resx">
       <DependentUpon>BrowserConfigControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -213,9 +198,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Config\WebConfigControl.resx">
       <DependentUpon>WebConfigControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="BotThreadControls\WebRoutineBotThreadControl.resx">
-      <DependentUpon>WebRoutineBotThreadControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="BotThreadControls\BotThreadControl.resx">
       <DependentUpon>BotThreadControl.cs</DependentUpon>
@@ -257,10 +239,6 @@
     <ProjectReference Include="..\CliverRoutines\CliverRoutines.csproj">
       <Project>{aca94788-bed1-4b8e-94ef-e54293e8d139}</Project>
       <Name>CliverRoutines</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CliverWebRoutines\CliverWebRoutines.csproj">
-      <Project>{114b1616-75e2-40d6-8e43-fbf2f6ee9390}</Project>
-      <Name>CliverWebRoutines</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

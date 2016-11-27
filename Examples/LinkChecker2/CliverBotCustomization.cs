@@ -21,6 +21,7 @@ using System.Threading;
 using System.Windows.Forms;
 using Cliver.Bot;
 using Cliver.BotGui;
+using Cliver.BotWeb;
 
 /// <summary>
 /// Link checker: crawls listed sites and checks broken links
@@ -32,30 +33,12 @@ namespace Cliver.BotCustomization
         [STAThread]
         static void Main()
         {
-            //Bot.Properties.General.Default.RestoreBrokenSession = true;
-            //Bot.Properties.General.Default.WriteSessionRestoringLog = true;
-            //Bot.Properties.General.Default.Save();
+            Cliver.Config.Initialize(new string[] { "Engine", "Input", "Output", "Web", "Spider", "Log" });
+            Cliver.BotGui.BotGui.ConfigControlSections = new string[] { "Engine", "Input", "Output", "Web", "Spider", "Log", };
+            Cliver.BotGui.BotGui.BotThreadControlType = typeof(WebRoutineBotThreadControl);
 
             Config.Save();            
             Cliver.BotGui.Program.Run();
-        }
-    }
-
-    public class CustomBotGui : Cliver.BotGui.BotGui
-    {
-        override public string[] GetConfigControlNames()
-        {
-            return new string[] { "General", "Input", "Output", "Web", "Spider", "Log" };
-        }
-
-        override public Type GetBotThreadControlType()
-        {
-            return typeof(WebRoutineBotThreadControl);
-        }
-
-        override public Cliver.BaseForm GetToolsForm()
-        {
-            return null;
         }
     }
 
@@ -100,8 +83,7 @@ Developed by: www.cliversoft.com";
 
         public class Link : InputItem
         {
-            readonly public Site Site;
-            readonly public Link ParentLink;
+            public Link ParentLink { get { return (Link)__ParentItem; } }
             [KeyField]
             readonly public string Url;
             readonly public int Depth;
@@ -117,11 +99,11 @@ Developed by: www.cliversoft.com";
 
         public void PROCESSOR(Link link)
         {
-            int _MaxDownloadedFileLength = Bot.Properties.Web.Default.MaxDownloadedFileLength;
+            int _MaxDownloadedFileLength = BotWeb.Settings.Web.MaxDownloadedFileLength;
             if (!link.Download)
-                Bot.Properties.Web.Default.MaxDownloadedFileLength = 0;
+                BotWeb.Settings.Web.MaxDownloadedFileLength = 0;
             bool rc = hr.GetPage(link.Url);
-            Bot.Properties.Web.Default.MaxDownloadedFileLength = _MaxDownloadedFileLength;
+            BotWeb.Settings.Web.MaxDownloadedFileLength = _MaxDownloadedFileLength;
             if (!rc)
             {
                 if (hr.Status == WebRoutineStatus.UNACCEPTABLE_CONTENT_TYPE)
@@ -139,12 +121,12 @@ Developed by: www.cliversoft.com";
 
         public void get_links(int depth2, string queue)
         {
-            if (depth2 > Bot.Properties.Spider.Default.MaxDownloadLinkDepth)
+            if (depth2 > BotWeb.Settings.Spider.MaxDownloadLinkDepth)
                 return;
 
             string domain = Spider.GetDomain(hr.ResponseUrl);
             int page_count = domain2page_count[domain];
-            if (Bot.Properties.Spider.Default.MaxPageCountPerSite > -1 && page_count >= Bot.Properties.Spider.Default.MaxPageCountPerSite)
+            if (BotWeb.Settings.Spider.MaxPageCountPerSite > -1 && page_count >= BotWeb.Settings.Spider.MaxPageCountPerSite)
                 return;
             string queue2 = domain + "-" + depth2.ToString();
             if (depth2 > 1)
@@ -155,15 +137,15 @@ Developed by: www.cliversoft.com";
             List<WebLink> beyond_domain_web_links;
             wls = Spider.GetSpiderableLinks(ags.BaseUri, wls, out beyond_domain_web_links);
             bool download = true;
-            if (depth2 >= Bot.Properties.Spider.Default.MaxDownloadLinkDepth)
+            if (depth2 >= BotWeb.Settings.Spider.MaxDownloadLinkDepth)
                 download = false;
             foreach (WebLink wl in wls)
             {
                 BotCycle.Add(queue2, new Link(url: wl.Url, depth: depth2, download: download));
                 page_count++;
-                if (Bot.Properties.Spider.Default.MaxPageCountPerSite > -1 && Bot.Properties.Spider.Default.MaxPageCountPerSite <= page_count)
+                if (BotWeb.Settings.Spider.MaxPageCountPerSite > -1 && BotWeb.Settings.Spider.MaxPageCountPerSite <= page_count)
                 {
-                    Log.Warning(domain + " reached MaxPageCountPerSite: " + Bot.Properties.Spider.Default.MaxPageCountPerSite.ToString());
+                    Log.Warning(domain + " reached MaxPageCountPerSite: " + BotWeb.Settings.Spider.MaxPageCountPerSite.ToString());
                     break;
                 }
             }

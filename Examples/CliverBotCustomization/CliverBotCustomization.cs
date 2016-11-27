@@ -28,33 +28,12 @@ namespace CliverBotCustomization
         [STAThread]
         static void Main()
         {
-            //Bot.Properties.General.Default.RestoreBrokenSession = true;
-            //Bot.Properties.General.Default.WriteSessionRestoringLog = true;
-            //Bot.Properties.General.Default.Save();
+            Cliver.Config.Initialize(new string[] { "Engine", "Input", "Output", "Web", "Spider", "Log" });
+            Cliver.BotGui.BotGui.ConfigControlSections = new string[] { "Engine", "Input", "Output", "Web", "Spider", "Log", };
+            Cliver.BotGui.BotGui.BotThreadControlType = typeof(WebRoutineBotThreadControl);
 
             //Cliver.Bot.Program.Run();//It is the entry when the app runs as a console app.
             Cliver.BotGui.Program.Run();//It is the entry when the app uses the default GUI.
-        }
-    }
-
-    /// <summary>
-    /// Defines look of GUI. May be not implemented.
-    /// </summary>
-    public class CustomBotGui : Cliver.BotGui.BotGui
-    {
-        override public string[] GetConfigControlNames()
-        {
-            return new string[] { "General", "Input", "Output", "Web", "Spider", "Log" };
-        }
-
-        override public Type GetBotThreadControlType()
-        {
-            return typeof(WebRoutineBotThreadControl);
-        }
-
-        override public Cliver.BaseForm GetToolsForm()
-        {
-            return null;
         }
     }
 
@@ -94,6 +73,10 @@ Developed by: www.cliversoft.com";
         {
         }
 
+        new static public void FatalError(string message)
+        {
+        }
+
         /// <summary>
         /// Invoked by BotCycle thread as it has been started.
         /// </summary>
@@ -104,7 +87,7 @@ Developed by: www.cliversoft.com";
         /// <summary>
         /// Invoked by BotCycle thread when it is exiting.
         /// </summary>
-        public override void CycleExiting(bool completed)
+        public override void CycleExiting()
         {
         }
 
@@ -201,12 +184,12 @@ Developed by: www.cliversoft.com";
 
         public class Product : InputItem
         {
-            //It is possible to declare derivatives of InputItem that are parents for this item.
+            //It is possible to declare property that returns the parent for this item.
             //When defined, they are set by the system automatically.
             //Parent InputItem is the item that is current when new items are added to the system.
             //Also, can be defined not direct parent but grand-parents also.
             //As not always parent item types are the same, these memebers can be null and so should be checked for null and can be used as flags.
-            readonly public Category Category;
+            public Category Category { get { return (Category)__ParentItem; } }
 
             [KeyField]
             readonly public string Url;

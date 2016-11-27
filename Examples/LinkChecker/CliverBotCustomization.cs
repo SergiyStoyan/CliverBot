@@ -22,6 +22,7 @@ using Cliver;
 using System.Windows.Forms;
 using Cliver.Bot;
 using Cliver.BotGui;
+using Cliver.BotWeb;
 
 /// <summary>
 /// Link checker: crawls listed sites and checks broken links
@@ -33,40 +34,12 @@ namespace Cliver.BotCustomization
         [STAThread]
         static void Main()
         {
-            try
-            {
-                Config.Initialize();
-                string f = Bot.Settings.Input.This.File;
-                Config.Save();
-            }
-            catch(Exception e)
-            {
-
-            }
-            //Bot.Properties.General.Default.RestoreBrokenSession = true;
-            //Bot.Properties.General.Default.WriteSessionRestoringLog = true;
-            //Bot.Properties.General.Default.Save();
+            Cliver.Config.Initialize(new string[] { "Engine", "Input", "Output", "Web", "Spider", "Log" });
+            Cliver.BotGui.BotGui.ConfigControlSections = new string[] { "Engine", "Input", "Output", "Web", "Spider", "Log", };
+            Cliver.BotGui.BotGui.BotThreadControlType = typeof(WebRoutineBotThreadControl);
 
             //Cliver.Bot.Program.Run();//It is the entry when the app runs as a console app.
             Cliver.BotGui.Program.Run();//It is the entry when the app uses the default GUI.
-        }
-    }
-
-    public class CustomBotGui : Cliver.BotGui.BotGui
-    {
-        override public string[] GetConfigControlNames()
-        {
-            return new string[] { "General", "Input", "Output", "Web", "Spider", "Log"};
-        }
-
-        override public Type GetBotThreadControlType()
-        {
-            return typeof(WebRoutineBotThreadControl);
-        }
-
-        override public Cliver.BaseForm GetToolsForm()
-        {
-            return null;
         }
     }
 
@@ -124,7 +97,7 @@ Developed by: www.cliversoft.com";
         /// <summary>
         /// Invoked by BotCycle thread when it is exiting.
         /// </summary>
-        public override void CycleExiting(bool completed)
+        public override void CycleExiting()
         {
         }
 
@@ -170,12 +143,12 @@ Developed by: www.cliversoft.com";
 
             override public void PROCESSOR(BotCycle bc)
             {
-                int _MaxDownloadedFileLength = Bot.Properties.Web.Default.MaxDownloadedFileLength;
+                int _MaxDownloadedFileLength = BotWeb.Settings.Web.MaxDownloadedFileLength;
                 if (!Download)
-                    Bot.Properties.Web.Default.MaxDownloadedFileLength = 0;
+                    BotWeb.Settings.Web.MaxDownloadedFileLength = 0;
                 HttpRoutine hr = new HttpRoutine();
                 bool rc = hr.GetPage(Url);
-                Bot.Properties.Web.Default.MaxDownloadedFileLength = _MaxDownloadedFileLength;
+                BotWeb.Settings.Web.MaxDownloadedFileLength = _MaxDownloadedFileLength;
                 if (!rc)
                 {
                     if (hr.Status == WebRoutineStatus.UNACCEPTABLE_CONTENT_TYPE)
@@ -194,12 +167,12 @@ Developed by: www.cliversoft.com";
 
         static public void get_links(int depth2, HttpRoutine hr, BotCycle bc)
         {
-            if (depth2 > Bot.Properties.Spider.Default.MaxDownloadLinkDepth)
+            if (depth2 > BotWeb.Settings.Spider.MaxDownloadLinkDepth)
                 return;
 
             string domain = Spider.GetDomain(hr.ResponseUrl);
             int page_count = domain2page_count[domain];
-            if (Bot.Properties.Spider.Default.MaxPageCountPerSite > -1 && page_count >= Bot.Properties.Spider.Default.MaxPageCountPerSite)
+            if (BotWeb.Settings.Spider.MaxPageCountPerSite > -1 && page_count >= BotWeb.Settings.Spider.MaxPageCountPerSite)
                 return;
 
             AgileSpider ags = new AgileSpider(hr.ResponseUrl, hr.HtmlResult);
@@ -207,15 +180,15 @@ Developed by: www.cliversoft.com";
             List<WebLink> beyond_domain_web_links;
             wls = Spider.GetSpiderableLinks(ags.BaseUri, wls, out beyond_domain_web_links);
             bool download = true;
-            if (depth2 >= Bot.Properties.Spider.Default.MaxDownloadLinkDepth)
+            if (depth2 >= BotWeb.Settings.Spider.MaxDownloadLinkDepth)
                 download = false;
             foreach (WebLink wl in wls)
             {
                 bc.Add(new Link(url: wl.Url, depth: depth2, download: download));
                 page_count++;
-                if (Bot.Properties.Spider.Default.MaxPageCountPerSite > -1 && Bot.Properties.Spider.Default.MaxPageCountPerSite <= page_count)
+                if (BotWeb.Settings.Spider.MaxPageCountPerSite > -1 && BotWeb.Settings.Spider.MaxPageCountPerSite <= page_count)
                 {
-                    Log.Warning(domain + " reached MaxPageCountPerSite: " + Bot.Properties.Spider.Default.MaxPageCountPerSite.ToString());
+                    Log.Warning(domain + " reached MaxPageCountPerSite: " + BotWeb.Settings.Spider.MaxPageCountPerSite.ToString());
                     break;
                 }
             }
