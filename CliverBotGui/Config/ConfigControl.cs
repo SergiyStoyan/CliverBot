@@ -27,15 +27,23 @@ namespace Cliver.BotGui
         {
         }
 
-        new internal bool Enabled
+        virtual new public bool Enabled
         {
             set
             {
                 foreach (Control c in this.group_box.Controls)
-                    if (Regex.IsMatch(c.Name, "^_0_"))
-                        c.Enabled = true;
-                    else
-                        c.Enabled = value;
+                    enable(c, value);
+            }
+        }
+        void enable(Control control, bool enable)
+        {
+            foreach (Control c in control.Controls)
+            {
+                if (Regex.IsMatch(c.Name, "^_0_") || c is TabControl || c is TabPage)
+                    c.Enabled = true;
+                else
+                    c.Enabled = enable;
+                this.enable(c, enable);
             }
         }
 

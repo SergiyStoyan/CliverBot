@@ -209,7 +209,7 @@ namespace Cliver.Bot
                                     return false;
 
                                 Log.Main.Inform("Loading configuration from " + previous_broken_session_dir);
-                                Config.Reload(previous_broken_session_dir);
+                                Config.Reload(previous_broken_session_dir, true);
 
                                 FileInfo broken_session_items_fi = new FileInfo(previous_broken_session_dir + "\\" + ITEMS_FILE_NAME);
                                 if (!broken_session_items_fi.Exists)

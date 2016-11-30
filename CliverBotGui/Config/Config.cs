@@ -110,18 +110,18 @@ namespace Cliver.BotGui
             fi.FieldType.GetMethod(method).Invoke(di, null);
         }
 
-        public static void Reload()
+        public static void Reload(string storage_dir = null, bool read_only = false)
         {
             foreach (System.Reflection.FieldInfo fi in setting_sections2fi.Values)
                 invoke(fi, "Reload");
-            Cliver.Config.Reload();
+            Cliver.Config.Reload(storage_dir, read_only);
         }
 
-        public static void Save()
+        public static void Save(string storage_dir = null)
         {
             foreach (System.Reflection.FieldInfo fi in setting_sections2fi.Values)
                 invoke(fi, "Save");
-            Cliver.Config.Save();
+            Cliver.Config.Save(storage_dir);
         }
 
         public static void Reset()

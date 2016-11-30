@@ -68,8 +68,10 @@ namespace Cliver
         [ScriptIgnore]
         public string __File { get; private set; }
 
-        public void Save()
+        public void Save(string file = null)
         {
+            if (file != null)
+                __File = file;
             Saving();
             Cliver.SerializationRoutines.Json.Save(__File, this);
         }

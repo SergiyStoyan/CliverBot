@@ -23,7 +23,7 @@ using System.Diagnostics;
 
 namespace Cliver.BotGui
 {
-    internal partial class ConfigForm : BaseForm//Form// 
+    internal partial class ConfigForm : Form// BaseForm//
     {
         public ConfigForm()
         {
@@ -33,9 +33,6 @@ namespace Cliver.BotGui
             listConfigTabs.ValueMember = "CC";
 
             //this.Text = Program.Title + " Settings";
-            
-            splitContainer.Panel2.Controls.Clear();
-            listConfigTabs.Items.Clear();
         }
 
         void add_ConfigControl(ConfigControl config_control)
@@ -68,8 +65,19 @@ namespace Cliver.BotGui
                         listConfigTabs.SelectedItem = cci;
                         return;
                     }
-                Config.Save();
-                Config.Reload();
+                string storage_dir = null;
+                if (Cliver.Config.ReadOnly)
+                {
+                    //LogMessage.Inform("The current config is readonly and so must be saved in another location. Please select a folder.");
+                    FolderBrowserDialog d = new FolderBrowserDialog();
+                    d.Description = "The current config is read-only and must be saved in another location. Please select a folder.";
+                    d.SelectedPath = Log.GetAppCommonDataDir();
+                    if (d.ShowDialog() != DialogResult.OK)
+                        return;
+                    storage_dir = d.SelectedPath;
+                }
+                Config.Save(storage_dir);
+                //Config.Reload();
                 Close();
             }
             catch (Exception ex)
@@ -86,7 +94,7 @@ namespace Cliver.BotGui
 
         private void Cancel_Click(object sender, EventArgs e)
         {
-            Config.Reload();
+            Config.Reload(Cliver.Config.DefaultStorageDir);
             this.Close();
         }
 
@@ -106,6 +114,9 @@ namespace Cliver.BotGui
         {
             try
             {
+                splitContainer.Panel2.Controls.Clear();
+                listConfigTabs.Items.Clear();
+
                 List<Type> default_ConfigControl_types = (from x in Assembly.GetExecutingAssembly().GetTypes() where x.BaseType == typeof(ConfigControl) select x).ToList();
                 List<Type> custom_ConfigControl_types = (from x in Assembly.GetEntryAssembly().GetExportedTypes() where x.IsSubclassOf(typeof(ConfigControl)) select x).ToList();
                 List<Type> ConfigControl_types = new List<Type>(default_ConfigControl_types);
@@ -140,6 +151,12 @@ namespace Cliver.BotGui
                 foreach (ConfigControlItem cci in listConfigTabs.Items)
                     cci.CC.Enabled = false;
                 this.Save.Enabled = false;
+            }
+            else
+            {
+                foreach (ConfigControlItem cci in listConfigTabs.Items)
+                    cci.CC.Enabled = true;
+                this.Save.Enabled = true;
             }
         }
 
@@ -177,6 +194,24 @@ namespace Cliver.BotGui
         private void bStore_Click(object sender, EventArgs e)
         {
             Process.Start(Cliver.Config.CompleteStorageDir);
+        }
+
+        private void bLoad_Click(object sender, EventArgs e)
+        {
+            //FolderBrowserDialog d = new FolderBrowserDialog();
+            //d.Description = "Select a session where to view config from.";
+            //d.SelectedPath = Log.WorkDir;
+            OpenFileDialog d = new OpenFileDialog();
+            d.Title = "Select a session where to view config from.";
+            d.InitialDirectory = Log.WorkDir;
+            d.Filter = "Config files (*.json)|*.json|All files (*.*)|*.*";
+            d.ValidateNames = false;
+            d.CheckFileExists = false;
+            if (d.ShowDialog() != DialogResult.OK)
+                return;
+            //Config.Reload(PathRoutines.GetDirFromPath(d.SelectedPath));
+            Config.Reload(PathRoutines.GetDirFromPath(d.FileName), true);
+            ConfigForm_Load(null, null);
         }
     }
 }

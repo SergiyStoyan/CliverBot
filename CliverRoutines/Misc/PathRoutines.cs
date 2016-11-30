@@ -23,6 +23,13 @@ namespace Cliver
     /// </summary>
     public static class PathRoutines
     {
+        public static bool AreDirPathsEqual(string dir_path1, string dir_path2)
+        {
+            DirectoryInfo di1 = new DirectoryInfo(dir_path1);
+            DirectoryInfo di2 = new DirectoryInfo(dir_path2);
+            return di1.FullName == di2.FullName;
+        }
+
         /// <summary>
         /// Clear file name from entities
         /// </summary>

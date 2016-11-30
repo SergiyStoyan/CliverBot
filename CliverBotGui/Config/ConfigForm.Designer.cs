@@ -53,6 +53,7 @@ namespace Cliver.BotGui
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.bReset = new System.Windows.Forms.Button();
             this.bStore = new System.Windows.Forms.Button();
+            this.bLoad = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.SuspendLayout();
@@ -135,6 +136,7 @@ namespace Cliver.BotGui
             this.flowLayoutPanel1.Controls.Add(this.Save);
             this.flowLayoutPanel1.Controls.Add(this.bReset);
             this.flowLayoutPanel1.Controls.Add(this.bStore);
+            this.flowLayoutPanel1.Controls.Add(this.bLoad);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 337);
@@ -163,8 +165,20 @@ namespace Cliver.BotGui
             this.bStore.Name = "bStore";
             this.bStore.Size = new System.Drawing.Size(90, 24);
             this.bStore.TabIndex = 1;
-            this.bStore.Text = "Storage";
+            this.bStore.Text = "Source";
             this.bStore.Click += new System.EventHandler(this.bStore_Click);
+            // 
+            // bLoad
+            // 
+            this.bLoad.FlatAppearance.BorderColor = System.Drawing.Color.Red;
+            this.bLoad.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.bLoad.Location = new System.Drawing.Point(149, 0);
+            this.bLoad.Margin = new System.Windows.Forms.Padding(0);
+            this.bLoad.Name = "bLoad";
+            this.bLoad.Size = new System.Drawing.Size(90, 24);
+            this.bLoad.TabIndex = 4;
+            this.bLoad.Text = "Veiw";
+            this.bLoad.Click += new System.EventHandler(this.bLoad_Click);
             // 
             // ConfigForm
             // 
@@ -198,5 +212,6 @@ namespace Cliver.BotGui
         private FlowLayoutPanel flowLayoutPanel1;
         private Button bReset;
         private Button bStore;
+        private Button bLoad;
     }
 }

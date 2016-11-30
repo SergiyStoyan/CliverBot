@@ -121,23 +121,31 @@ namespace Cliver
         }
         static Dictionary<string, Serializable> object_names2serializable = new Dictionary<string, Serializable>();
 
-        static public void Reload(string storage_dir = null)
+        static public void Reload(string storage_dir = null, bool read_only = false)
         {
             StorageDir = storage_dir != null ? storage_dir : DefaultStorageDir;
+            ReadOnly = read_only;
             get(false);
         }
 
+        static public bool ReadOnly { get; private set; }
+
         static public void Reset()
         {
+            StorageDir = DefaultStorageDir;
             get(true);
         }
 
-        static public void Save()
+        static public void Save(string storage_dir = null)
         {
+            storage_dir = storage_dir != null ? storage_dir : DefaultStorageDir;
+            if (ReadOnly && PathRoutines.AreDirPathsEqual(storage_dir, StorageDir))
+                throw new Exception("Config is read-only and cannot be saved to the same location.");
+            StorageDir = storage_dir;
             lock (object_names2serializable)
             {
                 foreach (Serializable s in object_names2serializable.Values)
-                    s.Save();
+                    s.Save(StorageDir + "\\" + PathRoutines.GetFileNameFromPath(s.__File));
             }
         }
 
