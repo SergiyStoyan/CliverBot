@@ -88,7 +88,7 @@ namespace Cliver.Bot
 
             if (add_time_mark)
             {
-                string perfix = "_" + Log.TimeMark;
+                string perfix = "_" + DateTime.Now.ToString("yyMMddHHmmss");
                 int point = file_abs_path.LastIndexOf(".");
                 if (point < 0)
                     file_abs_path = file_abs_path + perfix;

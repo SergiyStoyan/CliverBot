@@ -68,25 +68,6 @@ namespace Cliver
         /// Directory where the application binary is located.
         /// </summary>
         public readonly static string AppDir;
-
-        /// <summary>
-        /// Constructs and returns time mark string for current session
-        /// </summary>
-        public static string TimeMark
-        {
-            get
-            {
-                if (time_mark == null)
-                {
-                    lock (lock_object)
-                    {
-                        time_mark = DateTime.Now.ToString("yyMMddHHmmss");
-                    }
-                }
-                return time_mark;
-            }
-        }
-        static string time_mark = null;
         
         /// <summary>
         ///Parent Log directory where logs are recorded
@@ -210,8 +191,7 @@ namespace Cliver
             lock (lock_object)
             {
                 Log.CloseAll();
-
-                time_mark = null;
+                
                 work_dir = null;
                 if (main_session != null)
                     main_session.Close();

@@ -74,7 +74,8 @@ namespace Cliver.BotWeb
         static public IEnumerable<Cookie> ReadCookies()
         {
             var dbPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Google\Chrome\User Data\Default\Cookies";
-            if (!System.IO.File.Exists(dbPath)) throw new System.IO.FileNotFoundException("Cant find cookie store", dbPath); // race condition, but i'll risk it
+            if (!System.IO.File.Exists(dbPath))
+                throw new System.IO.FileNotFoundException("Can't find cookie store", dbPath); 
 
             var connectionString = "Data Source=" + dbPath;
             
@@ -122,100 +123,99 @@ namespace Cliver.BotWeb
             }
         }
 
-        static public IEnumerable<Tuple<string, string>> ReadCookies(string hostName)
-        {
-            if (hostName == null) throw new ArgumentNullException("hostName");
+        //static public IEnumerable<Tuple<string, string>> ReadCookies(string hostName)
+        //{
+        //    if (hostName == null) throw new ArgumentNullException("hostName");
 
-            var dbPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Google\Chrome\User Data\Default\Cookies";
-            if (!System.IO.File.Exists(dbPath)) throw new System.IO.FileNotFoundException("Cant find cookie store", dbPath); // race condition, but i'll risk it
+        //    var dbPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + @"\Google\Chrome\User Data\Default\Cookies";
+        //    if (!System.IO.File.Exists(dbPath)) throw new System.IO.FileNotFoundException("Cant find cookie store", dbPath); // race condition, but i'll risk it
 
-            var connectionString = "Data Source=" + dbPath + ";pooling=false";
+        //    var connectionString = "Data Source=" + dbPath + ";pooling=false";
 
-            using (var conn = new System.Data.SQLite.SQLiteConnection(connectionString))
-            using (var cmd = conn.CreateCommand())
-            {
-                var prm = cmd.CreateParameter();
-                prm.ParameterName = "hostName";
-                prm.Value = hostName;
-                cmd.Parameters.Add(prm);
+        //    using (var conn = new System.Data.SQLite.SQLiteConnection(connectionString))
+        //    using (var cmd = conn.CreateCommand())
+        //    {
+        //        var prm = cmd.CreateParameter();
+        //        prm.ParameterName = "hostName";
+        //        prm.Value = hostName;
+        //        cmd.Parameters.Add(prm);
 
-                //cmd.CommandText = "SELECT name,encrypted_value FROM cookies WHERE host_key = @hostName";
-                cmd.CommandText = "SELECT name,encrypted_value,host_key FROM cookies";
+        //        //cmd.CommandText = "SELECT name,encrypted_value FROM cookies WHERE host_key = @hostName";
+        //        cmd.CommandText = "SELECT name,encrypted_value,host_key FROM cookies";
 
-                conn.Open();
-                using (var reader = cmd.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        var encryptedData = (byte[])reader[1];
-                        var decodedData = System.Security.Cryptography.ProtectedData.Unprotect(encryptedData, null, System.Security.Cryptography.DataProtectionScope.CurrentUser);
-                        var plainText = Encoding.ASCII.GetString(decodedData); // Looks like ASCII
+        //        conn.Open();
+        //        using (var reader = cmd.ExecuteReader())
+        //        {
+        //            while (reader.Read())
+        //            {
+        //                var encryptedData = (byte[])reader[1];
+        //                var decodedData = System.Security.Cryptography.ProtectedData.Unprotect(encryptedData, null, System.Security.Cryptography.DataProtectionScope.CurrentUser);
+        //                var plainText = Encoding.ASCII.GetString(decodedData); // Looks like ASCII
 
-                        if (Regex.IsMatch(reader.GetString(2), hostName))
-                            yield return Tuple.Create(reader.GetString(2) + ":" + reader.GetString(0), plainText);
-                    }
-                }
-                conn.Close();
-            }
-        }
+        //                if (Regex.IsMatch(reader.GetString(2), hostName))
+        //                    yield return Tuple.Create(reader.GetString(2) + ":" + reader.GetString(0), plainText);
+        //            }
+        //        }
+        //        conn.Close();
+        //    }
+        //}
 
-        private static string GetChromeCookiePath()
-        {
-            string s = Environment.GetFolderPath(
-                Environment.SpecialFolder.LocalApplicationData);
-            s += @"\Google\Chrome\User Data\Default\cookies";
+        //public static string GetChromeCookiePath()
+        //{
+        //    string s = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        //    s += @"\Google\Chrome\User Data\Default\cookies";
 
-            if (!File.Exists(s))
-                return string.Empty;
+        //    if (!File.Exists(s))
+        //        return string.Empty;
 
-            return s;
-        }
+        //    return s;
+        //}
 
-        private static bool GetCookie_Chrome(string strHost, string strField, ref string Value)
-        {
-            Value = string.Empty;
-            bool fRtn = false;
-            string strPath, strDb;
+        //private static bool GetCookie_Chrome(string strHost, string strField, ref string Value)
+        //{
+        //    Value = string.Empty;
+        //    bool fRtn = false;
+        //    string strPath, strDb;
 
-            // Check to see if Chrome Installed
-            strPath = GetChromeCookiePath();
-            if (string.Empty == strPath) // Nope, perhaps another browser
-                return false;
+        //    // Check to see if Chrome Installed
+        //    strPath = GetChromeCookiePath();
+        //    if (string.Empty == strPath) // Nope, perhaps another browser
+        //        return false;
 
-            try
-            {
-                strDb = "Data Source=" + strPath + ";pooling=false";
+        //    try
+        //    {
+        //        strDb = "Data Source=" + strPath + ";pooling=false";
 
-                using (SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(strDb))
-                {
-                    using (SQLiteCommand cmd = conn.CreateCommand())
-                    {
-                        cmd.CommandText = "SELECT value FROM cookies WHERE host_key LIKE '%" + strHost + "%' AND name LIKE '%" + strField + "%';";
+        //        using (SQLiteConnection conn = new System.Data.SQLite.SQLiteConnection(strDb))
+        //        {
+        //            using (SQLiteCommand cmd = conn.CreateCommand())
+        //            {
+        //                cmd.CommandText = "SELECT value FROM cookies WHERE host_key LIKE '%" + strHost + "%' AND name LIKE '%" + strField + "%';";
 
-                        conn.Open();
-                        using (SQLiteDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                Value = reader.GetString(0);
-                                if (!Value.Equals(string.Empty))
-                                {
-                                    fRtn = true;
-                                    break;
-                                }
-                            }
-                        }
-                        conn.Close();
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                Value = string.Empty;
-                fRtn = false;
-            }
-            return fRtn;
-        }
+        //                conn.Open();
+        //                using (SQLiteDataReader reader = cmd.ExecuteReader())
+        //                {
+        //                    while (reader.Read())
+        //                    {
+        //                        Value = reader.GetString(0);
+        //                        if (!Value.Equals(string.Empty))
+        //                        {
+        //                            fRtn = true;
+        //                            break;
+        //                        }
+        //                    }
+        //                }
+        //                conn.Close();
+        //            }
+        //        }
+        //    }
+        //    catch (Exception)
+        //    {
+        //        Value = string.Empty;
+        //        fRtn = false;
+        //    }
+        //    return fRtn;
+        //}
     }
 }
 

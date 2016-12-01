@@ -69,6 +69,23 @@ namespace Cliver
                 }
             }
 
+            //public string TimeMark
+            //{
+            //    get
+            //    {
+            //        switch (Log.mode)
+            //        {
+            //            case Cliver.Log.Mode.ONLY_LOG:
+            //                return Cliver.Log.TimeMark;
+            //            //case Cliver.Log.Mode.SINGLE_SESSION:
+            //            case Cliver.Log.Mode.SESSIONS:
+            //                return session.TimeMark;
+            //            default:
+            //                throw new Exception("Unknown LOGGING_MODE:" + Cliver.Log.mode);
+            //        }
+            //    }
+            //}
+
             /// <summary>
             /// Close the log
             /// </summary>

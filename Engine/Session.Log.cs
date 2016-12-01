@@ -157,7 +157,7 @@ namespace Cliver.Bot
         /// Find previous session and if it was broken restore it.
         /// </summary>
         /// <returns>false if session was not restored due to any reason</returns>
-        bool restore(ref DateTime start_time)
+        bool restore(ref DateTime start_time, ref string restored_session_dir)
         {
             lock (this)
             {
@@ -260,6 +260,8 @@ namespace Cliver.Bot
                                 DirectoryInfo output_di = new DirectoryInfo(previous_broken_session_dir + "\\" + Log.OutputDirName);
                                 if (output_di.Exists)
                                     copy_dir(output_di.FullName, Log.SessionDir);
+
+                                restored_session_dir = previous_broken_session_dir;
                                 return true;
                             }
                             return false;

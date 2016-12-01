@@ -137,14 +137,15 @@ namespace Cliver
                                 log_id = 1;
                                 var ids = from x in thread2tws.Keys orderby thread2tws[x].Id select thread2tws[x].Id;
                                 foreach (int id in ids)
-                                    if (log_id == id) log_id++;
+                                    if (log_id == id)
+                                        log_id++;
                             }
 
                             string log_name = Log.EntryAssemblyName;
                             if (log_id < 0)
-                                log_name += "_" + Log.TimeMark + ".log";
+                                log_name += "_" + MainSession.TimeMark + ".log";
                             else
-                                log_name += "_" + log_id.ToString() + "_" + Log.TimeMark + ".log";
+                                log_name += "_" + log_id.ToString() + "_" + MainSession.TimeMark + ".log";
 
                             tw = new ThreadWriter(log_id, log_name);
                             thread2tws.Add(thread, tw);

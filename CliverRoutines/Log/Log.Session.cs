@@ -27,6 +27,7 @@ namespace Cliver
 
             public Session(string name = MAIN_SESSION_NAME)
             {
+                TimeMark = CreatedTime.ToString("yyMMddHHmmss");
                 this.name = name;
 
                 //if (Log.mode == Mode.ONLY_LOG)
@@ -81,12 +82,13 @@ namespace Cliver
             }
             string path;
 
-            public readonly string TimeMark = DateTime.Now.ToString("yyMMddHHmmss");
+            public readonly DateTime CreatedTime = DateTime.Now;
+            public readonly string TimeMark;
 
             Dictionary<string, NamedWriter> names2nw = new Dictionary<string, NamedWriter>();
 
             /// <summary>
-            /// Close all writing streams and rename session and its directory. The session can be used after.
+            /// Close all writing streams and rename session and its directory. Using the session can be contuniued after that.
             /// </summary>
             /// <param name="new_name"></param>
             public void Close(string new_name)
@@ -213,16 +215,18 @@ namespace Cliver
             //static string download_dir = null;
             //public const string DownloadDirName = "cache";
                         
-            public NamedWriter Default
+            public Writer Default
             {
                 get
                 {
-                    return NamedWriter.Get(this, MAIN_NAMED_LOG);
+                    if (this == Log.MainSession)
+                        return ThreadWriter.Main;
+                    return NamedWriter.Get(this, DEFAULT_NAMED_LOG);
                 }
             }
 
-            internal const string MAIN_NAMED_LOG = "";
-                       
+            internal const string DEFAULT_NAMED_LOG = "_";//to differ from ThreadWriter.Main
+
             public void Error(Exception e)
             {
                 Default.Error(e);
