@@ -244,27 +244,27 @@ namespace Cliver.Bot
                 }
                 finally
                 {
-                    StateEnum state = State;
+                    //StateEnum state = State;
                     This_ = null;
-                    string sd = Log.SessionDir;
+                    //string sd = Log.SessionDir;
                     Cliver.Log.ClearSession();
-                    switch(state)
-                    {
-                        case StateEnum.COMPLETED:
-                        //case StateEnum.UNCOMPLETED://cannot change paths as they can be used in a restored session
-                        //case StateEnum.BROKEN:
-                        //case StateEnum.FATAL_ERROR:
-                            try
-                            {
-                                Directory.Move(sd, sd + "_" + state);
-                            }
-                            catch (Exception e)
-                            {
-                                LogMessage.Error(e);
-                                Bot.FatalError(e.Message);
-                            }
-                            break;
-                    }
+                    //switch(state)
+                    //{//cannot change paths as they can be used in a restored session
+                    //    case StateEnum.COMPLETED:
+                    //    //case StateEnum.UNCOMPLETED:
+                    //    //case StateEnum.BROKEN:
+                    //    //case StateEnum.FATAL_ERROR:
+                    //        try
+                    //        {
+                    //            Directory.Move(sd, sd + "_" + state);
+                    //        }
+                    //        catch (Exception e)
+                    //        {
+                    //            LogMessage.Error(e);
+                    //            Bot.FatalError(e.Message);
+                    //        }
+                    //        break;
+                    //}
                 }
             }
 
