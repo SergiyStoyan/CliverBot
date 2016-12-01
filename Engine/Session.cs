@@ -79,20 +79,21 @@ namespace Cliver.Bot
             }
 
             Restored = false;
-            string restored_session_dir = null;
             if (Settings.Engine.RestoreBrokenSession && !ProgramRoutines.IsParameterSet(CommandLineParameters.NOT_RESTORE_SESSION))
             {
+                string restored_session_dir = null;
                 Restored = this.restore(ref StartTime, ref restored_session_dir);
                 if (closing_thread != null)
                     return;
+                if (Restored)
+                {//rename session folder
+                 //!!! xml logs must be closed and re-open !!!
+                    //string start_time_mark = Regex.Match(restored_session_dir, @"\d{12}").Value;
+                    //Log.MainSession.Close(start_time_mark);
+                }
             }
-            if (Restored)
-            {//rename session folder
-                //!!! xml logs must be closed and re-open !!!
-                //string start_time_mark = Regex.Match(restored_session_dir, @"\d{12}").Value;
-                //Log.MainSession.Close(start_time_mark);
-            }
-            else
+
+            if (!Restored)
             {
                 StartTime = Log.MainSession.CreatedTime;// DateTime.Now;
                 Log.Main.Write("No session was restored so reading input Items from the input file");
