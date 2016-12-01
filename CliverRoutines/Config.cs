@@ -37,7 +37,7 @@ namespace Cliver
     {
         static Config()
         {
-            DefaultStorageDir = Log.GetAppCommonDataDir();
+            DefaultStorageDir = Log.GetAppCommonDataDir() + "\\" + CONFIG_FOLDER_NAME;
         }
 
         /// <summary>
@@ -60,7 +60,6 @@ namespace Cliver
 
         public static readonly string DefaultStorageDir;
         public static string StorageDir { get; private set; }
-        public static string CompleteStorageDir { get { return StorageDir + "\\" + CONFIG_FOLDER_NAME; } }
 
         static void get(bool reset)
         {
@@ -90,7 +89,7 @@ namespace Cliver
                             continue;
 
                         Serializable t;
-                        string file = CompleteStorageDir + "\\" + name + "." + st.FullName + "." + FILE_EXTENSION;
+                        string file = StorageDir + "\\" + name + "." + st.FullName + "." + FILE_EXTENSION;
                         if (reset)
                             t = Serializable.Create(st, file);
                         else
@@ -145,7 +144,7 @@ namespace Cliver
             lock (object_names2serializable)
             {
                 foreach (Serializable s in object_names2serializable.Values)
-                    s.Save(CompleteStorageDir + "\\" + PathRoutines.GetFileNameFromPath(s.__File));
+                    s.Save(StorageDir + "\\" + PathRoutines.GetFileNameFromPath(s.__File));
             }
         }
 

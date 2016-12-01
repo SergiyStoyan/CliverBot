@@ -195,7 +195,7 @@ namespace Cliver.BotGui
 
         private void bStore_Click(object sender, EventArgs e)
         {
-            Process.Start(Cliver.Config.CompleteStorageDir);
+            Process.Start(Cliver.Config.StorageDir);
         }
 
         private void bLoad_Click(object sender, EventArgs e)

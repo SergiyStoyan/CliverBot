@@ -238,7 +238,7 @@ namespace Cliver.Bot
                                     source_session = previous_broken_session_dir;
 
                                 if (string.IsNullOrWhiteSpace(configuration))
-                                    configuration = previous_broken_session_dir;
+                                    configuration = previous_broken_session_dir + "\\" + Cliver.Config.CONFIG_FOLDER_NAME;
 
                                 Log.Main.Inform("Loading configuration from " + configuration);
                                 Config.Reload(configuration, true);
