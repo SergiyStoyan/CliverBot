@@ -244,23 +244,7 @@ namespace Cliver.Bot
 
                                 DirectoryInfo output_di = new DirectoryInfo(previous_broken_session_dir + "\\" + Log.OutputDirName);
                                 if (output_di.Exists)
-                                {
-                                    foreach (FileInfo fi in output_di.GetFiles())
-                                    {
-                                        string old_output_file2;
-                                        if (!Settings.Output.Write2CommonFolder)
-                                            old_output_file2 = Log.OutputDir + "\\" + fi.Name;
-                                        else
-                                            old_output_file2 = Log.WorkDir + "\\" + fi.Name;
-                                        if (!File.Exists(old_output_file2))
-                                        {
-                                            File.Copy(fi.FullName, old_output_file2);
-                                            Log.Main.Write("Output file of previous broken session was copied to the current output folder: " + old_output_file2);
-                                        }
-                                        else
-                                            Log.Main.Warning("Output file of previous broken session was not copied because the destination one exists already: " + old_output_file2);
-                                    }
-                                }
+                                    copy_dir(output_di.FullName, Log.SessionDir);
                                 return true;
                             }
                             return false;
@@ -281,6 +265,26 @@ namespace Cliver.Bot
             {
                 return d1.Name.CompareTo(d2.Name);
             }
+        }
+        void copy_dir(string dir, string to_dir)
+        {
+            string dir_name = PathRoutines.GetDirNameFromPath(dir);
+            string dir2 = to_dir + "\\" + dir_name;
+            if (!Directory.Exists(dir2))
+                Directory.CreateDirectory(dir2);
+            foreach (string f in Directory.EnumerateFiles(dir))
+            {
+                string old_output_file2 = dir2 + "\\" + PathRoutines.GetFileNameFromPath(f);
+                if (!File.Exists(old_output_file2))
+                {
+                    File.Copy(f, old_output_file2);
+                    Log.Main.Write("Output file of previous broken session was copied to the current output folder: " + old_output_file2);
+                }
+                else
+                    Log.Main.Warning("Output file of previous broken session was not copied because the destination one exists already: " + old_output_file2);
+            }
+            foreach (string d in Directory.EnumerateDirectories(dir))
+                copy_dir(d, dir2);
         }
 
         /// <summary>

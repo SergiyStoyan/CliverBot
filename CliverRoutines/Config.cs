@@ -55,8 +55,8 @@ namespace Cliver
         }
         static readonly HashSet<string> required_object_names = new HashSet<string>();
 
-        const string CONFIG_FOLDER_NAME = "config";
-        const string FILE_EXTENSION = "json";
+        public const string CONFIG_FOLDER_NAME = "config";
+        public const string FILE_EXTENSION = "json";
 
         public static readonly string DefaultStorageDir;
         public static string StorageDir { get; private set; }
@@ -145,7 +145,7 @@ namespace Cliver
             lock (object_names2serializable)
             {
                 foreach (Serializable s in object_names2serializable.Values)
-                    s.Save(StorageDir + "\\" + PathRoutines.GetFileNameFromPath(s.__File));
+                    s.Save(CompleteStorageDir + "\\" + PathRoutines.GetFileNameFromPath(s.__File));
             }
         }
 

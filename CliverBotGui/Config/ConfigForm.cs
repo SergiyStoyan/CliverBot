@@ -23,12 +23,12 @@ using System.Diagnostics;
 
 namespace Cliver.BotGui
 {
-    internal partial class ConfigForm : Form// BaseForm//
+    internal partial class ConfigForm : BaseForm//Form// 
     {
         public ConfigForm()
         {
             InitializeComponent();
-            
+
             listConfigTabs.DisplayMember = "Name";
             listConfigTabs.ValueMember = "CC";
 
@@ -49,7 +49,7 @@ namespace Cliver.BotGui
                 LogMessage.Error(e);
             }
         }
-        
+
         private void Save_Click(object sender, System.EventArgs e)
         {
             try
@@ -65,18 +65,20 @@ namespace Cliver.BotGui
                         listConfigTabs.SelectedItem = cci;
                         return;
                     }
-                string storage_dir = null;
-                if (Cliver.Config.ReadOnly)
-                {
-                    //LogMessage.Inform("The current config is readonly and so must be saved in another location. Please select a folder.");
-                    FolderBrowserDialog d = new FolderBrowserDialog();
-                    d.Description = "The current config is read-only and must be saved in another location. Please select a folder.";
-                    d.SelectedPath = Log.GetAppCommonDataDir();
-                    if (d.ShowDialog() != DialogResult.OK)
-                        return;
-                    storage_dir = d.SelectedPath;
-                }
-                Config.Save(storage_dir);
+                //string storage_dir = null;
+                //if (Cliver.Config.ReadOnly)
+                //{
+                //FolderBrowserDialog d = new FolderBrowserDialog();
+                //d.Description = "The current config was open as read-only and must be saved in another location. Please select a folder.";
+                //d.SelectedPath = Log.GetAppCommonDataDir();
+                //if (d.ShowDialog() != DialogResult.OK)
+                //    return;
+                //storage_dir = d.SelectedPath;
+                //}
+                //Config.Save(storage_dir);
+                if (Cliver.Config.ReadOnly && !LogMessage.AskYesNo("The current config was loaded from a not default location and will replace the config stored in the default location. Are you sure to proceed?", false))
+                    return;
+                Config.Save();
                 //Config.Reload();
                 Close();
             }
@@ -102,7 +104,7 @@ namespace Cliver.BotGui
         {
             try
             {
-                ((ConfigControlItem)listConfigTabs.SelectedItem).CC.BringToFront();                
+                ((ConfigControlItem)listConfigTabs.SelectedItem).CC.BringToFront();
             }
             catch (Exception ex)
             {
@@ -198,19 +200,11 @@ namespace Cliver.BotGui
 
         private void bLoad_Click(object sender, EventArgs e)
         {
-            //FolderBrowserDialog d = new FolderBrowserDialog();
-            //d.Description = "Select a session where to view config from.";
-            //d.SelectedPath = Log.WorkDir;
-            OpenFileDialog d = new OpenFileDialog();
-            d.Title = "Select a session where to view config from.";
-            d.InitialDirectory = Log.WorkDir;
-            d.Filter = "Config files (*.json)|*.json|All files (*.*)|*.*";
-            d.ValidateNames = false;
-            d.CheckFileExists = false;
-            if (d.ShowDialog() != DialogResult.OK)
+            SessionsForm d = new SessionsForm();
+            d.ShowDialog();
+            if (d.SessionDir == null)
                 return;
-            //Config.Reload(PathRoutines.GetDirFromPath(d.SelectedPath));
-            Config.Reload(PathRoutines.GetDirFromPath(d.FileName), true);
+            Config.Reload(d.SessionDir, true);
             ConfigForm_Load(null, null);
         }
     }

@@ -126,6 +126,12 @@
     <Compile Include="Config\ProxyConfigControl.designer.cs">
       <DependentUpon>ProxyConfigControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Config\SessionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Config\SessionsForm.Designer.cs">
+      <DependentUpon>SessionsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Config\WebConfigControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -195,6 +201,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Config\ProxyConfigControl.resx">
       <DependentUpon>ProxyConfigControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Config\SessionsForm.resx">
+      <DependentUpon>SessionsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Config\WebConfigControl.resx">
       <DependentUpon>WebConfigControl.cs</DependentUpon>

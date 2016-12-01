@@ -177,7 +177,7 @@ namespace Cliver.BotGui
             this.bLoad.Name = "bLoad";
             this.bLoad.Size = new System.Drawing.Size(90, 24);
             this.bLoad.TabIndex = 4;
-            this.bLoad.Text = "Veiw";
+            this.bLoad.Text = "Load";
             this.bLoad.Click += new System.EventHandler(this.bLoad_Click);
             // 
             // ConfigForm
