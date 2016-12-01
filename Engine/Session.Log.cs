@@ -184,12 +184,19 @@ namespace Cliver.Bot
                                 XmlTextReader xtr = new XmlTextReader(ssfi.FullName);
                                 SessionState last_state = SessionState.EMPTY;
                                 start_time = DateTime.Now;
+                                string source_session = "";
+                                string configuration = "";
                                 while (xtr.Move2Element("State", true) != null)
                                 {
                                     string s = xtr.Move2Attribute("value", true);
                                     last_state = (SessionState)Enum.Parse(typeof(SessionState), s, true);
                                     if (last_state == SessionState.STARTED)
                                         start_time = DateTime.Parse(xtr.Move2Attribute("session_start_time", true));
+                                    if (last_state == SessionState.RESTORING)
+                                    {
+                                        source_session = xtr.Move2Attribute("source_session", true);
+                                        configuration = xtr.Move2Attribute("configuration", true);
+                                    }                                  
                                 }
                                 switch (last_state)
                                 {
@@ -207,28 +214,36 @@ namespace Cliver.Bot
 
                                 if (!LogMessage.AskYesNo("Previous session " + previous_broken_session_dir + " was not completed. Restore it?", true))
                                     return false;
-
-                                Log.Main.Inform("Loading configuration from " + previous_broken_session_dir);
-                                Config.Reload(previous_broken_session_dir, true);
-
+                                
                                 FileInfo broken_session_items_fi = new FileInfo(previous_broken_session_dir + "\\" + ITEMS_FILE_NAME);
                                 if (!broken_session_items_fi.Exists)
                                 {
                                     string str = "Could not find " + broken_session_items_fi.Name + " in " + previous_broken_session_dir + "!";
                                     if (LogMessage.AskYesNo(str + " Proceed without session restoring?", true))
-                                    {
-                                        Log.Main.Inform("Loading configuration from " + Config.DefaultStorageDir);
-                                        Config.Reload(Config.DefaultStorageDir);
                                         return false;
-                                    }
                                     else
                                     {
                                         Close();
                                         return false;
                                     }
                                 }
+                                
+                                foreach (string ss in source_session.Split('|'))//to block cleaning up session folders
+                                    if (!string.IsNullOrWhiteSpace(ss))
+                                        Directory.SetLastWriteTime(ss, DateTime.Now);
 
-                                set_session_state(SessionState.RESTORING, "source_session", previous_broken_session_dir);
+                                if (!string.IsNullOrWhiteSpace(source_session))
+                                    source_session += "|" + previous_broken_session_dir;
+                                else
+                                    source_session = previous_broken_session_dir;
+
+                                if (string.IsNullOrWhiteSpace(configuration))
+                                    configuration = previous_broken_session_dir;
+
+                                Log.Main.Inform("Loading configuration from " + configuration);
+                                Config.Reload(configuration, true);
+
+                                set_session_state(SessionState.RESTORING, "source_session", source_session, "configuration", configuration);
                                 Log.Main.Write("Restoring session from " + previous_broken_session_dir);
                                 restore_session_from_xml_file(broken_session_items_fi.FullName);
 

@@ -89,9 +89,8 @@ namespace Cliver.Bot
                 StartTime = DateTime.Now;
                 Log.Main.Write("No session was restored so reading input Items from the input file");
                 read_input_file();
+                Config.CopyFiles(Log.SessionDir);
             }
-
-            Config.CopyFiles(Log.SessionDir);
 
             Creating?.Invoke();
 

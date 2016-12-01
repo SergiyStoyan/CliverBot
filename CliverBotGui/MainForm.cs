@@ -402,6 +402,8 @@ namespace Cliver.BotGui
                 //    LogMessage.Error(ex);
                 //}
 
+                //if (Session.This != null && Session.This.Restored && !Message.YesNo("The input file can differ from the actually using data because the currect session is restored. Would you like to open it anyway?"))
+                //    return;
                 Process.Start(Bot.Settings.Input.File);
             }
             catch (Exception ex)
