@@ -48,6 +48,7 @@ namespace Cliver.Bot
         Session()
         {
             This_ = this;
+            State = StateEnum.STARTING;
 
             Log.Main.Inform("Loading configuration from " + Config.DefaultStorageDir);
             Config.Reload(Config.DefaultStorageDir);
@@ -95,8 +96,6 @@ namespace Cliver.Bot
             Creating?.Invoke();
 
             Bot.SessionCreating();
-
-            set_session_state(SessionState.STARTED, "session_start_time", StartTime.ToString("yyyy-MM-dd HH:mm:ss"));
         }
         Dictionary<string, Type> input_item_type_name2input_item_types;
         Dictionary<string, Type> work_item_type_name2work_item_types;
@@ -141,7 +140,8 @@ namespace Cliver.Bot
                 if (This == null)
                     return;
                 BotCycle.Start();
-                Session.State = StateEnum.STARTED;
+                Session.State = StateEnum.RUNNING;
+                This.set_session_state(StateEnum.RUNNING, "session_start_time", This.StartTime.ToString("yyyy-MM-dd HH:mm:ss"));
             }
             catch (ThreadAbortException)
             {
@@ -165,6 +165,7 @@ namespace Cliver.Bot
                     return;
                 if (This.closing_thread != null)
                     return;
+                State = StateEnum.CLOSING;
                 This.closing_thread = ThreadRoutines.Start(This.close);
             }
         }
@@ -184,25 +185,19 @@ namespace Cliver.Bot
                         This.items_xtw.Close();
                     }
 
+                    if (This.IsUnprocessedInputItem)
+                        State = StateEnum.BROKEN;
+                    else if (This.IsItem2Restore)
+                        State = StateEnum.UNCOMPLETED;
+                    else
+                        State = StateEnum.COMPLETED;
+
                     if (This.input_item_queue_name2input_item_queues.Count > 0)
-                    {
-                        if (This.IsUnprocessedInputItem)
-                            This.set_session_state(SessionState.ABORTED);
-                        else if (This.IsItem2Restore)
-                            This.set_session_state(SessionState.UNCOMPLETED);
-                        else
-                            This.set_session_state(SessionState.COMPLETED);
-                    }
+                            This.set_session_state(State);
+
                     This.workflow_xtw.WriteEndElement();
                     This.workflow_xtw.WriteEndDocument();
                     This.workflow_xtw.Close();
-
-                    if (This.IsUnprocessedInputItem)
-                        Session.State = StateEnum.BROKEN;
-                    else if (This.IsItem2Restore)
-                        Session.State = StateEnum.UNCOMPLETED;
-                    else
-                        Session.State = StateEnum.COMPLETED;
 
                     try
                     {
@@ -229,17 +224,6 @@ namespace Cliver.Bot
                     InputItemQueue.Close();
                     FileWriter.ClearSession();
                     Log.Main.Write("Closing the bot session: " + Session.State.ToString());
-                    This_ = null;
-
-                    try
-                    {
-                        Closed?.Invoke();
-                    }
-                    catch (Exception e)
-                    {
-                        LogMessage.Error(e);
-                        Bot.FatalError(e.Message);
-                    }
                 }
                 catch (ThreadAbortException)
                 {
@@ -252,9 +236,44 @@ namespace Cliver.Bot
                 }
                 finally
                 {
+                    StateEnum state = State;
+                    This_ = null;
+                    string sd = Log.SessionDir;
                     Cliver.Log.ClearSession();
+                    switch(state)
+                    {
+                        case StateEnum.COMPLETED:
+                        case StateEnum.UNCOMPLETED:
+                        case StateEnum.BROKEN:
+                        case StateEnum.FATAL_ERROR:
+                            try
+                            {
+                                Directory.Move(sd, sd + "_" + state);
+                            }
+                            catch (Exception e)
+                            {
+                                LogMessage.Error(e);
+                                Bot.FatalError(e.Message);
+                            }
+                            break;
+                    }
                 }
             }
+
+            try
+            {
+                Closed?.Invoke();
+            }
+            catch (Exception e)
+            {
+                LogMessage.Error(e);
+                Bot.FatalError(e.Message);
+            }
+        }
+        enum SessionFolderMark
+        {
+            DECLINED,
+            COMPLETED
         }
 
         void read_input_file()
@@ -268,7 +287,7 @@ namespace Cliver.Bot
         {
             NULL,
             STARTING,
-            STARTED,
+            RESTORING,//restoring phase
             RUNNING,
             CLOSING,
             COMPLETED,
@@ -285,10 +304,10 @@ namespace Cliver.Bot
                     return StateEnum.NULL;
                 return This._state;
             }
-            private  set
+            private set
             {
                 if (This == null)
-                    return;
+                    throw new Exception("Trying to set session state while no session exists.");
                 if (This._state >= StateEnum.COMPLETED)
                     return;
                 if (This._state > value)

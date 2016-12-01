@@ -97,6 +97,7 @@ namespace Cliver
             {
                 if (work_dir == null)
                 {
+                    Thread delete_old_logs = null;
                     lock (lock_object)
                     {
                         if (string.IsNullOrEmpty(pre_work_dir))
@@ -115,9 +116,10 @@ namespace Cliver
                             if (!di.Exists)
                                 di.Create();
                             else
-                                ThreadRoutines.StartTry(Log.DeleteOldLogs);//to avoid a concurrent loop while accessing the log file from the same thread
+                                delete_old_logs = ThreadRoutines.StartTry(Log.DeleteOldLogs);//to avoid a concurrent loop while accessing the log file from the same thread
                         }
                     }
+                    delete_old_logs?.Join();
                 }
                 return work_dir;
             }
@@ -227,11 +229,11 @@ namespace Cliver
         public static void DeleteOldLogs()
         {
             //Log.Main.Inform("test");
-            if (ignore_delete_old_logs)
+            if (delete_old_logs_running)
                 return;
             lock (lock_object)
             {
-                ignore_delete_old_logs = true;
+                delete_old_logs_running = true;
                 try
                 {
                     if (delete_logs_older_days > 0)
@@ -303,11 +305,11 @@ namespace Cliver
                 }
                 finally
                 {
-                    ignore_delete_old_logs = false;
+                    delete_old_logs_running = false;
                 }
             }
         }
-        static bool ignore_delete_old_logs = false;
+        static bool delete_old_logs_running = false;
 
         /// <summary>
         /// Create absolute path from app directory and relative path

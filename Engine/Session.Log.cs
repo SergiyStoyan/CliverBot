@@ -182,17 +182,17 @@ namespace Cliver.Bot
                                     continue;
 
                                 XmlTextReader xtr = new XmlTextReader(ssfi.FullName);
-                                SessionState last_state = SessionState.EMPTY;
+                                StateEnum last_state = StateEnum.NULL;
                                 start_time = DateTime.Now;
                                 string source_session = "";
                                 string configuration = "";
                                 while (xtr.Move2Element("State", true) != null)
                                 {
                                     string s = xtr.Move2Attribute("value", true);
-                                    last_state = (SessionState)Enum.Parse(typeof(SessionState), s, true);
-                                    if (last_state == SessionState.STARTED)
+                                    last_state = (StateEnum)Enum.Parse(typeof(StateEnum), s, true);
+                                    if (last_state == StateEnum.RUNNING)
                                         start_time = DateTime.Parse(xtr.Move2Attribute("session_start_time", true));
-                                    if (last_state == SessionState.RESTORING)
+                                    if (last_state == StateEnum.RESTORING)
                                     {
                                         source_session = xtr.Move2Attribute("source_session", true);
                                         configuration = xtr.Move2Attribute("configuration", true);
@@ -200,10 +200,10 @@ namespace Cliver.Bot
                                 }
                                 switch (last_state)
                                 {
-                                    case SessionState.EMPTY:
-                                    case SessionState.RESTORING:
+                                    case StateEnum.NULL:
+                                    case StateEnum.RESTORING:
                                         continue;
-                                    case SessionState.COMPLETED:
+                                    case StateEnum.COMPLETED:
                                         Log.Main.Write("Previous session was completed successfully.");
                                         return false;
                                 }
@@ -243,7 +243,7 @@ namespace Cliver.Bot
                                 Log.Main.Inform("Loading configuration from " + configuration);
                                 Config.Reload(configuration, true);
 
-                                set_session_state(SessionState.RESTORING, "source_session", source_session, "configuration", configuration);
+                                set_session_state(StateEnum.RESTORING, "source_session", source_session, "configuration", configuration);
                                 Log.Main.Write("Restoring session from " + previous_broken_session_dir);
                                 restore_session_from_xml_file(broken_session_items_fi.FullName);
 
@@ -306,7 +306,7 @@ namespace Cliver.Bot
         /// Write session state to file.
         /// </summary>
         /// <param name="state">current session state</param>
-        void set_session_state(SessionState state, params string[] attribute_value_pairs)
+        void set_session_state(StateEnum state, params string[] attribute_value_pairs)
         {
             lock (this)
             {
@@ -320,15 +320,15 @@ namespace Cliver.Bot
             }
         }
 
-        internal enum SessionState
-        {
-            EMPTY,
-            RESTORING,//restoring phase
-            STARTED,//session started from scratch
-            COMPLETED,
-            UNCOMPLETED,//error items to be restored exist
-            ABORTED
-        }
+        //internal enum SessionState
+        //{
+        //    EMPTY,
+        //    RESTORING,//restoring phase
+        //    STARTED,//session started from scratch
+        //    COMPLETED,
+        //    UNCOMPLETED,//error items to be restored exist
+        //    ABORTED
+        //}
 
         /// <summary>
         /// Restore session from the specified session file.
