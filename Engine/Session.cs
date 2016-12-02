@@ -22,7 +22,6 @@ using System.Reflection;
 /*
 TBD:
 - serialize InputItems into json and thus allow arrays etc
-- log clean question - is it possible to make synchrone?
 - ? Bot static session methods move to a session subclass singleton within CustomBot
 */
 
