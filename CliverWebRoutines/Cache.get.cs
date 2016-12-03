@@ -199,7 +199,7 @@ namespace Cliver.BotWeb
                     cache_map = new Dictionary<string,CacheInfo>();
                     //custom_cache = (ICustomCache)CustomizationApi.CreateCustomCache();
                     DirectoryInfo di = new DirectoryInfo(Log.WorkDir);
-                    DirectoryInfo[] session_dis = di.GetDirectories("*Session*", SearchOption.TopDirectoryOnly);
+                    DirectoryInfo[] session_dis = di.GetDirectories("*", SearchOption.TopDirectoryOnly);
                     Array.Sort(session_dis, new CompareDirectoryInfo());
                     for (int i = session_dis.Length - 1; i >= 0; i--)
                     {
