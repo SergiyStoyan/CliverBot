@@ -29,7 +29,7 @@ namespace Cliver.Bot
 {
     public enum ItemSourceType
     {
-        DB,
+        DB, 
         FILE
     }
 

@@ -211,8 +211,8 @@ namespace Cliver
             //Log.Main.Inform("test");
             if (delete_old_logs_running)
                 return;
-            lock (lock_object)
-            {
+            //lock (lock_object)// to avoid interlock when writing to log from here
+            //{
                 delete_old_logs_running = true;
                 try
                 {
@@ -287,7 +287,7 @@ namespace Cliver
                 {
                     delete_old_logs_running = false;
                 }
-            }
+            //}
         }
         static bool delete_old_logs_running = false;
 
