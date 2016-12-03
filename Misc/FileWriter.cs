@@ -84,7 +84,7 @@ namespace Cliver.Bot
         {
             string file_abs_path = file;
             if (!file_abs_path.Contains(@":\"))
-                file_abs_path = Log.OutputDir + "\\" + file_abs_path;
+                file_abs_path = (Session.OutputDir != null ? Session.OutputDir : Log.OutputDir) + "\\" + file_abs_path;
 
             if (add_time_mark)
             {

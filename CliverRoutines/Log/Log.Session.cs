@@ -48,9 +48,10 @@ namespace Cliver
                             return WorkDir;
                         //case Cliver.Log.Mode.SINGLE_SESSION:
                         case Cliver.Log.Mode.SESSIONS:
-                            string path = WorkDir + @"\Session" + "_" + (string.IsNullOrWhiteSpace(name) ? "" : name + "_") + TimeMark;
+                            string path0 = WorkDir + "\\" + session_name_prefix + "_" + (string.IsNullOrWhiteSpace(name) ? "" : name + "_") + TimeMark;
+                            string path = path0;
                             for (int count = 1; Directory.Exists(path); count++)
-                                path = WorkDir + @"\Session" + "_" + (string.IsNullOrWhiteSpace(name) ? "" : name + "_") + TimeMark + "_" + count.ToString();
+                                path = path0 + "_" + count.ToString();
                             return path;
                         default:
                             throw new Exception("Unknown LOGGING_MODE:" + Cliver.Log.mode);

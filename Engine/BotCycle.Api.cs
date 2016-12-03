@@ -66,7 +66,7 @@ namespace Cliver.Bot
         /// <param name="queue_name"></param>
         /// <param name="anonymous_object"></param>
         /// <returns></returns>
-        public bool Add<ItemT>(string queue_name, object anonymous_object) where ItemT : InputItem
+        public bool Add<ItemT>(string queue_name, dynamic anonymous_object) where ItemT : InputItem
         {
             InputItemQueue iiq = Session.GetInputItemQueue(queue_name);
             return InputItem.Add2Queue<ItemT>(iiq, current_item, anonymous_object);
@@ -79,14 +79,14 @@ namespace Cliver.Bot
         /// <typeparam name="ItemT"></typeparam>
         /// <param name="anonymous_object"></param>
         /// <returns></returns>
-        public bool Add<ItemT>(object anonymous_object) where ItemT : InputItem
+        public bool Add<ItemT>(dynamic anonymous_object) where ItemT : InputItem
         {
             return Add<ItemT>(typeof(ItemT).Name, anonymous_object);
         }
 
-        public ItemT WorkItem<ItemT>(params object[] field_value_pairs) where ItemT : WorkItem
+        public ItemT WorkItem<ItemT>(dynamic anonymous_object) where ItemT : WorkItem
         {
-            return Cliver.Bot.WorkItem.Create<ItemT>(field_value_pairs);
+            return Cliver.Bot.WorkItem.Create<ItemT>(anonymous_object);
         }
 
         public ItemT WorkItem<ItemT, ValueT>(ValueT value) where ItemT : SingleValueWorkItem<ValueT>
@@ -94,9 +94,9 @@ namespace Cliver.Bot
             return Cliver.Bot.SingleValueWorkItem<ValueT>.Create<ItemT>(value);
         }
 
-        public ItemT TagItem<ItemT>(params object[] field_value_pairs) where ItemT : TagItem
+        public ItemT TagItem<ItemT>(dynamic anonymous_object) where ItemT : TagItem
         {
-            return Cliver.Bot.TagItem.Create<ItemT>(field_value_pairs);
+            return Cliver.Bot.TagItem.Create<ItemT>(anonymous_object);
         }
 
         //public ItemT TagItem<ItemT, ValueT>(ValueT value) where ItemT : SingleValueTagItem<ValueT>

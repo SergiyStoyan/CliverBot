@@ -79,6 +79,18 @@ namespace Cliver.BotWeb
                 url += "\r\n" + post_parameters.Trim();
             return url;
         }
+        
+        public static string CacheDir
+        {
+            get
+            {
+                if (cache_dir == null)
+                    cache_dir = PathRoutines.CreateDirectory(Bot.Session.This.Dir + "\\" + CACHE_DIR_NAME);
+                return cache_dir;
+            }
+        }
+        static string cache_dir = null;
+        const string CACHE_DIR_NAME = "cache";
 
         internal static void AddFile2CacheMap(string url, string post_parameters, string path, string response_url, WebRoutineStatus file_mark, bool text)
         {
@@ -91,7 +103,7 @@ namespace Cliver.BotWeb
                 {
                     if (cache_map_writer == null)
                     {
-                        cache_map_writer = new XmlTextWriter(Log.DownloadDir + "\\" + CACHE_MAP_FILE_NAME, Encoding.UTF8);
+                        cache_map_writer = new XmlTextWriter(CacheDir + "\\" + CACHE_MAP_FILE_NAME, Encoding.UTF8);
                         cache_map_writer.Formatting = Formatting.Indented;
                         cache_map_writer.WriteStartDocument();
                         cache_map_writer.WriteStartElement("CacheMap");
@@ -187,16 +199,16 @@ namespace Cliver.BotWeb
                     cache_map = new Dictionary<string,CacheInfo>();
                     //custom_cache = (ICustomCache)CustomizationApi.CreateCustomCache();
                     DirectoryInfo di = new DirectoryInfo(Log.WorkDir);
-                    DirectoryInfo[] session_dis = di.GetDirectories("Session*", SearchOption.TopDirectoryOnly);
-                    Array.Sort(session_dis, new Cliver.Bot.Session.CompareDirectoryInfo());
+                    DirectoryInfo[] session_dis = di.GetDirectories("*Session*", SearchOption.TopDirectoryOnly);
+                    Array.Sort(session_dis, new CompareDirectoryInfo());
                     for (int i = session_dis.Length - 1; i >= 0; i--)
                     {
                         DirectoryInfo d = session_dis[i];
-                        if (!Directory.Exists(d.FullName + "\\" + Log.DownloadDirName))
+                        if (!Directory.Exists(d.FullName + "\\" + CACHE_DIR_NAME))
                             continue;
                         if (d.FullName == Log.SessionDir)
                             continue;
-                        string cm_file = d.FullName + "\\" + Log.DownloadDirName + "\\" + CACHE_MAP_FILE_NAME;
+                        string cm_file = d.FullName + "\\" + CACHE_DIR_NAME + "\\" + CACHE_MAP_FILE_NAME;
                         if (!File.Exists(cm_file))
                         {
                             Log.Main.Error("Could not open cache map: " + d.FullName + "\\" + CACHE_MAP_FILE_NAME);
@@ -204,27 +216,29 @@ namespace Cliver.BotWeb
                         }
                         try
                         {
-                            XmlTextReader sr = new XmlTextReader(cm_file);
-                            string session_name = Regex.Replace(d.FullName, @".*[\/\\](?=.+)", "", RegexOptions.Compiled| RegexOptions.Singleline);
-                            while (sr.Read())
+                            using (XmlTextReader sr = new XmlTextReader(cm_file))
                             {
-                                if (sr.NodeType == XmlNodeType.Element && sr.Name == "File")
+                                string session_name = Regex.Replace(d.FullName, @".*[\/\\](?=.+)", "", RegexOptions.Compiled | RegexOptions.Singleline);
+                                while (sr.Read())
                                 {
-                                    string url = sr.GetAttribute("url");
-                                    string response_url = sr.GetAttribute("response_url");
-                                    string path = sr.GetAttribute("path");
-                                    if (!path.Contains(session_name))
-                                        path = "\\" + session_name + "\\" + Log.DownloadDirName + "\\" + path;
-                                    bool text;
-                                    if (!bool.TryParse(sr.GetAttribute("text"), out text))
-                                        text = true;
-                                    if (DoNotRestoreErrorFiles)
+                                    if (sr.NodeType == XmlNodeType.Element && sr.Name == "File")
                                     {
-                                        string error = sr.GetAttribute("error");
-                                        if (error != null)
-                                            continue;
+                                        string url = sr.GetAttribute("url");
+                                        string response_url = sr.GetAttribute("response_url");
+                                        string path = sr.GetAttribute("path");
+                                        if (!path.Contains(session_name))
+                                            path = "\\" + session_name + "\\" + CACHE_DIR_NAME + "\\" + path;
+                                        bool text;
+                                        if (!bool.TryParse(sr.GetAttribute("text"), out text))
+                                            text = true;
+                                        if (DoNotRestoreErrorFiles)
+                                        {
+                                            string error = sr.GetAttribute("error");
+                                            if (error != null)
+                                                continue;
+                                        }
+                                        add2cache_map(url, path, response_url);
                                     }
-                                    add2cache_map(url, path, response_url);
                                 }
                             }
                         }
@@ -241,6 +255,13 @@ namespace Cliver.BotWeb
                     LogMessage.Exit(e);
                 }
                 return false;
+            }
+        }
+        class CompareDirectoryInfo : IComparer<DirectoryInfo>
+        {
+            public int Compare(DirectoryInfo d1, DirectoryInfo d2)
+            {
+                return d1.Name.CompareTo(d2.Name);
             }
         }
 
@@ -314,8 +335,10 @@ namespace Cliver.BotWeb
                     cache_map_writer.WriteEndElement();
                     cache_map_writer.WriteEndDocument();
                     cache_map_writer.Close();
+                    cache_map_writer.Dispose();
                     cache_map_writer = null;
                 }
+                cache_dir = null;
                 custom_cache = null;
                 cache_map = null;
             }

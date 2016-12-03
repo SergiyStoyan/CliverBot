@@ -47,7 +47,7 @@ namespace Cliver.BotGui
             get { return _BotThreadControlType!=null? _BotThreadControlType: typeof(BotThreadControl); }
             set
             {
-                if (Bot.Session.State != Bot.Session.StateEnum.NULL)
+                if (Bot.Session.State != Bot.Session.SessionState.NULL)
                     throw new Exception("_BotThreadControlType cannot be set.");
                 _BotThreadControlType = value;
             }

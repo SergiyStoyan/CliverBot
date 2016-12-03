@@ -29,7 +29,7 @@ namespace Cliver.Bot
     /// </summary>
     public class Item
     {
-        static internal ItemT Create<ItemT>(object anonymous_object) where ItemT : Item
+        static internal ItemT Create<ItemT>(dynamic anonymous_object) where ItemT : Item
         {
             //ItemT item = (ItemT)Activator.CreateInstance(typeof(ItemT));
             ItemT item = (ItemT)FormatterServices.GetUninitializedObject(typeof(ItemT));

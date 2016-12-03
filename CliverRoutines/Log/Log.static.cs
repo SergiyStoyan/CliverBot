@@ -24,7 +24,7 @@ namespace Cliver
     /// </summary>
     public static partial class Log
     {
-        public static void Initialize(Mode mode, string pre_work_dir = null, bool write_log = true, int delete_logs_older_days = 10)
+        public static void Initialize(Mode mode, string pre_work_dir = null, bool write_log = true, int delete_logs_older_days = 10, string session_name_prefix = "Session")
         {
             Log.ClearSession();
             //if (work_dir != null)
@@ -34,11 +34,13 @@ namespace Cliver
             Log.pre_work_dir = pre_work_dir;
             Log.write_log = write_log;
             Log.delete_logs_older_days = delete_logs_older_days;
+            Log.session_name_prefix = session_name_prefix;
         }
         static string pre_work_dir = null;
         static int delete_logs_older_days = 10;
         static bool write_log = true;
         static Mode mode = Mode.ONLY_LOG;
+        static string session_name_prefix = "Session";
 
         public enum Mode
         {

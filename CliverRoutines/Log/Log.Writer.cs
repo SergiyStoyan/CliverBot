@@ -237,15 +237,26 @@ namespace Cliver
                     {
                         if (exiting_thread != null)
                             return;
-                        exiting_thread = new System.Threading.Thread(() =>
+                        write(type, message, details);
+                        exiting_thread = ThreadRoutines.Start(() =>
                         {
-                            if (Exitig != null)
-                                Exitig.Invoke(message);
-                            write(type, message, details);
-                            Environment.Exit(0);
+                            try
+                            {
+                                if (Exitig != null)
+                                    Exitig.Invoke(message);
+                            }
+                            catch (Exception e)
+                            {
+                                string m;
+                                string d;
+                                Log.GetExceptionMessage(e, out m, out d);
+                                write(Log.MessageType.ERROR, m, d);
+                            }
+                            finally
+                            {
+                                Environment.Exit(0);
+                            }
                         });
-                        exiting_thread.IsBackground = true;
-                        exiting_thread.Start();
                     }
                     else
                         write(type, message, details);

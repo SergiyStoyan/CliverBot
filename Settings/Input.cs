@@ -7,6 +7,7 @@ using System.Configuration;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Web.Script.Serialization;
 
 namespace Cliver.Bot
 {
@@ -20,17 +21,28 @@ namespace Cliver.Bot
             public string File = "input.csv";
             public FileFormatEnum FileFormat = FileFormatEnum.NULL;
 
+            //[ScriptIgnore]
+            //public string CompleteFile
+            //{
+            //    get
+            //    {
+            //        return File.Contains(":") ? File : Cliver.Log.AppDir + "\\" + File;
+            //    }
+            //}
+
             override public void Loaded()
             {
                 if (!File.Contains(":"))
+                    File = Cliver.Log.GetAppCommonDataDir() + "\\" + File;
+                if (!System.IO.File.Exists(File))
                 {
-                    string file2 = Cliver.Log.GetAppCommonDataDir() + "\\" + File;
-                    if (!System.IO.File.Exists(file2))
-                        if (System.IO.File.Exists(File))
-                            System.IO.File.Copy(File, file2);
-                    File = file2;
+                    string file0 = Cliver.Log.AppDir + "\\" + PathRoutines.GetFileNameFromPath(File);
+                    if (!System.IO.File.Exists(file0))
+                        throw new Exception("Cannot find the original Input file: " + file0);
+                    System.IO.File.Copy(file0, File);
                     Save();
                 }
+
                 if (FileFormat == FileFormatEnum.NULL)
                 {
                     switch (PathRoutines.GetFileExtensionFromPath(File).ToLower())

@@ -218,12 +218,12 @@ namespace Cliver.BotGui
             catch (Exception e)
             {
                 Session.Close();
+                //if (Program.Mode == Program.ProgramMode.AUTOMATIC)
+                //    System.Windows.Forms.Application.Exit();
                 if (Program.Mode == Program.ProgramMode.AUTOMATIC)
-                    System.Windows.Forms.Application.Exit();
-                    //if (Program.Mode == Program.ProgramMode.AUTOMATIC)
-                    //    LogMessage.Exit(e);
-                    //else
-                    //    LogMessage.Error(e);
+                    LogMessage.Exit(e);
+                else
+                    LogMessage.Error(e);
             }
         }
 

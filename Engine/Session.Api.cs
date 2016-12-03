@@ -113,7 +113,7 @@ namespace Cliver.Bot
         /// <param name="queue_name"></param>
         /// <param name="anonymous_object"></param>
         /// <returns></returns>
-        static public bool Add<ItemT>(string queue_name, object anonymous_object) where ItemT : InputItem
+        static public bool Add<ItemT>(string queue_name, dynamic anonymous_object) where ItemT : InputItem
         {
             InputItemQueue iiq = Session.GetInputItemQueue(queue_name);
             return InputItem.Add2Queue<ItemT>(iiq, BotCycle.GetCurrentInputItemForThisThread(), anonymous_object);
@@ -126,15 +126,15 @@ namespace Cliver.Bot
         /// <typeparam name="ItemT"></typeparam>
         /// <param name="anonymous_object"></param>
         /// <returns></returns>
-        static public bool Add<ItemT>(object anonymous_object) where ItemT : InputItem
+        static public bool Add<ItemT>(dynamic anonymous_object) where ItemT : InputItem
         {
             return Add<ItemT>(typeof(ItemT).Name, anonymous_object);
         }
 
-        static public ItemT WorkItem<ItemT>(params object[] field_value_pairs) where ItemT : WorkItem
-        {
-            return Cliver.Bot.WorkItem.Create<ItemT>(field_value_pairs);
-        }
+        //static public ItemT WorkItem<ItemT>(params object[] field_value_pairs) where ItemT : WorkItem
+        //{
+        //    return Cliver.Bot.WorkItem.Create<ItemT>(field_value_pairs);
+        //}
 
         static public ItemT WorkItem<ItemT, ValueT>(ValueT value) where ItemT : SingleValueWorkItem<ValueT>
         {
@@ -199,16 +199,18 @@ namespace Cliver.Bot
 
         static public void FatalErrorClose(string message)
         {
-            Session.State = StateEnum.FATAL_ERROR;
             LogMessage.Error(message);
+            Session.State = SessionState.FATAL_ERROR;
+            This.storage.WriteState(State, new { });
             Bot.FatalError(message);
             Session.Close();
         }
 
         static public void FatalErrorClose(Exception e)
         {
-            Session.State = StateEnum.FATAL_ERROR;
             LogMessage.Error(e);
+            Session.State = SessionState.FATAL_ERROR;
+            This.storage.WriteState(State, new { });
             Bot.FatalError(e.Message);
             Session.Close();
         }
@@ -230,5 +232,18 @@ namespace Cliver.Bot
             {
             }
         }
+
+        static public string OutputDir
+        {
+            get
+            {
+                if (This == null)
+                    return null;
+                if (This.output_dir == null)
+                    This.output_dir = PathRoutines.CreateDirectory(This.Dir + "\\output");
+                return This.output_dir;
+            }
+        }
+        string output_dir = null;
     }
 }

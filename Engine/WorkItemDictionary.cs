@@ -24,34 +24,15 @@ namespace Cliver.Bot
         {
             this.item_type = item_type;
             Name = item_type.ToString();
-
-            switch (Session.This.SourceType)
-            {
-                case ItemSourceType.DB:
-                    this.table = "_dictionary_" + Name;
-                    throw new Exception("Not implemented");
-                case ItemSourceType.FILE:
-                    key2items = new Dictionary<string, WorkItem>();
-                    break;
-                default:
-                    throw new Exception("Undefined SourceType: " + Session.This.SourceType.ToString());
-            }
+            key2items = new Dictionary<string, WorkItem>();
         }
 
         internal void Restore(string key, string item_seed, int item_id)
         {
-            switch (Session.This.SourceType)
+            lock (this)
             {
-                case ItemSourceType.DB:
-                    throw new Exception("Not implemented");
-                case ItemSourceType.FILE:
-                    lock (this)
-                    {
-                        key2items[key] = (WorkItem)Item.Restore(item_type, item_seed, item_id);
-                        return;
-                    }
-                default:
-                    throw new Exception("Undefined SourceType: " + Session.This.SourceType.ToString());
+                key2items[key] = (WorkItem)Item.Restore(item_type, item_seed, item_id);
+                return;
             }
         }
 
@@ -61,33 +42,16 @@ namespace Cliver.Bot
         internal readonly string Name;
 
         protected readonly Type item_type;
-        protected readonly string table;
         protected Dictionary<string, WorkItem> key2items;
 
         internal WorkItemDictionary<WorkItemT> Get<WorkItemT>() where WorkItemT : WorkItem
         {
-            switch (Session.This.SourceType)
-            {
-                case ItemSourceType.DB:
-                    throw new Exception("Not implemented");
-                case ItemSourceType.FILE:
-                    return new WorkItemDictionary<WorkItemT>(key2items);
-                default:
-                    throw new Exception("Undefined SourceType: " + Session.This.SourceType.ToString());
-            }
+            return new WorkItemDictionary<WorkItemT>(key2items);
         }
 
         internal SingleValueWorkItemDictionary<WorkItemT, ValueT> Get<WorkItemT, ValueT>() where WorkItemT : SingleValueWorkItem<ValueT>
         {
-            switch (Session.This.SourceType)
-            {
-                case ItemSourceType.DB:
-                    throw new Exception("Not implemented");
-                case ItemSourceType.FILE:
-                    return new SingleValueWorkItemDictionary<WorkItemT, ValueT>(key2items);
-                default:
-                    throw new Exception("Undefined SourceType: " + Session.This.SourceType.ToString());
-            }
+            return new SingleValueWorkItemDictionary<WorkItemT, ValueT>(key2items);
         }
     }
 
@@ -118,38 +82,22 @@ namespace Cliver.Bot
         {
             set
             {
-                switch (Session.This.SourceType)
+                lock (this)
                 {
-                    case ItemSourceType.DB:
-                        throw new Exception("Not implemented");
-                    case ItemSourceType.FILE:
-                        lock (this)
-                        {
-                            key2items[key] = value;
-                            Session.This.LogWorkItem(value, key);
-                            return;
-                        }
-                    default:
-                        throw new Exception("Undefined SourceType: " + Session.This.SourceType.ToString());
+                    key2items[key] = value;
+                    Session.This.WriteWorkItem(value, key);
+                    return;
                 }
             }
             get
             {
-                switch (Session.This.SourceType)
+                lock (this)
                 {
-                    case ItemSourceType.DB:
-                        throw new Exception("Not implemented");
-                    case ItemSourceType.FILE:
-                        lock (this)
-                        {
-                            WorkItem wi;
-                            if (!key2items.TryGetValue(key, out wi))
-                                return null;
-                            return (WorkItemT)wi;
-                        }
-                    default:
-                        throw new Exception("Undefined SourceType: " + Session.This.SourceType.ToString());
-                }
+                    WorkItem wi;
+                    if (!key2items.TryGetValue(key, out wi))
+                        return null;
+                    return (WorkItemT)wi;
+                }            
             }
         }
 
@@ -179,36 +127,20 @@ namespace Cliver.Bot
         {
             set
             {
-                switch (Session.This.SourceType)
+                lock (this)
                 {
-                    case ItemSourceType.DB:
-                        throw new Exception("Not implemented");
-                    case ItemSourceType.FILE:
-                        lock (this)
-                        {
-                            base[key] = SingleValueWorkItem<ValueT>.Create<WorkItemT>(value);
-                            return;
-                        }
-                    default:
-                        throw new Exception("Undefined SourceType: " + Session.This.SourceType.ToString());
+                    base[key] = SingleValueWorkItem<ValueT>.Create<WorkItemT>(value);
+                    return;
                 }
             }
             get
             {
-                switch (Session.This.SourceType)
+                lock (this)
                 {
-                    case ItemSourceType.DB:
-                        throw new Exception("Not implemented");
-                    case ItemSourceType.FILE:
-                        lock (this)
-                        {
-                            WorkItem wi;
-                            if (!key2items.TryGetValue(key, out wi))
-                                return default(ValueT);
-                            return ((SingleValueWorkItem<ValueT>)wi).__Value;
-                        }
-                    default:
-                        throw new Exception("Undefined SourceType: " + Session.This.SourceType.ToString());
+                    WorkItem wi;
+                    if (!key2items.TryGetValue(key, out wi))
+                        return default(ValueT);
+                    return ((SingleValueWorkItem<ValueT>)wi).__Value;
                 }
             }
         }

@@ -21,18 +21,13 @@ using System.Reflection;
 
 /*
 TBD:
+- Engine.Session has own folder where all the data is stored (by LiteSQL or DBLite etc)
 - serialize InputItems into json and thus allow arrays etc
 - ? Bot static session methods move to a session subclass singleton within CustomBot
 */
 
 namespace Cliver.Bot
 {
-    public enum ItemSourceType
-    {
-        DB, 
-        FILE
-    }
-
     public partial class Session
     {
         public static Session This
@@ -47,78 +42,102 @@ namespace Cliver.Bot
         Session()
         {
             This_ = this;
-            State = StateEnum.STARTING;
+            State = SessionState.STARTING;
 
             Log.Main.Inform("Loading configuration from " + Config.DefaultStorageDir);
             Config.Reload(Config.DefaultStorageDir);
 
-            Log.Writer.Exitig += ThreadLog_Exitig;
+            ConfigurationDir = Dir + "\\" + Config.CONFIG_FOLDER_NAME;
 
-            input_item_type_name2input_item_types = (from t in Assembly.GetEntryAssembly().GetTypes() where t.BaseType == typeof(InputItem) select t).ToDictionary(t => t.Name, t => t);
-            Cliver.Bot.InputItem.Initialize(input_item_type_name2input_item_types.Values.ToList());
+            Log.Writer.Exitig += (string message) =>
+            {
+                //CustomizationApi.FatalError();
+                Close();
+            };
+
+            input_item_type_names2input_item_type = (from t in Assembly.GetEntryAssembly().GetTypes() where t.BaseType == typeof(InputItem) select t).ToDictionary(t => t.Name, t => t);
+            Cliver.Bot.InputItem.Initialize(input_item_type_names2input_item_type.Values.ToList());
             work_item_type_name2work_item_types = (from t in Assembly.GetEntryAssembly().GetTypes() where (t.BaseType == typeof(WorkItem) && t.Name != typeof(SingleValueWorkItem<>).Name) || (t.BaseType != null && t.BaseType.Name == typeof(SingleValueWorkItem<>).Name) select t).ToDictionary(t => t.Name, t => t);
             Cliver.Bot.WorkItem.Initialize(work_item_type_name2work_item_types.Values.ToList());
             //tag_item_type_name2tag_item_types = (from t in Assembly.GetEntryAssembly().GetTypes() where (t.BaseType == typeof(TagItem) && t.Name != typeof(SingleValueTagItem<>).Name) || (t.BaseType != null && t.BaseType.Name == typeof(SingleValueTagItem<>).Name) select t).ToDictionary(t => t.Name, t => t);
             tag_item_type_name2tag_item_types = (from t in Assembly.GetEntryAssembly().GetTypes() where t.BaseType == typeof(TagItem) select t).ToDictionary(t => t.Name, t => t);
             Cliver.Bot.TagItem.Initialize(tag_item_type_name2tag_item_types.Values.ToList());
-            if (input_item_type_name2input_item_types.Count < 1)
+            if (input_item_type_names2input_item_type.Count < 1)
                 throw new Exception("No InputItem derive was found");
 
-            workflow_xtw = new XmlTextWriter(Log.SessionDir + "\\" + STATES_FILE_NAME, Encoding.UTF8);
-            workflow_xtw.Formatting = Formatting.Indented;
-            workflow_xtw.WriteStartDocument();
-            workflow_xtw.WriteStartElement("Session");
-
-            if (Settings.Engine.WriteSessionRestoringLog)
-            {
-                items_xtw = new XmlTextWriter(Log.SessionDir + "\\" + ITEMS_FILE_NAME, Encoding.UTF8);
-                items_xtw.Formatting = Formatting.Indented;
-                items_xtw.WriteStartDocument();
-                items_xtw.WriteStartElement("Items");
-            }
-
             Restored = false;
-            if (Settings.Engine.RestoreBrokenSession && !ProgramRoutines.IsParameterSet(CommandLineParameters.NOT_RESTORE_SESSION))
+            storage = new Storage();
+            DateTime session_start_time;
+            string session_time_mark;
+            SessionState state = storage.ReadLastState(out session_start_time, out session_time_mark);
+            switch (state)
             {
-                string restored_session_dir = null;
-                Restored = this.restore(ref StartTime, ref restored_session_dir);
-                if (closing_thread != null)
-                    return;
-                if (Restored)
-                {//rename session folder
-                 //!!! xml logs must be closed and re-open !!!
-                    //string start_time_mark = Regex.Match(restored_session_dir, @"\d{12}").Value;
-                    //Log.MainSession.Close(start_time_mark);
-                }
+                case SessionState.NULL:
+                    break;
+                case SessionState.STARTING:
+                case SessionState.COMPLETED:
+                case SessionState.FATAL_ERROR:
+                    string old_dir_new_path = Log.WorkDir + "\\Data" + "_" + session_time_mark + "_" + state;
+                    Log.Main.Write("Cleaning session folder. The old data copied to " + old_dir_new_path);
+                    storage.Close();
+                    Directory.Move(Dir, old_dir_new_path);
+                    PathRoutines.CreateDirectory(Dir);
+                    storage = new Storage();
+                    break;
+                case SessionState.RESTORING:
+                case SessionState.RUNNING:
+                case SessionState.CLOSING:
+                case SessionState.UNCOMPLETED:
+                case SessionState.BROKEN:
+                    if (Settings.Engine.RestoreBrokenSession && !ProgramRoutines.IsParameterSet(CommandLineParameters.NOT_RESTORE_SESSION))
+                    {
+                        if (LogMessage.AskYesNo("Previous session " + session_time_mark + " is not completed. Restore it?", true))
+                        {
+                            StartTime = session_start_time;
+                            TimeMark = session_time_mark;
+                            storage.WriteState(SessionState.RESTORING, new { restoring_time = RestoreTime, restoring_session_time_mark = get_time_mark(RestoreTime) });
+                            Log.Main.Inform("Restoring session " + TimeMark);
+                            Log.Main.Inform("Loading configuration from " + ConfigurationDir);
+                            Config.Reload(ConfigurationDir);
+                            storage.RestoreSession();
+                            Restored = true;
+                        }
+                    }
+                    break;
+                default:
+                    throw new Exception("Unknown option: "+ state);
             }
 
             if (!Restored)
             {
                 StartTime = Log.MainSession.CreatedTime;// DateTime.Now;
+                TimeMark = get_time_mark(StartTime);
+                storage.WriteState(SessionState.STARTING, new { session_start_time = StartTime, session_time_mark = TimeMark });
                 Log.Main.Write("No session was restored so reading input Items from the input file");
                 read_input_file();
-                Config.CopyFiles(Log.SessionDir);
+                Config.CopyFiles(Dir);
             }
 
             Creating?.Invoke();
 
             Bot.SessionCreating();
         }
-        Dictionary<string, Type> input_item_type_name2input_item_types;
+        Dictionary<string, Type> input_item_type_names2input_item_type;
         Dictionary<string, Type> work_item_type_name2work_item_types;
         Dictionary<string, Type> tag_item_type_name2tag_item_types;
-
-        void ThreadLog_Exitig(string message)
-        {
-            //CustomizationApi.FatalError();
-            Close();
-        }
 
         internal readonly Counter ProcessorErrors = new Counter("processor_errors", Settings.Engine.MaxProcessorErrorNumber, max_error_count);
         static void max_error_count(int count)
         {
-            Session.FatalErrorClose("Fatal error: errors in succession " + count);
+            Session.FatalErrorClose("Fatal error: errors in succession: " + count);
         }
+
+        static string get_time_mark(DateTime dt)
+        {
+            return dt.ToString("yyMMddHHmmss");
+        }
+        
+        public readonly string Dir = PathRoutines.CreateDirectory(Log.WorkDir + "\\Data");
 
         /// <summary>
         /// Time when the session was restored if it was.
@@ -129,16 +148,18 @@ namespace Cliver.Bot
         /// Time when this session or rather restored session was started,.
         /// </summary>
         public readonly DateTime StartTime;//must be equal to RestoreTime if no restart
+        public readonly string TimeMark;
 
         public readonly bool Restored;
+
+        public readonly string ConfigurationDir;
 
         public static void Start()
         {
             try
             {
-                //Bot.__Initialize();
-                Log.Initialize(Log.Mode.SESSIONS, Cliver.Bot.Settings.Log.PreWorkDir, Cliver.Bot.Settings.Log.WriteLog, Cliver.Bot.Settings.Log.DeleteLogsOlderDays);
-                Log.Main.Inform("Version compiled: " + Cliver.Bot.Program.GetCustomizationCompiledTime().ToString());
+                Log.Initialize(Log.Mode.SESSIONS, Settings.Log.PreWorkDir, Settings.Log.WriteLog, Settings.Log.DeleteLogsOlderDays, Program.LogSessionPrefix);
+                Log.Main.Inform("Version compiled: " + Program.GetCustomizationCompiledTime().ToString());
                 Log.Main.Inform("Command line parameters: " + string.Join("|", Environment.GetCommandLineArgs()));
 
                 if (This != null)
@@ -147,8 +168,8 @@ namespace Cliver.Bot
                 if (This == null)
                     return;
                 BotCycle.Start();
-                Session.State = StateEnum.RUNNING;
-                This.set_session_state(StateEnum.RUNNING, "session_start_time", This.StartTime.ToString("yyyy-MM-dd HH:mm:ss"));
+                Session.State = SessionState.RUNNING;
+                This.storage.WriteState(SessionState.RUNNING, new { });
             }
             catch (ThreadAbortException)
             {
@@ -172,7 +193,8 @@ namespace Cliver.Bot
                     return;
                 if (This.closing_thread != null)
                     return;
-                State = StateEnum.CLOSING;
+                State = SessionState.CLOSING;
+                This.storage.WriteState(State, new { });
                 This.closing_thread = ThreadRoutines.Start(This.close);
             }
         }
@@ -183,28 +205,17 @@ namespace Cliver.Bot
             {
                 try
                 {
+                    Log.Main.Write("Closing the bot session: " + Session.State.ToString());
                     BotCycle.Abort();
 
-                    if (This.items_xtw != null)
-                    {
-                        This.items_xtw.WriteEndElement();
-                        This.items_xtw.WriteEndDocument();
-                        This.items_xtw.Close();
-                    }
-
                     if (This.IsUnprocessedInputItem)
-                        State = StateEnum.BROKEN;
+                        State = SessionState.BROKEN;
                     else if (This.IsItem2Restore)
-                        State = StateEnum.UNCOMPLETED;
+                        State = SessionState.UNCOMPLETED;
                     else
-                        State = StateEnum.COMPLETED;
+                        State = SessionState.COMPLETED;
 
-                    if (This.input_item_queue_name2input_item_queues.Count > 0)
-                            This.set_session_state(State);
-
-                    This.workflow_xtw.WriteEndElement();
-                    This.workflow_xtw.WriteEndDocument();
-                    This.workflow_xtw.Close();
+                    This.storage.WriteState(State, new { });
 
                     try
                     {
@@ -212,7 +223,8 @@ namespace Cliver.Bot
                     }
                     catch (Exception e)
                     {
-                        Session.State = StateEnum.FATAL_ERROR;
+                        Session.State = SessionState.FATAL_ERROR;
+                        This.storage.WriteState(State, new { });
                         LogMessage.Error(e);
                         Bot.FatalError(e.Message);
                     }
@@ -223,47 +235,47 @@ namespace Cliver.Bot
                     }
                     catch (Exception e)
                     {
-                        Session.State = StateEnum.FATAL_ERROR;
+                        Session.State = SessionState.FATAL_ERROR;
+                        This.storage.WriteState(State, new { });
                         LogMessage.Error(e);
                         Bot.FatalError(e.Message);
                     }
 
                     InputItemQueue.Close();
                     FileWriter.ClearSession();
-                    Log.Main.Write("Closing the bot session: " + Session.State.ToString());
                 }
                 catch (ThreadAbortException)
                 {
                 }
                 catch (Exception e)
                 {
-                    Session.State = StateEnum.FATAL_ERROR;
+                    Session.State = SessionState.FATAL_ERROR;
+                    This.storage.WriteState(State, new { });
                     LogMessage.Error(e);
                     Bot.FatalError(e.Message);
                 }
                 finally
                 {
-                    //StateEnum state = State;
+                    storage.Close();
+                    switch (State)
+                    {
+                        case SessionState.NULL:
+                        case SessionState.STARTING:
+                        case SessionState.COMPLETED:
+                        case SessionState.FATAL_ERROR:
+                            Directory.Move(Dir, Dir + "_" + TimeMark + "_" + State);
+                            break;
+                        case SessionState.RESTORING:
+                        case SessionState.RUNNING:
+                        case SessionState.CLOSING:
+                        case SessionState.UNCOMPLETED:
+                        case SessionState.BROKEN:
+                            break;
+                        default:
+                            throw new Exception("Unknown option: " + State);
+                    }
                     This_ = null;
-                    //string sd = Log.SessionDir;
                     Cliver.Log.ClearSession();
-                    //switch(state)
-                    //{//cannot change paths as they can be used in a restored session
-                    //    case StateEnum.COMPLETED:
-                    //    //case StateEnum.UNCOMPLETED:
-                    //    //case StateEnum.BROKEN:
-                    //    //case StateEnum.FATAL_ERROR:
-                    //        try
-                    //        {
-                    //            Directory.Move(sd, sd + "_" + state);
-                    //        }
-                    //        catch (Exception e)
-                    //        {
-                    //            LogMessage.Error(e);
-                    //            Bot.FatalError(e.Message);
-                    //        }
-                    //        break;
-                    //}
                 }
             }
 
@@ -277,11 +289,6 @@ namespace Cliver.Bot
                 Bot.FatalError(e.Message);
             }
         }
-        enum SessionFolderMark
-        {
-            DECLINED,
-            COMPLETED
-        }
 
         void read_input_file()
         {
@@ -290,7 +297,7 @@ namespace Cliver.Bot
             FillStartInputItemQueue(start_input_item_queue, start_input_item_type);
         }
 
-        public enum StateEnum
+        public enum SessionState
         {
             NULL,
             STARTING,
@@ -303,25 +310,25 @@ namespace Cliver.Bot
             FATAL_ERROR
         }
 
-        public static StateEnum State
+        public static SessionState State
         {
             get
             {
                 if (This == null)
-                    return StateEnum.NULL;
+                    return SessionState.NULL;
                 return This._state;
             }
             private set
             {
                 if (This == null)
                     throw new Exception("Trying to set session state while no session exists.");
-                if (This._state >= StateEnum.COMPLETED)
+                if (This._state >= SessionState.COMPLETED)
                     return;
                 if (This._state > value)
                     throw new Exception("Session state cannot change from " + This._state + " to " + value);
                 This._state = value;
             }
         }
-        StateEnum _state = StateEnum.NULL;
+        SessionState _state = SessionState.NULL;
     }
 }

@@ -22,8 +22,6 @@ namespace Cliver.Bot
 {
     public partial class Session
     {
-        public readonly ItemSourceType SourceType = ItemSourceType.FILE;
-
         internal InputItem GetNext()
         {
             lock (input_item_queue_name2input_item_queues)
@@ -92,7 +90,7 @@ namespace Cliver.Bot
          
                 for (int i = 0; i < This.input_item_queue_name2input_item_queues.Count; i++)
                     ((InputItemQueue)This.input_item_queue_name2input_item_queues[i]).Position = i;
-                This.LogInputItemQueuePosition(iiq);
+                This.storage.WriteInputItemQueuePosition(iiq);
             }
         }
 

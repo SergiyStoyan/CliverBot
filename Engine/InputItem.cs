@@ -34,14 +34,7 @@ namespace Cliver.Bot
             bc.Bot.PROCESSOR(this);
         }
 
-        //static public InputItem PICK_NEXT(InputItemQueue item_queue, System.Collections.IEnumerator items_ennumerator)
-        //{
-        //    items_ennumerator.Reset();
-        //    items_ennumerator.MoveNext();
-        //    return (InputItem)items_ennumerator.Current;
-        //}
-
-        static internal bool Add2Queue<ItemT>(InputItemQueue queue, InputItem parent_item, object anonymous_object) where ItemT : InputItem
+        static internal bool Add2Queue<ItemT>(InputItemQueue queue, InputItem parent_item, dynamic anonymous_object) where ItemT : InputItem
         {
             ItemT item = Item.Create<ItemT>(anonymous_object);
             item.set_parent_members(parent_item);
@@ -101,15 +94,14 @@ namespace Cliver.Bot
 
         bool add2queue(InputItemQueue queue)
         {
-            __State = InputItemState.NEW;
             this.GetType().GetField("__Queue", BindingFlags.Instance | BindingFlags.Public).SetValue(this, queue);
             return __Queue.Enqueue(this);
         }
 
         void set_tag_item_members()
         {
-            Dictionary<string, TagItem> tag_item_name2tag_items = GetTagItemName2TagItems();
-            foreach (TagItem ti in tag_item_name2tag_items.Values)
+            Dictionary<string, TagItem> tag_item_names2tag_item = GetTagItemNames2TagItem();
+            foreach (TagItem ti in tag_item_names2tag_item.Values)
             {
                 if (ti.__Id >= 0)
                     continue;
@@ -149,13 +141,13 @@ namespace Cliver.Bot
         }
         static Dictionary<Type, Dictionary<string, FieldInfo>> item_type2key_field_name2key_field_fis = new Dictionary<Type, Dictionary<string, FieldInfo>>();
 
-        internal Dictionary<string, TagItem> GetTagItemName2TagItems()
+        internal Dictionary<string, TagItem> GetTagItemNames2TagItem()
         {
             List<FieldInfo> tag_item_fis = item_type2tag_item_fis[this.GetType()];
-            Dictionary<string, TagItem> tag_item_name2tag_items = new Dictionary<string, TagItem>();
+            Dictionary<string, TagItem> tag_item_names2tag_item = new Dictionary<string, TagItem>();
             foreach (FieldInfo fi in tag_item_fis)
-                tag_item_name2tag_items[fi.Name] = (TagItem)fi.GetValue(this);
-            return tag_item_name2tag_items;
+                tag_item_names2tag_item[fi.Name] = (TagItem)fi.GetValue(this);
+            return tag_item_names2tag_item;
         }
         static Dictionary<Type, List<FieldInfo>> item_type2tag_item_fis = new Dictionary<Type,List<FieldInfo>>();
 
@@ -177,22 +169,14 @@ namespace Cliver.Bot
             }
             set
             {
+                if (value < __state)
+                    throw new Exception("Cannot change __State to " + value);
                 this.__state = value;
-
-                switch (Session.This.SourceType)
-                {
-                    case ItemSourceType.DB:
-                        return;
-                    case ItemSourceType.FILE:
-                        if (__state != InputItemState.NEW)
-                            Session.This.LogInputItem(this);
-                        return;
-                    default:
-                        throw new Exception("Undefined SourceType: " + Session.This.SourceType.ToString());
-                }
+                Session.This.WriteInputItem(this);
+                return;
             }
         }
-        InputItemState __state;
+        InputItemState __state = InputItemState.NULL;
 
         new internal static void Initialize(List<Type> item_types)
         {
@@ -240,6 +224,7 @@ namespace Cliver.Bot
 
     internal enum InputItemState : uint
     {
+        NULL = 0,
         NEW = 1,
         COMPLETED = 2,
         ERROR = 3,

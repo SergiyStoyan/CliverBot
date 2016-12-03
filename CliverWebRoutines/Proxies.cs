@@ -79,8 +79,7 @@ namespace Cliver.BotWeb
         {
             lock (proxies)
             {
-                string file_uri = Settings.Proxy.ProxiesFileUri;
-                if (file_uri == null || file_uri == "")
+                if (Settings.Proxy == null || string.IsNullOrEmpty(Settings.Proxy.ProxiesFileUri))
                 {
                     use_proxy = false;
                     Log.Main.Inform("Proxies are not used.");
@@ -88,18 +87,18 @@ namespace Cliver.BotWeb
                 }
 
                 string file_path = null;
-                if (file_uri.StartsWith("http", 0))
+                if (Settings.Proxy.ProxiesFileUri.StartsWith("http", 0))
                 {
                     WebClient w = new WebClient();
                     file_path = Log.AppDir + "\\" + "proxies.txt";
-                    w.DownloadFile(file_uri, file_path);
-                    Log.Main.Inform("Proxy file was downloaded from: " + file_uri + " to: " + file_path);
+                    w.DownloadFile(Settings.Proxy.ProxiesFileUri, file_path);
+                    Log.Main.Inform("Proxy file was downloaded from: " + Settings.Proxy.ProxiesFileUri + " to: " + file_path);
                 }
                 else
-                    if (file_uri.Contains(":"))
-                        file_path = file_uri;
+                    if (Settings.Proxy.ProxiesFileUri.Contains(":"))
+                        file_path = Settings.Proxy.ProxiesFileUri;
                     else
-                        file_path = Log.AppDir + "\\" + file_uri;
+                        file_path = Log.AppDir + "\\" + Settings.Proxy.ProxiesFileUri;
 
                 string file_string = File.ReadAllText(file_path);
                 Match m = Regex.Match(file_string, @"^\s*(.+?)\s*[,:\s](\d+)\s*$", RegexOptions.Multiline);

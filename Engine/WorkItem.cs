@@ -24,7 +24,7 @@ namespace Cliver.Bot
     /// </summary>
     public class WorkItem : Item
     {
-        new static internal ItemT Create<ItemT>(object anonymous_object) where ItemT : WorkItem
+        new static internal ItemT Create<ItemT>(dynamic anonymous_object) where ItemT : WorkItem
         {
             return Item.Create<ItemT>(anonymous_object);
         }

@@ -24,7 +24,7 @@ namespace Cliver.Bot
     /// </summary>
     public class TagItem : Item
     {
-        new static public ItemT Create<ItemT>(object anonymous_object) where ItemT : TagItem
+        new static public ItemT Create<ItemT>(dynamic anonymous_object) where ItemT : TagItem
         {
             return Item.Create<ItemT>(anonymous_object);
         }

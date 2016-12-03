@@ -100,7 +100,7 @@ namespace Cliver
                                 delete_old_logs = ThreadRoutines.StartTry(Log.DeleteOldLogs);//to avoid a concurrent loop while accessing the log file from the same thread
                         }
                     }
-                    delete_old_logs?.Join();
+                   // delete_old_logs?.Join();
                 }
                 return work_dir;
             }
@@ -157,31 +157,6 @@ namespace Cliver
         /// Output folder name
         /// </summary>
         public static string OutputDirName = @"output";
-
-        /// <summary>
-        /// Download directory for current main session. 
-        /// This dir can be used to calculate value of downloaded bytes.
-        /// </summary>
-        public static string DownloadDir
-        {
-            get
-            {
-                if (download_dir == null)
-                {
-                    lock (lock_object)
-                    {
-                        download_dir = SessionDir + "\\" + DownloadDirName;
-
-                        DirectoryInfo di = new DirectoryInfo(download_dir);
-                        if (!di.Exists)
-                            di.Create();
-                    }
-                }
-                return download_dir;
-            }
-        }
-        static string download_dir = null;
-        public const string DownloadDirName = "cache";
         
         /// <summary>
         /// Used to clear all session parameters in order to start a new session
@@ -197,7 +172,6 @@ namespace Cliver
                     main_session.Close();
                 main_session = null;
                 output_dir = null;
-                download_dir = null;
 
                 GC.Collect();
             }
@@ -208,12 +182,13 @@ namespace Cliver
         /// </summary>
         public static void DeleteOldLogs()
         {
+            //ThreadWriter tw = Log.Main;
             //Log.Main.Inform("test");
             if (delete_old_logs_running)
                 return;
-            //lock (lock_object)// to avoid interlock when writing to log from here
+            //lock (lock_object)//no lock to avoid interlock when writing to log from here
             //{
-                delete_old_logs_running = true;
+            delete_old_logs_running = true;
                 try
                 {
                     if (delete_logs_older_days > 0)

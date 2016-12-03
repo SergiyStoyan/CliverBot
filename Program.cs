@@ -25,10 +25,12 @@ namespace Cliver.Bot
             //to force static constructor
         }
 
+        public const string LogSessionPrefix = "Log";
+
         static Program()
         {
             Config.Reload();
-            Log.Initialize(Log.Mode.SESSIONS, Cliver.Bot.Settings.Log.PreWorkDir, Cliver.Bot.Settings.Log.WriteLog, Cliver.Bot.Settings.Log.DeleteLogsOlderDays);
+            Log.Initialize(Log.Mode.SESSIONS, Settings.Log.PreWorkDir, Settings.Log.WriteLog, Settings.Log.DeleteLogsOlderDays, LogSessionPrefix);
 
             LogMessage.DisableStumblingDialogs = true;
 
@@ -50,7 +52,7 @@ namespace Cliver.Bot
                 CliverBot_title += can.Version.Major + "." + can.Version.Minor;
             Title = customization_title + @" / " + CliverBot_title;
 
-            AppDomain.CurrentDomain.UnhandledException += delegate(object sender, UnhandledExceptionEventArgs args)
+            AppDomain.CurrentDomain.UnhandledException += delegate (object sender, UnhandledExceptionEventArgs args)
             {
                 Exception e = (Exception)args.ExceptionObject;
                 LogMessage.Exit(e);

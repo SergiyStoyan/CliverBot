@@ -26,17 +26,7 @@ namespace Cliver.Bot
         internal InputItemQueue(string name)
         {
             Name = name;
-            switch (Session.This.SourceType)
-            {
-                case ItemSourceType.DB:
-                    this.table = "_queue_" + Name;
-                    break;
-                case ItemSourceType.FILE:
-                    item_id2items = new OrderedDictionary();
-                    break;
-                default:
-                    throw new Exception("Undefined SourceType: " + Session.This.SourceType.ToString());
-            }
+            item_id2items = new OrderedDictionary();
             PickNext = default_pick_next;
         }
 
@@ -57,8 +47,7 @@ namespace Cliver.Bot
         /// Position in the queue order.
         /// </summary>
         public int Position { get; internal set; }
-
-        readonly string table;
+        
         OrderedDictionary item_id2items;
         static HashSet<string> item_keys = new HashSet<string>();
 
@@ -67,28 +56,20 @@ namespace Cliver.Bot
 
         internal bool Enqueue(InputItem item)
         {
-            switch (Session.This.SourceType)
+            lock (this)
             {
-                case ItemSourceType.DB:
-                    return true;
-                case ItemSourceType.FILE:
-                    lock (this)
-                    {
-                        string item_key = item.GetKey();
-                        lock (item_keys)
-                        {
-                            if (item_keys.Contains(item_key))
-                                return false;
-                            item_keys.Add(item_key);
-                        }
-                        Session.This.LogInputItem(item);
-                        item_id2items.Add(item.__Id, item);
-                        if (Progress != null)
-                            Progress.Invoke(this, CountOfProcessed + CountOfNew, CountOfProcessed);
-                        return true;
-                    }
-                default:
-                    throw new Exception("Undefined SourceType: " + Session.This.SourceType.ToString());
+                string item_key = item.GetKey();
+                lock (item_keys)
+                {
+                    if (item_keys.Contains(item_key))
+                        return false;
+                    item_keys.Add(item_key);
+                }
+                item.__State = InputItemState.NEW;
+                item_id2items.Add(item.__Id, item);
+                if (Progress != null)
+                    Progress.Invoke(this, CountOfProcessed + CountOfNew, CountOfProcessed);
+                return true;
             }
         }
 
@@ -128,7 +109,7 @@ namespace Cliver.Bot
             }
             set
             {
-                if (Session.State > Session.StateEnum.STARTING)
+                if (Session.State > Session.SessionState.STARTING)
                     throw new Session.FatalException("PickNext should be set before bot cycle started.");
                 _PickNext = value;
             }
@@ -140,34 +121,27 @@ namespace Cliver.Bot
         {
             lock (this)
             {
-                if (item_id2items.Count < 1)
-                    return null;
-                return (InputItem)item_id2items[0];
+                items_ennumerator.Reset();
+                if (items_ennumerator.MoveNext())
+                    return (InputItem)items_ennumerator.Current;
+                return null;
             }
         }
 
         internal InputItem GetNext()
         {
-            switch (Session.This.SourceType)
+            lock (this)
             {
-                case ItemSourceType.DB:
+                //if (current_input_item != null && current_input_item.__State == InputItemState.NEW)
+                //    throw new Exception("The previously picked up InputItem was not marked as processed");
+                InputItem current_input_item = PickNext(item_id2items.Values.GetEnumerator());
+                if (current_input_item == null)
                     return null;
-                case ItemSourceType.FILE:
-                    lock (this)
-                    {
-                        //if (current_input_item != null && current_input_item.__State == InputItemState.NEW)
-                        //    throw new Exception("The previously picked up InputItem was not marked as processed");
-                        InputItem current_input_item = PickNext(item_id2items.Values.GetEnumerator());
-                        if (current_input_item == null)
-                            return null;
-                        item_id2items.Remove(current_input_item.__Id);
-                        count_of_processed_items++;
-                        if (Progress != null)
-                            Progress.Invoke(this, CountOfProcessed + CountOfNew, CountOfProcessed);
-                        return current_input_item;
-                    }
-                default:
-                    throw new Exception("Undefined SourceType: " + Session.This.SourceType.ToString());
+                item_id2items.Remove(current_input_item.__Id);
+                count_of_processed_items++;
+                if (Progress != null)
+                    Progress.Invoke(this, CountOfProcessed + CountOfNew, CountOfProcessed);
+                return current_input_item;
             }
         }
 
@@ -209,7 +183,7 @@ namespace Cliver.Bot
         /// <typeparam name="ItemT"></typeparam>
         /// <param name="anonymous_object"></param>
         /// <returns></returns>
-        public bool Add<ItemT>(object anonymous_object) where ItemT : InputItem
+        public bool Add<ItemT>(dynamic anonymous_object) where ItemT : InputItem
         {
             return InputItem.Add2Queue<ItemT>(this, BotCycle.GetCurrentInputItemForThisThread(), anonymous_object);
         }

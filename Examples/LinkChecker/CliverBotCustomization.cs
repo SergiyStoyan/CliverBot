@@ -34,12 +34,19 @@ namespace Cliver.BotCustomization
         [STAThread]
         static void Main()
         {
-            Cliver.Config.Initialize(new string[] { "Engine", "Input", "Output", "Web", "Spider", "Log" });
-            Cliver.BotGui.BotGui.ConfigControlSections = new string[] { "Engine", "Input", "Output", "Web", "Spider", "Log", };
-            Cliver.BotGui.BotGui.BotThreadControlType = typeof(WebRoutineBotThreadControl);
+            try
+            {
+                Cliver.Config.Initialize(new string[] { "Engine", "Input", "Output", "Web", "Spider", "Log" });
+                Cliver.BotGui.BotGui.ConfigControlSections = new string[] { "Engine", "Input", "Output", "Web", "Spider", "Log", };
+                Cliver.BotGui.BotGui.BotThreadControlType = typeof(WebRoutineBotThreadControl);
 
-            //Cliver.Bot.Program.Run();//It is the entry when the app runs as a console app.
-            Cliver.BotGui.Program.Run();//It is the entry when the app uses the default GUI.
+                //Cliver.Bot.Program.Run();//It is the entry when the app runs as a console app.
+                Cliver.BotGui.Program.Run();//It is the entry when the app uses the default GUI.
+            }
+            catch(Exception e)
+            {
+                LogMessage.Error(e);
+            }
         }
     }
 
@@ -119,8 +126,8 @@ Developed by: www.cliversoft.com";
 
         public class Link : InputItem
         {
-            readonly public Site Site;
-            readonly public Link ParentLink;
+            public Site Site { get { InputItem p = __ParentItem; for (; p is Link; p = p.__ParentItem) ; return p as Site; } }
+            public Link ParentLink { get { return __ParentItem as Link; } }
             [KeyField]
             readonly public string Url;
             readonly public int Depth;
@@ -137,8 +144,9 @@ Developed by: www.cliversoft.com";
             static public InputItem PICK_NEXT(System.Collections.IEnumerator items_ennumerator)
             {
                 items_ennumerator.Reset();
-                items_ennumerator.MoveNext();
-                return (InputItem)items_ennumerator.Current;
+                if (items_ennumerator.MoveNext())
+                    return (InputItem)items_ennumerator.Current;
+                return null;
             }
 
             override public void PROCESSOR(BotCycle bc)
