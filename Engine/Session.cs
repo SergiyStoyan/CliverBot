@@ -98,7 +98,7 @@ namespace Cliver.Bot
                     }
                     break;
                 default:
-                    throw new Exception("Unknown option: "+ old_state);
+                    throw new Exception("Unknown option: " + old_state);
             }
 
             if (!Restored)
@@ -138,7 +138,7 @@ namespace Cliver.Bot
         {
             return dt.ToString("yyMMddHHmmss");
         }
-        
+
         public readonly string Dir = PathRoutines.CreateDirectory(Log.WorkDir + "\\Data");
 
         /// <summary>
