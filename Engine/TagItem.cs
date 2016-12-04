@@ -8,7 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Collections.Specialized;
+using System.Collections;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Dynamic;
@@ -29,7 +29,7 @@ namespace Cliver.Bot
             return Item.Create<ItemT>(anonymous_object);
         }
 
-        new internal static TagItem Restore(Type item_type, string item_seed, int item_id)
+        new internal static TagItem Restore(Type item_type, ArrayList item_seed, int item_id)
         {
             return (TagItem)Item.Restore(item_type, item_seed, item_id);
         }

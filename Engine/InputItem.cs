@@ -8,7 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Collections.Specialized;
+using System.Collections;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Dynamic;
@@ -132,14 +132,27 @@ namespace Cliver.Bot
         //static Dictionary<Type, List<FieldInfo>> item_type2parent_field_fis = new Dictionary<Type, List<FieldInfo>>();
 
         /// <summary>
-        /// Key may deffer from Seed as some fields may be excluded from Key 
+        /// Key is a hash that allows to filter out duplicated items
         /// </summary>
         /// <returns></returns>
-        internal string GetKey()
+        public virtual Int64 GET_KEY()
         {
-            return get_as_string(false, item_type2key_field_name2key_field_fis[this.GetType()]);
+            List<int> hs = new List<int>();
+            foreach (FieldInfo fi in item_types2key_field_names2key_field_fi[this.GetType()].Values)
+                hs.Add(fi.GetValue(this).GetHashCode());
+            Int64 hash = 0;
+            bool odd = false;
+            foreach (int h in hs)
+            {
+                if (odd)
+                    hash ^= (Int64)h << 32;
+                else
+                    hash ^= h;
+                odd = !odd;
+            }
+            return hash;
         }
-        static Dictionary<Type, Dictionary<string, FieldInfo>> item_type2key_field_name2key_field_fis = new Dictionary<Type, Dictionary<string, FieldInfo>>();
+        static Dictionary<Type, Dictionary<string, FieldInfo>> item_types2key_field_names2key_field_fi = new Dictionary<Type, Dictionary<string, FieldInfo>>();
 
         internal Dictionary<string, TagItem> GetTagItemNames2TagItem()
         {
@@ -151,7 +164,7 @@ namespace Cliver.Bot
         }
         static Dictionary<Type, List<FieldInfo>> item_type2tag_item_fis = new Dictionary<Type,List<FieldInfo>>();
 
-        internal static InputItem Restore(InputItemQueue queue, Type item_type, string item_seed, int item_id, InputItem parent_item, Dictionary<string, TagItem> field2tag_items)
+        internal static InputItem Restore(InputItemQueue queue, Type item_type, ArrayList item_seed, int item_id, InputItem parent_item, Dictionary<string, TagItem> field2tag_items)
         {
             InputItem item = (InputItem)Item.Restore(item_type,  item_seed,  item_id);
             item.set_parent_members(parent_item);
@@ -188,28 +201,36 @@ namespace Cliver.Bot
                 item_type2tag_item_fis[item_type] = (from x in item_type.GetFields() where x.FieldType.BaseType == typeof(TagItem) select x).ToList();
 
                 //fill item_type2key_field_fis
-                Dictionary<string, FieldInfo> key_field2key_field_fis = (from x in item_type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public) where x.GetCustomAttributes(typeof(KeyField), false).FirstOrDefault() != null select x).ToDictionary(x => x.Name, x => x);
-                List<string> ns = (from x in key_field2key_field_fis.Values where x.FieldType.IsSubclassOf(typeof(Item)) || x.DeclaringType != item_type select x.Name).ToList();
+                Dictionary<string, FieldInfo> key_field_names2key_field_fi = (from x in item_type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public) where x.GetCustomAttributes(typeof(KeyField), false).FirstOrDefault() != null select x).ToDictionary(x => x.Name, x => x);
+                List<string> ns = (from x in key_field_names2key_field_fi.Values where x.FieldType.IsSubclassOf(typeof(Item)) || x.DeclaringType != item_type select x.Name).ToList();
                 if (ns.Count > 0)
                     throw new Exception("InputItem derivative " + item_type + " cannot use attribute " + typeof(KeyField) + " for the following fields: " + string.Join(", ", ns));
                 List<FieldInfo> not_key_field_fis = (from x in item_type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public) where x.GetCustomAttributes(typeof(NotKeyField), false).FirstOrDefault() != null select x).ToList();
                 ns = (from x in not_key_field_fis where x.FieldType.IsSubclassOf(typeof(Item)) || x.DeclaringType != item_type select x.Name).ToList();
                 if (ns.Count > 0)
                     throw new Exception("InputItem derivative " + item_type + " cannot use attribute " + typeof(NotKeyField) + " for the following fields: " + string.Join(", ", ns));
-                if (key_field2key_field_fis.Count > 0)
+                if (key_field_names2key_field_fi.Count > 0)
                 {
                     if (not_key_field_fis.Count > 0)
                         throw new Exception("InputItem derivative " + item_type + " cannot use attributes " + typeof(KeyField) + " and " + typeof(NotKeyField) + " at the same time");
                 }
                 else
                 {
-                    key_field2key_field_fis = (from x in item_type.GetFields() where !x.IsStatic && !x.FieldType.IsSubclassOf(typeof(Item)) select x).ToDictionary(x => x.Name, x => x);
+                    key_field_names2key_field_fi = (from x in item_type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public) select x).ToDictionary(x => x.Name, x => x);
                     if (not_key_field_fis.Count > 0)
-                        key_field2key_field_fis = (from f in key_field2key_field_fis.Values where !not_key_field_fis.Contains(f) select f).ToDictionary(x => x.Name, x => x);
+                        key_field_names2key_field_fi = (from f in key_field_names2key_field_fi.Values where !not_key_field_fis.Contains(f) select f).ToDictionary(x => x.Name, x => x);
                 }
-                if (key_field2key_field_fis.Count < 1)
+                if (key_field_names2key_field_fi.Count < 1)
                     throw new Exception("No key field was found for " + item_type);
-                item_type2key_field_name2key_field_fis[item_type] = key_field2key_field_fis;
+
+                //FieldInfo fi = key_field_names2key_field_fi.Where(x => x.Value.FieldType != typeof(string) && !x.Value.FieldType.IsValueType).FirstOrDefault().Value;
+                //if (fi != null)
+                //{
+                //    if(null == fi.DeclaringType.GetMethod("GET_KEY", BindingFlags.DeclaredOnly))
+                //        throw new Exception("Key field " + fi.Name + " is a type that requires an explicite GET_KEY implementation.");
+                //}
+
+                item_types2key_field_names2key_field_fi[item_type] = key_field_names2key_field_fi;
             }
         }
 

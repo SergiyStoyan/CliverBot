@@ -8,7 +8,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Collections.Specialized;
+using System.Collections;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Dynamic;
@@ -27,7 +27,7 @@ namespace Cliver.Bot
             key2items = new Dictionary<string, WorkItem>();
         }
 
-        internal void Restore(string key, string item_seed, int item_id)
+        internal void Restore(string key, ArrayList item_seed, int item_id)
         {
             lock (this)
             {

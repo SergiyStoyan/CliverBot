@@ -49,7 +49,7 @@ namespace Cliver.Bot
         public int Position { get; internal set; }
         
         OrderedDictionary item_id2items;
-        static HashSet<string> item_keys = new HashSet<string>();
+        static HashSet<Int64> item_keys = new HashSet<Int64>();
 
         public delegate void OnProgress(InputItemQueue input_item_queue, int total_item_count, int processed_item_count);
         static public event InputItemQueue.OnProgress Progress = null;
@@ -58,7 +58,7 @@ namespace Cliver.Bot
         {
             lock (this)
             {
-                string item_key = item.GetKey();
+                Int64 item_key = item.GET_KEY();
                 lock (item_keys)
                 {
                     if (item_keys.Contains(item_key))

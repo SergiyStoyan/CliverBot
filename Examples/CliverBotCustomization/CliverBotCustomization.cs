@@ -97,7 +97,7 @@ Developed by: www.cliversoft.com";
         public class Site : InputItem
         {
             /// <summary>
-            /// Attribute KeyField can be set to indicate what fields are keyed. When it is not used, all public value or string types in the class are keyed.
+            /// Attribute KeyField can be set to indicate what fields participate in the key. When it is not used, all public types in the class participate in the key.
             ///Otherwise, attribute NotKeyField can be set to exclude the marked field from the key. 
             ///KeyField and NotKeyField cannot be used at the same time within the same InputItem class.
             /// </summary>

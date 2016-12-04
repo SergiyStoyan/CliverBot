@@ -11,6 +11,7 @@ using System.Data;
 using System.IO;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Collections;
 using System.Configuration;
 using System.Xml;
 using System.Text;
@@ -316,12 +317,12 @@ namespace Cliver.Bot
                         int id = (int)names2value["id"];
                         if (id > This.item_count)
                             This.item_count = id;
-                        
+
                         if (This.input_item_type_names2input_item_type.ContainsKey(type_name))
                         {
                             InputItem parent_item = null;
                             object o;
-                            if(names2value.TryGetValue("parent_id",out o))
+                            if (names2value.TryGetValue("parent_id", out o))
                                 parent_item = input_item_id2input_items[(int)o];
 
                             string queue;
@@ -347,7 +348,7 @@ namespace Cliver.Bot
                                             continue;
                                         fields2tag_item[m.Groups["ItemTypeName"].Value] = tag_item_id2tag_items[int.Parse(attr_names2tag_item_id[name])];
                                     }
-                                    string seed = (string)names2value["seed"];
+                                    ArrayList seed = (ArrayList)names2value["seed"];
                                     InputItem item = InputItem.Restore(GetInputItemQueue(queue), type, seed, id, parent_item, fields2tag_item);
                                     input_item_id2input_items[id] = item;
                                     break;
@@ -362,15 +363,17 @@ namespace Cliver.Bot
                         else if (This.work_item_type_name2work_item_types.ContainsKey(type_name))
                         {
                             string key = (string)names2value["key"];
-                            string seed = (string)names2value["seed"];
+                            ArrayList seed = (ArrayList)names2value["seed"];
                             This.GetRestoredWorkItemDictionary(This.work_item_type_name2work_item_types[type_name]).Restore(key, seed, id);
                         }
                         else if (This.tag_item_type_name2tag_item_types.ContainsKey(type_name))
                         {
-                            string seed = (string)names2value["seed"];
+                            ArrayList seed = (ArrayList)names2value["seed"];
                             TagItem item = Cliver.Bot.TagItem.Restore(This.tag_item_type_name2tag_item_types[type_name], seed, id);
                             tag_item_id2tag_items[item.__Id] = item;
                         }
+                        else
+                            throw new Exception("Unknown item type in the sesson log: " + type_name);
                     }
                 }
                 catch (Exception e)
