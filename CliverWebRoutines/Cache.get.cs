@@ -12,10 +12,10 @@ using System.Data;
 using System.IO;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Xml;
 using System.Text;
 using System.Text.RegularExpressions;
- 
+using System.Web.Script.Serialization;
+
 namespace Cliver.BotWeb
 {
     /// <summary>
@@ -63,8 +63,9 @@ namespace Cliver.BotWeb
         }
 
         static object static_lock_variable = new object();
-        const string CACHE_MAP_FILE_NAME = "cache_map.xml";
-        static XmlTextWriter cache_map_writer = null;
+        const string CACHE_MAP_FILE_NAME = "cache_map.txt";
+        static TextWriter cache_map_writer = null;
+        static JavaScriptSerializer serializer = new JavaScriptSerializer();
 
         //internal enum FileMark
         //{
@@ -103,29 +104,24 @@ namespace Cliver.BotWeb
                 {
                     if (cache_map_writer == null)
                     {
-                        cache_map_writer = new XmlTextWriter(CacheDir + "\\" + CACHE_MAP_FILE_NAME, Encoding.UTF8);
-                        cache_map_writer.Formatting = Formatting.Indented;
-                        cache_map_writer.WriteStartDocument();
-                        cache_map_writer.WriteStartElement("CacheMap");
-
+                        cache_map_writer = new StreamWriter(CacheDir + "\\" + CACHE_MAP_FILE_NAME, true, Encoding.UTF8);
                         if (cache_map == null)
                             cache_map = new Dictionary<string, CacheInfo>();
                     }
                 }
                 lock (cache_map_writer)
                 {
-                    cache_map_writer.WriteStartElement("File");
-                    url = get_url_with_post(url, post_parameters);
-                    cache_map_writer.WriteAttributeString("url", url);
+                    Dictionary<string, object> d = new Dictionary<string, object>() ;
+                    d["url"] = url;
                     if (url != response_url
                         && string.IsNullOrEmpty(post_parameters)//POST request response does not used!
                         )
-                        cache_map_writer.WriteAttributeString("response_url", response_url);
-                    cache_map_writer.WriteAttributeString("path", Path.GetFileName(path));
+                        d.Add("response_url", response_url);
+                    d.Add("path", Path.GetFileName(path));
                     if (file_mark != WebRoutineStatus.OK)
-                        cache_map_writer.WriteAttributeString("error", file_mark.ToString());
-                    cache_map_writer.WriteAttributeString("text", text.ToString());
-                    cache_map_writer.WriteEndElement();
+                        d.Add("error", file_mark);
+                    d.Add("text", text);
+                    cache_map_writer.WriteLine(serializer.Serialize(d));
                     cache_map_writer.Flush();
                 }
                 add2cache_map(url, path, response_url);
@@ -196,56 +192,51 @@ namespace Cliver.BotWeb
             {
                 try
                 {
-                    cache_map = new Dictionary<string,CacheInfo>();
+                    cache_map = new Dictionary<string, CacheInfo>();
                     //custom_cache = (ICustomCache)CustomizationApi.CreateCustomCache();
-                    DirectoryInfo di = new DirectoryInfo(Log.WorkDir);
-                    DirectoryInfo[] session_dis = di.GetDirectories("*", SearchOption.TopDirectoryOnly);
+                    DirectoryInfo wdi = new DirectoryInfo(Log.WorkDir);
+                    DirectoryInfo[] session_dis = wdi.GetDirectories("*", SearchOption.TopDirectoryOnly);
                     Array.Sort(session_dis, new CompareDirectoryInfo());
                     for (int i = session_dis.Length - 1; i >= 0; i--)
                     {
-                        DirectoryInfo d = session_dis[i];
-                        if (!Directory.Exists(d.FullName + "\\" + CACHE_DIR_NAME))
+                        DirectoryInfo sdi = session_dis[i];
+                        if (!Directory.Exists(sdi.FullName + "\\" + CACHE_DIR_NAME))
                             continue;
-                        if (d.FullName == Log.SessionDir)
+                        if (sdi.FullName == Log.SessionDir)
                             continue;
-                        string cm_file = d.FullName + "\\" + CACHE_DIR_NAME + "\\" + CACHE_MAP_FILE_NAME;
+                        string cm_file = sdi.FullName + "\\" + CACHE_DIR_NAME + "\\" + CACHE_MAP_FILE_NAME;
                         if (!File.Exists(cm_file))
                         {
-                            Log.Main.Error("Could not open cache map: " + d.FullName + "\\" + CACHE_MAP_FILE_NAME);
+                            Log.Main.Error("No cache map found: " + cm_file);
                             continue;
                         }
                         try
                         {
-                            using (XmlTextReader sr = new XmlTextReader(cm_file))
+                            using (TextReader sr = new StreamReader(cm_file))
                             {
-                                string session_name = Regex.Replace(d.FullName, @".*[\/\\](?=.+)", "", RegexOptions.Compiled | RegexOptions.Singleline);
-                                while (sr.Read())
+                                string session_name = Regex.Replace(sdi.FullName, @".*[\/\\](?=.+)", "", RegexOptions.Compiled | RegexOptions.Singleline);
+                                for (string l = sr.ReadLine(); l != null; l = sr.ReadLine())
                                 {
-                                    if (sr.NodeType == XmlNodeType.Element && sr.Name == "File")
+                                    Dictionary<string, object> d = serializer.Deserialize<Dictionary<string, object>>(l);
+                                    string url = get<string>(d, "url");
+                                    string response_url = get<string>(d, "response_url");
+                                    string path = get<string>(d, "path");
+                                    if (!path.Contains(session_name))
+                                        path = "\\" + session_name + "\\" + CACHE_DIR_NAME + "\\" + path;
+                                    bool text = get<bool>(d, "text", true);
+                                    if (DoNotRestoreErrorFiles)
                                     {
-                                        string url = sr.GetAttribute("url");
-                                        string response_url = sr.GetAttribute("response_url");
-                                        string path = sr.GetAttribute("path");
-                                        if (!path.Contains(session_name))
-                                            path = "\\" + session_name + "\\" + CACHE_DIR_NAME + "\\" + path;
-                                        bool text;
-                                        if (!bool.TryParse(sr.GetAttribute("text"), out text))
-                                            text = true;
-                                        if (DoNotRestoreErrorFiles)
-                                        {
-                                            string error = sr.GetAttribute("error");
-                                            if (error != null)
-                                                continue;
-                                        }
-                                        add2cache_map(url, path, response_url);
+                                        string error = get<string>(d, "error");
+                                        if (error != null)
+                                            continue;
                                     }
+                                    add2cache_map(url, path, response_url);
                                 }
                             }
                         }
-                        catch (XmlException e)
+                        catch (Exception e)
                         {
-                            if (!e.Message.Contains("Unexpected end of file has occurred."))
-                                Log.Main.Error(e);
+                            Log.Main.Error(e);
                         }
                     }
                     return true;
@@ -261,8 +252,15 @@ namespace Cliver.BotWeb
         {
             public int Compare(DirectoryInfo d1, DirectoryInfo d2)
             {
-                return d1.Name.CompareTo(d2.Name);
+                return  d1.LastWriteTime.CompareTo(d2.LastWriteTime);
             }
+        }
+       static T get<T>(Dictionary<string, object> d, string key, T default_value = default(T)) 
+        {
+            object o;
+            if (d.TryGetValue(key, out o))
+                return (T)o;
+            return default_value;
         }
 
         public static bool DoNotRestoreErrorFiles = true;
@@ -332,8 +330,6 @@ namespace Cliver.BotWeb
             {
                 if (cache_map_writer != null)
                 {
-                    cache_map_writer.WriteEndElement();
-                    cache_map_writer.WriteEndDocument();
                     cache_map_writer.Close();
                     cache_map_writer.Dispose();
                     cache_map_writer = null;
