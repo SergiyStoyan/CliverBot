@@ -85,7 +85,7 @@ namespace Cliver.Bot
                 lock (this)
                 {
                     key2items[key] = value;
-                    Session.This.WriteWorkItem(value, key);
+                    Session.This.Storage.WriteWorkItem(value, key);
                     return;
                 }
             }

@@ -204,7 +204,7 @@ namespace Cliver.Bot
         {
             LogMessage.Error(message);
             Session.State = SessionState.FATAL_ERROR;
-            This.storage.WriteState(State, new { });
+            This.Storage.WriteState(State, new { });
             Bot.FatalError(message);
             Session.Close();
         }
@@ -213,7 +213,7 @@ namespace Cliver.Bot
         {
             LogMessage.Error(e);
             Session.State = SessionState.FATAL_ERROR;
-            This.storage.WriteState(State, new { });
+            This.Storage.WriteState(State, new { });
             Bot.FatalError(e.Message);
             Session.Close();
         }

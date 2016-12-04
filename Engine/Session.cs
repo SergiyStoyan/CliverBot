@@ -21,7 +21,7 @@ using System.Reflection;
 
 /*
 TBD:
-- use LiteSQL or DBLite as a storage
+- use LiteSQL or DBLite as a Storage
 - serialize InputItems into json and thus allow arrays etc
 - ? Bot static session methods move to a session subclass singleton within CustomBot
 */
@@ -66,10 +66,10 @@ namespace Cliver.Bot
                 throw new Exception("No InputItem derive was found");
 
             Restored = false;
-            storage = new Storage();
+            Storage = new SessionStorage();
             DateTime old_start_time;
             string old_time_mark;
-            SessionState old_state = storage.ReadLastState(out old_start_time, out old_time_mark);
+            SessionState old_state = Storage.ReadLastState(out old_start_time, out old_time_mark);
             switch (old_state)
             {
                 case SessionState.NULL:
@@ -89,10 +89,10 @@ namespace Cliver.Bot
                         {
                             StartTime = old_start_time;
                             TimeMark = old_time_mark;
-                            storage.WriteState(SessionState.RESTORING, new { restoring_time = RestoreTime, restoring_session_time_mark = get_time_mark(RestoreTime) });
+                            Storage.WriteState(SessionState.RESTORING, new { restoring_time = RestoreTime, restoring_session_time_mark = get_time_mark(RestoreTime) });
                             Log.Main.Inform("Loading configuration from " + ConfigurationDir);
                             Config.Reload(ConfigurationDir);
-                            storage.RestoreSession();
+                            Storage.RestoreSession();
                             Restored = true;
                         }
                     }
@@ -107,15 +107,15 @@ namespace Cliver.Bot
                 {
                     string old_dir_new_path = Log.WorkDir + "\\Data" + "_" + old_time_mark + "_" + old_state;
                     Log.Main.Write("The old session folder moved to " + old_dir_new_path);
-                    storage.Close();
+                    Storage.Close();
                     Directory.Move(Dir, old_dir_new_path);
                     PathRoutines.CreateDirectory(Dir);
-                    storage = new Storage();
+                    Storage = new SessionStorage();
                 }
 
                 StartTime = Log.MainSession.CreatedTime;// DateTime.Now;
                 TimeMark = get_time_mark(StartTime);
-                storage.WriteState(SessionState.STARTING, new { session_start_time = StartTime, session_time_mark = TimeMark });
+                Storage.WriteState(SessionState.STARTING, new { session_start_time = StartTime, session_time_mark = TimeMark });
                 read_input_file();
                 Config.CopyFiles(Dir);
             }
@@ -171,7 +171,7 @@ namespace Cliver.Bot
                     return;
                 BotCycle.Start();
                 Session.State = SessionState.RUNNING;
-                This.storage.WriteState(SessionState.RUNNING, new { });
+                This.Storage.WriteState(SessionState.RUNNING, new { });
             }
             catch (ThreadAbortException)
             {
@@ -196,7 +196,7 @@ namespace Cliver.Bot
                 if (This.closing_thread != null)
                     return;
                 State = SessionState.CLOSING;
-                This.storage.WriteState(State, new { });
+                This.Storage.WriteState(State, new { });
                 This.closing_thread = ThreadRoutines.Start(This.close);
             }
         }
@@ -217,7 +217,7 @@ namespace Cliver.Bot
                     else
                         State = SessionState.COMPLETED;
 
-                    This.storage.WriteState(State, new { });
+                    This.Storage.WriteState(State, new { });
 
                     try
                     {
@@ -226,7 +226,7 @@ namespace Cliver.Bot
                     catch (Exception e)
                     {
                         Session.State = SessionState.FATAL_ERROR;
-                        This.storage.WriteState(State, new { });
+                        This.Storage.WriteState(State, new { });
                         LogMessage.Error(e);
                         Bot.FatalError(e.Message);
                     }
@@ -238,7 +238,7 @@ namespace Cliver.Bot
                     catch (Exception e)
                     {
                         Session.State = SessionState.FATAL_ERROR;
-                        This.storage.WriteState(State, new { });
+                        This.Storage.WriteState(State, new { });
                         LogMessage.Error(e);
                         Bot.FatalError(e.Message);
                     }
@@ -252,13 +252,13 @@ namespace Cliver.Bot
                 catch (Exception e)
                 {
                     Session.State = SessionState.FATAL_ERROR;
-                    This.storage.WriteState(State, new { });
+                    This.Storage.WriteState(State, new { });
                     LogMessage.Error(e);
                     Bot.FatalError(e.Message);
                 }
                 finally
                 {
-                    storage.Close();
+                    Storage.Close();
                     switch (State)
                     {
                         case SessionState.NULL:
@@ -300,19 +300,6 @@ namespace Cliver.Bot
             FillStartInputItemQueue(start_input_item_queue, start_input_item_type);
         }
 
-        public enum SessionState
-        {
-            NULL,
-            STARTING,
-            RESTORING,//restoring phase
-            RUNNING,
-            CLOSING,
-            COMPLETED,
-            UNCOMPLETED,
-            BROKEN,
-            FATAL_ERROR
-        }
-
         public static SessionState State
         {
             get
@@ -333,5 +320,18 @@ namespace Cliver.Bot
             }
         }
         SessionState _state = SessionState.NULL;
+    }
+
+    public enum SessionState
+    {
+        NULL,
+        STARTING,
+        RESTORING,//restoring phase
+        RUNNING,
+        CLOSING,
+        COMPLETED,
+        UNCOMPLETED,
+        BROKEN,
+        FATAL_ERROR
     }
 }

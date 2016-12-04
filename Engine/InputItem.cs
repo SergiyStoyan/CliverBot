@@ -185,7 +185,7 @@ namespace Cliver.Bot
                 if (value < __state)
                     throw new Exception("Cannot change __State to " + value);
                 this.__state = value;
-                Session.This.WriteInputItem(this);
+                Session.This.Storage.WriteInputItem(this);
                 return;
             }
         }
@@ -243,7 +243,7 @@ namespace Cliver.Bot
         }
     }
 
-    internal enum InputItemState : uint
+    internal enum InputItemState : int
     {
         NULL = 0,
         NEW = 1,

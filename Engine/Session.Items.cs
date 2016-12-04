@@ -90,7 +90,7 @@ namespace Cliver.Bot
          
                 for (int i = 0; i < This.input_item_queue_name2input_item_queues.Count; i++)
                     ((InputItemQueue)This.input_item_queue_name2input_item_queues[i]).Position = i;
-                This.storage.WriteInputItemQueuePosition(iiq);
+                This.Storage.WriteInputItemQueuePosition(iiq);
             }
         }
 

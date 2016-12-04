@@ -26,7 +26,7 @@ namespace Cliver.Bot
 {
     public partial class Session
     {
-        abstract class StorageBase
+        internal abstract class StorageBase
         {
             TextWriter tw = null;
             TextReader tr = null;
@@ -90,7 +90,7 @@ namespace Cliver.Bot
             {
                 lock (this)
                 {
-                    if(!File.Exists(file))
+                    if (!File.Exists(file))
                         return false;
 
                     if (tr == null)
@@ -102,8 +102,8 @@ namespace Cliver.Bot
                         }
                     }
                     else
-                        tr.Close();    
-                        
+                        tr.Close();
+
                     tr = new StreamReader(file, Encoding.UTF8);
                     return true;
                 }
@@ -176,9 +176,9 @@ namespace Cliver.Bot
             }
         }
 
-        class Storage : StorageBase
+        internal class SessionStorage : StorageBase
         {
-            internal Storage() : base(This.Dir + "\\session_log.txt")
+            internal SessionStorage() : base(This.Dir + "\\session_log.txt")
             {
             }
 
@@ -331,7 +331,7 @@ namespace Cliver.Bot
                             else
                                 queue = type_name;
 
-                            InputItemState state = (InputItemState)(int)names2value["state"];
+                            InputItemState state = (InputItemState)names2value["state"];
                             if (state == InputItemState.ERROR_RESTORE_AS_NEW && !Settings.Engine.RestoreErrorItemsAsNew)
                                 state = InputItemState.ERROR;
 
@@ -386,16 +386,6 @@ namespace Cliver.Bot
             }
             bool restoring = false;
         }
-        Storage storage = null;
-
-        internal void WriteWorkItem(WorkItem item, string key)
-        {
-            storage.WriteWorkItem(item, key);
-        }
-
-        internal void WriteInputItem(InputItem item)
-        {
-            storage.WriteInputItem(item);
-        }
+        internal SessionStorage Storage { get; private set; }
     }
 }
