@@ -21,8 +21,7 @@ using System.Reflection;
 
 /*
 TBD:
-- use LiteSQL or DBLite as a Storage
-- serialize InputItems into json and thus allow arrays etc
+- use LiteSQL or DBLite as a Storage/data engine
 - ? Bot static session methods move to a session subclass singleton within CustomBot
 */
 
