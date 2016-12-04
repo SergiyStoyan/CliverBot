@@ -21,8 +21,14 @@ using System.Reflection;
 
 /*
 TBD:
-- use LiteSQL or DBLite as a Storage/data engine
-- ? Bot static session methods move to a session subclass singleton within CustomBot
+
+    - use LiteSQL or DBLite as a Storage/data engine 
+    VERDICT: append-file-storage is the fastest solution because of: 1)writting to the end of file; 2)keeping all the items ready in RAM. 
+Drawbacks of append-file-storage: 1)growing log file (not quickly as only states are appended); 2)large amount of items will inundate RAM.
+So, for large size data a db storage is required.
+
+    - ? Bot static session methods move to a session subclass singleton within CustomBot 
+    DECLINED: methods like FataLError should be static anyway
 */
 
 namespace Cliver.Bot
