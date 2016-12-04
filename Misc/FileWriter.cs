@@ -78,13 +78,15 @@ namespace Cliver.Bot
                 this.max_file_size = max_file_size;
                 open_file();
             }
-        }
+        }  
+
+        const string OUTPUT_DIR_NAME = "output";
 
         static string get_file_abs_path(string file, bool add_time_mark, bool append_output)
         {
             string file_abs_path = file;
-            if (!file_abs_path.Contains(@":\"))
-                file_abs_path = (Session.OutputDir != null ? Session.OutputDir : Log.OutputDir) + "\\" + file_abs_path;
+            if (!file_abs_path.Contains(":"))
+                file_abs_path = PathRoutines.CreateDirectory((Session.This != null ? Session.This.Dir : Log.WorkDir) + "\\" + OUTPUT_DIR_NAME) + "\\" + file_abs_path;
 
             if (add_time_mark)
             {

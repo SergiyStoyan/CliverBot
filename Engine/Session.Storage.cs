@@ -214,10 +214,15 @@ namespace Cliver.Bot
             internal void WriteState(SessionState state, dynamic names2value)
             {
                 Dictionary<string, object> d = new Dictionary<string, object>();
-                foreach (PropertyInfo pi in names2value.GetType().GetProperties())
-                    d.Add(pi.Name, pi.GetValue(names2value));
                 d.Add("value", state);
                 d.Add("time", DateTime.Now);
+                StringBuilder sb = new StringBuilder();
+                foreach (PropertyInfo pi in names2value.GetType().GetProperties())
+                {
+                    d.Add(pi.Name, pi.GetValue(names2value));
+                    sb.Append("\r\n" + pi.Name + "=" + pi.GetValue(names2value));
+                }
+                Log.Main.Inform("STATE: " + sb.ToString());
                 writeElement(StateTag, d);
             }
             const string StateTag = "__SESSION_STATE";
@@ -284,6 +289,7 @@ namespace Cliver.Bot
 
             internal void RestoreSession()
             {
+                Log.Main.Inform("Restoring session: " + This.TimeMark);
                 restoring = true;
                 Dictionary<int, InputItem> input_item_id2input_items = new Dictionary<int, InputItem>();
                 Dictionary<int, TagItem> tag_item_id2tag_items = new Dictionary<int, TagItem>();

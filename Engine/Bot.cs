@@ -27,7 +27,7 @@ namespace Cliver.Bot
             MethodInfo mi = __Type.GetMethod("GetAbout", BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Static);
             if (mi != null)
                 return (string)mi.Invoke(null, null);
-            return @"Created: " + Program.GetCustomizationCompiledTime().ToString() + @"
+            return @"Compiled: " + Program.GetCustomizationCompiledTime().ToString() + @"
 Developed by: www.cliversoft.com";
         }
 

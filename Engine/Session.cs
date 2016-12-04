@@ -21,7 +21,7 @@ using System.Reflection;
 
 /*
 TBD:
-- Engine.Session has own folder where all the data is stored (by LiteSQL or DBLite etc)
+- use LiteSQL or DBLite as a storage
 - serialize InputItems into json and thus allow arrays etc
 - ? Bot static session methods move to a session subclass singleton within CustomBot
 */
@@ -96,7 +96,6 @@ namespace Cliver.Bot
                             StartTime = session_start_time;
                             TimeMark = session_time_mark;
                             storage.WriteState(SessionState.RESTORING, new { restoring_time = RestoreTime, restoring_session_time_mark = get_time_mark(RestoreTime) });
-                            Log.Main.Inform("Restoring session " + TimeMark);
                             Log.Main.Inform("Loading configuration from " + ConfigurationDir);
                             Config.Reload(ConfigurationDir);
                             storage.RestoreSession();
@@ -113,7 +112,6 @@ namespace Cliver.Bot
                 StartTime = Log.MainSession.CreatedTime;// DateTime.Now;
                 TimeMark = get_time_mark(StartTime);
                 storage.WriteState(SessionState.STARTING, new { session_start_time = StartTime, session_time_mark = TimeMark });
-                Log.Main.Write("No session was restored so reading input Items from the input file");
                 read_input_file();
                 Config.CopyFiles(Dir);
             }
@@ -292,6 +290,7 @@ namespace Cliver.Bot
 
         void read_input_file()
         {
+            Log.Main.Write("Loading InputItems from the input file.");
             Type start_input_item_type = (from t in Assembly.GetEntryAssembly().GetTypes() where t.IsSubclassOf(typeof(InputItem)) && !t.IsGenericType select t).First();
             InputItemQueue start_input_item_queue = GetInputItemQueue(start_input_item_type.Name);
             FillStartInputItemQueue(start_input_item_queue, start_input_item_type);

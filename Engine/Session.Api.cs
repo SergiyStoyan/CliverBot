@@ -187,6 +187,9 @@ namespace Cliver.Bot
         static public event OnClosing Closing = null;
 
         public delegate void OnClosed();
+        /// <summary>
+        /// Used to exit application
+        /// </summary>
         static public event OnClosed Closed = null;
 
         static public Type GetFirstDeclaredInputItemType()
@@ -232,18 +235,5 @@ namespace Cliver.Bot
             {
             }
         }
-
-        static public string OutputDir
-        {
-            get
-            {
-                if (This == null)
-                    return null;
-                if (This.output_dir == null)
-                    This.output_dir = PathRoutines.CreateDirectory(This.Dir + "\\output");
-                return This.output_dir;
-            }
-        }
-        string output_dir = null;
     }
 }

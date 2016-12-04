@@ -131,29 +131,6 @@ namespace Cliver
         static Session main_session = null;
 
         /// <summary>
-        /// Output directory for current main session
-        /// </summary>
-        public static string OutputDir
-        {
-            get
-            {
-                if (output_dir == null)
-                {
-                    lock (lock_object)
-                    {
-                        output_dir = SessionDir + @"\" + OutputDirName;
-
-                        DirectoryInfo di = new DirectoryInfo(output_dir);
-                        if (!di.Exists)
-                            di.Create();
-                    }
-                }
-                return output_dir;
-            }
-        }
-        static string output_dir = null;
-
-        /// <summary>
         /// Output folder name
         /// </summary>
         public static string OutputDirName = @"output";
@@ -171,7 +148,6 @@ namespace Cliver
                 if (main_session != null)
                     main_session.Close();
                 main_session = null;
-                output_dir = null;
 
                 GC.Collect();
             }
