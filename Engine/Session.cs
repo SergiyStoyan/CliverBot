@@ -67,22 +67,16 @@ namespace Cliver.Bot
 
             Restored = false;
             storage = new Storage();
-            DateTime session_start_time;
-            string session_time_mark;
-            SessionState state = storage.ReadLastState(out session_start_time, out session_time_mark);
-            switch (state)
+            DateTime old_start_time;
+            string old_time_mark;
+            SessionState old_state = storage.ReadLastState(out old_start_time, out old_time_mark);
+            switch (old_state)
             {
                 case SessionState.NULL:
                     break;
                 case SessionState.STARTING:
                 case SessionState.COMPLETED:
                 case SessionState.FATAL_ERROR:
-                    string old_dir_new_path = Log.WorkDir + "\\Data" + "_" + session_time_mark + "_" + state;
-                    Log.Main.Write("Cleaning session folder. The old data copied to " + old_dir_new_path);
-                    storage.Close();
-                    Directory.Move(Dir, old_dir_new_path);
-                    PathRoutines.CreateDirectory(Dir);
-                    storage = new Storage();
                     break;
                 case SessionState.RESTORING:
                 case SessionState.RUNNING:
@@ -91,10 +85,10 @@ namespace Cliver.Bot
                 case SessionState.BROKEN:
                     if (Settings.Engine.RestoreBrokenSession && !ProgramRoutines.IsParameterSet(CommandLineParameters.NOT_RESTORE_SESSION))
                     {
-                        if (LogMessage.AskYesNo("Previous session " + session_time_mark + " is not completed. Restore it?", true))
+                        if (LogMessage.AskYesNo("Previous session " + old_time_mark + " is not completed. Restore it?", true))
                         {
-                            StartTime = session_start_time;
-                            TimeMark = session_time_mark;
+                            StartTime = old_start_time;
+                            TimeMark = old_time_mark;
                             storage.WriteState(SessionState.RESTORING, new { restoring_time = RestoreTime, restoring_session_time_mark = get_time_mark(RestoreTime) });
                             Log.Main.Inform("Loading configuration from " + ConfigurationDir);
                             Config.Reload(ConfigurationDir);
@@ -104,11 +98,21 @@ namespace Cliver.Bot
                     }
                     break;
                 default:
-                    throw new Exception("Unknown option: "+ state);
+                    throw new Exception("Unknown option: "+ old_state);
             }
 
             if (!Restored)
             {
+                if (old_state != SessionState.NULL)
+                {
+                    string old_dir_new_path = Log.WorkDir + "\\Data" + "_" + old_time_mark + "_" + old_state;
+                    Log.Main.Write("The old session folder moved to " + old_dir_new_path);
+                    storage.Close();
+                    Directory.Move(Dir, old_dir_new_path);
+                    PathRoutines.CreateDirectory(Dir);
+                    storage = new Storage();
+                }
+
                 StartTime = Log.MainSession.CreatedTime;// DateTime.Now;
                 TimeMark = get_time_mark(StartTime);
                 storage.WriteState(SessionState.STARTING, new { session_start_time = StartTime, session_time_mark = TimeMark });

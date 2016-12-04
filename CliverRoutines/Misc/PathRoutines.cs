@@ -88,10 +88,18 @@ namespace Cliver
             return Regex.Replace(path, @"\.[^\.]+$", "." + extention, RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
         }
 
-        public static string CreateDirectory(string path)
+        public static string CreateDirectory(string path, bool unique = false)
         {
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
+            else if (unique)
+            {
+                int i = 1;
+                string p = path + "_" + i;
+                for (; Directory.Exists(p); p = p + "_" + (++i)) ;
+                path = p;
+                Directory.CreateDirectory(path);
+            }
             return path;
         }
     }
