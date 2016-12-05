@@ -81,14 +81,14 @@ namespace Cliver.Bot
             {
                 //Item item = (Item)Activator.CreateInstance(item_type);
                 Item item = (Item)FormatterServices.GetUninitializedObject(item_type);
-                item.RESTORE_FROM_SEED(item_seed, item_types2serialized_field_names2serialized_field_fi[item_type]);  ConstructorInfo ci;
+                item.RESTORE_FROM_SEED(item_seed, item_types2serialized_field_names2serialized_field_fi[item_type]); ConstructorInfo ci;
                 if (item_types2constructor_info.TryGetValue(item_type, out ci))
                 {
                     ci.Invoke(item, new object[] { });
                 }
                 typeof(Item).GetField("__Id", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(item, item_id);
                 return item;
-            } 
+            }
         }
 
         protected static Dictionary<Type, Dictionary<string, FieldInfo>> item_types2serialized_field_names2serialized_field_fi = new Dictionary<Type, Dictionary<string, FieldInfo>>();
@@ -107,13 +107,17 @@ namespace Cliver.Bot
                 //item_type2parameter_count_in_constructor[item_type] = (from x in item_type.GetConstructors() select x.GetParameters().Length).Min();
 
                 //ConstructorInfo ci = item_type.GetConstructor(item_types2serialized_field_names2serialized_field_fi[item_type].Values.Select(x=>x.FieldType).ToArray());
-                ConstructorInfo ci = item_type.GetConstructor(new Type[]{});
+                ConstructorInfo ci = item_type.GetConstructor(new Type[] { });
                 if (ci != null)
-                   item_types2constructor_info[item_type] = ci;
+                    item_types2constructor_info[item_type] = ci;
             }
         }
         //protected static Dictionary<Type, int> item_type2parameter_count_in_constructor = new Dictionary<Type, int>();
 
+        /// <summary>
+        /// All custom field must be immutable, so no collection can be allowed.
+        /// </summary>
+        /// <param name="item_type"></param>
         static void validate_fields(Type item_type)
         {
             List<string> fs = (from x in item_type.GetFields(BindingFlags.Public | BindingFlags.Instance) where !x.IsInitOnly select x.Name).ToList();
@@ -130,8 +134,7 @@ namespace Cliver.Bot
                 throw new Exception("The following fields in " + item_type + " cannot be static: " + fs.Aggregate((total, x) => total + ", " + x));
 
             fs = (from x in item_type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public)
-                  where !(x.FieldType.IsValueType || x.FieldType == typeof(string)) && !ALLOWED_ITEM_TYPES.Contains(x.FieldType.BaseType) && (x.GetCustomAttributes(typeof(ConstructedField)).FirstOrDefault() == null)
-                  select x.Name).ToList();
+                  where !(x.FieldType.IsValueType || x.FieldType == typeof(string)) && !ALLOWED_ITEM_TYPES.Contains(x.FieldType.BaseType) select x.Name).ToList();
             if (fs.Count > 0)
                 throw new Exception("The following fields in " + item_type + " have not supported type: " + fs.Aggregate((total, x) => total + ", " + x));
         }
@@ -223,4 +226,3 @@ namespace Cliver.Bot
         }
     }
 }
-

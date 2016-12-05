@@ -110,14 +110,14 @@ Developed by: www.cliversoft.com";
             /// a sample of field that must be set by constructor explicitly
             /// </summary>
             [ConstructedField]
-            readonly public string[] Test;
+            readonly public string Test;
 
             /// <summary>
             /// The parameterless constructor is invoked AFTER all fields are set excluding those atributed with ConstructedField
             /// </summary>
             public Site()
             {
-                Test = new string[] { Url };
+                Test =  "It is only for test: " + Url;
             }
             #endregion
 
