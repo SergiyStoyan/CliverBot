@@ -28,7 +28,7 @@ Drawbacks of append-file-storage: 1)growing log file (not quickly as only states
 So, for large size data a db storage is required.
 
     - ? Bot static session methods move to a session subclass singleton within CustomBot 
-    (: methods like FataLError should be static anyway)
+    (: methods like GetAbout, FataLError should be static anyway)
 
     - uppercase methods to be overriden in custmization classes
 

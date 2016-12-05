@@ -31,15 +31,10 @@ namespace Cliver.Bot
 Developed by: www.cliversoft.com";
         }
 
-        //internal static ICustomCache CreateCustomCache()
-        //{
-        //    return (ICustomCache)create_instance_of("CustomCache");
-        //}
-
-            /// <summary>
-            /// Called on any error considered fatal
-            /// </summary>
-            /// <param name="message"></param>
+        /// <summary>
+        /// Called on any error considered fatal
+        /// </summary>
+        /// <param name="message"></param>
         public static void FatalError(string message)
         {
             __FatalError?.Invoke(message);
@@ -49,7 +44,7 @@ Developed by: www.cliversoft.com";
         {
             __SessionCreating?.Invoke();
         }
-        
+
         public static void SessionClosing()
         {
             __SessionClosing?.Invoke();
@@ -59,6 +54,11 @@ Developed by: www.cliversoft.com";
         /// Allows access to CliverBot api
         /// </summary>
         readonly protected BotCycle BotCycle;
+
+        /// <summary>
+        /// Allows access to Session api
+        /// </summary>
+        protected Session Session { get { return Session.This; } }
 
         static public BotT __GetInstanceForThisThread<BotT>() where BotT : Bot
         {
@@ -95,4 +95,73 @@ Developed by: www.cliversoft.com";
             }
         }
     }
+
+//    public class CustomBot
+//    {
+//        public static string GetAbout()
+//        {
+//            MethodInfo mi = __Type.GetMethod("GetAbout", BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Static);
+//            if (mi != null)
+//                return (string)mi.Invoke(null, null);
+//            return @"Compiled: " + Program.GetCustomizationCompiledTime().ToString() + @"
+//Developed by: www.cliversoft.com";
+//        }
+
+//        /// <summary>
+//        /// Called on any error considered fatal
+//        /// </summary>
+//        /// <param name="message"></param>
+//        public static void FatalError(string message)
+//        {
+//        }
+
+//        public class CustomSession : Session
+//        {
+//            public static void CREATING()
+//            {
+//            }
+
+//            public static void CLOSING()
+//            {
+//            }
+//        }
+
+//        public class CustomBotCycle : BotCycle
+//        {
+//            /// <summary>
+//            /// Allows access to Session api
+//            /// </summary>
+//            protected Session Session { get { return Session.This; } }
+
+//            /// <summary>
+//            /// Invoked by BotCycle thread as it has been started.
+//            /// </summary>
+//            virtual public void STARTING()
+//            {
+//            }
+
+//            /// <summary>
+//            /// Invoked by BotCycle thread when it is exiting.
+//            /// </summary>
+//            virtual public void EXITING()
+//            {
+//            }
+
+//            /// <summary>
+//            /// Invoked by default if no particular processor definition was found.
+//            /// </summary>
+//            virtual public void PROCESSOR(InputItem item)
+//            {
+//                //__input_item_type2processor_actions[item.GetType()](item);
+//                try
+//                {
+//                    __input_item_type2processor_mis[item.GetType()].Invoke(this, new object[] { item });
+//                }
+//                catch (TargetInvocationException e)
+//                {
+//                    throw e.InnerException;
+//                }
+//            }
+//        }
+//    }
 }
