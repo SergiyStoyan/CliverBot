@@ -29,7 +29,11 @@ using Cliver.BotWeb;
 /// </summary>
 namespace Cliver.BotCustomization
 {
-    class Program
+    /// <summary>
+    /// Most important interface that defines certain routines of CliverBot customization.
+    /// This implementation demos use of PROCESSOR's defined within InputItem's deriving classes.
+    /// </summary>
+    public class CustomBot : Cliver.Bot.Bot
     {
         [STAThread]
         static void Main()
@@ -48,14 +52,7 @@ namespace Cliver.BotCustomization
                 LogMessage.Error(e);
             }
         }
-    }
 
-    /// <summary>
-    /// Most important interface that defines certain routines of CliverBot customization.
-    /// This implementation demos use of PROCESSOR's defined within InputItem's deriving classes.
-    /// </summary>
-    public class CustomBot : Cliver.Bot.Bot
-    {
         new static public string GetAbout()
         {
             return @"WEB LINK CHECKER
@@ -64,48 +61,59 @@ Developed by: www.cliversoft.com";
         }
 
         /// <summary>
-        /// Invoked when the session is creatig.
-        /// </summary>
-        new static public void SessionCreating()
-        {
-            Cliver.BotGui.Program.BindProgressBar2InputItemQueue<Site>();
-            FileWriter.This.WriteHeader("Parent Page", "Broken Link");
-            domain2page_count = Session.GetSingleValueWorkItemDictionary<PageCounter, int>();
-            //only for demo purpose. It is doing the default routing.
-            Session.GetInputItemQueue<Link>().PickNext = Link.PICK_NEXT;
-        }
-        public class PageCounter : SingleValueWorkItem<int> { }
-        static SingleValueWorkItemDictionary<PageCounter, int> domain2page_count;
-                
-        /// <summary>
         /// Invoked when a fatal error happened and session is aborting.
         /// </summary>
         new static public void FatalError(string message)
         {
         }
+    }
+
+    public class CustomSession : Session
+    {
+        public override void CREATING()
+        {
+            Cliver.BotGui.Program.BindProgressBar2InputItemQueue<Site>();
+            FileWriter.This.WriteHeader("Parent Page", "Broken Link");
+            domain2page_count = Session.GetSingleValueWorkItemDictionary<PageCounter, int>();
+            //only for demo purpose. It is doing the default routing.
+            Session.GetInputItemQueue<Link>().PickNext = PICK_NEXT_Link;
+        }
+        public class PageCounter : SingleValueWorkItem<int> { }
+        SingleValueWorkItemDictionary<PageCounter, int> domain2page_count;
+        
+        //only for demo purpose. It is doing the default routing.
+        static public InputItem PICK_NEXT_Link(System.Collections.IEnumerator items_ennumerator)
+        {
+            items_ennumerator.Reset();
+            if (items_ennumerator.MoveNext())
+                return (InputItem)items_ennumerator.Current;
+            return null;
+        }
 
         /// <summary>
         /// Invoked when the session is closing.
         /// </summary>
-        new static public void SessionClosing()
+        new static public void CLOSING()
         {
         }
 
-        /// <summary>
-        /// Invoked by BotCycle thread as it has been started.
-        /// </summary>
-        public override void CycleStarting()
+        public class CustomBotCycle : BotCycle
         {
-            ((WebRoutineBotThreadControl)BotThreadControl.GetInstanceForThisThread()).WR = hr;
-        }
+            /// <summary>
+            /// Invoked by BotCycle thread as it has been started.
+            /// </summary>
+            public override void STARTING()
+            {
+                ((WebRoutineBotThreadControl)BotThreadControl.GetInstanceForThisThread()).WR = hr;
+            }
+            internal HttpRoutine hr = new HttpRoutine();
 
-        HttpRoutine hr = new HttpRoutine();
-
-        /// <summary>
-        /// Invoked by BotCycle thread when it is exiting.
-        /// </summary>
-        public override void CycleExiting()
-        {
+            /// <summary>
+            /// Invoked by BotCycle thread when it is exiting.
+            /// </summary>
+            public override void EXITING()
+            {
+            }
         }
 
         /// <summary>
@@ -117,10 +125,10 @@ Developed by: www.cliversoft.com";
 
             override public void PROCESSOR(BotCycle bc)
             {
-                CustomBot cb = (CustomBot)bc.Bot;
-                if (!cb.hr.GetPage(Url))
+                CustomBotCycle cbc = (CustomBotCycle)bc;
+                if (!cbc.hr.GetPage(Url))
                     throw new ProcessorException(ProcessorExceptionType.RESTORE_AS_NEW, "Could not get site: " + Url);
-                get_links(1, cb.hr, bc);
+                ((CustomSession)bc.Session).get_links(1, cbc.hr, bc);
             }
         }
 
@@ -138,15 +146,6 @@ Developed by: www.cliversoft.com";
                 Url = url;
                 Depth = depth;
                 Download = download;
-            }
-
-            //only for demo purpose. It is doing the default routing.
-            static public InputItem PICK_NEXT(System.Collections.IEnumerator items_ennumerator)
-            {
-                items_ennumerator.Reset();
-                if (items_ennumerator.MoveNext())
-                    return (InputItem)items_ennumerator.Current;
-                return null;
             }
 
             override public void PROCESSOR(BotCycle bc)
@@ -169,11 +168,11 @@ Developed by: www.cliversoft.com";
                     return;
                 }
                 if (Download)
-                    get_links(Depth + 1, hr, bc);
+                    ((CustomSession)bc.Session).get_links(Depth + 1, hr, bc);
             }
         }
 
-        static public void get_links(int depth2, HttpRoutine hr, BotCycle bc)
+        public void get_links(int depth2, HttpRoutine hr, BotCycle bc)
         {
             if (depth2 > BotWeb.Settings.Spider.MaxDownloadLinkDepth)
                 return;

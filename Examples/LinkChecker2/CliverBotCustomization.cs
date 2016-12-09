@@ -28,130 +28,154 @@ using Cliver.BotWeb;
 /// </summary>
 namespace Cliver.BotCustomization
 {
-    class Program
-    {
-        [STAThread]
-        static void Main()
-        {
-            Cliver.Config.Initialize(new string[] { "Engine", "Input", "Output", "Web", "Spider", "Log" });
-            Cliver.BotGui.BotGui.ConfigControlSections = new string[] { "Engine", "Input", "Output", "Web", "Spider", "Log", };
-            Cliver.BotGui.BotGui.BotThreadControlType = typeof(WebRoutineBotThreadControl);
-
-            Config.Save();            
-            Cliver.BotGui.Program.Run();
-        }
-    }
-
     /// <summary>
     /// Most important interface that defines certain routines of CliverBot customization.
     /// This implementation demos use of PROCESSOR's defined in CustomBot class.
     /// </summary>
     public class CustomBot : Cliver.Bot.Bot
     {
+        [STAThread]
+        static void Main()
+        {
+            try
+            {
+                Cliver.Config.Initialize(new string[] { "Engine", "Input", "Output", "Web", "Spider", "Log" });
+                Cliver.BotGui.BotGui.ConfigControlSections = new string[] { "Engine", "Input", "Output", "Web", "Spider", "Log", };
+                Cliver.BotGui.BotGui.BotThreadControlType = typeof(WebRoutineBotThreadControl);
+
+                //Cliver.Bot.Program.Run();//It is the entry when the app runs as a console app.
+                Cliver.BotGui.Program.Run();//It is the entry when the app uses the default GUI.
+            }
+            catch (Exception e)
+            {
+                LogMessage.Error(e);
+            }
+        }
+
         new static public string GetAbout()
         {
             return @"WEB LINK CHECKER2
 Created: " + Cliver.Bot.Program.GetCustomizationCompiledTime().ToString() + @"
 Developed by: www.cliversoft.com";
         }
+    }
 
-        new static public void SessionCreating()
+    public class CustomSession : Session
+    {
+        public override void CREATING()
         {
             FileWriter.This.WriteHeader("Parent Page", "Broken Link");
             domain2page_count = Session.GetSingleValueWorkItemDictionary<PageCounter, int>();
         }
 
         public class PageCounter : SingleValueWorkItem<int> { }
-        static SingleValueWorkItemDictionary<PageCounter, int> domain2page_count;
+        SingleValueWorkItemDictionary<PageCounter, int> domain2page_count;
 
-        HttpRoutine hr = new HttpRoutine();
-
-        /// <summary>
-        /// Custom InputItem types are defined as classes based on InputItem
-        /// </summary>
-        public class Site : InputItem
+        public class CustomBotCycle : BotCycle
         {
-            readonly public string Url;
-        }
-
-        public void PROCESSOR(Site link)
-        {
-            if (!hr.GetPage(link.Url))
-                throw new ProcessorException(ProcessorExceptionType.RESTORE_AS_NEW, "Could not get site: " + link.Url);
-            get_links(1, link.__Queue.Name);
-        }
-
-        public class Link : InputItem
-        {
-            public Link ParentLink { get { return (Link)__ParentItem; } }
-            [KeyField]
-            readonly public string Url;
-            readonly public int Depth;
-            readonly public bool Download;
-
-            public Link(string url, int depth, bool download)
+            /// <summary>
+            /// Invoked by BotCycle thread as it has been started.
+            /// </summary>
+            public override void STARTING()
             {
-                Url = url;
-                Depth = depth;
-                Download = download;
+                ((WebRoutineBotThreadControl)BotThreadControl.GetInstanceForThisThread()).WR = hr;
             }
-        }
+            HttpRoutine hr = new HttpRoutine();
 
-        public void PROCESSOR(Link link)
-        {
-            int _MaxDownloadedFileLength = BotWeb.Settings.Web.MaxDownloadedFileLength;
-            if (!link.Download)
-                BotWeb.Settings.Web.MaxDownloadedFileLength = 0;
-            bool rc = hr.GetPage(link.Url);
-            BotWeb.Settings.Web.MaxDownloadedFileLength = _MaxDownloadedFileLength;
-            if (!rc)
+            /// <summary>
+            /// Invoked by BotCycle thread when it is exiting.
+            /// </summary>
+            public override void EXITING()
             {
-                if (hr.Status == WebRoutineStatus.UNACCEPTABLE_CONTENT_TYPE)
-                    return;
-                if (hr.HWResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
-                    FileWriter.This.WriteLine(link.ParentLink.Url, link.Url);
-                //site2boken_urls[item.Site.Url] = site2boken_urls[item.Site.Url] + "\n" + item.Url;
-                else
-                    throw new ProcessorException(ProcessorExceptionType.RESTORE_AS_NEW, "Could not get: " + link.Url);
-                return;
             }
-            if (link.Download)
-                get_links(link.Depth + 1, link.__Queue.Name);
-        }
 
-        public void get_links(int depth2, string queue)
-        {
-            if (depth2 > BotWeb.Settings.Spider.MaxDownloadLinkDepth)
-                return;
-
-            string domain = Spider.GetDomain(hr.ResponseUrl);
-            int page_count = domain2page_count[domain];
-            if (BotWeb.Settings.Spider.MaxPageCountPerSite > -1 && page_count >= BotWeb.Settings.Spider.MaxPageCountPerSite)
-                return;
-            string queue2 = domain + "-" + depth2.ToString();
-            if (depth2 > 1)
-                Session.SetInputItemQueuePositionAfterQueue(queue2, queue);//by default queue name is item type name but it can be different if needed
-
-            AgileSpider ags = new AgileSpider(hr.ResponseUrl, hr.HtmlResult);
-            List<WebLink> wls = ags.GetWebLinks(WebLinkType.Anchor | WebLinkType.Area | WebLinkType.Form | WebLinkType.MetaTag | WebLinkType.Frame | WebLinkType.Image | WebLinkType.Javascript);
-            List<WebLink> beyond_domain_web_links;
-            wls = Spider.GetSpiderableLinks(ags.BaseUri, wls, out beyond_domain_web_links);
-            bool download = true;
-            if (depth2 >= BotWeb.Settings.Spider.MaxDownloadLinkDepth)
-                download = false;
-            foreach (WebLink wl in wls)
+            /// <summary>
+            /// Custom InputItem types are defined as classes based on InputItem
+            /// </summary>
+            public class Site : InputItem
             {
-                BotCycle.Add(queue2, new Link(url: wl.Url, depth: depth2, download: download));
-                page_count++;
-                if (BotWeb.Settings.Spider.MaxPageCountPerSite > -1 && BotWeb.Settings.Spider.MaxPageCountPerSite <= page_count)
+                readonly public string Url;
+            }
+
+            public void PROCESSOR(Site link)
+            {
+                if (!hr.GetPage(link.Url))
+                    throw new ProcessorException(ProcessorExceptionType.RESTORE_AS_NEW, "Could not get site: " + link.Url);
+                get_links(1, link.__Queue.Name);
+            }
+
+            public class Link : InputItem
+            {
+                public Link ParentLink { get { return (Link)__ParentItem; } }
+                [KeyField]
+                readonly public string Url;
+                readonly public int Depth;
+                readonly public bool Download;
+
+                public Link(string url, int depth, bool download)
                 {
-                    Log.Warning(domain + " reached MaxPageCountPerSite: " + BotWeb.Settings.Spider.MaxPageCountPerSite.ToString());
-                    break;
+                    Url = url;
+                    Depth = depth;
+                    Download = download;
                 }
             }
-            domain2page_count[domain] = page_count;
-            foreach (WebLink wl in beyond_domain_web_links)
-                BotCycle.Add(queue2, new Link(url: wl.Url, depth: depth2, download: false));//by default queue name is item type name but it can be deifferent if needed
+
+            public void PROCESSOR(Link link)
+            {
+                int _MaxDownloadedFileLength = BotWeb.Settings.Web.MaxDownloadedFileLength;
+                if (!link.Download)
+                    BotWeb.Settings.Web.MaxDownloadedFileLength = 0;
+                bool rc = hr.GetPage(link.Url);
+                BotWeb.Settings.Web.MaxDownloadedFileLength = _MaxDownloadedFileLength;
+                if (!rc)
+                {
+                    if (hr.Status == WebRoutineStatus.UNACCEPTABLE_CONTENT_TYPE)
+                        return;
+                    if (hr.HWResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
+                        FileWriter.This.WriteLine(link.ParentLink.Url, link.Url);
+                    //site2boken_urls[item.Site.Url] = site2boken_urls[item.Site.Url] + "\n" + item.Url;
+                    else
+                        throw new ProcessorException(ProcessorExceptionType.RESTORE_AS_NEW, "Could not get: " + link.Url);
+                    return;
+                }
+                if (link.Download)
+                    get_links(link.Depth + 1, link.__Queue.Name);
+            }
+
+            public void get_links(int depth2, string queue)
+            {
+                if (depth2 > BotWeb.Settings.Spider.MaxDownloadLinkDepth)
+                    return;
+
+                string domain = Spider.GetDomain(hr.ResponseUrl);
+                int page_count = ((CustomSession)Session).domain2page_count[domain];
+                if (BotWeb.Settings.Spider.MaxPageCountPerSite > -1 && page_count >= BotWeb.Settings.Spider.MaxPageCountPerSite)
+                    return;
+                string queue2 = domain + "-" + depth2.ToString();
+                if (depth2 > 1)
+                    Session.SetInputItemQueuePositionAfterQueue(queue2, queue);//by default queue name is item type name but it can be different if needed
+
+                AgileSpider ags = new AgileSpider(hr.ResponseUrl, hr.HtmlResult);
+                List<WebLink> wls = ags.GetWebLinks(WebLinkType.Anchor | WebLinkType.Area | WebLinkType.Form | WebLinkType.MetaTag | WebLinkType.Frame | WebLinkType.Image | WebLinkType.Javascript);
+                List<WebLink> beyond_domain_web_links;
+                wls = Spider.GetSpiderableLinks(ags.BaseUri, wls, out beyond_domain_web_links);
+                bool download = true;
+                if (depth2 >= BotWeb.Settings.Spider.MaxDownloadLinkDepth)
+                    download = false;
+                foreach (WebLink wl in wls)
+                {
+                    Add(queue2, new Link(url: wl.Url, depth: depth2, download: download));
+                    page_count++;
+                    if (BotWeb.Settings.Spider.MaxPageCountPerSite > -1 && BotWeb.Settings.Spider.MaxPageCountPerSite <= page_count)
+                    {
+                        Log.Warning(domain + " reached MaxPageCountPerSite: " + BotWeb.Settings.Spider.MaxPageCountPerSite.ToString());
+                        break;
+                    }
+                }
+                ((CustomSession)Session).domain2page_count[domain] = page_count;
+                foreach (WebLink wl in beyond_domain_web_links)
+                    Add(queue2, new Link(url: wl.Url, depth: depth2, download: false));//by default queue name is item type name but it can be deifferent if needed
+            }
         }
     }
 }

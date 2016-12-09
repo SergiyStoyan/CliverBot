@@ -19,10 +19,18 @@ using System.Reflection;
 
 namespace Cliver.Bot
 {
-    public partial class BotCycle
+    public abstract partial class BotCycle
     {
         static BotCycle()
         {
+            foreach (Type iit in Session.InputItemTypes)
+                foreach (Type t in Assembly.GetEntryAssembly().GetTypes().Where(t => t.BaseType == typeof(BotCycle)))
+                {
+                    MethodInfo mi = t.GetMethod("PROCESSOR", BindingFlags.Instance | BindingFlags.Public, null, new Type[] { iit }, null);
+                    if (mi != null)
+                        input_item_types2processor_mi[iit] = mi;
+                }
+
             TimerCallback tc = new TimerCallback(BotCycle.watch_for_threads);
             watcher = new System.Threading.Timer(tc, null, 0, 10000);
         }
@@ -52,7 +60,7 @@ namespace Cliver.Bot
                 if (id2bot_cycles.Count >= Settings.Engine.MaxBotThreadNumber)
                     return;
             }
-            new BotCycle();
+            Activator.CreateInstance(Bot.BotCycleType);
         }
         
         internal static void Abort()
@@ -98,7 +106,7 @@ namespace Cliver.Bot
             catch (ThreadAbortException) { }
         }
 
-        BotCycle()
+        protected  BotCycle()
         {
             thread = ThreadRoutines.Start(bot_cycle);
             if (!SleepRoutines.WaitForCondition(() => { return Id >= 0; }, 100000))
@@ -121,12 +129,7 @@ namespace Cliver.Bot
                     }
                     Created?.Invoke(Id);
 
-                    bot = Bot.__Create();
-                    if (bot == null)
-                        throw (new Exception("Could not create Bot instance."));
-                    typeof(Bot).GetField("BotCycle", BindingFlags.Instance | BindingFlags.NonPublic).SetValue(bot, this);
-
-                    bot.CycleStarting();
+                    STARTING();
                     while (run)
                     {
                         current_item = Session.This.GetNext();
@@ -199,7 +202,7 @@ namespace Cliver.Bot
                 //}
                 finally
                 {
-                    bot.CycleExiting();
+                    EXITING();
                 }
             }
             catch (Exception e)

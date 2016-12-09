@@ -126,7 +126,7 @@ namespace Cliver.Bot
                 RestoredWorkItemDictionary wid;
                 if (!work_item_type2work_item_dictionary.TryGetValue(item_type, out wid))
                 {
-                    if (!work_item_type_name2work_item_types.ContainsKey(item_type.Name))
+                    if (!work_item_type_names2work_item_type.ContainsKey(item_type.Name))
                         throw new Exception("Type " + item_type + " is not derivative of WorkItem");
                     wid = new RestoredWorkItemDictionary(item_type);
                     work_item_type2work_item_dictionary[item_type] = wid;

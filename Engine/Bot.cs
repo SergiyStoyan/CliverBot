@@ -17,14 +17,30 @@ using System.IO;
 
 namespace Cliver.Bot
 {
-    /// <summary>
-    /// Most important interface that defines certain routines of CliverBot customization.
-    /// </summary>
     public partial class Bot
     {
+        static Bot()
+        {
+            BotType = Assembly.GetEntryAssembly().ExportedTypes.Where(t => t.IsSubclassOf(typeof(Cliver.Bot.Bot))).FirstOrDefault();
+            if (BotType == null)
+                throw new Exception("No Bot type subclass was detected.");
+
+            SessionType = Assembly.GetEntryAssembly().ExportedTypes.Where(t => t.IsSubclassOf(typeof(Cliver.Bot.Session))).FirstOrDefault();
+            if (SessionType == null)
+                throw new Exception("No Session type subclass was detected.");
+
+            BotCycleType = Assembly.GetEntryAssembly().ExportedTypes.Where(t => t.IsSubclassOf(typeof(Cliver.Bot.BotCycle))).FirstOrDefault();
+            if (BotCycleType == null)
+                throw new Exception("No BotCycle type subclass was detected.");
+        }
+
+        internal static readonly Type BotType = null;
+        internal static readonly Type SessionType = null;
+        internal static readonly Type BotCycleType = null;
+
         public static string GetAbout()
         {
-            MethodInfo mi = __Type.GetMethod("GetAbout", BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Static);
+            MethodInfo mi = BotType.GetMethod("GetAbout", BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Static);
             if (mi != null)
                 return (string)mi.Invoke(null, null);
             return @"Compiled: " + Program.GetCustomizationCompiledTime().ToString() + @"
@@ -37,131 +53,50 @@ Developed by: www.cliversoft.com";
         /// <param name="message"></param>
         public static void FatalError(string message)
         {
-            __FatalError?.Invoke(message);
-        }
-
-        public static void SessionCreating()
-        {
-            __SessionCreating?.Invoke();
-        }
-
-        public static void SessionClosing()
-        {
-            __SessionClosing?.Invoke();
-        }
-
-        /// <summary>
-        /// Allows access to CliverBot api
-        /// </summary>
-        readonly protected BotCycle BotCycle;
-
-        /// <summary>
-        /// Allows access to Session api
-        /// </summary>
-        protected Session Session { get { return Session.This; } }
-
-        static public BotT __GetInstanceForThisThread<BotT>() where BotT : Bot
-        {
-            return BotCycle.GetBotForThisThread<BotT>();
-        }
-
-        /// <summary>
-        /// Invoked by BotCycle thread as it has been started.
-        /// </summary>
-        virtual public void CycleStarting()
-        {
-        }
-
-        /// <summary>
-        /// Invoked by BotCycle thread when it is exiting.
-        /// </summary>
-        virtual public void CycleExiting()
-        {
-        }
-
-        /// <summary>
-        /// Invoked by default if no particular processor definition was found.
-        /// </summary>
-        virtual public void PROCESSOR(InputItem item)
-        {
-            //__input_item_type2processor_actions[item.GetType()](item);
-            try
-            {
-                __input_item_type2processor_mis[item.GetType()].Invoke(this, new object[] { item });
-            }
-            catch (TargetInvocationException e)
-            {
-                throw e.InnerException;
-            }
+            MethodInfo mi = BotType.GetMethod("FatalError", BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Static);
+            mi?.Invoke(null, null);
         }
     }
 
-//    public class CustomBot
-//    {
-//        public static string GetAbout()
-//        {
-//            MethodInfo mi = __Type.GetMethod("GetAbout", BindingFlags.FlattenHierarchy | BindingFlags.Public | BindingFlags.Static);
-//            if (mi != null)
-//                return (string)mi.Invoke(null, null);
-//            return @"Compiled: " + Program.GetCustomizationCompiledTime().ToString() + @"
-//Developed by: www.cliversoft.com";
-//        }
+    /// <summary>
+    /// An empty sample of CliverBot customization.
+    /// </summary>
+    public class CustomBot : Bot
+    {
+        new public static string GetAbout()
+        {
+            return @"Compiled: " + Program.GetCustomizationCompiledTime().ToString() + @"
+Developed by: www.cliversoft.com";
+        }
 
-//        /// <summary>
-//        /// Called on any error considered fatal
-//        /// </summary>
-//        /// <param name="message"></param>
-//        public static void FatalError(string message)
-//        {
-//        }
+        /// <summary>
+        /// Called on any error considered fatal
+        /// </summary>
+        /// <param name="message"></param>
+        new public static void FatalError(string message)
+        {
+        }
 
-//        public class CustomSession : Session
-//        {
-//            public static void CREATING()
-//            {
-//            }
+        public class CustomSession : Session
+        {
+            public override void CREATING()
+            {
+            }
 
-//            public static void CLOSING()
-//            {
-//            }
-//        }
+            public override void CLOSING()
+            {
+            }
+        }
 
-//        public class CustomBotCycle : BotCycle
-//        {
-//            /// <summary>
-//            /// Allows access to Session api
-//            /// </summary>
-//            protected Session Session { get { return Session.This; } }
+        public class CustomBotCycle : BotCycle
+        {
+            override public void STARTING()
+            {
+            }
 
-//            /// <summary>
-//            /// Invoked by BotCycle thread as it has been started.
-//            /// </summary>
-//            virtual public void STARTING()
-//            {
-//            }
-
-//            /// <summary>
-//            /// Invoked by BotCycle thread when it is exiting.
-//            /// </summary>
-//            virtual public void EXITING()
-//            {
-//            }
-
-//            /// <summary>
-//            /// Invoked by default if no particular processor definition was found.
-//            /// </summary>
-//            virtual public void PROCESSOR(InputItem item)
-//            {
-//                //__input_item_type2processor_actions[item.GetType()](item);
-//                try
-//                {
-//                    __input_item_type2processor_mis[item.GetType()].Invoke(this, new object[] { item });
-//                }
-//                catch (TargetInvocationException e)
-//                {
-//                    throw e.InnerException;
-//                }
-//            }
-//        }
-//    }
+            override public void EXITING()
+            {
+            }
+        }
+    }
 }

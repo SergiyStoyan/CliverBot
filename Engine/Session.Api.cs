@@ -161,11 +161,26 @@ namespace Cliver.Bot
             return Session.This.GetSingleValueWorkItemDictionary_<WorkItemT, ValueT>();
         }
 
-        public delegate void OnCreating();
-        static public event OnCreating Creating = null;
+        virtual public void CREATING()
+        {
 
-        public delegate void OnFillStartInputItemQueue(InputItemQueue start_input_item_queue, Type start_input_item_type);
-        public static OnFillStartInputItemQueue FillStartInputItemQueue = (InputItemQueue start_input_item_queue, Type start_input_item_type) =>
+        }
+
+        virtual public void CLOSING()
+        {
+
+        }
+
+        virtual public void PROCESSOR(InputItem item)
+        {
+            MethodInfo mi;
+            if (input_item_types2processor_mi.TryGetValue(item.GetType(), out mi))
+                mi.Invoke(this, new object[] { item });
+            throw new Exception("No appropriate processor found for " + item.GetType());
+        }
+        static Dictionary<Type, MethodInfo> input_item_types2processor_mi = new Dictionary<Type, MethodInfo>();
+
+        virtual public void FillStartInputItemQueue(InputItemQueue start_input_item_queue, Type start_input_item_type)
         {
             Log.Main.Write("Filling queue of " + start_input_item_queue.Name + " with input file.");
 
@@ -181,14 +196,17 @@ namespace Cliver.Bot
 
             if (start_input_item_queue.CountOfNew < 1)
                 LogMessage.Error("Input queue is empty so nothing is to do. Check your input data.");
-        };
+        }
+
+        public delegate void OnCreating();
+        static public event OnCreating Creating = null;
 
         public delegate void OnClosing();
         static public event OnClosing Closing = null;
 
         public delegate void OnClosed();
         /// <summary>
-        /// Used to exit application
+        /// Used to exit the application
         /// </summary>
         static public event OnClosed Closed = null;
 

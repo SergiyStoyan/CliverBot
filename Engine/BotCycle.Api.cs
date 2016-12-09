@@ -22,17 +22,6 @@ namespace Cliver.Bot
     public partial class BotCycle
     {
         /// <summary>
-        /// Bot object of this BotCycle
-        /// </summary>
-        public Bot Bot
-        {
-            get
-            {
-                return this.bot;
-            }
-        }
-
-        /// <summary>
         /// Add item to queue. It is possible to create a named queue.
         /// Preferred method for adding items.
         /// </summary>
@@ -154,5 +143,25 @@ namespace Cliver.Bot
                 return null;
             }
         }
+
+        virtual public void STARTING()
+        {
+        }
+        
+        virtual public void EXITING()
+        {
+        }
+
+        virtual public void PROCESSOR(InputItem item)
+        {
+            MethodInfo mi;
+            if (input_item_types2processor_mi.TryGetValue(item.GetType(), out mi))
+                mi.Invoke(this, new object[] { item });
+            else
+                Session.This.PROCESSOR(item);
+        }
+        static Dictionary<Type, MethodInfo> input_item_types2processor_mi = new Dictionary<Type, MethodInfo>();
+
+        public Session Session { get { return Session.This; } }
     }
 }

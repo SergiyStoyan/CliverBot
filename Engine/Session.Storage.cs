@@ -41,7 +41,7 @@ namespace Cliver.Bot
 
             ~StorageBase()
             {
-                Close();
+                //Close();
             }
 
             internal void Close()
@@ -318,7 +318,7 @@ namespace Cliver.Bot
                         if (id > This.item_count)
                             This.item_count = id;
 
-                        if (This.input_item_type_names2input_item_type.ContainsKey(type_name))
+                        if (input_item_type_names2input_item_type.ContainsKey(type_name))
                         {
                             InputItem parent_item = null;
                             object o;
@@ -338,7 +338,7 @@ namespace Cliver.Bot
                             switch (state)
                             {
                                 case InputItemState.NEW:
-                                    Type type = This.input_item_type_names2input_item_type[type_name];
+                                    Type type = input_item_type_names2input_item_type[type_name];
                                     Dictionary<string, TagItem> fields2tag_item = new Dictionary<string, TagItem>();
                                     Dictionary<string, string> attr_names2tag_item_id = new Dictionary<string, string>();
                                     foreach (string name in names2value.Keys)
@@ -360,16 +360,16 @@ namespace Cliver.Bot
                                     throw new Exception("Unknown item state: " + state);
                             }
                         }
-                        else if (This.work_item_type_name2work_item_types.ContainsKey(type_name))
+                        else if (work_item_type_names2work_item_type.ContainsKey(type_name))
                         {
                             string key = (string)names2value["key"];
                             ArrayList seed = (ArrayList)names2value["seed"];
-                            This.GetRestoredWorkItemDictionary(This.work_item_type_name2work_item_types[type_name]).Restore(key, seed, id);
+                            This.GetRestoredWorkItemDictionary(work_item_type_names2work_item_type[type_name]).Restore(key, seed, id);
                         }
-                        else if (This.tag_item_type_name2tag_item_types.ContainsKey(type_name))
+                        else if (tag_item_type_names2tag_item_type.ContainsKey(type_name))
                         {
                             ArrayList seed = (ArrayList)names2value["seed"];
-                            TagItem item = Cliver.Bot.TagItem.Restore(This.tag_item_type_name2tag_item_types[type_name], seed, id);
+                            TagItem item = Cliver.Bot.TagItem.Restore(tag_item_type_names2tag_item_type[type_name], seed, id);
                             tag_item_id2tag_items[item.__Id] = item;
                         }
                         else

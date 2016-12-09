@@ -31,7 +31,7 @@ namespace Cliver.Bot
         virtual public void PROCESSOR(BotCycle bc)
         {
             //it will be invoked by default if no overriding PROCESSOR implementation
-            bc.Bot.PROCESSOR(this);
+            bc.PROCESSOR(this);
         }
 
         static internal bool Add2Queue<ItemT>(InputItemQueue queue, InputItem parent_item, dynamic anonymous_object) where ItemT : InputItem
@@ -43,8 +43,8 @@ namespace Cliver.Bot
         }
 
         /// <summary>
-        /// Must be used only for InputItems created by own constructor
-        /// if InputItem was created by own constructor, its base parameters should be set
+        /// Should be used only for InputItems created by own constructor
+        /// if InputItem was created by own constructor, its base parameters must be set
         /// </summary>
         /// <typeparam name="ItemT"></typeparam>
         /// <param name="parent_item"></param>
@@ -59,7 +59,7 @@ namespace Cliver.Bot
         }
 
         /// <summary>
-        /// Must be used ONLY before bot cycle started as no parent item is accepted. Usually used while feeding by input file.
+        /// Should be used ONLY before bot cycle started as no parent item is accepted. Usually used while feeding by input file.
         /// </summary>
         /// <param name="item_type"></param>
         /// <param name="field_value_pairs"></param>

@@ -23,7 +23,10 @@ using System.Windows.Forms;
 
 namespace CliverBotCustomization
 {
-    class CliverBotCustomization
+    /// <summary>
+    /// Most important interface that defines certain routines of CliverBot customization.
+    /// </summary>
+    public class CustomBot : Cliver.Bot.Bot
     {
         [STAThread]
         static void Main()
@@ -35,13 +38,7 @@ namespace CliverBotCustomization
             //Cliver.Bot.Program.Run();//It is the entry when the app runs as a console app.
             Cliver.BotGui.Program.Run();//It is the entry when the app uses the default GUI.
         }
-    }
 
-    /// <summary>
-    /// Most important interface that defines certain routines of CliverBot customisation.
-    /// </summary>
-    public class CustomBot : Cliver.Bot.Bot
-    {
         new static public string GetAbout()
         {
             return @"
@@ -49,45 +46,28 @@ Created: " + Cliver.Bot.Program.GetCustomizationCompiledTime().ToString() + @"
 Developed by: www.cliversoft.com";
         }
 
-        /// <summary>
-        /// Invoked when the session is in creating stage. Can be not defined. If throw an Exception, the session is stopped and closed.
-        /// </summary>
-        new static public void SessionCreating()
+        new static public void FatalError(string message)
+        {
+        }
+    }
+
+    public class CustomSession : Session
+    {
+        public override void CREATING()
         {
             //Set the order which queues are to be processed by. When it is not set, it is built automatically along LIFO rule.
             Session.SetInputItemQueuesOrder(typeof(Product), typeof(Category), typeof(Site));
 
             //Set the queue which the progress bar will reflect. 
             Cliver.BotGui.Program.BindProgressBar2InputItemQueue<Product>();
-            
+
             //It is possible to add InputItems to queues before BotCycle started            
             Session.Add<Site>(new { Url = "www.google.com" });
-            
+
             counters["product"] = 0;
         }
 
-        /// <summary>
-        /// Invoked when the session is closing.
-        /// </summary>
-        new static public void SessionClosing()
-        {
-        }
-
-        new static public void FatalError(string message)
-        {
-        }
-
-        /// <summary>
-        /// Invoked by BotCycle thread as it has been started.
-        /// </summary>
-        public override void CycleStarting()
-        {
-        }
-
-        /// <summary>
-        /// Invoked by BotCycle thread when it is exiting.
-        /// </summary>
-        public override void CycleExiting()
+        public override void CLOSING()
         {
         }
 
@@ -117,7 +97,7 @@ Developed by: www.cliversoft.com";
             /// </summary>
             public Site()
             {
-                Test =  "It is only for test: " + Url;
+                Test = "It is only for test: " + Url;
             }
             #endregion
 
@@ -131,7 +111,7 @@ Developed by: www.cliversoft.com";
                 bc.Add(new Category(url: Url + "?q=1", t: new Category.Tag(name: "fff", description: "ttttt")));
 
                 //it is possible to get the current CustomBot when access to common members is needed
-                ((CustomBot)bc.Bot).counter++;
+                ((CustomSession)bc.Session).counter++;
             }
         }
         int counter = 0;
@@ -203,13 +183,13 @@ Developed by: www.cliversoft.com";
                 Url = url;
             }
         }
-                
+
         /// <summary>
-        /// When PROCESSOR is not defined within InputItem class, it must be defined in CustomBot as PROCESSOR_[InputItem class name]
-        /// It is handier when access to CustomBot members is needed.
+        /// When PROCESSOR is not defined within InputItem class, it must be defined in CustomSession
+        /// It is handier when access to CustomSession members is needed.
         /// </summary>
         /// <param name="item">custom InputItem</param>
-        public void PROCESSOR_Product(Product item)
+        public void PROCESSOR(Product item)
         {
             counters["product"] = counters["product"] + 1;
             if (counters["product"] == 3)
@@ -226,6 +206,23 @@ Developed by: www.cliversoft.com";
         /// A demo of WorkItem and SingleValueWorkItem
         /// </summary>
         public class Counter : SingleValueWorkItem<int>
+        {
+        }
+    }
+
+    public class CustomBotCycle : BotCycle
+    {
+        /// <summary>
+        /// Invoked by BotCycle thread as it has been started.
+        /// </summary>
+        public override void STARTING()
+        {
+        }
+
+        /// <summary>
+        /// Invoked by BotCycle thread when it is exiting.
+        /// </summary>
+        public override void EXITING()
         {
         }
     }

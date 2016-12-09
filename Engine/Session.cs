@@ -39,8 +39,34 @@ So, for large size data a db storage is required.
 
 namespace Cliver.Bot
 {
-    public partial class Session
+    public abstract partial class Session
     {
+        static Session()
+        {
+            Log.Writer.Exitig += (string message) =>
+            {
+                //CustomizationApi.FatalError();
+                Close();
+            };
+
+            input_item_type_names2input_item_type = (from t in Assembly.GetEntryAssembly().GetTypes() where t.BaseType == typeof(InputItem) select t).ToDictionary(t => t.Name, t => t);
+            Cliver.Bot.InputItem.Initialize(input_item_type_names2input_item_type.Values.ToList());
+            work_item_type_names2work_item_type = (from t in Assembly.GetEntryAssembly().GetTypes() where (t.BaseType == typeof(WorkItem) && t.Name != typeof(SingleValueWorkItem<>).Name) || (t.BaseType != null && t.BaseType.Name == typeof(SingleValueWorkItem<>).Name) select t).ToDictionary(t => t.Name, t => t);
+            Cliver.Bot.WorkItem.Initialize(work_item_type_names2work_item_type.Values.ToList());
+            //tag_item_type_names2tag_item_type = (from t in Assembly.GetEntryAssembly().GetTypes() where (t.BaseType == typeof(TagItem) && t.Name != typeof(SingleValueTagItem<>).Name) || (t.BaseType != null && t.BaseType.Name == typeof(SingleValueTagItem<>).Name) select t).ToDictionary(t => t.Name, t => t);
+            tag_item_type_names2tag_item_type = (from t in Assembly.GetEntryAssembly().GetTypes() where t.BaseType == typeof(TagItem) select t).ToDictionary(t => t.Name, t => t);
+            Cliver.Bot.TagItem.Initialize(tag_item_type_names2tag_item_type.Values.ToList());
+            if (input_item_type_names2input_item_type.Count < 1)
+                throw new Exception("No InputItem derive was found");
+            foreach (Type iit in input_item_type_names2input_item_type.Values)
+                foreach (Type t in Assembly.GetEntryAssembly().GetTypes().Where(t => t.BaseType == typeof(Session)))
+                {
+                    MethodInfo mi = t.GetMethod("PROCESSOR", BindingFlags.Instance | BindingFlags.Public, null, new Type[] { iit }, null);
+                    if (mi != null)
+                        input_item_types2processor_mi[iit] = mi;
+                }
+        }
+
         public static Session This
         {
             get
@@ -50,7 +76,7 @@ namespace Cliver.Bot
         }
         static Session This_;
 
-        Session()
+        protected Session()
         {
             This_ = this;
             State = SessionState.STARTING;
@@ -59,22 +85,6 @@ namespace Cliver.Bot
             Config.Reload(Config.DefaultStorageDir);
 
             ConfigurationDir = Dir + "\\" + Config.CONFIG_FOLDER_NAME;
-
-            Log.Writer.Exitig += (string message) =>
-            {
-                //CustomizationApi.FatalError();
-                Close();
-            };
-
-            input_item_type_names2input_item_type = (from t in Assembly.GetEntryAssembly().GetTypes() where t.BaseType == typeof(InputItem) select t).ToDictionary(t => t.Name, t => t);
-            Cliver.Bot.InputItem.Initialize(input_item_type_names2input_item_type.Values.ToList());
-            work_item_type_name2work_item_types = (from t in Assembly.GetEntryAssembly().GetTypes() where (t.BaseType == typeof(WorkItem) && t.Name != typeof(SingleValueWorkItem<>).Name) || (t.BaseType != null && t.BaseType.Name == typeof(SingleValueWorkItem<>).Name) select t).ToDictionary(t => t.Name, t => t);
-            Cliver.Bot.WorkItem.Initialize(work_item_type_name2work_item_types.Values.ToList());
-            //tag_item_type_name2tag_item_types = (from t in Assembly.GetEntryAssembly().GetTypes() where (t.BaseType == typeof(TagItem) && t.Name != typeof(SingleValueTagItem<>).Name) || (t.BaseType != null && t.BaseType.Name == typeof(SingleValueTagItem<>).Name) select t).ToDictionary(t => t.Name, t => t);
-            tag_item_type_name2tag_item_types = (from t in Assembly.GetEntryAssembly().GetTypes() where t.BaseType == typeof(TagItem) select t).ToDictionary(t => t.Name, t => t);
-            Cliver.Bot.TagItem.Initialize(tag_item_type_name2tag_item_types.Values.ToList());
-            if (input_item_type_names2input_item_type.Count < 1)
-                throw new Exception("No InputItem derive was found");
 
             Restored = false;
             Storage = new SessionStorage();
@@ -119,7 +129,8 @@ namespace Cliver.Bot
                     string old_dir_new_path = Log.WorkDir + "\\Data" + "_" + old_time_mark + "_" + old_state;
                     Log.Main.Write("The old session folder moved to " + old_dir_new_path);
                     Storage.Close();
-                    Directory.Move(Dir, old_dir_new_path);
+                    if(Directory.Exists(Dir))
+                        Directory.Move(Dir, old_dir_new_path);
                     PathRoutines.CreateDirectory(Dir);
                     Storage = new SessionStorage();
                 }
@@ -133,11 +144,13 @@ namespace Cliver.Bot
 
             Creating?.Invoke();
 
-            Bot.SessionCreating();
+            CREATING();
         }
-        Dictionary<string, Type> input_item_type_names2input_item_type;
-        Dictionary<string, Type> work_item_type_name2work_item_types;
-        Dictionary<string, Type> tag_item_type_name2tag_item_types;
+        static Dictionary<string, Type> input_item_type_names2input_item_type;
+        static Dictionary<string, Type> work_item_type_names2work_item_type;
+        static Dictionary<string, Type> tag_item_type_names2tag_item_type;
+
+        internal static Type[] InputItemTypes { get { return input_item_type_names2input_item_type.Values.ToArray(); } }
 
         internal readonly Counter ProcessorErrors = new Counter("processor_errors", Settings.Engine.MaxProcessorErrorNumber, max_error_count);
         static void max_error_count(int count)
@@ -177,7 +190,7 @@ namespace Cliver.Bot
 
                 if (This != null)
                     throw new Exception("Previous session was not closed.");
-                new Session();
+                Activator.CreateInstance(Bot.SessionType);
                 if (This == null)
                     return;
                 BotCycle.Start();
@@ -232,7 +245,7 @@ namespace Cliver.Bot
 
                     try
                     {
-                        Bot.SessionClosing();
+                        CLOSING();
                     }
                     catch (Exception e)
                     {
