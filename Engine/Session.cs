@@ -190,7 +190,7 @@ namespace Cliver.Bot
 
                 if (This != null)
                     throw new Exception("Previous session was not closed.");
-                Activator.CreateInstance(Bot.SessionType);
+                Activator.Create<Session>(true);
                 if (This == null)
                     return;
                 BotCycle.Start();
@@ -252,7 +252,7 @@ namespace Cliver.Bot
                         Session.State = SessionState.FATAL_ERROR;
                         This.Storage.WriteState(State, new { });
                         LogMessage.Error(e);
-                        Bot.FatalError(e.Message);
+                        FATAL_ERROR(e.Message);
                     }
 
                     try
@@ -264,7 +264,7 @@ namespace Cliver.Bot
                         Session.State = SessionState.FATAL_ERROR;
                         This.Storage.WriteState(State, new { });
                         LogMessage.Error(e);
-                        Bot.FatalError(e.Message);
+                        FATAL_ERROR(e.Message);
                     }
 
                     InputItemQueue.Close();
@@ -278,7 +278,7 @@ namespace Cliver.Bot
                     Session.State = SessionState.FATAL_ERROR;
                     This.Storage.WriteState(State, new { });
                     LogMessage.Error(e);
-                    Bot.FatalError(e.Message);
+                    FATAL_ERROR(e.Message);
                 }
                 finally
                 {
@@ -312,7 +312,7 @@ namespace Cliver.Bot
             catch (Exception e)
             {
                 LogMessage.Error(e);
-                Bot.FatalError(e.Message);
+                FATAL_ERROR(e.Message);
             }
         }
 

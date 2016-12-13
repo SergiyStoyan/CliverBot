@@ -115,9 +115,9 @@ namespace Cliver.Bot
             return iiq.CountOfProcessed;
         }
 
-        public static BotT GetBotForThisThread<BotT>() where BotT : Bot
+        public static BotCycleT GetBotForThisThread<BotCycleT>() where BotCycleT : BotCycle
         {
-            return (BotT)GetBotForThisThread();
+            return (BotCycleT)GetBotForThisThread();
         }
 
         public static BotCycle GetInstanceForThisThread()

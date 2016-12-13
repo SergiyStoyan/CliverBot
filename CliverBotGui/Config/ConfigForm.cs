@@ -23,7 +23,7 @@ using System.Diagnostics;
 
 namespace Cliver.BotGui
 {
-    internal partial class ConfigForm : BaseForm//Form// 
+    public partial class ConfigForm : BaseForm//Form// 
     {
         public ConfigForm()
         {
@@ -126,11 +126,11 @@ namespace Cliver.BotGui
                 Dictionary<string, ConfigControl> sections2cc = new Dictionary<string, ConfigControl>();
                 foreach (Type cct in ConfigControl_types)
                 {
-                    ConfigControl cc = (ConfigControl)Activator.CreateInstance(cct);
+                    ConfigControl cc = (ConfigControl)System.Activator.CreateInstance(cct);
                     sections2cc[cc.Section] = cc;
                 }
 
-                foreach (string section in BotGui.ConfigControlSections)
+                foreach (string section in GetConfigControlSections())
                 {
                     ConfigControl cc = null;
                     if (!sections2cc.TryGetValue(section, out cc))
@@ -160,6 +160,11 @@ namespace Cliver.BotGui
                     cci.CC.Enabled = true;
                 this.Save.Enabled = true;
             }
+        }
+
+        virtual public IEnumerable<string> GetConfigControlSections()
+        {
+            return new string[] { "Engine", "Input", "Output", "Log" };
         }
 
         class ConfigControlItem

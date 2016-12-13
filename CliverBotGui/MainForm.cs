@@ -26,9 +26,9 @@ using Cliver.Bot;
 
 namespace Cliver.BotGui
 {
-    internal partial class MainForm : BaseForm
+    public partial class MainForm : BaseForm//Form//
     {
-        internal MainForm()
+        public MainForm()
         {
             InitializeComponent();
             this.Text = Cliver.Bot.Program.Title;
@@ -71,48 +71,116 @@ namespace Cliver.BotGui
 
         internal string ProgressBarInputItemQueueName;
 
-        internal readonly static MainForm This = new MainForm();
-        internal readonly BotThreadManagerForm BotThreadManagerForm = new BotThreadManagerForm();
-        
+        internal readonly static MainForm This = Bot.Activator.Create<MainForm>(false);
+        internal readonly BotThreadManagerForm BotThreadManagerForm = Bot.Activator.Create<BotThreadManagerForm>(false);
+
         private void MainForm_Load(object sender, EventArgs e)
         {
-            tools_form = BotGui.ToolsForm;
-            if (tools_form == null)
-            {//hide Tools button if no Tools exists
-                bTools.Enabled = false;
-
-                flowLayoutPanel1.Controls.Remove(bTools);
-                bTools.Dispose();
-                int button_count = 0;
-                foreach (Control c in flowLayoutPanel1.Controls)
-                    button_count++;
-                int button_width = (int)((float)flowLayoutPanel1.Width / (float)button_count);
-                foreach (Control c in flowLayoutPanel1.Controls)
-                    c.Width = button_width;
-                int width_diff = bAbout.Left - flowLayoutPanel1.Left;
-                this.MinimumSize = new Size(this.MinimumSize.Width - width_diff, this.MinimumSize.Height);
-                this.Width -= width_diff;
-                this.AutoSizeMode = AutoSizeMode.GrowOnly;
+            flowLayoutPanel1.Controls.Clear();
+            int button_count = 0;
+            foreach (ButtonAction ba in GetButtonActions())
+            {
+                button_count++;
+                   Button b = new Button();
+                b.Size = buttonStart.Size;
+                b.Padding = buttonStart.Padding;
+                b.Margin = buttonStart.Margin;
+                b.FlatStyle = buttonStart.FlatStyle;
+                b.ForeColor = Color.Black;
+                b.Text = ba.Name;
+                b.Click += (object s, EventArgs ea) => { ba.Action(); };
+                flowLayoutPanel1.Controls.Add(b);
+                flowLayoutPanel1.Controls.SetChildIndex(b, 0);
             }
-            else
-                bTools.Text = tools_form.Name;
-
+            button_count++;
+            flowLayoutPanel1.Controls.Add(buttonStart);
+            flowLayoutPanel1.Controls.SetChildIndex(buttonStart, 0);
+            
+            int bw2 = this.ClientSize.Width / button_count;
+            if (bw2 > buttonStart.Width)
+                foreach (Button b in flowLayoutPanel1.Controls)
+                    b.Width = bw2;
+            this.Width = this.Width - this.ClientSize.Width + buttonStart.Width * button_count;
+            
             listBoxStatus.BackColor = Color.FromKnownColor(KnownColor.Control);
-
             // Progress.Enabled = false; 
             progressBar.Value = 0;
+            buttonStart.Select();
+            buttonStart.Focus();
 
             if (Program.Mode == Program.ProgramMode.AUTOMATIC)
             {
                 this.WindowState = FormWindowState.Minimized;
                 start_session();
             }
-
-            buttonStart.Select();
-            buttonStart.Focus();
         }
 
-        Form tools_form = null;
+        virtual public IEnumerable<ButtonAction> GetButtonActions()
+        {
+            return new List<ButtonAction> {
+                new ButtonAction { Name = "About", Action=()=> 
+                    {
+                        AboutForm f = Bot.Activator.Create<AboutForm>(false);
+                        f.ShowDialog();
+                    }
+                },
+                new ButtonAction { Name = "Help", Action=()=> 
+                    {
+                        try
+                        {
+                            Process.Start(Bot.Properties.App.Default.HelpUri);
+                        }
+                        catch (Exception ex)
+                        {
+                            LogMessage.Error(ex);
+                        }
+                    }
+                },
+                new ButtonAction { Name = "Input", Action=()=> 
+                    {
+                        try
+                        {
+                            Process.Start(Bot.Settings.Input.File);
+                        }
+                        catch (Exception ex)
+                        {
+                            LogMessage.Error(ex);
+                        }
+                    }
+                },
+                new ButtonAction { Name = "Work Dir", Action=()=> 
+                    {
+                        try
+                        {
+                            Process.Start(Log.WorkDir);
+                        }
+                        catch (Exception ex)
+                        {
+                            LogMessage.Error(ex);
+                        }
+                    }
+                },
+                new ButtonAction { Name = "Settings", Action=()=>
+                    {
+                        ConfigForm f = Bot.Activator.Create<ConfigForm>(false);
+                        f.ShowDialog(MainForm.This);
+                    }
+                },
+                new ButtonAction { Name = "Threads", Action=()=>
+                    {
+                        BotThreadManagerForm.Visible = true;
+                        //BotThreadManagerForm.ShowInTaskbar = true;
+                        //BotThreadManagerForm.WindowState = FormWindowState.Normal;
+                        BotThreadManagerForm.Activate();
+                    }
+                },
+            };
+        }
+        public class ButtonAction
+        {
+            public string Name;
+            public Action Action;
+        }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -341,89 +409,12 @@ namespace Cliver.BotGui
         }
         AboutForm AF = null;
 
-        private void Settings_Click(object sender, EventArgs e)
-        {
-            CF = new ConfigForm();
-            CF.Show(MainForm.This);
-        }
-        ConfigForm CF = null;
-
         private void Progress_Click(object sender, EventArgs e)
         {
             BotThreadManagerForm.Visible = true;
             //BotThreadManagerForm.ShowInTaskbar = true;
             //BotThreadManagerForm.WindowState = FormWindowState.Normal;
             BotThreadManagerForm.Activate();
-        }
-
-        private void Help_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Process.Start(Bot.Properties.App.Default.HelpUri);
-            }
-            catch (Exception ex)
-            {
-                LogMessage.Error(ex);
-            }
-        }
-
-        private void buttonWorkDir_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Process.Start(Log.WorkDir);
-            }
-            catch (Exception ex)
-            {
-                LogMessage.Error(ex);
-            }
-        }
-
-        private void buttonInput_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                //Process p = new Process();
-                //if (System.Environment.OSVersion.Version.Major >= 6)
-                //    p.StartInfo.Verb = "runas";
-                //p.StartInfo.FileName = Cliver.Bot.Settings.General.InputFileViewer;
-                //p.StartInfo.Arguments = "\"" + Bot.Log.AppDir + Bot.Properties.Input.Default.InputFile + "\"";
-                ////the following is required to run the process as administrator without Windows Prompt
-                ////p.StartInfo.UseShellExecute = false;
-                ////p.StartInfo.CreateNoWindow = true;
-                ////p.StartInfo.RedirectStandardOutput = true;
-                //try
-                //{
-                //    p.Start();
-                //}
-                //catch (Exception ex)
-                //{
-                //    LogMessage.Error(ex);
-                //}
-
-                //if (Session.This != null && Session.This.Restored && !Message.YesNo("The input file can differ from the actually using data because the currect session is restored. Would you like to open it anyway?"))
-                //    return;
-                Process.Start(Bot.Settings.Input.File);
-            }
-            catch (Exception ex)
-            {
-                LogMessage.Error(ex);
-            }
-        }
-
-        private void bTools_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (tools_form == null)
-                    return;
-                tools_form.ShowDialog();
-            }
-            catch (Exception ex)
-            {
-                LogMessage.Error(ex);
-            }
         }
     }
 }

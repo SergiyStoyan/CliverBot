@@ -60,7 +60,7 @@ namespace Cliver.Bot
                 if (id2bot_cycles.Count >= Settings.Engine.MaxBotThreadNumber)
                     return;
             }
-            Activator.CreateInstance(Bot.BotCycleType);
+            Activator.Create<BotCycle>(true);
         }
         
         internal static void Abort()
@@ -216,7 +216,6 @@ namespace Cliver.Bot
         }
         InputItem current_item;
         static readonly Dictionary<int, BotCycle> id2bot_cycles = new Dictionary<int, BotCycle>();
-        Bot bot;
 
         internal static InputItem GetCurrentInputItemForThisThread()
         {
@@ -229,13 +228,13 @@ namespace Cliver.Bot
             }
         }
 
-        internal static Bot GetBotForThisThread()
+        internal static BotCycle GetBotForThisThread()
         {
             lock (id2bot_cycles)
             {
                 BotCycle bc;
                 if (id2bot_cycles.TryGetValue(Log.Id, out bc))
-                    return bc.bot;
+                    return bc;
                 return null;
             }
         }

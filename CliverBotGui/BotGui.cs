@@ -1,62 +1,38 @@
-//********************************************************************************************
-//Author: Sergey Stoyan
-//        sergey.stoyan@gmail.com
-//        sergey_stoyan@yahoo.com
-//        http://www.cliversoft.com
-//        26 September 2006
-//Copyright: (C) 2006, Sergey Stoyan
-//********************************************************************************************
-using System;
-using System.Collections.Generic;
-using System.Windows.Forms;
-using System.Linq;
+////********************************************************************************************
+////Author: Sergey Stoyan
+////        sergey.stoyan@gmail.com
+////        sergey_stoyan@yahoo.com
+////        http://www.cliversoft.com
+////        26 September 2006
+////Copyright: (C) 2006, Sergey Stoyan
+////********************************************************************************************
+//using System;
+//using System.Collections.Generic;
+//using System.Windows.Forms;
+//using System.Linq;
+//using System.Diagnostics;
+//using System.Reflection;
 
-namespace Cliver.BotGui
-{
-    /// <summary>
-    /// Interface used to customize GUI. May be not implemented.
-    /// </summary>
-    public class BotGui
-    {
-        public static IEnumerable<string> ConfigControlSections
-        {
-            get { return _ConfigControlSections; }
-            set
-            {
-                if (Application.OpenForms.OfType<MainForm>().Any())
-                    throw new Exception("_ConfigControlSections cannot be set.");
-                _ConfigControlSections = value;
-            }
-        }
-        static IEnumerable<string> _ConfigControlSections = null;
+//namespace Cliver.BotGui
+//{
+//    public partial class BotGui
+//    {
+//        static BotGui()
+//        {
+//        }
 
-        public static BaseForm ToolsForm
-        {
-            get { return _ToolsForm; }
-            set
-            {
-                if (Application.OpenForms.OfType<MainForm>().Any())
-                    throw new Exception("_ToolsForm cannot be set.");
-                _ToolsForm = value;
-            }
-        }
-        static BaseForm _ToolsForm = null;
-
-        public static Type BotThreadControlType
-        {
-            get { return _BotThreadControlType!=null? _BotThreadControlType: typeof(BotThreadControl); }
-            set
-            {
-                if (Bot.Session.State != Bot.SessionState.NULL)
-                    throw new Exception("_BotThreadControlType cannot be set.");
-                _BotThreadControlType = value;
-            }
-        }
-        static Type _BotThreadControlType = null;
-
-        internal static BotThreadControl CreateBotThreadControl(int id)
-        {
-            return (BotThreadControl)Activator.CreateInstance(BotThreadControlType, id);
-        }
-    }
-}
+//        internal static T Create<T>()
+//        {
+//            Type type;
+//            if (!base_types2custom_type.TryGetValue(typeof(T), out type))
+//            {
+//                type = Assembly.GetEntryAssembly().ExportedTypes.Where(t => t.IsSubclassOf(typeof(T))).FirstOrDefault();
+//                base_types2custom_type[typeof(T)] = type;
+//            }
+//            if(type == null)
+//                return (T)Activator.CreateInstance(typeof(T));
+//            return (T)Activator.CreateInstance(type);
+//        }
+//        static readonly Dictionary< Type, Type> base_types2custom_type = new Dictionary<Type, Type>();
+//    }
+//}

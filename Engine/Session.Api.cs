@@ -171,6 +171,10 @@ namespace Cliver.Bot
 
         }
 
+        virtual public void FATAL_ERROR(string message)
+        {
+        }
+
         virtual public void PROCESSOR(InputItem item)
         {
             MethodInfo mi;
@@ -223,7 +227,7 @@ namespace Cliver.Bot
             LogMessage.Error(message);
             Session.State = SessionState.FATAL_ERROR;
             This.Storage.WriteState(State, new { });
-            Bot.FatalError(message);
+            This.FATAL_ERROR(message);
             Session.Close();
         }
 
@@ -232,7 +236,7 @@ namespace Cliver.Bot
             LogMessage.Error(e);
             Session.State = SessionState.FATAL_ERROR;
             This.Storage.WriteState(State, new { });
-            Bot.FatalError(e.Message);
+            This.FATAL_ERROR(e.Message);
             Session.Close();
         }
 

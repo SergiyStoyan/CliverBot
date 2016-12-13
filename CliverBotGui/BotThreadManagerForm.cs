@@ -20,7 +20,7 @@ using Cliver;
 
 namespace Cliver.BotGui
 {
-    internal partial class BotThreadManagerForm : BaseForm
+    public partial class BotThreadManagerForm : BaseForm
     {
         //BotCycleControl current_displayed_bot_thread_control = null;
         //public BotCycleControl CurrentDisplayedBotThreadControl
@@ -64,7 +64,7 @@ namespace Cliver.BotGui
 
         void _BotCycle_Created(int id)
         {
-            BotThreadControl btc = BotGui.CreateBotThreadControl(id);
+            BotThreadControl btc = (BotThreadControl)System.Activator.CreateInstance(GetBotThreadControlType(), id);
             btc.AutoSize = true;
             btc.Dock = System.Windows.Forms.DockStyle.Fill;
             btc.Location = new System.Drawing.Point(3, 16);
@@ -80,6 +80,11 @@ namespace Cliver.BotGui
                 listBotThreads.Items.Add(new BotThreadItem("#" + id, btc));
                 MainForm.This.DisplayStatus2("Thread Count", Convert.ToString(listBotThreads.Items.Count));
             }
+        }
+
+        virtual public Type GetBotThreadControlType()
+        {
+            return typeof(BotThreadControl);
         }
 
         void BotCycle_Finishing(int id)

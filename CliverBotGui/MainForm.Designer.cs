@@ -70,7 +70,6 @@ namespace Cliver.BotGui
             this.Settings.TabIndex = 2;
             this.Settings.Text = "Settings";
             this.Settings.UseVisualStyleBackColor = false;
-            this.Settings.Click += new System.EventHandler(this.Settings_Click);
             // 
             // bAbout
             // 
@@ -129,7 +128,6 @@ namespace Cliver.BotGui
             this.Help.Size = new System.Drawing.Size(75, 28);
             this.Help.TabIndex = 5;
             this.Help.Text = "Help";
-            this.Help.Click += new System.EventHandler(this.Help_Click);
             // 
             // progressBar
             // 
@@ -149,7 +147,6 @@ namespace Cliver.BotGui
             this.buttonInput.Size = new System.Drawing.Size(75, 28);
             this.buttonInput.TabIndex = 4;
             this.buttonInput.Text = "Input";
-            this.buttonInput.Click += new System.EventHandler(this.buttonInput_Click);
             // 
             // buttonWorkDir
             // 
@@ -160,7 +157,6 @@ namespace Cliver.BotGui
             this.buttonWorkDir.Size = new System.Drawing.Size(75, 28);
             this.buttonWorkDir.TabIndex = 3;
             this.buttonWorkDir.Text = "Work Dir";
-            this.buttonWorkDir.Click += new System.EventHandler(this.buttonWorkDir_Click);
             // 
             // flowLayoutPanel1
             // 
@@ -189,7 +185,6 @@ namespace Cliver.BotGui
             this.bTools.Size = new System.Drawing.Size(75, 28);
             this.bTools.TabIndex = 7;
             this.bTools.Text = "Tools";
-            this.bTools.Click += new System.EventHandler(this.bTools_Click);
             // 
             // MainForm
             // 

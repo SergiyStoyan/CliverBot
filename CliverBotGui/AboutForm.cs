@@ -20,7 +20,7 @@ namespace Cliver.BotGui
 	/// <summary>
 	/// Summary description for About.
 	/// </summary>
-    internal class AboutForm : Cliver.BaseForm
+    public class AboutForm : Cliver.BaseForm
 	{
 		private System.Windows.Forms.Label lCopyright;
         private System.Windows.Forms.Button button1;
@@ -216,7 +216,7 @@ namespace Cliver.BotGui
 
             try
             {
-                CustomBox.Text = Bot.Bot.GetAbout();
+                CustomBox.Text = GetAbout();
                 CustomBox.SelectAll();
                 CustomBox.SelectionAlignment = HorizontalAlignment.Center;
             }
@@ -224,6 +224,12 @@ namespace Cliver.BotGui
             {
                 LogMessage.Error(ex);
             }
+        }
+
+        public virtual string GetAbout()
+        {
+            return @"Compiled: " + Bot.Program.GetCustomizationCompiledTime().ToString() + @"
+Developed by: www.cliversoft.com";
         }
 
 		private void close(object sender, System.EventArgs e)

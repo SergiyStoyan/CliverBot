@@ -23,36 +23,60 @@ using System.Windows.Forms;
 
 namespace CliverBotCustomization
 {
-    /// <summary>
-    /// Most important interface that defines certain routines of CliverBot customization.
-    /// </summary>
-    public class CustomBot : Cliver.Bot.Bot
+    public class Program
     {
         [STAThread]
         static void Main()
         {
             Cliver.Config.Initialize(new string[] { "Engine", "Input", "Output", "Web", "Spider", "Log" });
-            Cliver.BotGui.BotGui.ConfigControlSections = new string[] { "Engine", "Input", "Output", "Web", "Spider", "Log", };
-            Cliver.BotGui.BotGui.BotThreadControlType = typeof(WebRoutineBotThreadControl);
 
             //Cliver.Bot.Program.Run();//It is the entry when the app runs as a console app.
             Cliver.BotGui.Program.Run();//It is the entry when the app uses the default GUI.
         }
+    }
 
-        new static public string GetAbout()
+    public class CustomMainForm : MainForm
+    {
+        override public IEnumerable<ButtonAction> GetButtonActions()
         {
-            return @"
-Created: " + Cliver.Bot.Program.GetCustomizationCompiledTime().ToString() + @"
-Developed by: www.cliversoft.com";
+            return base.GetButtonActions();
         }
+    }
 
-        new static public void FatalError(string message)
+    public class CustomBotThreadManagerForm : BotThreadManagerForm
+    {
+        override public Type GetBotThreadControlType()
         {
+            return typeof(WebRoutineBotThreadControl);
+        }
+    }
+
+    public class CustomConfigForm : ConfigForm
+    {
+        override public IEnumerable<string> GetConfigControlSections()
+        {
+            return new string[] { "Engine", "Input", "Output", "Web", "Spider", "Log", };
+        }
+    }
+
+    public class AboutFormForm : AboutForm
+    {
+        override public string GetAbout()
+        {
+            return @"Created: " + Cliver.Bot.Program.GetCustomizationCompiledTime().ToString() + @"
+Developed by: www.cliversoft.com";
         }
     }
 
     public class CustomSession : Session
     {
+        /// <summary>
+        /// Invoked when a fatal error happened and session is aborting.
+        /// </summary>
+        public override void FATAL_ERROR(string message)
+        {
+        }
+
         public override void CREATING()
         {
             //Set the order which queues are to be processed by. When it is not set, it is built automatically along LIFO rule.
