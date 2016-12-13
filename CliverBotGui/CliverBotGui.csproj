@@ -168,7 +168,6 @@
     <Compile Include="Config\SpiderConfigControl.designer.cs">
       <DependentUpon>SpiderConfigControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="BotGui.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>

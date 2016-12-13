@@ -1,2 +1,0 @@
-﻿Url
-www.google.com/search?q=test

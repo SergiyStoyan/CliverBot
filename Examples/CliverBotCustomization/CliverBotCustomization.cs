@@ -39,7 +39,9 @@ namespace CliverBotCustomization
     {
         override public IEnumerable<ButtonAction> GetButtonActions()
         {
-            return base.GetButtonActions();
+            List<ButtonAction> bas = base.GetButtonActions().ToList();
+            bas.Add(new ButtonAction { Name = "Test", Action = () => { Cliver.Message.Inform("Test"); } });
+            return bas;
         }
     }
 

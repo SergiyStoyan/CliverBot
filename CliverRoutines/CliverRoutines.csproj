@@ -160,6 +160,7 @@
     <Compile Include="Misc\ImageRoutines.cs" />
     <Compile Include="Misc\ProgramRoutines.cs" />
     <Compile Include="Misc\ConvertionRoutines.cs" />
+    <Compile Include="Misc\Serializable.cs" />
     <Compile Include="Misc\SettingsBase.cs" />
     <Compile Include="Misc\SerializationRoutines.cs" />
     <Compile Include="Log\Log.constants.cs" />
