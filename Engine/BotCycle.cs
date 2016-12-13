@@ -163,7 +163,7 @@ namespace Cliver.Bot
                                     case ProcessorExceptionType.ERROR:
                                         state = InputItemState.ERROR;
                                         break;
-                                    //case ProcessorExceptionType.FATAL_ERROR:                                    
+                                    //case ProcessorExceptionType.FatalError:                                    
                                     case ProcessorExceptionType.RESTORE_AS_NEW:
                                         state = InputItemState.ERROR_RESTORE_AS_NEW;
                                         Session.This.IsItem2Restore = true;
@@ -262,6 +262,6 @@ namespace Cliver.Bot
         COMPLETED,
         RESTORE_AS_NEW,
         ERROR,
-        //FATAL_ERROR
+        //FatalError
     }
 }

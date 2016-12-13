@@ -171,7 +171,11 @@ namespace Cliver.Bot
 
         }
 
-        virtual public void FATAL_ERROR(string message)
+        /// <summary>
+        /// Used to send alert
+        /// </summary>
+        /// <param name="message"></param>
+        virtual public void FatalError(string message)
         {
         }
 
@@ -225,18 +229,18 @@ namespace Cliver.Bot
         static public void FatalErrorClose(string message)
         {
             LogMessage.Error(message);
-            Session.State = SessionState.FATAL_ERROR;
+            Session.State = SessionState.FatalError;
             This.Storage.WriteState(State, new { });
-            This.FATAL_ERROR(message);
+            This.FatalError(message);
             Session.Close();
         }
 
         static public void FatalErrorClose(Exception e)
         {
             LogMessage.Error(e);
-            Session.State = SessionState.FATAL_ERROR;
+            Session.State = SessionState.FatalError;
             This.Storage.WriteState(State, new { });
-            This.FATAL_ERROR(e.Message);
+            This.FatalError(e.Message);
             Session.Close();
         }
 

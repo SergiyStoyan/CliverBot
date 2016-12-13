@@ -97,7 +97,7 @@ namespace Cliver.Bot
                     break;
                 case SessionState.STARTING:
                 case SessionState.COMPLETED:
-                case SessionState.FATAL_ERROR:
+                case SessionState.FatalError:
                     break;
                 case SessionState.RESTORING:
                 case SessionState.RUNNING:
@@ -249,10 +249,10 @@ namespace Cliver.Bot
                     }
                     catch (Exception e)
                     {
-                        Session.State = SessionState.FATAL_ERROR;
+                        Session.State = SessionState.FatalError;
                         This.Storage.WriteState(State, new { });
                         LogMessage.Error(e);
-                        FATAL_ERROR(e.Message);
+                        FatalError(e.Message);
                     }
 
                     try
@@ -261,10 +261,10 @@ namespace Cliver.Bot
                     }
                     catch (Exception e)
                     {
-                        Session.State = SessionState.FATAL_ERROR;
+                        Session.State = SessionState.FatalError;
                         This.Storage.WriteState(State, new { });
                         LogMessage.Error(e);
-                        FATAL_ERROR(e.Message);
+                        FatalError(e.Message);
                     }
 
                     InputItemQueue.Close();
@@ -275,10 +275,10 @@ namespace Cliver.Bot
                 }
                 catch (Exception e)
                 {
-                    Session.State = SessionState.FATAL_ERROR;
+                    Session.State = SessionState.FatalError;
                     This.Storage.WriteState(State, new { });
                     LogMessage.Error(e);
-                    FATAL_ERROR(e.Message);
+                    FatalError(e.Message);
                 }
                 finally
                 {
@@ -288,7 +288,7 @@ namespace Cliver.Bot
                         case SessionState.NULL:
                         case SessionState.STARTING:
                         case SessionState.COMPLETED:
-                        case SessionState.FATAL_ERROR:
+                        case SessionState.FatalError:
                             Directory.Move(Dir, Dir + "_" + TimeMark + "_" + State);
                             break;
                         case SessionState.RESTORING:
@@ -312,7 +312,7 @@ namespace Cliver.Bot
             catch (Exception e)
             {
                 LogMessage.Error(e);
-                FATAL_ERROR(e.Message);
+                FatalError(e.Message);
             }
         }
 
@@ -356,6 +356,6 @@ namespace Cliver.Bot
         COMPLETED,
         UNCOMPLETED,
         BROKEN,
-        FATAL_ERROR
+        FatalError
     }
 }

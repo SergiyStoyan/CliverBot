@@ -86,7 +86,7 @@ Developed by: www.cliversoft.com";
         /// <summary>
         /// Invoked when a fatal error happened and session is aborting.
         /// </summary>
-        public override void FATAL_ERROR(string message)
+        public override void FatalError(string message)
         {
         }
 
