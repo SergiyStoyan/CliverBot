@@ -162,9 +162,9 @@ namespace Cliver.BotGui
             }
         }
 
-        virtual public IEnumerable<string> GetConfigControlSections()
+        virtual public List<string> GetConfigControlSections()
         {
-            return new string[] { "Engine", "Input", "Output", "Log" };
+            return new List<string> { "Engine", "Input", "Output", "Log" };
         }
 
         class ConfigControlItem

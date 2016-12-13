@@ -50,7 +50,7 @@ namespace Cliver.BotCustomization
 
     public class CustomMainForm : MainForm
     {
-        override public IEnumerable<ButtonAction> GetButtonActions()
+        override public List<ButtonAction> GetButtonActions()
         {
             List<ButtonAction> bas = base.GetButtonActions().ToList();
             bas.Add(new ButtonAction { Name = "Test", Action = () => { Message.Inform("Test"); } });
@@ -68,9 +68,9 @@ namespace Cliver.BotCustomization
 
     public class CustomConfigForm : ConfigForm
     {
-        override public IEnumerable<string> GetConfigControlSections()
+        override public List<string> GetConfigControlSections()
         {
-            return new string[] { "Engine", "Input", "Output", "Web", "Spider", "Log", };
+            return new List<string> { "Engine", "Input", "Output", "Web", "Spider", "Log", };
         }
     }
 

@@ -115,7 +115,7 @@ namespace Cliver.BotGui
             }
         }
 
-        virtual public IEnumerable<ButtonAction> GetButtonActions()
+        virtual public List<ButtonAction> GetButtonActions()
         {
             return new List<ButtonAction> {
                 new ButtonAction { Name = "About", Action=()=> 
