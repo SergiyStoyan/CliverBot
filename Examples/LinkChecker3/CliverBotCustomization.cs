@@ -79,7 +79,7 @@ namespace Cliver.BotCustomization
         override public string GetAbout()
         {
             return @"WEB LINK CHECKER 3
-Created: " + Cliver.Bot.Program.GetCustomizationCompiledTime().ToString() + @"
+Compiled: " + Cliver.Bot.Program.GetCustomizationCompiledTime().ToString() + @"
 Developed by: www.cliversoft.com";
         }
     }
