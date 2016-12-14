@@ -28,8 +28,10 @@ namespace Cliver.Bot
                 base_types2custom_type[typeof(T)] = type;
             }
             if (type == null)
-            {if (successor_only)
+            {
+                if (successor_only)
                     throw new Exception("No successor of " + typeof(T) + " was detected.");
+                Log.Main.Warning("No successor of " + typeof(T) + " was detected.");
                 return (T)System.Activator.CreateInstance(typeof(T), args);
             }
             return (T)System.Activator.CreateInstance(type, args);

@@ -144,21 +144,21 @@ namespace Cliver.Bot
             }
         }
 
-        virtual public void STARTING()
+        virtual public void __Starting()
         {
         }
         
-        virtual public void EXITING()
+        virtual public void __Exiting()
         {
         }
 
-        virtual public void PROCESSOR(InputItem item)
+        virtual public void __Processor(InputItem item)
         {
             MethodInfo mi;
             if (input_item_types2processor_mi.TryGetValue(item.GetType(), out mi))
                 mi.Invoke(this, new object[] { item });
             else
-                Session.This.PROCESSOR(item);
+                Session.This.__Processor(item);
         }
         static Dictionary<Type, MethodInfo> input_item_types2processor_mi = new Dictionary<Type, MethodInfo>();
 

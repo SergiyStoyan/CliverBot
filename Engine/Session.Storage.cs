@@ -35,6 +35,7 @@ namespace Cliver.Bot
 
             internal StorageBase(string file)
             {
+                PathRoutines.CreateDirectory(PathRoutines.GetDirFromPath(file));//done because cleanup can remove the dir
                 this.file = file;
                 //fs = File.Open(file, FileMode.OpenOrCreate, FileAccess.ReadWrite);
             }
@@ -193,11 +194,11 @@ namespace Cliver.Bot
                     SessionState state = SessionState.NULL;
                     while (true)
                     {
-                        Dictionary<string, object> names2value = readNextElementByTag(StateTag);
+                        Dictionary<string, object> names2value = readNextElementByTag(SessionTag);
                         if (names2value == null)
                             return state;
 
-                        state = (SessionState)names2value["value"];
+                        state = (SessionState)names2value["state"];
                         if (state == SessionState.STARTING)
                         {
                             start_time = (DateTime)names2value["session_start_time"];
@@ -207,7 +208,7 @@ namespace Cliver.Bot
                 }
                 catch (Exception e)
                 {
-                    FatalErrorClose(e);
+                    __FatalErrorClose(e);
                     return SessionState.NULL;
                 }
             }
@@ -215,7 +216,7 @@ namespace Cliver.Bot
             internal void WriteState(SessionState state, dynamic names2value)
             {
                 Dictionary<string, object> d = new Dictionary<string, object>();
-                d.Add("value", state);
+                d.Add("state", state);
                 d.Add("time", DateTime.Now);
                 StringBuilder sb = new StringBuilder();
                 foreach (PropertyInfo pi in names2value.GetType().GetProperties())
@@ -224,9 +225,9 @@ namespace Cliver.Bot
                     sb.Append("\r\n" + pi.Name + "=" + pi.GetValue(names2value));
                 }
                 Log.Main.Inform("STATE: " + sb.ToString());
-                writeElement(StateTag, d);
+                writeElement(SessionTag, d);
             }
-            const string StateTag = "__SESSION_STATE";
+            const string SessionTag = "__SESSION";
 
             internal void WriteInputItem(InputItem item)
             {
@@ -285,8 +286,9 @@ namespace Cliver.Bot
                     return;
 
                 if (!restoring)
-                    writeElement("__Queue", new { name = queue.Name, position = queue.Position });
+                    writeElement(QueueTag, new { name = queue.Name, position = queue.Position });
             }
+            const string QueueTag = "__QUEUE";
 
             internal void RestoreSession()
             {
@@ -301,7 +303,7 @@ namespace Cliver.Bot
                     Dictionary<string, object> names2value;
                     while (readNextElement(out tag, out names2value))
                     {
-                        if (tag == "__Queue")
+                        if (tag == QueueTag)
                         {
                             string name = (string)names2value["name"];
                             int position = (int)names2value["position"];
@@ -378,7 +380,7 @@ namespace Cliver.Bot
                 }
                 catch (Exception e)
                 {
-                    FatalErrorClose(e);
+                    __FatalErrorClose(e);
                 }
                 foreach (InputItemQueue iiq in This.input_item_queue_name2input_item_queues.Values)
                     iiq.OmitRestoredProcessedItems();

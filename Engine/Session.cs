@@ -26,15 +26,6 @@ TBD:
     VERDICT: append-file-storage is the fastest solution because of: 1)writting to the end of file; 2)keeping all the items ready in RAM. 
 Drawbacks of append-file-storage: 1)growing log file (not quickly as only states are appended); 2)large amount of items will inundate RAM.
 So, for large size data a db storage is required.
-
-    - ? Bot static session methods move to a session subclass singleton within CustomBot 
-    (: methods like GetAbout, FataLError should be static anyway)
-
-    - uppercase methods to be overriden in custmization classes
-
-    - BotGui - manage buttons array
-
-    - 
 */
 
 namespace Cliver.Bot
@@ -144,7 +135,7 @@ namespace Cliver.Bot
 
             Creating?.Invoke();
 
-            CREATING();
+            __Creating();
         }
         static Dictionary<string, Type> input_item_type_names2input_item_type;
         static Dictionary<string, Type> work_item_type_names2work_item_type;
@@ -155,7 +146,7 @@ namespace Cliver.Bot
         internal readonly Counter ProcessorErrors = new Counter("processor_errors", Settings.Engine.MaxProcessorErrorNumber, max_error_count);
         static void max_error_count(int count)
         {
-            Session.FatalErrorClose("Fatal error: errors in succession: " + count);
+            Session.__FatalErrorClose("Fatal error: errors in succession: " + count);
         }
 
         static string get_time_mark(DateTime dt)
@@ -204,7 +195,7 @@ namespace Cliver.Bot
             }
             catch (Exception e)
             {
-                Session.FatalErrorClose(e);
+                Session.__FatalErrorClose(e);
             }
         }
 
@@ -245,14 +236,14 @@ namespace Cliver.Bot
 
                     try
                     {
-                        CLOSING();
+                        __Closing();
                     }
                     catch (Exception e)
                     {
                         Session.State = SessionState.FatalError;
                         This.Storage.WriteState(State, new { });
                         LogMessage.Error(e);
-                        FatalError(e.Message);
+                        __FatalError(e.Message);
                     }
 
                     try
@@ -264,7 +255,7 @@ namespace Cliver.Bot
                         Session.State = SessionState.FatalError;
                         This.Storage.WriteState(State, new { });
                         LogMessage.Error(e);
-                        FatalError(e.Message);
+                        __FatalError(e.Message);
                     }
 
                     InputItemQueue.Close();
@@ -278,7 +269,7 @@ namespace Cliver.Bot
                     Session.State = SessionState.FatalError;
                     This.Storage.WriteState(State, new { });
                     LogMessage.Error(e);
-                    FatalError(e.Message);
+                    __FatalError(e.Message);
                 }
                 finally
                 {
@@ -312,7 +303,7 @@ namespace Cliver.Bot
             catch (Exception e)
             {
                 LogMessage.Error(e);
-                FatalError(e.Message);
+                __FatalError(e.Message);
             }
         }
 
@@ -321,7 +312,7 @@ namespace Cliver.Bot
             Log.Main.Write("Loading InputItems from the input file.");
             Type start_input_item_type = (from t in Assembly.GetEntryAssembly().GetTypes() where t.IsSubclassOf(typeof(InputItem)) && !t.IsGenericType select t).First();
             InputItemQueue start_input_item_queue = GetInputItemQueue(start_input_item_type.Name);
-            FillStartInputItemQueue(start_input_item_queue, start_input_item_type);
+            __FillStartInputItemQueue(start_input_item_queue, start_input_item_type);
         }
 
         public static SessionState State

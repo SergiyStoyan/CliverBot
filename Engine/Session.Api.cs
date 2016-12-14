@@ -161,25 +161,23 @@ namespace Cliver.Bot
             return Session.This.GetSingleValueWorkItemDictionary_<WorkItemT, ValueT>();
         }
 
-        virtual public void CREATING()
+        virtual public void __Creating()//can be substituted by constructor
         {
-
         }
 
-        virtual public void CLOSING()
+        virtual public void __Closing()
         {
-
         }
 
         /// <summary>
         /// Used to send alert
         /// </summary>
         /// <param name="message"></param>
-        virtual public void FatalError(string message)
+        virtual public void __FatalError(string message)
         {
         }
 
-        virtual public void PROCESSOR(InputItem item)
+        virtual public void __Processor(InputItem item)
         {
             MethodInfo mi;
             if (input_item_types2processor_mi.TryGetValue(item.GetType(), out mi))
@@ -188,7 +186,7 @@ namespace Cliver.Bot
         }
         static Dictionary<Type, MethodInfo> input_item_types2processor_mi = new Dictionary<Type, MethodInfo>();
 
-        virtual public void FillStartInputItemQueue(InputItemQueue start_input_item_queue, Type start_input_item_type)
+        virtual public void __FillStartInputItemQueue(InputItemQueue start_input_item_queue, Type start_input_item_type)
         {
             Log.Main.Write("Filling queue of " + start_input_item_queue.Name + " with input file.");
 
@@ -226,21 +224,21 @@ namespace Cliver.Bot
         //public delegate void OnFatalError(string message);
         //static public event OnFatalError FatalError = null;
 
-        static public void FatalErrorClose(string message)
+        static public void __FatalErrorClose(string message)
         {
             LogMessage.Error(message);
             Session.State = SessionState.FatalError;
             This.Storage.WriteState(State, new { });
-            This.FatalError(message);
+            This.__FatalError(message);
             Session.Close();
         }
 
-        static public void FatalErrorClose(Exception e)
+        static public void __FatalErrorClose(Exception e)
         {
             LogMessage.Error(e);
             Session.State = SessionState.FatalError;
             This.Storage.WriteState(State, new { });
-            This.FatalError(e.Message);
+            This.__FatalError(e.Message);
             Session.Close();
         }
 

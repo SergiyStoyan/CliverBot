@@ -19,7 +19,7 @@ using System.Reflection;
 
 namespace Cliver.Bot
 {
-    public abstract partial class BotCycle
+    public partial class BotCycle
     {
         static BotCycle()
         {
@@ -60,7 +60,8 @@ namespace Cliver.Bot
                 if (id2bot_cycles.Count >= Settings.Engine.MaxBotThreadNumber)
                     return;
             }
-            Activator.Create<BotCycle>(true);
+            Activator.Create<BotCycle>(false);
+            //new BotCycle();
         }
         
         internal static void Abort()
@@ -106,7 +107,7 @@ namespace Cliver.Bot
             catch (ThreadAbortException) { }
         }
 
-        protected  BotCycle()
+        public BotCycle()
         {
             thread = ThreadRoutines.Start(bot_cycle);
             if (!SleepRoutines.WaitForCondition(() => { return Id >= 0; }, 100000))
@@ -129,7 +130,7 @@ namespace Cliver.Bot
                     }
                     Created?.Invoke(Id);
 
-                    STARTING();
+                    __Starting();
                     while (run)
                     {
                         current_item = Session.This.GetNext();
@@ -138,7 +139,7 @@ namespace Cliver.Bot
                         InputItemState state = InputItemState.COMPLETED;
                         try
                         {
-                            current_item.PROCESSOR(this);
+                            current_item.__Processor(this);
                         }
                         catch (ThreadAbortException)
                         {
@@ -202,12 +203,12 @@ namespace Cliver.Bot
                 //}
                 finally
                 {
-                    EXITING();
+                    __Exiting();
                 }
             }
             catch (Exception e)
             {
-                Session.FatalErrorClose(e);
+                Session.__FatalErrorClose(e);
             }
             finally
             {

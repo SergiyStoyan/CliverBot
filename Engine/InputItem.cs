@@ -28,10 +28,10 @@ namespace Cliver.Bot
         /// When it is not defined within custom InputItem class, it must be defined in CustomBot as a function with InputItem Type parameter, where the function name is "PROCESSOR".
         /// </summary>
         /// <param name="bc"></param>
-        virtual public void PROCESSOR(BotCycle bc)
+        virtual public void __Processor(BotCycle bc)
         {
             //it will be invoked by default if no overriding PROCESSOR implementation
-            bc.PROCESSOR(this);
+            bc.__Processor(this);
         }
 
         static internal bool Add2Queue<ItemT>(InputItemQueue queue, InputItem parent_item, dynamic anonymous_object) where ItemT : InputItem
@@ -139,7 +139,10 @@ namespace Cliver.Bot
         {
             List<int> hs = new List<int>();
             foreach (FieldInfo fi in item_types2key_field_names2key_field_fi[this.GetType()].Values)
-                hs.Add(fi.GetValue(this).GetHashCode());
+            {
+                object o = fi.GetValue(this);
+                hs.Add((o == null ? 0 : o).GetHashCode());
+            }
             Int64 hash = 0;
             bool odd = false;
             foreach (int h in hs)
