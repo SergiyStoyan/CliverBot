@@ -58,14 +58,19 @@ namespace Cliver
             }
         }
 
-        static public string GetAppDirectory()
+        static public string GetAppPath()
         {
             string p;
             if (ProgramRoutines.IsWebContext)
                 p = System.Web.Compilation.BuildManager.GetGlobalAsaxType().BaseType.Assembly.GetName(false).CodeBase;
             else
-                p = System.Reflection.Assembly.GetEntryAssembly().GetName(false).CodeBase;
+                p = Regex.Replace(System.Reflection.Assembly.GetEntryAssembly().GetName(false).CodeBase, @"file:///", "");
             return Path.GetFullPath(p);
+        }
+
+        static public string GetAppDirectory()
+        {
+            return PathRoutines.GetDirFromPath(GetAppPath());
         }
     }
 }
