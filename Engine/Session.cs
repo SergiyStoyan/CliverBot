@@ -75,6 +75,8 @@ namespace Cliver.Bot
             Log.Main.Inform("Loading configuration from " + Config.DefaultStorageDir);
             Config.Reload(Config.DefaultStorageDir);
 
+            Dir = PathRoutines.CreateDirectory(Log.WorkDir + "\\Data");
+            Directory.SetLastWriteTime(Dir, DateTime.Now);//to avoid cleaning up
             ConfigurationDir = Dir + "\\" + Config.CONFIG_FOLDER_NAME;
 
             Restored = false;
@@ -154,7 +156,7 @@ namespace Cliver.Bot
             return dt.ToString("yyMMddHHmmss");
         }
 
-        public readonly string Dir = PathRoutines.CreateDirectory(Log.WorkDir + "\\Data");
+        public readonly string Dir;
 
         /// <summary>
         /// Time when the session was restored if it was.
