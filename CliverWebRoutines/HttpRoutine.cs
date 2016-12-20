@@ -354,7 +354,7 @@ namespace Cliver.BotWeb
             }
             catch (ThreadAbortException)
             {
-                Thread.ResetAbort();
+                //Thread.ResetAbort();
             }
             catch (System.Net.WebException error)
             {

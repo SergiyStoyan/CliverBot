@@ -115,18 +115,13 @@ namespace Cliver.Bot
             return iiq.CountOfProcessed;
         }
 
-        public static BotCycleT GetBotForThisThread<BotCycleT>() where BotCycleT : BotCycle
+        public static CustomBotCycle GetBotForThisThread<CustomBotCycle>() where CustomBotCycle : BotCycle
         {
-            return (BotCycleT)GetBotForThisThread();
-        }
-
-        public static BotCycle GetInstanceForThisThread()
-        {
-            lock (id2bot_cycles)
+            lock (threads2bot_cycle)
             {
                 BotCycle bc;
-                if (id2bot_cycles.TryGetValue(Log.Id, out bc))
-                    return bc;
+                if (threads2bot_cycle.TryGetValue(Thread.CurrentThread, out bc))
+                    return (CustomBotCycle)bc;
                 return null;
             }
         }
@@ -135,10 +130,10 @@ namespace Cliver.Bot
 
         public static string GetCurrentInputItemQueueNameThisThread()
         {
-            lock (id2bot_cycles)
+            lock (threads2bot_cycle)
             {
                 BotCycle bc;
-                if (id2bot_cycles.TryGetValue(Log.Id, out bc))
+                if (threads2bot_cycle.TryGetValue(Thread.CurrentThread, out bc))
                     return bc.current_item.__Queue.Name;
                 return null;
             }

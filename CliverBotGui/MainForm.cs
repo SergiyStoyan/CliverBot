@@ -45,7 +45,7 @@ namespace Cliver.BotGui
         private void Session_Closed()
         {
             if (Program.Mode == Program.ProgramMode.AUTOMATIC)
-                System.Windows.Forms.Application.Exit();
+                Application.Exit();
         }
 
         void Session_Closing()
@@ -336,7 +336,9 @@ namespace Cliver.BotGui
             {
                 this.BeginInvoke(() => { _DisplayStatus(name, state); });
             }
-            catch (ThreadAbortException) { }
+            catch (ThreadAbortException)
+            {
+            }
             catch (Exception e)
             {
                 LogMessage.Error(e);
@@ -349,7 +351,9 @@ namespace Cliver.BotGui
             {
                 this.BeginInvoke(() => { _DisplayStatus(name, state); });
             }
-            catch (ThreadAbortException) { }
+            catch (ThreadAbortException)
+            {
+            }
             catch (Exception e)
             {
                 LogMessage.Error(e);

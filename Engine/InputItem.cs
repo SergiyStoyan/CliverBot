@@ -64,15 +64,15 @@ namespace Cliver.Bot
         /// <param name="item_type"></param>
         /// <param name="field_value_pairs"></param>
         /// <returns></returns>
-        static internal bool Add2QueueBeforeStart(InputItemQueue queue, Type item_type, Dictionary<string, string> field2value)
+        static internal bool Add2QueueBeforeStart(InputItemQueue queue, Type item_type, Dictionary<string, string> fields2value)
         {
             InputItem item = (InputItem)FormatterServices.GetUninitializedObject(item_type);
             Dictionary<string, FieldInfo> serialized_field_name2serialized_field_fis = item_types2serialized_field_names2serialized_field_fi[item_type];
-            foreach (string field in field2value.Keys)
+            foreach (string field in fields2value.Keys)
                 try
                 {
                     FieldInfo fi = serialized_field_name2serialized_field_fis[field];
-                    fi.SetValue(item, Convert.ChangeType(field2value[field], fi.FieldType));
+                    fi.SetValue(item, Convert.ChangeType(fields2value[field], fi.FieldType));
                 }
                 catch (Exception e)
                 {

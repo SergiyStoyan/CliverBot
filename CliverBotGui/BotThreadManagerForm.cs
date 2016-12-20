@@ -49,8 +49,8 @@ namespace Cliver.BotGui
             listBotThreads.DisplayMember = "Name";
             listBotThreads.ValueMember = "BTC";
 
-            BotCycle.Created += new BotCycle.OnCreated(BotCycle_Created);
-            BotCycle.Finishing += new BotCycle.OnFinishing(BotCycle_Finishing);
+            BotCycle.Created += BotCycle_Created;
+            BotCycle.Finishing += BotCycle_Finishing;
         }
 
         void BotCycle_Created(int id)
@@ -59,7 +59,9 @@ namespace Cliver.BotGui
             {
                 this.Invoke(() => { _BotCycle_Created(id); });
             }
-            catch (ThreadAbortException) { }
+            catch (ThreadAbortException)
+            {
+            }
         }
 
         void _BotCycle_Created(int id)
@@ -93,7 +95,9 @@ namespace Cliver.BotGui
             {
                 this.BeginInvoke(() => { _BotCycle_Finishing(id); });
             }
-            catch (ThreadAbortException) { }
+            catch (ThreadAbortException)
+            {
+            }
         }
 
         void _BotCycle_Finishing(int id)

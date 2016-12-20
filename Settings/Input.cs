@@ -18,7 +18,8 @@ namespace Cliver.Bot
 
         public class InputClass : Cliver.Settings
         {
-            public string File = "input.csv";
+            //public string File = "input.csv";
+            public string File = "input.txt";
             public FileFormatEnum FileFormat = FileFormatEnum.NULL;
 
             //[ScriptIgnore]

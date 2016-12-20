@@ -26,7 +26,7 @@ namespace Cliver.Bot
             foreach (Type iit in Session.InputItemTypes)
                 foreach (Type t in Assembly.GetEntryAssembly().GetTypes().Where(t => t.BaseType == typeof(BotCycle)))
                 {
-                    MethodInfo mi = t.GetMethod("PROCESSOR", BindingFlags.Instance | BindingFlags.Public, null, new Type[] { iit }, null);
+                    MethodInfo mi = t.GetMethod("__Processor", BindingFlags.Instance | BindingFlags.Public, null, new Type[] { iit }, null);
                     if (mi != null)
                         input_item_types2processor_mi[iit] = mi;
                 }
@@ -38,82 +38,92 @@ namespace Cliver.Bot
 
         static void watch_for_threads(object state)
         {
-            lock (id2bot_cycles)
+            lock (threads2bot_cycle)
             {
-                List<int> dead_threads = new List<int>();
-                foreach (int id in id2bot_cycles.Keys)
+                List<Thread> dead_threads = new List<Thread>();
+                foreach (Thread t in threads2bot_cycle.Keys)
                 {
-                    if (id2bot_cycles[id].thread.IsAlive)
+                    if (t.IsAlive)
                         continue;
-                    Log.Error("The thread with ID: " + id + " is not alive. Removing it.");
-                    dead_threads.Add(id);
+                    Log.Error("The thread with ID: " + threads2bot_cycle[t].Id + " is not alive. Removing it.");
+                    dead_threads.Add(t);
                 }
-                foreach (int id in dead_threads)
-                    close_thread(id);
+                foreach (Thread t in dead_threads)
+                    close_thread(t);
             }
         }
 
         internal static void Start()
         {
-            lock (id2bot_cycles)
+            lock (threads2bot_cycle)
             {
-                if (id2bot_cycles.Count >= Settings.Engine.MaxBotThreadNumber)
+                if (threads2bot_cycle.Count >= Settings.Engine.MaxBotThreadNumber)
                     return;
             }
-            Activator.Create<BotCycle>(false);
-            //new BotCycle();
-        }
-        
-        internal static void Abort()
-        {
-            BotCycle[] bcs;
-            lock (id2bot_cycles)
+            BotCycle bc = null;
+            Thread t = ThreadRoutines.Start(() =>
             {
-                bcs = id2bot_cycles.Values.ToArray();
+                bc = Activator.Create<BotCycle>(false);
+                bc.bot_cycle();
             }
-            foreach (BotCycle bc in bcs)
+            );
+            if (!SleepRoutines.WaitForCondition(() => { return bc != null && bc.Id >= 0; }, 100000))
+                throw new Exception("Could not start BotCycle thread");
+            lock (threads2bot_cycle)
             {
-                bc.run = false;
-                bc.thread.Abort();
-            }
-            lock (id2bot_cycles)
-            {
-                id2bot_cycles.Clear();
+                threads2bot_cycle[t] = bc;
             }
         }
 
-        static void close_thread(int id)
+        internal static void Abort()
+        {
+            lock (threads2bot_cycle)
+            {
+                foreach (Thread t in threads2bot_cycle.Keys)
+                {
+                    threads2bot_cycle[t].run = false;
+                    t.Abort();
+                }
+                threads2bot_cycle.Clear();
+            }
+        }
+
+        static void close_thread(Thread t)
         {
             try
             {
-                if (Finishing != null)
-                    Finishing.Invoke(id);
-                lock (id2bot_cycles)
+                lock (threads2bot_cycle)
                 {
                     BotCycle bc;
-                    if (id2bot_cycles.TryGetValue(id, out bc))
+                    if (threads2bot_cycle.TryGetValue(t, out bc))
                     {
-                        if (bc.thread != Thread.CurrentThread)
+                        if (t != Thread.CurrentThread)
                         {
                             bc.run = false;
-                            bc.thread.Abort();
+                            t.Abort();
                         }
-                        id2bot_cycles.Remove(id);
+                        threads2bot_cycle.Remove(t);
                     }
-                    if (id2bot_cycles.Count == 0)
-                        Session.Close(); 
+                    if (threads2bot_cycle.Count == 0)
+                        Session.Close();
                 }
             }
-            catch (ThreadAbortException) { }
+            catch (ThreadAbortException)
+            {
+            }
         }
 
-        public BotCycle()
+        protected BotCycle()
         {
-            thread = ThreadRoutines.Start(bot_cycle);
-            if (!SleepRoutines.WaitForCondition(() => { return Id >= 0; }, 100000))
-                throw new Exception("Could not start BotCycle thread");
+            //Id = 1;
+            //lock (threads2bot_cycle)
+            //{
+            //    foreach (BotCycle bc in threads2bot_cycle.Values)
+            //        if (Id <= bc.Id)
+            //            Id = bc.Id + 1;
+            //}
+            Id = Log.Id;
         }
-        readonly Thread thread;
         internal readonly int Id = -1;
         bool run = true;
 
@@ -123,11 +133,6 @@ namespace Cliver.Bot
             {
                 try
                 {
-                    typeof(BotCycle).GetField("Id", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(this, Log.Id);
-                    lock (id2bot_cycles)
-                    {
-                        id2bot_cycles[Id] = this;
-                    }
                     Created?.Invoke(Id);
 
                     __Starting();
@@ -204,6 +209,8 @@ namespace Cliver.Bot
                 finally
                 {
                     __Exiting();
+                    if (Finishing != null)
+                        Finishing.Invoke(Id);
                 }
             }
             catch (Exception e)
@@ -212,30 +219,19 @@ namespace Cliver.Bot
             }
             finally
             {
-                close_thread(Id);
+                close_thread(Thread.CurrentThread);
             }
         }
         InputItem current_item;
-        static readonly Dictionary<int, BotCycle> id2bot_cycles = new Dictionary<int, BotCycle>();
+        static readonly Dictionary<Thread, BotCycle> threads2bot_cycle = new Dictionary<Thread, BotCycle>();
 
         internal static InputItem GetCurrentInputItemForThisThread()
         {
-            lock (id2bot_cycles)
+            lock (threads2bot_cycle)
             {
                 BotCycle bc;
-                if (id2bot_cycles.TryGetValue(Log.Id, out bc))
+                if (threads2bot_cycle.TryGetValue(Thread.CurrentThread, out bc))
                     return bc.current_item;
-                return null;
-            }
-        }
-
-        internal static BotCycle GetBotForThisThread()
-        {
-            lock (id2bot_cycles)
-            {
-                BotCycle bc;
-                if (id2bot_cycles.TryGetValue(Log.Id, out bc))
-                    return bc;
                 return null;
             }
         }
