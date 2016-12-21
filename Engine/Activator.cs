@@ -19,7 +19,7 @@ namespace Cliver.Bot
 {
     public class Activator
     {
-        public static T Create<T>(bool successor_only, params object[] args)
+        public static T Create<T>(bool successor_only/*, params object[] args*/)
         {
             Type type;
             if (!base_types2custom_type.TryGetValue(typeof(T), out type))
@@ -32,9 +32,11 @@ namespace Cliver.Bot
                 if (successor_only)
                     throw new Exception("No successor of " + typeof(T) + " was detected.");
                 Log.Main.Warning("No successor of " + typeof(T) + " was detected.");
-                return (T)System.Activator.CreateInstance(typeof(T), args);
+                //return (T)System.Activator.CreateInstance(typeof(T), args);
+                return (T)System.Activator.CreateInstance(typeof(T), true);
             }
-            return (T)System.Activator.CreateInstance(type, args);
+            //return (T)System.Activator.CreateInstance(type, args);
+            return (T)System.Activator.CreateInstance(type, true);
         }
         static readonly Dictionary<Type, Type> base_types2custom_type = new Dictionary<Type, Type>();
 
