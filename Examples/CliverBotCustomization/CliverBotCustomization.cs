@@ -75,11 +75,11 @@ Developed by: www.cliversoft.com";
         /// <summary>
         /// Invoked when a fatal error happened and session is aborting.
         /// </summary>
-        public override void FatalError(string message)
+        public override void __FatalError(string message)
         {
         }
 
-        public override void CREATING()
+        public override void __Creating()
         {
             //Set the order which queues are to be processed by. When it is not set, it is built automatically along LIFO rule.
             Session.SetInputItemQueuesOrder(typeof(Product), typeof(Category), typeof(Site));
@@ -93,7 +93,7 @@ Developed by: www.cliversoft.com";
             counters["product"] = 0;
         }
 
-        public override void CLOSING()
+        public override void __Closing()
         {
         }
 
@@ -132,7 +132,7 @@ Developed by: www.cliversoft.com";
             /// When it is not defined within InputItem class, it must be defined in CustomBot as PROCESSOR_[InputItem class name]
             /// </summary>
             /// <param name="bc">BotCycle that keeps the current thread</param>
-            override public void PROCESSOR(BotCycle bc)
+            override public void __Processor(BotCycle bc)
             {
                 bc.Add(new Category(url: Url + "?q=1", t: new Category.Tag(name: "fff", description: "ttttt")));
 
@@ -178,7 +178,7 @@ Developed by: www.cliversoft.com";
                 T = t;
             }
 
-            override public void PROCESSOR(BotCycle bc)
+            override public void __Processor(BotCycle bc)
             {
                 for (int i = 0; i < 3; i++)
                     bc.Add(new Product(url: i + Url));
@@ -241,14 +241,14 @@ Developed by: www.cliversoft.com";
         /// <summary>
         /// Invoked by BotCycle thread as it has been started.
         /// </summary>
-        public override void STARTING()
+        public override void __Starting()
         {
         }
 
         /// <summary>
         /// Invoked by BotCycle thread when it is exiting.
         /// </summary>
-        public override void EXITING()
+        public override void __Exiting()
         {
         }
     }

@@ -186,8 +186,11 @@ namespace Cliver
         public static extern bool InternetGetCookieEx(string url, string cookieName, StringBuilder cookieData, ref int size, Int32 dwFlags, IntPtr lpReserved);
         public const Int32 InternetCookieHttponly = 0x2000;
 
-        [DllImport("Wininet.dll")]
+        [DllImport("wininet.dll")]
         public static extern bool InternetGetCookie(string Url, string CookieName, StringBuilder CookieData, ref int Size);
+
+        [DllImport("wininet.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern bool InternetSetCookie(string lpszUrlName, string lbszCookieName, string lpszCookieData);
 
         public enum HookType : uint
         {

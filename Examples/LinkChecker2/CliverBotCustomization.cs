@@ -86,11 +86,11 @@ Developed by: www.cliversoft.com";
         /// <summary>
         /// Invoked when a fatal error happened and session is aborting.
         /// </summary>
-        public override void FatalError(string message)
+        public override void __FatalError(string message)
         {
         }
 
-        public override void CREATING()
+        public override void __Creating()
         {
             FileWriter.This.WriteHeader("Parent Page", "Broken Link");
             domain2page_count = Session.GetSingleValueWorkItemDictionary<PageCounter, int>();
@@ -104,7 +104,7 @@ Developed by: www.cliversoft.com";
             /// <summary>
             /// Invoked by BotCycle thread as it has been started.
             /// </summary>
-            public override void STARTING()
+            public override void __Starting()
             {
                 ((WebRoutineBotThreadControl)BotThreadControl.GetInstanceForThisThread()).WR = hr;
             }
@@ -113,7 +113,7 @@ Developed by: www.cliversoft.com";
             /// <summary>
             /// Invoked by BotCycle thread when it is exiting.
             /// </summary>
-            public override void EXITING()
+            public override void __Exiting()
             {
             }
 

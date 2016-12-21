@@ -89,11 +89,11 @@ Developed by: www.cliversoft.com";
         /// <summary>
         /// Invoked when a fatal error happened and session is aborting.
         /// </summary>
-        public override void FatalError(string message)
+        public override void __FatalError(string message)
         {
         }
 
-        public override void CREATING()
+        public override void __Creating()
         {
             Cliver.BotGui.Program.BindProgressBar2InputItemQueue<CustomBotCycle.Site>();
             FileWriter.This.WriteHeader("Parent Page", "Broken Link");
@@ -115,7 +115,7 @@ Developed by: www.cliversoft.com";
             /// <summary>
             /// Invoked by BotCycle thread as it has been started.
             /// </summary>
-            public override void STARTING()
+            public override void __Starting()
             {
                 ((WebRoutineBotThreadControl)BotThreadControl.GetInstanceForThisThread()).WR = hr;
             }
@@ -125,7 +125,7 @@ Developed by: www.cliversoft.com";
             /// <summary>
             /// Invoked by BotCycle thread when it is exiting.
             /// </summary>
-            public override void EXITING()
+            public override void __Exiting()
             {
             }
 
@@ -136,7 +136,7 @@ Developed by: www.cliversoft.com";
             {
                 readonly public string Url;
 
-                override public void PROCESSOR(BotCycle bc)
+                override public void __Processor(BotCycle bc)
                 {
                     CustomBotCycle cbc = (CustomBotCycle)bc;
                     if (!cbc.hr.GetPage(Url))
@@ -160,7 +160,7 @@ Developed by: www.cliversoft.com";
                     Download = download;
                 }
 
-                override public void PROCESSOR(BotCycle bc)
+                override public void __Processor(BotCycle bc)
                 {
                     CustomBotCycle cbc = (CustomBotCycle)bc;
                     int _MaxDownloadedFileLength = Cliver.BotWeb.Settings.Web.MaxDownloadedFileLength;
