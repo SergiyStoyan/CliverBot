@@ -1,12 +1,18 @@
+
+#define UseNetJsonSerialization //for legacy apps
+
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
-//using System.Web.Script.Serialization;
+#if UseNetJsonSerialization
+using System.Web.Script.Serialization;
+#else
+using Newtonsoft.Json;
+#endif
 using System.IO;
 using System.Runtime.Serialization;
 using System.Xml;
-using Newtonsoft.Json;
 
 namespace Cliver
 {
@@ -21,9 +27,12 @@ namespace Cliver
             /// <returns></returns>
             static public string Serialize(object o)
             {
-                //JavaScriptSerializer serializer = new JavaScriptSerializer();
-                //return serializer.Serialize(o);
+#if UseNetJsonSerialization
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                return serializer.Serialize(o);
+#else
                 return JsonConvert.SerializeObject(o, Newtonsoft.Json.Formatting.Indented);
+#endif
             }
 
             /// <summary>
@@ -34,16 +43,22 @@ namespace Cliver
             /// <returns></returns>
             static public T Deserialize<T>(string json)
             {
-                //JavaScriptSerializer serializer = new JavaScriptSerializer();
-                //return serializer.Deserialize<T>(json);
+#if UseNetJsonSerialization
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                return serializer.Deserialize<T>(json);
+#else
                 return JsonConvert.DeserializeObject<T>(json);
+#endif
             }
 
             static public object Deserialize(Type type, string json)
             {
-                //JavaScriptSerializer serializer = new JavaScriptSerializer();
-                //return serializer.Deserialize(json, type);
+#if UseNetJsonSerialization
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                return serializer.Deserialize(json, type);
+#else
                 return JsonConvert.DeserializeObject(json, type);
+#endif
             }
 
             static public void Save(string file, object o)
