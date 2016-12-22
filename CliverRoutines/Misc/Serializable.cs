@@ -65,7 +65,8 @@ namespace Cliver
             return s;
         }
 
-        [ScriptIgnore]
+        //[ScriptIgnore]
+        [Newtonsoft.Json.JsonIgnore]
         public string __File { get; private set; }
 
         public void Save(string file = null)

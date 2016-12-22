@@ -2,10 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Configuration;
-using System.Web.Script.Serialization;
+//using System.Web.Script.Serialization;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Xml;
+using Newtonsoft.Json;
 
 namespace Cliver
 {
@@ -20,8 +21,9 @@ namespace Cliver
             /// <returns></returns>
             static public string Serialize(object o)
             {
-                JavaScriptSerializer serializer = new JavaScriptSerializer();
-                return serializer.Serialize(o);
+                //JavaScriptSerializer serializer = new JavaScriptSerializer();
+                //return serializer.Serialize(o);
+                return JsonConvert.SerializeObject(o, Newtonsoft.Json.Formatting.Indented);
             }
 
             /// <summary>
@@ -32,14 +34,16 @@ namespace Cliver
             /// <returns></returns>
             static public T Deserialize<T>(string json)
             {
-                JavaScriptSerializer serializer = new JavaScriptSerializer();
-                return serializer.Deserialize<T>(json);
+                //JavaScriptSerializer serializer = new JavaScriptSerializer();
+                //return serializer.Deserialize<T>(json);
+                return JsonConvert.DeserializeObject<T>(json);
             }
 
             static public object Deserialize(Type type, string json)
             {
-                JavaScriptSerializer serializer = new JavaScriptSerializer();
-                return serializer.Deserialize(json, type);
+                //JavaScriptSerializer serializer = new JavaScriptSerializer();
+                //return serializer.Deserialize(json, type);
+                return JsonConvert.DeserializeObject(json, type);
             }
 
             static public void Save(string file, object o)

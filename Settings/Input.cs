@@ -13,7 +13,7 @@ namespace Cliver.Bot
 {
     public partial class Settings
     {
-        [Cliver.Settings.Obligatory]
+        //[Cliver.Settings.Obligatory]
         public static readonly InputClass Input;
 
         public class InputClass : Cliver.Settings
@@ -23,6 +23,7 @@ namespace Cliver.Bot
             public FileFormatEnum FileFormat = FileFormatEnum.NULL;
 
             //[ScriptIgnore]
+            //[Newtonsoft.Json.JsonIgnore]
             //public string CompleteFile
             //{
             //    get

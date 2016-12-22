@@ -22,7 +22,8 @@ namespace Cliver.Bot
             public int FileChunkSizeInBytes = 1000000;
             public bool Append = false;
             public bool Write2CommonFolder = false;
-            [ScriptIgnore]
+            //[ScriptIgnore]
+            [Newtonsoft.Json.JsonIgnore]
             public Cliver.FieldPreparation.FieldSeparator FieldSeparator;
 
             override public void Loaded()

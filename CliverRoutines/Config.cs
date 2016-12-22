@@ -27,7 +27,7 @@ namespace Cliver
         /// this object is ever be loaded
         /// </summary>
         public class Obligatory : Attribute
-        { }
+        { } 
     }
 
     /// <summary>
