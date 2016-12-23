@@ -57,6 +57,55 @@ namespace Cliver
         {
             c.BeginInvoke(code);
         }
+        
+        public static void SlideVertically(this Control c, uint mss, int p2, MethodInvoker finished = null)
+        {
+            //if (st != null && st.IsAlive)
+            //    return;
+
+            int delta = c.Top > p2 ? -1 : 1;
+            int sleep = (int)((double)mss / ((p2 - c.Top) / delta));
+            ThreadRoutines.Start(() =>
+            {
+                while (
+                    !(bool)ControlRoutines.Invoke(c, () =>
+                    {
+                        c.Top = c.Top + delta;
+                        return delta < 0 ? c.Top <= p2 : c.Top >= p2;
+                    })
+                )
+                    System.Threading.Thread.Sleep(sleep);
+                ControlRoutines.Invoke(c, () =>
+                    {
+                        finished?.Invoke();
+                    });
+            });
+        }
+        //System.Threading.Thread st = null;
+        
+        public static void Condense(this Form f, uint mss, double o2, MethodInvoker finished = null)
+        {
+            //    if (ct != null && ct.IsAlive)
+            //        return;
+
+            double delta = f.Opacity < o2 ? 0.01 : -0.01;
+            int sleep = (int)((double)mss / ((o2 - f.Opacity) / delta));
+            ThreadRoutines.Start(() =>
+            {
+                while (
+                    !(bool)ControlRoutines.Invoke(f, () =>
+                    {
+                        f.Opacity = f.Opacity + delta;
+                        return delta > 0 ? f.Opacity >= o2 : f.Opacity <= o2;
+                    })
+                )
+                    System.Threading.Thread.Sleep(sleep);
+                ControlRoutines.Invoke(f, () =>
+                {
+                    finished?.Invoke();
+                });
+            });
+        }
     }
 }
 
