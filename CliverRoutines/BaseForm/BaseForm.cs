@@ -48,9 +48,9 @@ namespace Cliver
             return c.Invoke(function);
         }
 
-        public static object Invoke(this Control c, MethodInvoker code)
+        public static void Invoke(this Control c, MethodInvoker code)
         {
-            return c.Invoke(code);
+            c.Invoke(code);
         }
 
         public static void BeginInvoke(this Control c, MethodInvoker code)
@@ -58,11 +58,16 @@ namespace Cliver
             c.BeginInvoke(code);
         }
 
+        public static object InvokeFromUiThread(Delegate d)
+        {
+            return Application.OpenForms[0].Invoke(d);
+        }
+
         public static Thread SlideVertically(this Control c, double pixelsPerMss, int p2, MethodInvoker finished = null)
         {
             lock (c)
             {
-                Thread t;
+                Thread t = null;
                 //if (controls2sliding_thread.TryGetValue(c, out t) && t.IsAlive)
                 //    return t;
 
@@ -71,18 +76,23 @@ namespace Cliver
                 int sleep = (int)(time / ((p2 - c.Top) / delta));
                 t = ThreadRoutines.Start(() =>
                 {
-                    while (
-                        !(bool)ControlRoutines.Invoke(c, () =>
-                        {
-                            c.Top = c.Top + delta;
-                            return delta < 0 ? c.Top <= p2 : c.Top >= p2;
-                        })
-                    )
-                        System.Threading.Thread.Sleep(sleep);
-                    ControlRoutines.Invoke(c, () =>
-                        {
-                            finished?.Invoke();
-                        });
+                    try
+                    {
+                        while (c.Visible && !(bool)ControlRoutines.Invoke(c, () =>
+                            {
+                                c.Top = c.Top + delta;
+                                return delta < 0 ? c.Top <= p2 : c.Top >= p2;
+                            })
+                        )
+                            System.Threading.Thread.Sleep(sleep);
+                        ControlRoutines.Invoke(c, () =>
+                            {
+                                finished?.Invoke();
+                            });
+                    }
+                    catch(Exception e)//control disposed
+                    {
+                    }
                 });
                 //controls2sliding_thread[c] = t;
                 return t;
@@ -94,27 +104,32 @@ namespace Cliver
         {
             lock (f)
             {
-                Thread t;
+                Thread t = null;
                 //if (controls2condensing_thread.TryGetValue(f, out t) && t.IsAlive)
                 //    return t;
 
                 double delta = f.Opacity < o2 ? 0.01 : -0.01;
                 double time = Math.Abs(o2 - f.Opacity) / (centOpacityPerMss / 100);
                 int sleep = (int)(time / ((o2 - f.Opacity) / delta));
-                t= ThreadRoutines.Start(() =>
+                t = ThreadRoutines.Start(() =>
                 {
-                    while (
-                        !(bool)ControlRoutines.Invoke(f, () =>
-                        {
-                            f.Opacity = f.Opacity + delta;
-                            return delta > 0 ? f.Opacity >= o2 : f.Opacity <= o2;
-                        })
-                    )
-                        System.Threading.Thread.Sleep(sleep);
-                    ControlRoutines.Invoke(f, () =>
+                    try
                     {
-                        finished?.Invoke();
-                    });
+                        while (!(bool)ControlRoutines.Invoke(f, () =>
+                            {
+                                f.Opacity = f.Opacity + delta;
+                                return delta > 0 ? f.Opacity >= o2 : f.Opacity <= o2;
+                            })
+                        )
+                            System.Threading.Thread.Sleep(sleep);
+                        ControlRoutines.Invoke(f, () =>
+                        {
+                            finished?.Invoke();
+                        });
+                    }
+                    catch (Exception e)//control disposed
+                    {
+                    }
                 });
                 //controls2condensing_thread[f] = t;
                 return t;
