@@ -237,7 +237,7 @@ namespace Cliver
             string m;
             string d;
             GetExceptionMessage(e, out m, out d);
-            return m + " \r\n\r\n" + d; ;
+            return m + " \r\n\r\n" + d;
         }
 
 //        static public void GetExceptionMessage(Exception e, out string message, out string details)

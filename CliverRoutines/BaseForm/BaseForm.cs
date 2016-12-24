@@ -57,54 +57,65 @@ namespace Cliver
         {
             c.BeginInvoke(code);
         }
-        
-        public static void SlideVertically(this Control c, uint mss, int p2, MethodInvoker finished = null)
-        {
-            //if (st != null && st.IsAlive)
-            //    return;
 
-            int delta = c.Top > p2 ? -1 : 1;
-            int sleep = (int)((double)mss / ((p2 - c.Top) / delta));
-            ThreadRoutines.Start(() =>
+        public static Thread SlideVertically(this Control c, double pixelsPerMss, int p2, MethodInvoker finished = null)
+        {
+            lock (c)
             {
-                while (
-                    !(bool)ControlRoutines.Invoke(c, () =>
-                    {
-                        c.Top = c.Top + delta;
-                        return delta < 0 ? c.Top <= p2 : c.Top >= p2;
-                    })
-                )
-                    System.Threading.Thread.Sleep(sleep);
-                ControlRoutines.Invoke(c, () =>
+                //Thread t = (Thread)c.Tag;
+                //if (t != null && t.IsAlive)
+                //    return;
+
+                int delta = c.Top > p2 ? -1 : 1;
+                double time = Math.Abs(p2 - c.Top) / pixelsPerMss;
+                int sleep = (int)(time / ((p2 - c.Top) / delta));
+                //int sleep = (int)((double)mss / ((p2 - c.Top) / delta));
+                return ThreadRoutines.Start(() =>
+                {
+                    while (
+                        !(bool)ControlRoutines.Invoke(c, () =>
+                        {
+                            c.Top = c.Top + delta;
+                            return delta < 0 ? c.Top <= p2 : c.Top >= p2;
+                        })
+                    )
+                        System.Threading.Thread.Sleep(sleep);
+                    ControlRoutines.Invoke(c, () =>
+                        {
+                            finished?.Invoke();
+                        });
+                });
+            }
+        }
+
+        public static Thread Condense(this Form f, double centOpacityPerMss, double o2, MethodInvoker finished = null)
+        {
+            lock (f)
+            {
+                //Thread t = (Thread)f.Tag;
+                //if (t != null && t.IsAlive)
+                //    return;
+
+                double delta = f.Opacity < o2 ? 0.01 : -0.01;
+                double time = Math.Abs(o2 - f.Opacity) / (centOpacityPerMss / 100);
+                int sleep = (int)(time / ((o2 - f.Opacity) / delta));
+                //int sleep = (int)((double)mss / ((o2 - f.Opacity) / delta));
+                return ThreadRoutines.Start(() =>
+                {
+                    while (
+                        !(bool)ControlRoutines.Invoke(f, () =>
+                        {
+                            f.Opacity = f.Opacity + delta;
+                            return delta > 0 ? f.Opacity >= o2 : f.Opacity <= o2;
+                        })
+                    )
+                        System.Threading.Thread.Sleep(sleep);
+                    ControlRoutines.Invoke(f, () =>
                     {
                         finished?.Invoke();
                     });
-            });
-        }
-        //System.Threading.Thread st = null;
-        
-        public static void Condense(this Form f, uint mss, double o2, MethodInvoker finished = null)
-        {
-            //    if (ct != null && ct.IsAlive)
-            //        return;
-
-            double delta = f.Opacity < o2 ? 0.01 : -0.01;
-            int sleep = (int)((double)mss / ((o2 - f.Opacity) / delta));
-            ThreadRoutines.Start(() =>
-            {
-                while (
-                    !(bool)ControlRoutines.Invoke(f, () =>
-                    {
-                        f.Opacity = f.Opacity + delta;
-                        return delta > 0 ? f.Opacity >= o2 : f.Opacity <= o2;
-                    })
-                )
-                    System.Threading.Thread.Sleep(sleep);
-                ControlRoutines.Invoke(f, () =>
-                {
-                    finished?.Invoke();
                 });
-            });
+            }
         }
     }
 }
