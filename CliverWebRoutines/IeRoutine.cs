@@ -625,7 +625,13 @@ namespace Cliver.BotWeb
             browser.Document.Body.AppendChild(he);
         }
 
-        public object RunScript(string function, object[] parameters = null)
+        public object PerformScript(string script)
+        {
+            script = @"(function() {" + script + @"}())";
+            return browser.Document.InvokeScript("eval", new object[] { script });
+        }
+
+        public object InvokeScript(string function, object[] parameters = null)
         {
             return browser.Document.InvokeScript(function, parameters);
         }
