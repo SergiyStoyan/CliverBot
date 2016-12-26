@@ -43,7 +43,7 @@ namespace Cliver
                     }
                     catch (ThreadAbortException e)
                     {
-                        Thread.ResetAbort();
+                        //Thread.ResetAbort();
                     }
                     catch (Exception e)
                     {

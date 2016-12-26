@@ -1,5 +1,5 @@
 
-#define UseNetJsonSerialization //for legacy apps
+//#define UseNetJsonSerialization //for legacy apps
 
 using System;
 using System.Collections.Generic;
