@@ -42,5 +42,13 @@ namespace Cliver
             dt = dt.AddSeconds(secs_since_1970);
             return dt.ToLocalTime();
         }
+
+        public static string GetAppVersion()
+        {
+            DateTime dt = AssemblyRoutines.GetAssemblyCompiledTime(Assembly.GetEntryAssembly());
+            DateTime dt2 = AssemblyRoutines.GetAssemblyCompiledTime(Assembly.GetCallingAssembly());
+            dt = dt > dt2 ? dt : dt2;
+            return dt.ToString("yy-MM-dd-HH-mm-ss");
+        }
     }
 }

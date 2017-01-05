@@ -138,7 +138,7 @@ namespace Cliver
         static public void Save(string storage_dir = null)
         {
             storage_dir = storage_dir != null ? storage_dir : DefaultStorageDir;
-            if (ReadOnly && PathRoutines.AreDirPathsEqual(storage_dir, StorageDir))
+            if (ReadOnly && PathRoutines.ArePathsEqual(storage_dir, StorageDir))
                 throw new Exception("Config is read-only and cannot be saved to the same location.");
             StorageDir = storage_dir;
             lock (object_names2serializable)
