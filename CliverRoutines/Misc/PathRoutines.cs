@@ -80,7 +80,7 @@ namespace Cliver
         /// <returns></returns>        
         public static string GetDirFromPath(string path)
         {
-            return Regex.Replace(path, @"[^\\]*$", "", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
+            return Regex.Replace(path, @"[^\\\/]*$", "", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
         }
 
         public static string ReplaceFileExtention(string path, string extention)

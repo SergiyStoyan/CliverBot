@@ -55,22 +55,19 @@ namespace Cliver.Bot
 
         internal static void Start()
         {
-            lock (threads2bot_cycle)
+            lock (threads2bot_cycle)//locked until threads2bot_cycle[t] = bc; to have a correct thread number
             {
                 if (threads2bot_cycle.Count >= Settings.Engine.MaxBotThreadNumber)
                     return;
-            }
-            BotCycle bc = null;
-            Thread t = ThreadRoutines.Start(() =>
-            {
-                bc = Activator.Create<BotCycle>(false);
-                bc.bot_cycle();
-            }
-            );
-            if (!SleepRoutines.WaitForCondition(() => { return bc != null && bc.Id >= 0; }, 100000))
-                throw new Exception("Could not start BotCycle thread");
-            lock (threads2bot_cycle)
-            {
+                BotCycle bc = null;
+                Thread t = ThreadRoutines.Start(() =>
+                {
+                    bc = Activator.Create<BotCycle>(false);
+                    bc.bot_cycle();
+                }
+                );
+                if (!SleepRoutines.WaitForCondition(() => { return bc != null && bc.Id >= 0; }, 100000))
+                    throw new Exception("Could not start BotCycle thread");
                 threads2bot_cycle[t] = bc;
             }
         }

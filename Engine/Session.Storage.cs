@@ -224,7 +224,7 @@ namespace Cliver.Bot
                     d.Add(pi.Name, pi.GetValue(names2value));
                     sb.Append("\r\n" + pi.Name + "=" + pi.GetValue(names2value));
                 }
-                Log.Main.Inform("STATE: " + sb.ToString());
+                Log.Main.Inform("STATE: " + state + "\r\n" + sb.ToString());
                 writeElement(SessionTag, d);
             }
             const string SessionTag = "__SESSION";
