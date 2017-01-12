@@ -227,7 +227,7 @@ namespace Cliver.Bot
         static public void __FatalErrorClose(string message)
         {
             LogMessage.Error(message);
-            Session.State = SessionState.FatalError;
+            Session.State = SessionState.FATAL_ERROR;
             This.Storage.WriteState(State, new { });
             This.__FatalError(message);
             Session.Close();
@@ -236,7 +236,7 @@ namespace Cliver.Bot
         static public void __FatalErrorClose(Exception e)
         {
             LogMessage.Error(e);
-            Session.State = SessionState.FatalError;
+            Session.State = SessionState.FATAL_ERROR;
             This.Storage.WriteState(State, new { });
             This.__FatalError(e.Message);
             Session.Close();
