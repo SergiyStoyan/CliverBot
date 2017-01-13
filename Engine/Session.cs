@@ -97,7 +97,7 @@ namespace Cliver.Bot
                 case SessionState.CLOSING:
                 case SessionState.UNCOMPLETED:
                 case SessionState.BROKEN:
-                case SessionState.NOT_FATAL_ERROR:
+                case SessionState.NONFATAL_ERROR:
                     if (Settings.Engine.RestoreBrokenSession && !ProgramRoutines.IsParameterSet(CommandLineParameters.NOT_RESTORE_SESSION))
                     {
                         if (LogMessage.AskYesNo("Previous session " + old_time_mark + " is not completed. Restore it?", true))
@@ -290,7 +290,7 @@ namespace Cliver.Bot
                         case SessionState.CLOSING:
                         case SessionState.UNCOMPLETED:
                         case SessionState.BROKEN:
-                        case SessionState.NOT_FATAL_ERROR:
+                        case SessionState.NONFATAL_ERROR:
                             break;
                         default:
                             throw new Exception("Unknown option: " + State);
@@ -351,7 +351,7 @@ namespace Cliver.Bot
         COMPLETED,
         UNCOMPLETED,
         BROKEN,
-        NOT_FATAL_ERROR,
+        NONFATAL_ERROR,
         FATAL_ERROR
     }
 }

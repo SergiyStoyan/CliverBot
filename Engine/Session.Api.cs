@@ -241,7 +241,7 @@ namespace Cliver.Bot
             if (fatal)
                 State = SessionState.FATAL_ERROR;
             else
-                Session.State = SessionState.NOT_FATAL_ERROR;
+                Session.State = SessionState.NONFATAL_ERROR;
             This.Storage.WriteState(State, new { });
             This.__ErrorClosing(message);
             Close();
