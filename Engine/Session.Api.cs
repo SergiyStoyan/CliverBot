@@ -173,7 +173,7 @@ namespace Cliver.Bot
         /// Used to send alert
         /// </summary>
         /// <param name="message"></param>
-        virtual public void __FatalError(string message)
+        virtual public void __ErrorClosing(string message)
         {
         }
 
@@ -224,22 +224,27 @@ namespace Cliver.Bot
         //public delegate void OnFatalError(string message);
         //static public event OnFatalError FatalError = null;
 
-        static public void __FatalErrorClose(string message)
+        static public void __ErrorClose(string message, bool fatal)
         {
             LogMessage.Error(message);
-            Session.State = SessionState.FATAL_ERROR;
-            This.Storage.WriteState(State, new { });
-            This.__FatalError(message);
-            Session.Close();
+            __error_close_(message, fatal);
         }
 
-        static public void __FatalErrorClose(Exception e)
+        static public void __ErrorClose(Exception e, bool fatal)
         {
             LogMessage.Error(e);
-            Session.State = SessionState.FATAL_ERROR;
+            __error_close_(e.Message, fatal);
+        }
+
+        static void __error_close_(string message, bool fatal)
+        {
+            if (fatal)
+                State = SessionState.FATAL_ERROR;
+            else
+                Session.State = SessionState.NOT_FATAL_ERROR;
             This.Storage.WriteState(State, new { });
-            This.__FatalError(e.Message);
-            Session.Close();
+            This.__ErrorClosing(message);
+            Close();
         }
 
         public class FatalException : Exception

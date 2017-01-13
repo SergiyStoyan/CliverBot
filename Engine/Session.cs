@@ -97,6 +97,7 @@ namespace Cliver.Bot
                 case SessionState.CLOSING:
                 case SessionState.UNCOMPLETED:
                 case SessionState.BROKEN:
+                case SessionState.NOT_FATAL_ERROR:
                     if (Settings.Engine.RestoreBrokenSession && !ProgramRoutines.IsParameterSet(CommandLineParameters.NOT_RESTORE_SESSION))
                     {
                         if (LogMessage.AskYesNo("Previous session " + old_time_mark + " is not completed. Restore it?", true))
@@ -148,11 +149,7 @@ namespace Cliver.Bot
         internal readonly Counter ProcessorErrors = new Counter("processor_errors", Settings.Engine.MaxProcessorErrorNumber, max_error_count);
         static void max_error_count(int count)
         {
-            string message = "Errors in succession: " + count + "\r\nTerminating the session.";
-            LogMessage.Error(message);
-            Session.State = SessionState.BROKEN;
-            This.Storage.WriteState(State, new { });
-            Session.Close();
+            Session.__ErrorClose("Errors in succession: " + count + "\r\nTerminating the session.", false);
         }
 
         static string get_time_mark(DateTime dt)
@@ -201,7 +198,7 @@ namespace Cliver.Bot
             }
             catch (Exception e)
             {
-                Session.__FatalErrorClose(e);
+                Session.__ErrorClose(e, true);
             }
         }
 
@@ -249,7 +246,7 @@ namespace Cliver.Bot
                         Session.State = SessionState.FATAL_ERROR;
                         This.Storage.WriteState(State, new { });
                         LogMessage.Error(e);
-                        __FatalError(e.Message);
+                        __ErrorClosing(e.Message);
                     }
 
                     try
@@ -261,7 +258,7 @@ namespace Cliver.Bot
                         Session.State = SessionState.FATAL_ERROR;
                         This.Storage.WriteState(State, new { });
                         LogMessage.Error(e);
-                        __FatalError(e.Message);
+                        __ErrorClosing(e.Message);
                     }
 
                     InputItemQueue.Close();
@@ -275,7 +272,7 @@ namespace Cliver.Bot
                     Session.State = SessionState.FATAL_ERROR;
                     This.Storage.WriteState(State, new { });
                     LogMessage.Error(e);
-                    __FatalError(e.Message);
+                    __ErrorClosing(e.Message);
                 }
                 finally
                 {
@@ -293,6 +290,7 @@ namespace Cliver.Bot
                         case SessionState.CLOSING:
                         case SessionState.UNCOMPLETED:
                         case SessionState.BROKEN:
+                        case SessionState.NOT_FATAL_ERROR:
                             break;
                         default:
                             throw new Exception("Unknown option: " + State);
@@ -309,7 +307,7 @@ namespace Cliver.Bot
             catch (Exception e)
             {
                 LogMessage.Error(e);
-                __FatalError(e.Message);
+                __ErrorClosing(e.Message);
             }
         }
 
@@ -353,6 +351,7 @@ namespace Cliver.Bot
         COMPLETED,
         UNCOMPLETED,
         BROKEN,
+        NOT_FATAL_ERROR,
         FATAL_ERROR
     }
 }

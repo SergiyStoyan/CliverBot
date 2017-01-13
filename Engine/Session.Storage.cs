@@ -208,7 +208,7 @@ namespace Cliver.Bot
                 }
                 catch (Exception e)
                 {
-                    __FatalErrorClose(e);
+                    Session.__ErrorClose(e, true);
                     return SessionState.NULL;
                 }
             }
@@ -380,7 +380,7 @@ namespace Cliver.Bot
                 }
                 catch (Exception e)
                 {
-                    __FatalErrorClose(e);
+                    __ErrorClose(e, true);
                 }
                 foreach (InputItemQueue iiq in This.input_item_queue_name2input_item_queues.Values)
                     iiq.OmitRestoredProcessedItems();

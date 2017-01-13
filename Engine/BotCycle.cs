@@ -212,7 +212,7 @@ namespace Cliver.Bot
             }
             catch (Exception e)
             {
-                Session.__FatalErrorClose(e);
+                Session.__ErrorClose(e, true);
             }
             finally
             {
