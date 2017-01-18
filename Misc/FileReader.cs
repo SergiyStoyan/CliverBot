@@ -49,10 +49,10 @@ namespace Cliver.Bot
             switch(file_format)
             {
                 case FileFormatEnum.CSV:
-                    match_regex = new Regex(@"(?'Q'\""?)(?'V'.*?)(?:\k'Q')(,|$)");
+                    match_regex = new Regex("(?:^|,)(?'V'\"(?:[^\"]+|\"\")*\"|[^,]*)");
                     break;
                 case FileFormatEnum.TSV:
-                    match_regex = new Regex(@"(?'Q'\""?)(?'V'.*?)(?:\k'Q')(\t|$)");
+                    match_regex = new Regex("(?:^|\t)(?'V'\"(?:[^\"]+|\"\")*\"|[^\t]*)");
                     break;
                 case FileFormatEnum.XLS:
                     throw new Exception("XLS format not implemented.");
@@ -107,10 +107,8 @@ namespace Cliver.Bot
         List<string> get_columns(string line)
         {
             List<string> vs = new List<string>();
-            for (Match m = match_regex.Match(line); m.Success; m = m.NextMatch())
+            for (Match m = match_regex.Match(line.Trim()); m.Success; m = m.NextMatch())
                 vs.Add(Regex.Replace(m.Groups["V"].Value, @"\""{2}", @"""", RegexOptions.Compiled));
-            if (vs.Count > 0)
-                vs.RemoveAt(vs.Count - 1);
             return vs;
         }
 
