@@ -33,7 +33,7 @@ namespace Cliver
 
         public delegate void ErrorHandler(Exception e);
 
-        public static Thread StartTry(MethodInvoker code, ErrorHandler on_error = null, MethodInvoker on_finally = null, bool background = true)
+        public static Thread StartTry(MethodInvoker code, ErrorHandler on_error = null, MethodInvoker on_finally = null, bool background = true, ApartmentState state = ApartmentState.Unknown)
         {
             Thread t = new Thread(
                 () => {
@@ -58,6 +58,8 @@ namespace Cliver
                     }
                 }
             );
+            if(state!= ApartmentState.Unknown)
+                t.SetApartmentState(state);
             t.IsBackground = background;
             t.Start();
             return t;
