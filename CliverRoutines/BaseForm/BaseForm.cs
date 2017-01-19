@@ -63,7 +63,7 @@ namespace Cliver
             return Application.OpenForms[0].Invoke(d);
         }
 
-        public static Thread SlideVertically(this Control c, double pixelsPerMss, int position2, int delta = 1, MethodInvoker finished = null)
+        public static Thread SlideVertically(this Control c, double pixelsPerMss, int position2, int step = 1, MethodInvoker finished = null)
         {
             lock (c)
             {
@@ -71,17 +71,17 @@ namespace Cliver
                 //if (controls2sliding_thread.TryGetValue(c, out t) && t.IsAlive)
                 //    return t;
 
-                delta = c.Top > position2 ? -delta : delta;
+                step = c.Top > position2 ? -step : step;
                 double total_mss = Math.Abs(position2 - c.Top) / pixelsPerMss;
-                int sleep = (int)(total_mss / ((position2 - c.Top) / delta));
+                int sleep = (int)(total_mss / ((position2 - c.Top) / step));
                 t = ThreadRoutines.Start(() =>
                 {
                     try
                     {
                         while (c.Visible && !(bool)ControlRoutines.Invoke(c, () =>
                             {
-                                c.Top = c.Top + delta;
-                                return delta < 0 ? c.Top <= position2 : c.Top >= position2;
+                                c.Top = c.Top + step;
+                                return step < 0 ? c.Top <= position2 : c.Top >= position2;
                             })
                         )
                             System.Threading.Thread.Sleep(sleep);
@@ -100,7 +100,7 @@ namespace Cliver
         }
         //static readonly  Dictionary<Control, Thread> controls2sliding_thread = new Dictionary<Control, Thread>();
 
-        public static Thread Condense(this Form f, double centOpacityPerMss, double opacity2, double delta = 0.05, MethodInvoker finished = null)
+        public static Thread Condense(this Form f, double opacityPerMss, double opacity2, double step = 0.05, MethodInvoker finished = null)
         {
             lock (f)
             {
@@ -108,17 +108,17 @@ namespace Cliver
                 //if (controls2condensing_thread.TryGetValue(f, out t) && t.IsAlive)
                 //    return t;
 
-                delta = f.Opacity < opacity2 ? delta : -delta;
-                double total_mss = Math.Abs(opacity2 - f.Opacity) / (centOpacityPerMss / 100);
-                int sleep = (int)(total_mss / ((opacity2 - f.Opacity) / delta));
+                step = f.Opacity < opacity2 ? step : -step;
+                double total_mss = Math.Abs(opacity2 - f.Opacity) / opacityPerMss;
+                int sleep = (int)(total_mss / ((opacity2 - f.Opacity) / step));
                 t = ThreadRoutines.Start(() =>
                 {
                     try
                     {
                         while (!(bool)ControlRoutines.Invoke(f, () =>
                             {
-                                f.Opacity = f.Opacity + delta;
-                                return delta > 0 ? f.Opacity >= opacity2 : f.Opacity <= opacity2;
+                                f.Opacity = f.Opacity + step;
+                                return step > 0 ? f.Opacity >= opacity2 : f.Opacity <= opacity2;
                             })
                         )
                             System.Threading.Thread.Sleep(sleep);
