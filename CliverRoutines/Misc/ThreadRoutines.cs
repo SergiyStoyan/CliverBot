@@ -23,9 +23,11 @@ namespace Cliver
     /// </summary>
     public static class ThreadRoutines
     {
-        public static Thread Start(ThreadStart code, bool background = true)
+        public static Thread Start(ThreadStart code, bool background = true, ApartmentState state = ApartmentState.Unknown)
         {
             Thread t = new Thread(code);
+            if (state != ApartmentState.Unknown)
+                t.SetApartmentState(state);
             t.IsBackground = background;
             t.Start();
             return t;
