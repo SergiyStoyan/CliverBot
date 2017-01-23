@@ -7,6 +7,8 @@
 //Copyright: (C) 2008, Sergey Stoyan
 //********************************************************************************************
 
+//#define BRIEF_ERROR
+
 using System;
 using System.Drawing;
 using System.Collections.Generic;
@@ -56,9 +58,12 @@ namespace Cliver
         {
             ShowDialog(Application.ProductName, SystemIcons.Warning, message, new string[1] { "OK" }, 0, owner);
         }
-
+        
         public static void Error(Exception e, Form owner = null)
         {
+#if BRIEF_ERROR
+            Error(e.Message, owner);
+#else
             List<string> ms = new List<string>();
             bool stack_trace_added = false;
             for (; e != null; e = e.InnerException)
@@ -73,11 +78,7 @@ namespace Cliver
             }
 
             ShowDialog(Application.ProductName, SystemIcons.Error, string.Join("\r\n=>\r\n", ms), new string[1] { "OK" }, 0, owner);
-        }
-
-        public static void Error2(Exception e, Form owner = null)
-        {
-            Error(e.Message, owner);
+#endif
         }
 
         public static void Error(string message, Form owner = null)
