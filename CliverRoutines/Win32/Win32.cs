@@ -31,6 +31,9 @@ namespace Cliver
         [DllImport("user32.dll", SetLastError = true)]
         public static extern IntPtr SetForegroundWindow(IntPtr h);
 
+        [DllImport("user32.dll", CharSet = CharSet.Auto)]
+        public static extern IntPtr DefWindowProc(IntPtr hWnd, int msg, IntPtr wParam, IntPtr lParam);
+
         [DllImport("user32.dll", SetLastError = true)]
         public static extern byte VkKeyScan(char c);
 

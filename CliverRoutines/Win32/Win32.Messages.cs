@@ -1001,6 +1001,11 @@ namespace Cliver
     {
         //public class Messages
         //{
+        public const uint WA_ACTIVE = 0x0001;
+        public const uint WA_CLICKACTIVE = 0x0002;
+        public const uint WA_INACTIVE = 0x0000;
+        public const uint SC_MAXIMIZE = 0xF030; // Maximize event -  from Winuser.h
+        public const uint SC_RESTORE = 0xF120; // Restore event -  from Winuser.h
             public const uint WM_NULL = 0x0000;
             public const uint WM_CREATE = 0x0001;
             public const uint
