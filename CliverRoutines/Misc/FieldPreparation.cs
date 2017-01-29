@@ -18,7 +18,7 @@ namespace Cliver
     {
         public class Html
         {
-            public static string Prepare(string value)
+            public static string Normalize(string value)
             {
                 if (value == null)
                     return "";
@@ -31,12 +31,12 @@ namespace Cliver
                 return value;
             }
 
-            public static string GetCsvField(string value, FieldSeparator separator, bool prepare = true)
+            public static string GetCsvField(string value, FieldSeparator separator, bool normalize = true)
             {
                 if (value == null)
                     return "";
-                if (prepare)
-                    value = Prepare(value);
+                if (normalize)
+                    value = Normalize(value);
                 value = Regex.Replace(value, "\"", "\"\"", RegexOptions.Compiled | RegexOptions.Singleline);
                 if (Regex.IsMatch(value, separator.Value, RegexOptions.Compiled | RegexOptions.Singleline))
                     value = "\"" + value + "\"";
@@ -57,7 +57,7 @@ namespace Cliver
                 return value;
             }
 
-            public static string GetCsvLine(dynamic o, FieldSeparator separator, bool prepare = true)
+            public static string GetCsvLine(dynamic o, FieldSeparator separator, bool normalize = true)
             {
                 List<string> ss = new List<string>();
                 foreach (System.Reflection.PropertyInfo pi in o.GetType().GetProperties())
@@ -70,12 +70,12 @@ namespace Cliver
                         s = p.ToString();
                     else
                         s = null;
-                    ss.Add(GetCsvField(s, separator, prepare));
+                    ss.Add(GetCsvField(s, separator, normalize));
                 }
                 return string.Join(separator.Value, ss);
             }
 
-            public static string GetCsvLine(IEnumerable<object> values, FieldSeparator separator, bool prepare = true)
+            public static string GetCsvLine(IEnumerable<object> values, FieldSeparator separator, bool normalize = true)
             {
                 List<string> ss = new List<string>();
                 foreach (object v in values)
@@ -87,7 +87,7 @@ namespace Cliver
                         s = v.ToString();
                     else
                         s = null;
-                    ss.Add(GetCsvField(s, separator, prepare));
+                    ss.Add(GetCsvField(s, separator, normalize));
                 }
                 return string.Join(separator.Value, ss);
             }
@@ -122,7 +122,7 @@ namespace Cliver
             }
         }
 
-        public static string Prepare(string value)
+        public static string Normalize(string value)
         {
             if (value == null)
                 return "";
@@ -132,12 +132,12 @@ namespace Cliver
             return value;
         }
 
-        public static string GetCsvField(string value, FieldSeparator separator, bool prepare = true)
+        public static string GetCsvField(string value, FieldSeparator separator, bool normalize = true)
         {
             if (value == null)
                 return "";
-            if (prepare)
-                value = Prepare(value);
+            if (normalize)
+                value = Normalize(value);
             value = Regex.Replace(value, "\"", "\"\"", RegexOptions.Compiled | RegexOptions.Singleline);
             if (Regex.IsMatch(value, separator.Value, RegexOptions.Compiled | RegexOptions.Singleline))
                 value = "\"" + value + "\"";
@@ -171,7 +171,7 @@ namespace Cliver
             return value;
         }
 
-        public static string GetCsvLine(dynamic o, FieldSeparator separator, bool prepare = true)
+        public static string GetCsvLine(dynamic o, FieldSeparator separator, bool normalize = true)
         {
             List<string> ss = new List<string>();
             foreach (System.Reflection.PropertyInfo pi in o.GetType().GetProperties())
@@ -184,12 +184,12 @@ namespace Cliver
                     s = p.ToString();
                 else
                     s = null;
-                ss.Add(GetCsvField(s, separator, prepare));
+                ss.Add(GetCsvField(s, separator, normalize));
             }
             return string.Join(separator.Value, ss);
         }
 
-        public static string GetCsvLine(IEnumerable<object> values, FieldSeparator separator, bool prepare = true)
+        public static string GetCsvLine(IEnumerable<object> values, FieldSeparator separator, bool normalize = true)
         {
             List<string> ss = new List<string>();
             foreach (object v in values)
@@ -201,7 +201,7 @@ namespace Cliver
                     s = v.ToString();
                 else
                     s = null;
-                ss.Add(GetCsvField(s, separator, prepare));
+                ss.Add(GetCsvField(s, separator, normalize));
             }
             return string.Join(separator.Value, ss);
         }
