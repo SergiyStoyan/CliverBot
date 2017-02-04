@@ -72,7 +72,7 @@ namespace Cliver
         /// <param name="month">month when the test period expires</param>
         /// <param name="day">day when the test period expires</param>
         /// <param name="for_release_only"></param>
-        static public void CHECK_TEST_PERIOD_VALIDITY(int year, int month, int day, bool for_release_only = false)
+        static public void CHECK_TEST_PERIOD_VALIDITY(int year, int month, int day, bool silently = false, bool for_release_only = false)
         {
             try
             {
@@ -81,9 +81,19 @@ namespace Cliver
                 //if (for_release_only && !IsReleaseVersion(Assembly.GetEntryAssembly()))
                 //    return;
                 //LogMessage.Inform("It is a demo version that is valid until " + year + "-" + month + "-" + day);
-                Log.Main.Inform("It is a demo version that is valid until " + year + "-" + month + "-" + day);
+                if (!silently)
+                    Log.Main.Inform("It is a demo version that is valid until " + year + "-" + month + "-" + day);
                 if (new DateTime(year, month, day) < InternetDateTime.GetOverHttp())
-                    LogMessage.Exit("The test time expired. \nPlease contact the vendor if you want to use this software.");
+                {
+                    string m = "The test time expired. \nPlease contact the vendor if you want to use this software.";
+                    if (silently)
+                    {
+                        Message.Exclaim(m);
+                        Environment.Exit(0);
+                    }
+                    else
+                        LogMessage.Exit(m);
+                }                  
             }
             catch (Exception e)
             {

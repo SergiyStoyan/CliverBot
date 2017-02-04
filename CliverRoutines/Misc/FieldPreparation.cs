@@ -144,12 +144,6 @@ namespace Cliver
             return value;
         }
 
-        //public enum FieldSeparatorType
-        //{
-        //    COMMA,
-        //    TAB,
-        //}
-
         public class FieldSeparator : Cliver.Enum<string>
         {
             FieldSeparator(string value) : base(value) { }
