@@ -34,6 +34,9 @@ using System.Windows.Forms;
 using System.Net;
 using System.Reflection;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Threading;
+using System.Windows;
 
 namespace Cliver
 {
@@ -76,6 +79,7 @@ namespace Cliver
         {
             try
             {
+                InternetDateTime.silently = silently;
                 //if (year < 1)
                 //    return;
                 //if (for_release_only && !IsReleaseVersion(Assembly.GetEntryAssembly()))
@@ -83,23 +87,40 @@ namespace Cliver
                 //LogMessage.Inform("It is a demo version that is valid until " + year + "-" + month + "-" + day);
                 if (!silently)
                     Log.Main.Inform("It is a demo version that is valid until " + year + "-" + month + "-" + day);
-                if (new DateTime(year, month, day) < InternetDateTime.GetOverHttp())
+                ThreadRoutines.StartTry(() =>
                 {
-                    string m = "The test time expired. \nPlease contact the vendor if you want to use this software.";
-                    if (silently)
+                    if (new DateTime(year, month, day) < InternetDateTime.GetOverHttp())
                     {
-                        Message.Exclaim(m);
-                        Environment.Exit(0);
+                        Action a = (Action)(() => {
+                            LogMessage.Exit("The test time expired. \nPlease contact the vendor if you want to use this software.");
+                        });
+                        if (System.Windows.Forms.Application.OpenForms.Count > 0)
+                            System.Windows.Forms.Application.OpenForms[0].Invoke(a);
+                        //else if (System.Windows.Application.Current != null)
+                        //    System.Windows.Application.Current.Dispatcher.Invoke(a);
+                        else
+                        {
+                            ThreadRoutines.Start(() =>
+                            {
+                                Thread.Sleep(5000);
+                                Environment.Exit(0);
+                            });
+                            a();
+                        }
                     }
-                    else
-                        LogMessage.Exit(m);
-                }                  
+                },
+                (Exception e) =>
+                {
+                    LogMessage.Exit(e);
+                }
+                );
             }
             catch (Exception e)
             {
                 LogMessage.Exit(e);
             }
         }
+        static bool silently = false;
 
         /// <summary>
         /// Get the current datetime from a https response header.
@@ -124,30 +145,31 @@ namespace Cliver
             //return get("http://www.google.com/");
         }
 
-        static DateTime get(string url)
+        static DateTime get(string url, int timeout_in_secs = 10)
         {
             try
             {
+                string dts = null;
                 data_received = false;
-                WebClient w = new WebClient();
-                w.DownloadProgressChanged += new DownloadProgressChangedEventHandler(w_DownloadProgressChanged);
-                Uri uri = new Uri(url);
-                w.DownloadStringAsync(uri); 
-                while (w.IsBusy && !data_received)
+                using (WebClient w = new WebClient())
                 {
-                    Application.DoEvents();
+                    w.DownloadProgressChanged += new DownloadProgressChangedEventHandler(w_DownloadProgressChanged);
+                    Uri uri = new Uri(url);
+                    w.DownloadStringAsync(uri);
+                    DateTime timeout = DateTime.Now.AddSeconds(timeout_in_secs);
+                    while (w.IsBusy && !data_received && DateTime.Now < timeout)
+                        Thread.Sleep(100);
+
+                    if (w.ResponseHeaders == null)
+                        throw (new Exception("This version of the application requires access to the internet to check its validity.\nPlease connect your computer to the internet and restart the application."));
+
+                    dts = w.ResponseHeaders["Date"];
+
+                    w.CancelAsync();
                 }
 
-                if (w.ResponseHeaders == null)
-                    throw(new Exception("This version of the application requires access to the internet to check its validity.\nPlease connect your computer to the internet and restart the application."));
-
-                string dts = w.ResponseHeaders["Date"];
-
-                w.CancelAsync();  
-                w.Dispose();
-
                 if (dts == null || dts.Length <= 0)
-                    throw(new Exception("Could not find Date header in the response."));
+                    throw (new Exception("Could not find Date header in the response."));
 
                 DateTime dt;
                 if (!DateTime.TryParse(dts, out dt))
@@ -157,7 +179,10 @@ namespace Cliver
             }
             catch (Exception e)
             {
-                LogMessage.Exit("Test period validation failed.\n\n" + e.Message);
+                if (silently)
+                    Message.Error("Validation failed.\n\n" + e.Message);
+                else
+                    LogMessage.Exit("Test period validation failed.\n\n" + e.Message);
                 //Environment.Exit(0);
             }
 
