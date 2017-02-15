@@ -52,7 +52,15 @@ namespace Cliver
         {
             return Regex.Replace(path, @".*\\", "", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
         }
-        
+
+        public static string GetFileNameWithoutExtentionFromPath(string path)
+        {
+            Match m = Regex.Match(path, @".*\\(.*)(\.|$)", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
+            if (m.Success)
+                return m.Groups[1].Value;
+            return path;
+        }
+
         public static string GetDirNameFromPath(string path)
         {
             return Regex.Replace(path.TrimEnd('\\'), @".*\\", "", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
