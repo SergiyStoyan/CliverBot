@@ -34,7 +34,7 @@ namespace Cliver
                 //    throw new Exception("SessionDir cannot be used in Log.Mode.ONLY_LOG");
 
                 path = get_path(name);
-                if(Log.mode == Mode.SESSIONS)
+                if(Log.mode == Mode.SESSIONS && write_log)
                     Directory.CreateDirectory(path);
             }
 
