@@ -55,10 +55,8 @@ namespace Cliver
 
         public static string GetFileNameWithoutExtentionFromPath(string path)
         {
-            Match m = Regex.Match(path, @".*\\(.*)(\.|$)", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
-            if (m.Success)
-                return m.Groups[1].Value;
-            return path;
+            string n = GetFileNameFromPath(path);
+            return Regex.Replace(n, @"\.[^\.]*$", "", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
         }
 
         public static string GetDirNameFromPath(string path)

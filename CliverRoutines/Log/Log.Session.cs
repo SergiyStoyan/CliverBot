@@ -89,7 +89,7 @@ namespace Cliver
             Dictionary<string, NamedWriter> names2nw = new Dictionary<string, NamedWriter>();
 
             /// <summary>
-            /// Close all writing streams and rename session and its directory. Using the session can be contuniued after that.
+            /// Close all writing streams and rename session and its directory. Using the session can be continued after that.
             /// </summary>
             /// <param name="new_name"></param>
             public void Close(string new_name)
@@ -122,6 +122,7 @@ namespace Cliver
                     }
                 }
             }
+
             /// <summary>
             /// Close all writing streams. The session can be used after.
             /// </summary>
@@ -129,10 +130,13 @@ namespace Cliver
             {
                 lock (this.names2nw)
                 {
+                    if (names2nw.Values.Count < 1 && !ThreadWriter.IsAnythingOpen)
+                        return;
+
                     Default.Write("Closing the log session");
 
                     //any ThreadWriter can belong only to MainSession
-                    if(this == Log.MainSession)
+                    if(Log.IsMainSessionOpen && this == Log.MainSession)
                         Log.ThreadWriter.CloseAll();
 
                     foreach (NamedWriter nw in names2nw.Values)
@@ -162,7 +166,7 @@ namespace Cliver
                     return NamedWriter.Get(this, name);
                 }
             }
-            
+
             ///// <summary>
             ///// Output directory for current session
             ///// </summary>
@@ -215,7 +219,7 @@ namespace Cliver
             //}
             //static string download_dir = null;
             //public const string DownloadDirName = "cache";
-                        
+
             public Writer Default
             {
                 get

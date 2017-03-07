@@ -33,7 +33,15 @@ namespace Cliver
                 {
                     return get_named_writer(session, name);
                 }
-                                
+
+                public static bool IsDefaultOpen(Session session)
+                {
+                    lock (session.names2nw)
+                    {
+                        return session.names2nw.ContainsKey(DEFAULT_NAMED_LOG);
+                    }
+                }
+
                 static NamedWriter get_named_writer(Session session, string name)
                 {
                     lock (session.names2nw)

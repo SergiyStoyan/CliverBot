@@ -130,6 +130,14 @@ namespace Cliver
         }
         static Session main_session = null;
 
+        public static bool IsMainSessionOpen
+        {
+            get
+            { 
+                return main_session != null;
+            }
+        }
+
         /// <summary>
         /// Output folder name
         /// </summary>

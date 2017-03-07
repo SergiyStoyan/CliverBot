@@ -29,7 +29,7 @@ namespace Cliver
             }
             
             internal const int MAIN_THREAD_LOG_ID = -1;
-                        
+
             /// <summary>
             /// Log belonging to the first (main) thread of the process.
             /// </summary>
@@ -38,6 +38,17 @@ namespace Cliver
                 get
                 {
                     return get_thread_writer(Log.MainThread);
+                }
+            }
+
+            public static bool IsAnythingOpen
+            {
+                get
+                {
+                    lock (thread2tws)
+                    {
+                        return thread2tws.Count > 0;
+                    }
                 }
             }
 
