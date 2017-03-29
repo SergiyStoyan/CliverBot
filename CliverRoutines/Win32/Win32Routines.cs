@@ -1,0 +1,23 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.ComponentModel;
+
+namespace Cliver
+{
+    public class Win32Routines
+    {
+        public static Win32Exception GetLastError()
+        {
+            return new Win32Exception(System.Runtime.InteropServices.Marshal.GetLastWin32Error());
+        }
+
+        public static string GetLastErrorString()
+        {
+            Win32Exception e = GetLastError();
+            return e?.Message;
+        }
+    }
+}
