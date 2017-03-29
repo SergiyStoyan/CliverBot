@@ -185,6 +185,7 @@
     <Compile Include="Win32\Win32.cs" />
     <Compile Include="Win32\Win32.Messages.cs" />
     <Compile Include="Win32\Win32Routines.cs" />
+    <Compile Include="Win32\Win64.cs" />
     <EmbeddedResource Include="BaseForm\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
       <SubType>Designer</SubType>

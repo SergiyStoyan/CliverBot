@@ -49,13 +49,13 @@ namespace Cliver
 
         public struct MEMORY_BASIC_INFORMATION
         {
-            public int BaseAddress;
-            public int AllocationBase;
-            public int AllocationProtect;
-            public int RegionSize;
-            public int State;
-            public int Protect;
-            public int lType;
+            public Int32 BaseAddress;
+            public Int32 AllocationBase;
+            public Int32 AllocationProtect;
+            public Int32 RegionSize;
+            public Int32 State;
+            public Int32 Protect;
+            public Int32 lType;
         }
 
         //public delegate bool EnumProc(IntPtr hwnd, int lParam);
