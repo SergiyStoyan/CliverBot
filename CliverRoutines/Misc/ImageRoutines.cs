@@ -80,5 +80,21 @@ namespace Cliver
             //b.Save("2.png");
             return b;
         }
+
+        public static Bitmap GetGreyScale(Bitmap b)
+        {
+            Bitmap b2 = new Bitmap(b);
+            for (int x = 0; x < b.Width; x++)
+            {
+                for (int y = 0; y < b.Height; y++)
+                {
+                    Color c = b.GetPixel(x, y);
+                    int gc = (c.R + c.G + c.B) / 3;
+                    Color c2 = Color.FromArgb(c.A, gc, gc, gc);
+                    b2.SetPixel(x, y, c2);
+                }
+            }
+            return b2;
+        }
     }
 }

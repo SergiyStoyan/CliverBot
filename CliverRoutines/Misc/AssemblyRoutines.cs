@@ -50,5 +50,10 @@ namespace Cliver
             dt = dt > dt2 ? dt : dt2;
             return dt.ToString("yy-MM-dd-HH-mm-ss");
         }
+
+        public static System.Drawing.Icon GetAppIcon()
+        {            
+            return System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetEntryAssembly().Location);
+        }
     }
 }
