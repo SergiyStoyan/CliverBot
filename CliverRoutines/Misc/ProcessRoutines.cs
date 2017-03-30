@@ -60,13 +60,13 @@ namespace Cliver
         static Mutex GLOBAL_SINGLE_PROCESS_MUTEX = null;
 
         /// <summary>
-        /// Needed if this process needs some time to exit.
+        /// Must be invoked if this process needs some time to exit.
         /// </summary>
         public static void Exit()
         {
             if (GLOBAL_SINGLE_PROCESS_MUTEX != null)
                 GLOBAL_SINGLE_PROCESS_MUTEX.ReleaseMutex();
-            LogMessage.Exit(String.Empty);
+            Environment.Exit(0);
         }
 
         public static void Restart(bool as_administarator = false)
@@ -77,8 +77,10 @@ namespace Cliver
             psi.FileName = Application.ExecutablePath;
             if (as_administarator)
                 psi.Verb = "runas";
+            if (GLOBAL_SINGLE_PROCESS_MUTEX != null)
+                GLOBAL_SINGLE_PROCESS_MUTEX.ReleaseMutex();
             Process.Start(psi);
-            ProcessRoutines.Exit();
+            Environment.Exit(0);
         }
 
         public static bool IsProcessAlive(int process_id)

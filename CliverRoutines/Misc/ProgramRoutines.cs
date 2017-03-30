@@ -104,6 +104,13 @@ namespace Cliver
         {
             return PathRoutines.GetDirFromPath(GetAppPath()).TrimEnd('\\', '/');
         }
+
+        static public string GetAppName()
+        {
+            string an = Application.ProductName;
+            if (string.IsNullOrWhiteSpace(an))
+                an = System.Reflection.Assembly.GetEntryAssembly().GetName(false).Name;
+            return an;
+        }
     }
 }
-
