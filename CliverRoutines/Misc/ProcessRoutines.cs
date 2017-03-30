@@ -79,7 +79,13 @@ namespace Cliver
                 psi.Verb = "runas";
             if (GLOBAL_SINGLE_PROCESS_MUTEX != null)
                 GLOBAL_SINGLE_PROCESS_MUTEX.ReleaseMutex();
-            Process.Start(psi);
+            try
+            {
+                Process.Start(psi);
+            }
+            catch
+            { //if the user cancelled
+            }
             Environment.Exit(0);
         }
 
