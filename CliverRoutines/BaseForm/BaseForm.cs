@@ -63,6 +63,11 @@ namespace Cliver
             return Application.OpenForms[0].Invoke(d);
         }
 
+        public static object InvokeFromUiThread(MethodInvoker code)
+        {
+            return Application.OpenForms[0].Invoke(code);
+        }
+
         public static Thread SlideVertically(this Control c, double pixelsPerMss, int position2, int step = 1, MethodInvoker finished = null)
         {
             lock (c)
