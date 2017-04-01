@@ -30,7 +30,7 @@ namespace Cliver
         /// <summary>
         /// Whether the message box must be displayed topmost.
         /// </summary>
-        public static bool TopMost = true;
+        public static bool TopMost = false;
 
         /// <summary>
         /// Owner that is used by default
@@ -134,6 +134,7 @@ namespace Cliver
             MessageForm mf = new MessageForm(title, icon, message, buttons, default_button, owner, button_autosize ?? ButtonAutosize);
             mf.ShowInTaskbar = ShowInTaskbar;
             mf.TopMost = topmost ?? TopMost;
+            //mf.TopLevel = topmost ?? TopMost;
             int result = mf.ShowDialog();
 
             if (no_duplicate ?? NoDuplicate)
