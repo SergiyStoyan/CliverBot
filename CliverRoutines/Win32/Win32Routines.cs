@@ -14,7 +14,7 @@ namespace Cliver
             return new Win32Exception(System.Runtime.InteropServices.Marshal.GetLastWin32Error());
         }
 
-        public static string GetLastErrorString()
+        public static string GetLastErrorMessage()
         {
             Win32Exception e = GetLastError();
             return e?.Message;

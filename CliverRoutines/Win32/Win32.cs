@@ -47,9 +47,9 @@ namespace Cliver
             public ushort processorArchitecture;
             ushort reserved;
             public uint pageSize;
-            public IntPtr minimumApplicationAddress;
-            public IntPtr maximumApplicationAddress;
-            public IntPtr activeProcessorMask;
+            public UIntPtr minimumApplicationAddress;
+            public UIntPtr maximumApplicationAddress;
+            public UIntPtr activeProcessorMask;
             public uint numberOfProcessors;
             public uint processorType;
             public uint allocationGranularity;

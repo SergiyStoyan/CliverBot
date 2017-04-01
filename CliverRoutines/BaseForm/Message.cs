@@ -28,6 +28,11 @@ namespace Cliver
         public static bool ShowInTaskbar = true;
 
         /// <summary>
+        /// Whether the message box must be displayed topmost.
+        /// </summary>
+        public static bool TopMost = true;
+
+        /// <summary>
         /// Owner that is used by default
         /// </summary>
         public static Form Owner = null;
@@ -90,19 +95,19 @@ namespace Cliver
             return ShowDialog(Application.ProductName, SystemIcons.Question, question, new string[2] { "Yes", "No" }, 0, owner) == 0;
         }
 
-        public static int ShowDialog(string title, Icon icon, string message, string[] buttons, int default_button, Form owner, bool? button_autosize = null, bool? no_duplicate = null)
+        public static int ShowDialog(string title, Icon icon, string message, string[] buttons, int default_button, Form owner, bool? button_autosize = null, bool? no_duplicate = null, bool? topmost = null)
         {
             owner = owner ?? Owner;
             if (owner == null || !owner.InvokeRequired)
-                return show_dialog(title, icon, message, buttons, default_button, owner, button_autosize, no_duplicate);
+                return show_dialog(title, icon, message, buttons, default_button, owner, button_autosize, no_duplicate, topmost);
 
             return (int)owner.Invoke(() =>
            {
-               return show_dialog(title, icon, message, buttons, default_button, owner, button_autosize, no_duplicate);
+               return show_dialog(title, icon, message, buttons, default_button, owner, button_autosize, no_duplicate, topmost);
            });
         }
 
-        static int show_dialog(string title, Icon icon, string message, string[] buttons, int default_button, Form owner, bool? button_autosize = null, bool? no_duplicate = null)
+        static int show_dialog(string title, Icon icon, string message, string[] buttons, int default_button, Form owner, bool? button_autosize = null, bool? no_duplicate = null, bool? topmost = null)
         {
             string caller = null;
             if (no_duplicate ?? NoDuplicate)
@@ -128,6 +133,7 @@ namespace Cliver
 
             MessageForm mf = new MessageForm(title, icon, message, buttons, default_button, owner, button_autosize ?? ButtonAutosize);
             mf.ShowInTaskbar = ShowInTaskbar;
+            mf.TopMost = topmost ?? TopMost;
             int result = mf.ShowDialog();
 
             if (no_duplicate ?? NoDuplicate)
