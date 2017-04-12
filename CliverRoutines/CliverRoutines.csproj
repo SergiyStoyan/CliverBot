@@ -149,6 +149,7 @@
     <Compile Include="BaseForm\MessageForm.Designer.cs">
       <DependentUpon>MessageForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="BaseService.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="Misc\Crypto.cs" />
     <Compile Include="Db\DbCommand.cs" />
