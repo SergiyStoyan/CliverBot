@@ -73,20 +73,17 @@ namespace Cliver
                     Thread delete_old_logs = null;
                     lock (lock_object)
                     {
-                        DirectoryInfo wdi = null;
-
                         if (!string.IsNullOrEmpty(pre_work_dir) && pre_work_dir.Contains(":"))
                         {
                             work_dir = pre_work_dir + @"\" + Log.AppName + WorkDirPrefix;
-                            wdi = new DirectoryInfo(work_dir);
-                            if (write_log && !wdi.Exists)
+                            if (write_log && !Directory.Exists(work_dir))
                                 try
                                 {
-                                    wdi.Create();
+                                    Directory.CreateDirectory(work_dir);
                                 }
                                 catch { }
                         }
-                        if (wdi == null || !wdi.Exists)
+                        if (work_dir == null || !Directory.Exists(work_dir))
                         {
                             foreach (string base_dir in new string[] {
                                 Log.AppDir,
@@ -98,21 +95,21 @@ namespace Cliver
                                     work_dir = base_dir + @"\" + Log.AppName + WorkDirPrefix;
                                 else
                                     work_dir = base_dir + @"\" + pre_work_dir + @"\" + Log.AppName + WorkDirPrefix;
-                                wdi = new DirectoryInfo(work_dir);
                                 if (!write_log)
                                     break;
-                                if (wdi.Exists)
+                                if (Directory.Exists(work_dir))
                                     break;
                                 try
                                 {
-                                    wdi.Create();
-                                    break;
+                                    Directory.CreateDirectory(work_dir);
+                                    if (Directory.Exists(work_dir))
+                                        break;
                                 }
                                 catch { }
                             }
                         }
                         if (write_log)
-                            if (wdi.Exists)
+                            if (Directory.Exists(work_dir))
                                 delete_old_logs = ThreadRoutines.StartTry(Log.DeleteOldLogs);//to avoid a concurrent loop while accessing the log file from the same thread 
                             else
                                 throw new Exception("Could not create log folder!");
