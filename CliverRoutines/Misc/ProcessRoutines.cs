@@ -40,22 +40,16 @@ namespace Cliver
             return (from x in Process.GetProcessesByName(p.ProcessName) where x.MainModule.FileName == p.MainModule.FileName select x).Count() > 1;
         }
 
-        public static void RunSingleProcessOnly()
+        public static void RunSingleProcessOnly(bool silent = false)
         {
-            try
-            {
-                GLOBAL_SINGLE_PROCESS_MUTEX = new Mutex(false, @"Global\CliverSoft_" + Log.AppName + "_SINGLE_PROCESS");
-                // Wait a few seconds when contended, if another instance of the program is still in progress of shutting down.
-                if (!GLOBAL_SINGLE_PROCESS_MUTEX.WaitOne(1000, false))
-                {
-                    string name = Application.ProductName == null ? Log.AppName : Application.ProductName;
-                    LogMessage.Exit(name + " is already running, so this instance will exit.");
-                }
-            }
-            catch (Exception e)
-            {
-                LogMessage.Error(e);
-            }
+            string app_name = ProgramRoutines.GetAppName();
+            GLOBAL_SINGLE_PROCESS_MUTEX = new Mutex(false, @"Global\CliverSoft_" + app_name + "_SINGLE_PROCESS");
+            // Wait for a few seconds when contended, if the other instance of the program is still in progress of shutting down.
+            if (!GLOBAL_SINGLE_PROCESS_MUTEX.WaitOne(1000, false))
+                if (!silent)
+                    LogMessage.Exit2(app_name + " is already running, so this instance will exit.");
+                else
+                    Environment.Exit(0);
         }
         static Mutex GLOBAL_SINGLE_PROCESS_MUTEX = null;
 

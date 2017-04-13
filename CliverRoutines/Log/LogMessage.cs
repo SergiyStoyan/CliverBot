@@ -240,6 +240,26 @@ namespace Cliver
             }
         }
 
+        public static void Exclaim(string message)
+        {
+            Log.Main.Warning(message);
+            lock (lock_variable)
+            {
+                if (!DisableStumblingDialogs)
+                {
+                    if (!Output2Console)
+                        Cliver.Message.Exclaim(message, Owner);
+                    else
+                        Console.WriteLine(message);
+                }
+                else
+                {
+                    if (Output2Console)
+                        Console.WriteLine(message);
+                }
+            }
+        }
+
         public static void Warning(Exception e)
         {
             Warning(e.Message);
