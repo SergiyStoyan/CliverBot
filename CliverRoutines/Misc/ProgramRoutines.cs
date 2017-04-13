@@ -108,9 +108,12 @@ namespace Cliver
         static public string GetAppName()
         {
             string an = Application.ProductName;
-            if (string.IsNullOrWhiteSpace(an))
-                an = System.Reflection.Assembly.GetEntryAssembly().GetName(false).Name;
-            return an;
+            if (!string.IsNullOrWhiteSpace(an))
+                return an;
+            if (ProgramRoutines.IsWebContext)
+                return System.Web.Compilation.BuildManager.GetGlobalAsaxType().BaseType.Assembly.GetName(false).Name;
+            else
+                return System.Reflection.Assembly.GetEntryAssembly().GetName(false).Name;
         }
     }
 }

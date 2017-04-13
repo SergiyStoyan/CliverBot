@@ -29,20 +29,12 @@ namespace Cliver
         static Log()
         {
             if (ProgramRoutines.IsWebContext)
-            {
                 throw new Exception("Log is disabled in web context.");
 
-                string p = System.Web.Compilation.BuildManager.GetGlobalAsaxType().BaseType.Assembly.GetName(false).CodeBase;
-                EntryAssemblyName = System.IO.Path.GetFileNameWithoutExtension(p);
-            }
-            else
-            {
-                string p = System.Reflection.Assembly.GetEntryAssembly().GetName(false).CodeBase;
-                EntryAssemblyName = System.IO.Path.GetFileNameWithoutExtension(p);
-            }
+            AppName = ProgramRoutines.GetAppName();
             AppDir = AppDomain.CurrentDomain.BaseDirectory;
 
-            AppCommonDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CliverSoft\\" + Cliver.Log.EntryAssemblyName;
+            AppCommonDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CliverSoft\\" + Log.AppName;
 
             //Log.DeleteOldLogs();
         }
@@ -50,7 +42,7 @@ namespace Cliver
         /// <summary>
         /// Normalized name of this process
         /// </summary>
-        public static readonly string EntryAssemblyName;
+        public static readonly string AppName;
 
         /// <summary>
         /// Directory where the application's data files independent on user are located.
@@ -81,32 +73,80 @@ namespace Cliver
                     Thread delete_old_logs = null;
                     lock (lock_object)
                     {
-                        if (string.IsNullOrEmpty(pre_work_dir))
-                            work_dir = Log.AppDir + @"\" + Log.EntryAssemblyName + WorkDirPrefix;
-                        else
-                        {
-                            if (!pre_work_dir.Contains(":"))
-                                work_dir = Log.AppDir + @"\" + pre_work_dir + @"\" + Log.EntryAssemblyName + WorkDirPrefix;
-                            else
-                                work_dir = pre_work_dir + @"\" + Log.EntryAssemblyName + WorkDirPrefix;
-                        }
+                        DirectoryInfo wdi = null;
 
-                        DirectoryInfo di = new DirectoryInfo(work_dir);
-                        if (write_log)
+                        if (!string.IsNullOrEmpty(pre_work_dir) && pre_work_dir.Contains(":"))
                         {
-                            if (!di.Exists)
-                                di.Create();
-                            else
-                                delete_old_logs = ThreadRoutines.StartTry(Log.DeleteOldLogs);//to avoid a concurrent loop while accessing the log file from the same thread
+                            work_dir = pre_work_dir + @"\" + Log.AppName + WorkDirPrefix;
+                            wdi = new DirectoryInfo(work_dir);
+                            if (write_log && !wdi.Exists)
+                                try
+                                {
+                                    wdi.Create();
+                                }
+                                catch { }
                         }
+                        if (wdi == null || !wdi.Exists)
+                        {
+                            foreach (string base_dir in new string[] {
+                                Log.AppDir,
+                                Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
+                                System.IO.Path.GetTempPath()
+                            })
+                            {
+                                if (string.IsNullOrEmpty(pre_work_dir))
+                                    work_dir = base_dir + @"\" + Log.AppName + WorkDirPrefix;
+                                else
+                                    work_dir = base_dir + @"\" + pre_work_dir + @"\" + Log.AppName + WorkDirPrefix;
+                                wdi = new DirectoryInfo(work_dir);
+                                if (!write_log)
+                                    break;
+                                if (wdi.Exists)
+                                    break;
+                                try
+                                {
+                                    wdi.Create();
+                                    break;
+                                }
+                                catch { }
+                            }
+                        }
+                        if (write_log)
+                            if (wdi.Exists)
+                                delete_old_logs = ThreadRoutines.StartTry(Log.DeleteOldLogs);//to avoid a concurrent loop while accessing the log file from the same thread 
+                            else
+                                throw new Exception("Could not create log folder!");
                     }
-                   // delete_old_logs?.Join();
+                    // delete_old_logs?.Join();
                 }
                 return work_dir;
             }
         }
         static string work_dir = null;
         public const string WorkDirPrefix = @"_Sessions";
+        //static bool HaveWritePermissionForDir(string dir)
+        //{
+        //    var writeAllow = false;
+        //    var writeDeny = false;
+        //    var accessControlList = Directory.GetAccessControl(dir);
+        //    if (accessControlList == null)
+        //        return false;
+        //    var accessRules = accessControlList.GetAccessRules(true, true, typeof(System.Security.Principal.SecurityIdentifier));
+        //    if (accessRules == null)
+        //        return false;
+
+        //    foreach (System.Security.AccessControl.FileSystemAccessRule rule in accessRules)
+        //    {
+        //        if ((System.Security.AccessControl.FileSystemRights.Write & rule.FileSystemRights) != System.Security.AccessControl.FileSystemRights.Write)
+        //            continue;
+        //        if (rule.AccessControlType == System.Security.AccessControl.AccessControlType.Allow)
+        //            writeAllow = true;
+        //        else if (rule.AccessControlType == System.Security.AccessControl.AccessControlType.Deny)
+        //            writeDeny = true;
+        //    }
+
+        //    return writeAllow && !writeDeny;
+        //}
 
         /// <summary>
         /// Directory of the current main session

@@ -152,7 +152,7 @@ namespace Cliver
                                         log_id++;
                             }
 
-                            string log_name = Log.EntryAssemblyName;
+                            string log_name = Log.AppName;
                             if (log_id < 0)
                                 log_name += "_" + MainSession.TimeMark + ".log";
                             else
