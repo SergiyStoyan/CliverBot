@@ -9,7 +9,7 @@ using System.Drawing.Drawing2D;
 
 namespace Cliver
 {
-    public class ImageRoutines
+    public static class ImageRoutines
     {
         public static Image GetScaledImage(Image image, Size max_size)
         {
@@ -95,6 +95,14 @@ namespace Cliver
                 }
             }
             return b2;
+        }
+
+        public static System.Windows.Media.ImageSource ToImageSource(this System.Drawing.Icon icon)
+        {
+            return System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(
+                icon.Handle,
+                System.Windows.Int32Rect.Empty,
+                System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
         }
     }
 }

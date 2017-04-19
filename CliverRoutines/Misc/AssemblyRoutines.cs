@@ -52,8 +52,13 @@ namespace Cliver
         }
 
         public static System.Drawing.Icon GetAppIcon()
-        {            
+        {
             return System.Drawing.Icon.ExtractAssociatedIcon(Assembly.GetEntryAssembly().Location);
+        }
+
+        public static System.Windows.Media.ImageSource GetAppIconImageSource()
+        {
+            return GetAppIcon().ToImageSource();
         }
     }
 }
