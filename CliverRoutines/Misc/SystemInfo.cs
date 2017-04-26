@@ -40,7 +40,7 @@ namespace Cliver
             List<string> vs = new List<string>();
             using (ManagementObjectSearcher searcher = new ManagementObjectSearcher("SELECT Caption, Version, CSDVersion FROM Win32_OperatingSystem"))
                 foreach (var os in searcher.Get())
-                    vs.Add(os["Caption"].ToString() + ", " + os["Version"].ToString() + ", " + os["CSDVersion"].ToString());
+                    vs.Add(os["Caption"] + ", " + os["Version"] + ", " + os["CSDVersion"]);
             if (vs.Count > 0)
                 return vs[0];
             return Environment.OSVersion.ToString();
@@ -55,7 +55,7 @@ namespace Cliver
         {
             using (var uptime = new PerformanceCounter("System", "System Up Time"))
             {
-                uptime.NextValue();       //Call this an extra time before reading its value
+                uptime.NextValue(); //Call this an extra time before reading its value
                 return TimeSpan.FromSeconds(uptime.NextValue());
             }
         }
