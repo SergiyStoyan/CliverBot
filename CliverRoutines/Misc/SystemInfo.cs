@@ -11,7 +11,7 @@ namespace Cliver
 {
     public static class SystemInfo
     {
-        public static string GetScreenshotFile()
+        public static List<string> GetScreenshotFiles()
         {
             string temp_dir = PathRoutines.CreateDirectory(Path.GetTempPath() + "\\" + ProgramRoutines.GetAppName());
             DateTime delete_time = DateTime.Now.AddDays(-3);
@@ -22,17 +22,29 @@ namespace Cliver
                         fi.Delete();
                     }
                     catch { }
+            List<string> files = new List<string>();
             string file = temp_dir + "\\screenshot_" + DateTime.Now.ToString("yy-MM-dd-HH-mm-ss") + ".jpg";
-            Rectangle bounds = Screen.GetBounds(Point.Empty);
-            using (Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height))
+            int display = 1;
+            foreach (Screen s in Screen.AllScreens)
             {
-                using (Graphics g = Graphics.FromImage(bitmap))
+                string f;
+                if (display == 1)
+                    f = file;
+                else
+                    f = PathRoutines.InsertSuffixBeforeFileExtension(file, "_" + display);
+                display++;
+                Rectangle bounds = s.Bounds;
+                using (Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height))
                 {
-                    g.CopyFromScreen(Point.Empty, Point.Empty, bounds.Size);
+                    using (Graphics g = Graphics.FromImage(bitmap))
+                    {
+                        g.CopyFromScreen(Point.Empty, Point.Empty, bounds.Size);
+                    }
+                    bitmap.Save(file, System.Drawing.Imaging.ImageFormat.Jpeg);
                 }
-                bitmap.Save(file, System.Drawing.Imaging.ImageFormat.Jpeg);
+                files.Add(f);
             }
-            return file;
+            return files;
         }
 
         public static string GetWindowsVersion()
