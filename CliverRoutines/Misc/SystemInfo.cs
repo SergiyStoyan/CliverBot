@@ -40,7 +40,7 @@ namespace Cliver
                     {
                         g.CopyFromScreen(Point.Empty, Point.Empty, bounds.Size);
                     }
-                    bitmap.Save(file, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    bitmap.Save(f, System.Drawing.Imaging.ImageFormat.Jpeg);
                 }
                 files.Add(f);
             }
