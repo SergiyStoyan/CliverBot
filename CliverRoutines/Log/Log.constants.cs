@@ -32,13 +32,13 @@ namespace Cliver
                 throw new Exception("Log is disabled in web context.");
 
             if (ProgramRoutines.IsWebContext)
-                AppName = System.Web.Compilation.BuildManager.GetGlobalAsaxType().BaseType.Assembly.GetName(false).Name;
+                ProcessName = System.Web.Compilation.BuildManager.GetGlobalAsaxType().BaseType.Assembly.GetName(false).Name;
             else
-                AppName = System.Reflection.Assembly.GetEntryAssembly().GetName(false).Name;
+                ProcessName = System.Reflection.Assembly.GetEntryAssembly().GetName(false).Name;
 
             AppDir = AppDomain.CurrentDomain.BaseDirectory;
 
-            AppCommonDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CliverSoft\\" + Log.AppName;
+            AppCommonDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CliverSoft\\" + Log.ProcessName;
 
             //Log.DeleteOldLogs();
         }
@@ -46,7 +46,7 @@ namespace Cliver
         /// <summary>
         /// Normalized name of this process
         /// </summary>
-        public static readonly string AppName;
+        public static readonly string ProcessName;
 
         /// <summary>
         /// Directory where the application's data files independent on user are located.
@@ -79,7 +79,7 @@ namespace Cliver
                     {
                         if (!string.IsNullOrEmpty(pre_work_dir) && pre_work_dir.Contains(":"))
                         {
-                            work_dir = pre_work_dir + @"\" + Log.AppName + WorkDirPrefix;
+                            work_dir = pre_work_dir + @"\" + Log.ProcessName + WorkDirPrefix;
                             if (write_log && !Directory.Exists(work_dir))
                                 try
                                 {
@@ -96,9 +96,9 @@ namespace Cliver
                             })
                             {
                                 if (string.IsNullOrEmpty(pre_work_dir))
-                                    work_dir = base_dir + @"\" + Log.AppName + WorkDirPrefix;
+                                    work_dir = base_dir + @"\" + Log.ProcessName + WorkDirPrefix;
                                 else
-                                    work_dir = base_dir + @"\" + pre_work_dir + @"\" + Log.AppName + WorkDirPrefix;
+                                    work_dir = base_dir + @"\" + pre_work_dir + @"\" + Log.ProcessName + WorkDirPrefix;
                                 if (!write_log)
                                     break;
                                 if (Directory.Exists(work_dir))
