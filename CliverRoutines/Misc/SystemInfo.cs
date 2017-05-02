@@ -11,36 +11,24 @@ namespace Cliver
 {
     public static class SystemInfo
     {
-        public static List<string> GetScreenshotFiles()
+        public static List<string> GetScreenshotFiles(string file, System.Drawing.Imaging.ImageFormat format)
         {
-            string temp_dir = PathRoutines.CreateDirectory(Path.GetTempPath() + "\\" + ProgramRoutines.GetAppName());
-            DateTime delete_time = DateTime.Now.AddDays(-3);
-            foreach (FileInfo fi in (new DirectoryInfo(temp_dir)).GetFiles())
-                if (fi.LastWriteTime < delete_time)
-                    try
-                    {
-                        fi.Delete();
-                    }
-                    catch { }
             List<string> files = new List<string>();
-            string file = temp_dir + "\\screenshot_" + DateTime.Now.ToString("yy-MM-dd-HH-mm-ss") + ".jpg";
-            int display = 1;
-            foreach (Screen s in Screen.AllScreens)
+            foreach (System.Windows.Forms.Screen s in System.Windows.Forms.Screen.AllScreens)
             {
                 string f;
-                if (display == 1)
+                if (s.Primary)
                     f = file;
                 else
-                    f = PathRoutines.InsertSuffixBeforeFileExtension(file, "_" + display);
-                display++;
-                Rectangle bounds = s.Bounds;
-                using (Bitmap bitmap = new Bitmap(bounds.Width, bounds.Height))
+                    f = PathRoutines.InsertSuffixBeforeFileExtension(file, "_" + PathRoutines.GetNormalizedFileName(s.DeviceName));
+                System.Drawing.Rectangle bounds = s.Bounds;
+                using (System.Drawing.Bitmap bitmap = new System.Drawing.Bitmap(bounds.Width, bounds.Height))
                 {
-                    using (Graphics g = Graphics.FromImage(bitmap))
+                    using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bitmap))
                     {
-                        g.CopyFromScreen(Point.Empty, Point.Empty, bounds.Size);
+                        g.CopyFromScreen(bounds.X, bounds.Y, 0, 0, bounds.Size, CopyPixelOperation.SourceCopy);
                     }
-                    bitmap.Save(f, System.Drawing.Imaging.ImageFormat.Jpeg);
+                    bitmap.Save(f, format);
                 }
                 files.Add(f);
             }

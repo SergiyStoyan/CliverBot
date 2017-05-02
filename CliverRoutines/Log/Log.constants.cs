@@ -31,7 +31,11 @@ namespace Cliver
             if (ProgramRoutines.IsWebContext)
                 throw new Exception("Log is disabled in web context.");
 
-            AppName = ProgramRoutines.GetAppName();
+            if (ProgramRoutines.IsWebContext)
+                AppName = System.Web.Compilation.BuildManager.GetGlobalAsaxType().BaseType.Assembly.GetName(false).Name;
+            else
+                AppName = System.Reflection.Assembly.GetEntryAssembly().GetName(false).Name;
+
             AppDir = AppDomain.CurrentDomain.BaseDirectory;
 
             AppCommonDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CliverSoft\\" + Log.AppName;
