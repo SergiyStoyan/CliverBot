@@ -71,10 +71,13 @@ namespace Cliver
 
         public void Save(string file = null)
         {
-            if (file != null)
-                __File = file;
-            Saving();
-            Cliver.SerializationRoutines.Json.Save(__File, this);
+            lock (this)
+            {
+                if (file != null)
+                    __File = file;
+                Saving();
+                Cliver.SerializationRoutines.Json.Save(__File, this);
+            }
         }
 
         virtual public void Loaded()
