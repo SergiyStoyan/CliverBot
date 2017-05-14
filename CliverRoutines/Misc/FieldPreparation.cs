@@ -165,6 +165,14 @@ namespace Cliver
             return value;
         }
 
+        public static string GetCsvHeaderLine(Type t, FieldSeparator separator, bool normalize = true)
+        {
+            List<string> ss = new List<string>();
+            foreach (System.Reflection.PropertyInfo pi in t.GetProperties())
+                ss.Add(GetCsvField(pi.Name, separator, normalize));
+            return string.Join(separator.Value, ss);
+        }
+
         public static string GetCsvLine(dynamic o, FieldSeparator separator, bool normalize = true)
         {
             List<string> ss = new List<string>();
