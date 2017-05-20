@@ -59,7 +59,7 @@ namespace Cliver
             //Size s = this.message.GetPreferredSize(new Size(Screen.PrimaryScreen.WorkingArea.Width * 3 / 4, Screen.PrimaryScreen.WorkingArea.Height * 3 / 4));
             //this.Width = this.Width + s.Width - this.message.Width;
             //this.Height = this.Height + s.Height - this.message.Height;
-        }         
+        }
 
         void b_Click(object sender, EventArgs e)
         {
@@ -127,5 +127,21 @@ namespace Cliver
             base.WndProc(ref m);
         }
         Size restored_size;
+
+        public new void Close()
+        {
+            try
+            {
+                this.Invoke(() =>
+                {
+                    try
+                    {
+                        base.Close();
+                    }
+                    catch { }//if closed already
+                });
+            }
+            catch { }//if closed already
+        }
     }
 }
