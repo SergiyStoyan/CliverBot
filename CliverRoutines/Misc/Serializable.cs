@@ -77,8 +77,11 @@ namespace Cliver
                     __File = file;
                 Saving();
                 Cliver.SerializationRoutines.Json.Save(__File, this);
+                Saved?.BeginInvoke(null, null);
             }
         }
+        public delegate void SavedHandler();
+        public event SavedHandler Saved;
 
         virtual public void Loaded()
         {
