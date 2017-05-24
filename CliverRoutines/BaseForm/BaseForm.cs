@@ -26,6 +26,12 @@ namespace Cliver
             InitializeComponent();
             this.Icon = Icon.ExtractAssociatedIcon(Assembly.GetEntryAssembly().Location);
         }
+
+        public static Size GetRecommendedWindowSize(double factor = 0.8)
+        {
+            Size s = SystemInfo.GetPrimaryScreenSize();
+            return new Size((int)((float)s.Width * factor), (int)((float)s.Height * factor));
+        }
     }
 
     public static class ControlRoutines

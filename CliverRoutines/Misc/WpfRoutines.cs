@@ -12,6 +12,17 @@ namespace Cliver
 {
     static public class WpfRoutines
     {
+        public static void TrimWindowSize(this System.Windows.Window window, double screen_factor = 0.8)
+        {
+            System.Drawing.Size s = SystemInfo.GetPrimaryScreenSize();
+            int v = (int)((float)s.Width * screen_factor);
+            if (window.Width > v)
+                window.Width = v;
+            v = (int)((float)s.Height * screen_factor);
+            if (window.Height > v)
+                window.Height = v;
+        }
+
         public static bool IsValid(this DependencyObject parent)
         {
             if (Validation.GetHasError(parent))

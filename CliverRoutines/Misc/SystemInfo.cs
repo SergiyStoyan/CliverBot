@@ -6,11 +6,23 @@ using System.Net;
 using System.IO;
 using System.Management;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Cliver
 {
     public static class SystemInfo
     {
+        public static Size GetPrimaryScreenSize()
+        {
+            Screen s = Screen.AllScreens.Where(x => x.Primary).FirstOrDefault();
+            if (s != null)
+                return new Size(s.Bounds.Width, s.Bounds.Height);
+            s = Screen.AllScreens.FirstOrDefault();
+            if (s != null)
+                return new Size(s.Bounds.Width, s.Bounds.Height);
+            return new Size();
+        }
+
         public static List<string> GetScreenshotFiles(string file, System.Drawing.Imaging.ImageFormat format)
         {
             List<string> files = new List<string>();
