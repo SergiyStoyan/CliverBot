@@ -155,7 +155,7 @@
     </Compile>
     <Compile Include="BaseService.cs" />
     <Compile Include="Config.cs" />
-    <Compile Include="ListDb\ListDbTable.cs" />
+    <Compile Include="ListDb.Table.cs" />
     <Compile Include="Misc\Crypto.cs" />
     <Compile Include="Db\DbCommand.cs" />
     <Compile Include="Db\DbConnection.cs" />
@@ -240,6 +240,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="CliverRoutinesTests\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
