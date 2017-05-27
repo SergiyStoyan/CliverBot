@@ -32,10 +32,10 @@ namespace Cliver
                 t.Save(new testDocument());
                 t.Save(new testDocument());
                 testDocument d = t.Last();
-                d.A = "changed";
+                d.A = @"changed";
                 t.Save(d);
                 t.Remove(t.First());
-                //t.Flush();
+                t.Flush();
             }
         }
 
@@ -110,56 +110,67 @@ namespace Cliver
                 {
                     using (TextReader fr = new StreamReader(File))
                     {
-                        string[] log_ls;
                         if (System.IO.File.Exists(Log))
-                            log_ls = System.IO.File.ReadAllLines(Log);
-                        else
-                            log_ls = new string[0];
-                        foreach (string l in log_ls)
                         {
-                            Match m = Regex.Match(l, @"deleted:\s+(\d+)");
-                            if (m.Success)
+                            foreach (string l in System.IO.File.ReadAllLines(Log))
                             {
-                                base.RemoveAt(int.Parse(m.Groups[1].Value));
-                                continue;
-                            }
-                            m = Regex.Match(l, @"replaced:\s+(\d+)");
-                            if (m.Success)
-                            {
-                                read_next(fr);
-                                int p1 = int.Parse(m.Groups[1].Value);
-                                base.RemoveAt(p1);
-                                D d = this[base.Count - 1];
-                                base.RemoveAt(base.Count - 1);
-                                base.Insert(p1, d);
-                                continue;
-                            }
-                            m = Regex.Match(l, @"added:\s+(\d+)");
-                            if (m.Success)
-                            {
-                                read_next(fr);
-                                int p1 = int.Parse(m.Groups[1].Value);
-                                if (p1 != base.Count - 1)
-                                    throw new Exception("Log file broken.");
-                                continue;
-                            }
-                        }
-
-                        if (log_ls.Length > 0)
-                        {
-                            Match m = Regex.Match(log_ls[log_ls.Length - 1], @"replacing:\s+(\d+)\s+with\s+(\d+)");
-                            if (m.Success)
-                            {//replacing was broken so delete the new document if it was added
-                                int i2 = int.Parse(m.Groups[2].Value);
-                                if (i2 < base.Count)
+                                Match m = Regex.Match(l, @"flushed:\s+(\d+)");
+                                if (m.Success)
                                 {
-                                    log_writer = new StreamWriter(Log, true);
-                                    ((StreamWriter)log_writer).AutoFlush = true;
-                                    base.RemoveAt(i2);
-                                    log_writer.Dispose();
+                                    int p1 = int.Parse(m.Groups[1].Value);
+                                    for (int i = 0; i < p1; i++)
+                                    {
+                                        D d = JsonConvert.DeserializeObject<D>(fr.ReadLine());
+                                        base.Add(d);
+                                    }
+                                    continue;
+                                }
+                                m = Regex.Match(l, @"deleted:\s+(\d+)");
+                                if (m.Success)
+                                {
+                                    base.RemoveAt(int.Parse(m.Groups[1].Value));
+                                    continue;
+                                }
+                                m = Regex.Match(l, @"replaced:\s+(\d+)");
+                                if (m.Success)
+                                {
+                                    D d = JsonConvert.DeserializeObject<D>(fr.ReadLine());
+                                    int p1 = int.Parse(m.Groups[1].Value);
+                                    if (p1 >= base.Count)
+                                        throw new Exception("Log file broken.");
+                                    base.RemoveAt(p1);
+                                    base.Insert(p1, d);
+                                    continue;
+                                }
+                                m = Regex.Match(l, @"added:\s+(\d+)");
+                                if (m.Success)
+                                {
+                                    D d = JsonConvert.DeserializeObject<D>(fr.ReadLine());
+                                    int p1 = int.Parse(m.Groups[1].Value);
+                                    if (p1 != base.Count)
+                                        throw new Exception("Log file broken.");
+                                    base.Add(d);
+                                    continue;
+                                }
+                                m = Regex.Match(l, @"inserted:\s+(\d+)");
+                                if (m.Success)
+                                {
+                                    D d = JsonConvert.DeserializeObject<D>(fr.ReadLine());
+                                    int p1 = int.Parse(m.Groups[1].Value);
+                                    if (p1 >= base.Count)
+                                        throw new Exception("Log file broken.");
+                                    base.Insert(p1, d);
+                                    continue;
                                 }
                             }
                         }
+                        else
+                        {
+                            for (string s = fr.ReadLine(); s != null; s = fr.ReadLine())
+                                base.Add(JsonConvert.DeserializeObject<D>(s));
+                        }
+                        if (fr.ReadLine() != null)
+                            throw new Exception("Log file broken.");
                     }
                 }
 
@@ -167,11 +178,6 @@ namespace Cliver
                 ((StreamWriter)file_writer).AutoFlush = true;
                 log_writer = new StreamWriter(Log, true);
                 ((StreamWriter)log_writer).AutoFlush = true;
-            }
-            void read_next(TextReader fr)
-            {
-                string r = fr.ReadLine();
-                base.Add(JsonConvert.DeserializeObject<D>(r));
             }
 
             ~Table()
@@ -181,12 +187,19 @@ namespace Cliver
 
             public void Dispose()
             {
-                if ((Mode & Modes.FLUSH_TABLE_ON_CLOSE) == Modes.FLUSH_TABLE_ON_CLOSE)
-                    Flush();
-                if (file_writer != null)
-                    file_writer.Dispose();
-                if (log_writer != null)
-                    log_writer.Dispose();
+                try
+                {
+                    if ((Mode & Modes.FLUSH_TABLE_ON_CLOSE) == Modes.FLUSH_TABLE_ON_CLOSE)
+                        Flush();
+                    if (file_writer != null)
+                        file_writer.Dispose();
+                    if (log_writer != null)
+                        log_writer.Dispose();
+                }
+                catch
+                {
+                    //when Dispose is called from finalizer, files may be closed and so an exception be thrown
+                }
             }
 
             public void Flush()
@@ -212,7 +225,7 @@ namespace Cliver
                     log_writer.Dispose();
                 log_writer = new StreamWriter(Log, false);
                 ((StreamWriter)log_writer).AutoFlush = true;
-                log_writer.WriteLine("flushed");
+                log_writer.WriteLine("flushed: " + base.Count);
             }
 
             public void Drop()
@@ -243,12 +256,16 @@ namespace Cliver
                 log_writer = new StreamWriter(Log, false);
             }
 
+            /// <summary>
+            /// Use it rather than Add/Insert to make Table work as an ordered HashSet
+            /// </summary>
+            /// <param name="document"></param>
+            /// <returns></returns>
             public SaveResults Save(D document)
             {
-                int i = this.IndexOf(document);
+                int i = base.IndexOf(document);
                 if (i >= 0)
                 {
-                    log_writer.WriteLine("replacing: " + i);
                     file_writer.WriteLine(JsonConvert.SerializeObject(document, Formatting.None));
                     log_writer.WriteLine("replaced: " + i);
                     return SaveResults.UPDATED;
@@ -256,8 +273,8 @@ namespace Cliver
                 else
                 {
                     file_writer.WriteLine(JsonConvert.SerializeObject(document, Formatting.None));
-                    log_writer.WriteLine("added: " + this.Count);
                     base.Add(document);
+                    log_writer.WriteLine("added: " + (base.Count - 1));
                     return SaveResults.ADDED;
                 }
             }
@@ -267,14 +284,11 @@ namespace Cliver
                 UPDATED,
             }
 
-            /// <summary>
-            /// !!! Differs from List: Table works as an ordered HashSet !!!
-            /// </summary>
-            /// <param name="document"></param>
-            /// <returns></returns>
-            public SaveResults Add(D document)
+            public void Add(D document)
             {
-                return Save(document);
+                file_writer.WriteLine(JsonConvert.SerializeObject(document, Formatting.None));
+                base.Add(document);
+                log_writer.WriteLine("added: " + (base.Count - 1));
             }
 
             public void AddRange(IEnumerable<D> documents)
@@ -285,8 +299,9 @@ namespace Cliver
 
             public void Insert(int index, D document)
             {
-                throw new Exception("TBD");
+                file_writer.WriteLine(JsonConvert.SerializeObject(document, Formatting.None));
                 base.Insert(index, document);
+                log_writer.WriteLine("inserted: " + index);
             }
 
             public void InsertRange(int index, IEnumerable<D> documents)
