@@ -65,7 +65,7 @@ namespace Cliver
                     tm.Flush();
                 }
             }
-
+            
             static public void Drop(string directory)
             {
                 lock (table_directories2table_manager)
@@ -120,16 +120,14 @@ namespace Cliver
                     if (!table_directories2table_manager.TryGetValue(Directory, out tm))
                         return;
                     tm.Count--;
-                    switch (tm.Mode)
+                    if ((tm.Mode & Modes.CLOSE_TABLE_ON_DISPOSE) == Modes.CLOSE_TABLE_ON_DISPOSE)
                     {
-                        case Modes.CLOSE_TABLE_ON_DISPOSE:
-                            if (tm.Count < 1)
-                                table_directories2table_manager.Remove(Directory);
-                            break;
-                        case Modes.KEEP_ALL_OPEN_TABLES_FOREVER:
-                            break;
-                        default:
-                            throw new Exception("No option: " + tm.Mode);
+                        if (tm.Count < 1)
+                        {
+                            if ((tm.Mode & Modes.FLUSH_ON_CLOSE) == Modes.FLUSH_ON_CLOSE)
+                                tm.Flush();
+                            table_directories2table_manager.Remove(Directory);
+                        }
                     }
                 }
             }
@@ -191,6 +189,59 @@ namespace Cliver
                 lock (table_directories2table_manager)
                 {
                     get_table_info().Delete(document);
+                }
+            }
+
+            public int Count
+            {
+                get
+                {
+                    lock (list)
+                    {
+                        return list.Count;
+                    }
+                }
+            }
+
+            public D GetPrevious(D document)
+            {
+                lock (list)
+                {
+                    if (document == null)
+                        return null;
+                    int i = list.IndexOf(document);
+                    if (i < 1)
+                        return null;
+                    return list[i - 1];
+                }
+            }
+
+            public D GetNext(D document)
+            {
+                lock (list)
+                {
+                    if (document == null)
+                        return null;
+                    int i = list.IndexOf(document);
+                    if (i + 1 >= list.Count)
+                        return null;
+                    return list[i + 1];
+                }
+            }
+
+            public D GetFirst()
+            {
+                lock (list)
+                {
+                    return list.FirstOrDefault();
+                }
+            }
+
+            public D GetLast()
+            {
+                lock (list)
+                {
+                    return list.LastOrDefault();
                 }
             }
 
