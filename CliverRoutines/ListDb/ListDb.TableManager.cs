@@ -28,10 +28,16 @@ namespace Cliver
             CLOSE_TABLE_ON_DISPOSE,
         }
 
+        public enum SaveResults
+        {
+            ADDED,
+            UPDATED,
+        }
+
         public class TableManager<T, D> where T : Table<D> where D : Document, new()
         {
             public int Count = 0;
-            public readonly List<D> List = null;
+            public readonly List<D> List = new List<D>();
             public readonly string Log = null;
             TextWriter log_writer;
             public readonly string File = null;
@@ -63,12 +69,12 @@ namespace Cliver
 
             public TableManager(string directory)
             {
-                Type = typeof(T);                
+                Type = typeof(T);
                 File = directory + ".json";
                 Log = directory + ".jsondb.log";
                 new_file = File + ".new";
 
-                if(System.IO.File.Exists(new_file))
+                if (System.IO.File.Exists(new_file))
                 {
                     if (System.IO.File.Exists(File))
                         System.IO.File.Delete(File);
@@ -77,13 +83,11 @@ namespace Cliver
                         System.IO.File.Delete(Log);
                 }
 
-                log_writer = new StreamWriter(Log, true);
-
                 if (System.IO.File.Exists(File))
                 {
-                    List<int> deleted = new List<int>();
                     if (System.IO.File.Exists(Log))
                     {
+                        List<int> deleted = new List<int>();
                         string last_l = null;
                         foreach (string l in System.IO.File.ReadAllLines(Log))
                         {
@@ -96,45 +100,59 @@ namespace Cliver
                             }
                             //m = Regex.Match(l, @"added:\s+(\d+)");
                         }
-                        TextReader fr = new StreamReader(File);
-                        int i = 0;
-                        for (string l = fr.ReadLine(); l != null; l = fr.ReadLine())
+                        base_index = deleted.Count;
+                        using (TextReader fr = new StreamReader(File))
                         {
-                            if (deleted.Contains(i++))
-                                continue;
-                            List.Add(JsonConvert.DeserializeObject<D>(l));
+                            int i = 0;
+                            for (string l = fr.ReadLine(); l != null; l = fr.ReadLine())
+                            {
+                                if (deleted.Contains(i++))
+                                    continue;
+                                List.Add(JsonConvert.DeserializeObject<D>(l));
+                            }
                         }
                         {//if replacing was broken rollback to the old document
                             Match m = Regex.Match(last_l, @"replacing:\s+(\d+)\s+with\s+(\d+)");
                             if (m.Success)
                             {
-                                if (List.Count - 1 == int.Parse(m.Groups[2].Value))
-                                    List.RemoveAt(List.Count - 1);
+                                log_writer = new StreamWriter(Log, true);
+                                ((StreamWriter)log_writer).AutoFlush = true;
+                                Delete(List[List.Count - 1]);
+                                log_writer.Dispose();
+                                base_index--;
                             }
                         }
                     }
                 }
                 else
                     List = new List<D>();
-                file_writer = new StreamWriter(File, true);
-            }
 
-            public bool Save(D document)
+                file_writer = new StreamWriter(File, true);
+                ((StreamWriter)file_writer).AutoFlush = true;
+                log_writer = new StreamWriter(Log, true);
+                ((StreamWriter)log_writer).AutoFlush = true;
+            }
+            readonly int base_index = 0;
+
+            public SaveResults Save(D document)
             {
+                SaveResults sr;
                 int i = List.IndexOf(document);
                 if (i >= 0)
                 {
-                    log_writer.WriteLine("replacing: " + i + " with " + List.Count);
+                    log_writer.WriteLine("replacing: " + (base_index + i) + " with " + (base_index + List.Count));
                     file_writer.WriteLine(JsonConvert.SerializeObject(document, Formatting.None));
-                    log_writer.WriteLine("deleted: " + i);
-                    return false;
+                    log_writer.WriteLine("deleted: " + (base_index + i));
+                    sr = SaveResults.UPDATED;
                 }
                 else
                 {
                     file_writer.WriteLine(JsonConvert.SerializeObject(document, Formatting.None));
-                    log_writer.WriteLine("added: " + List.Count);
-                    return true;
+                    log_writer.WriteLine("added: " + (base_index + List.Count));
+                    sr = SaveResults.ADDED;
                 }
+                List.Add(document);
+                return sr;
             }
 
             public void Delete(D document)
@@ -143,7 +161,7 @@ namespace Cliver
                 if (i >= 0)
                 {
                     List.RemoveAt(i);
-                    log_writer.WriteLine("deleted: " + i);
+                    log_writer.WriteLine("deleted: " + (base_index + i));
                 }
             }
 

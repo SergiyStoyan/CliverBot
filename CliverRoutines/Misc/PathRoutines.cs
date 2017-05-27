@@ -29,6 +29,13 @@ namespace Cliver
             var p2 = Path.GetFullPath(path2).Trim().ToLower();
             return p1 == p2;
         }
+        
+        public static string GetNormalizedPath(string path)
+        {
+            return Path.GetFullPath(new Uri(path).LocalPath)
+                       .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
+                       .ToUpperInvariant();
+        }
 
         /// <summary>
         /// Clear file name from entities

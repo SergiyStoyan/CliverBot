@@ -83,8 +83,7 @@ namespace Cliver
             {
                 if (directory == null)
                     directory = Log.GetAppCommonDataDir();
-                Uri u = new Uri(directory);
-                Directory = u.ToString();
+                Directory = PathRoutines.GetNormalizedPath(directory);
 
                 Name = GetType().Name;
                 lock (table_directories2table_manager)
@@ -149,6 +148,18 @@ namespace Cliver
                 }
             }
 
+            /// <summary>
+            /// Not safe!!!
+            /// </summary>
+            /// <returns></returns>
+            public List<D> Get()
+            {
+                lock (list)
+                {
+                    return list;
+                }
+            }
+
             public List<D> Get(Func<D, bool> query)
             {
                 lock (list)
@@ -165,7 +176,7 @@ namespace Cliver
                 }
             }
 
-            public bool Save(D document)
+            public SaveResults Save(D document)
             {
                 lock (table_directories2table_manager)
                 {
