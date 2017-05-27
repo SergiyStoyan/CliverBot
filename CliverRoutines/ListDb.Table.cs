@@ -30,11 +30,11 @@ namespace Cliver
                 //t.Drop();
                 t.Save(new testDocument());
                 t.Save(new testDocument());
-                t.Save(new testDocument());
+                t.Insert(0, new testDocument());
                 testDocument d = t.Last();
                 d.A = @"changed";
                 t.Save(d);
-                t.Remove(t.First());
+                t.Insert(t.Count - 1, t.First());
                 t.Flush();
             }
         }
@@ -55,11 +55,11 @@ namespace Cliver
                 if (!table_keys2table.TryGetValue(key, out wr)
                     || !wr.IsAlive
                     )
-                    {
-                        Table<D> t = new Table<D>(directory);
-                        wr = new WeakReference(t);
-                        table_keys2table[key] = wr;
-                    }
+                {
+                    Table<D> t = new Table<D>(directory);
+                    wr = new WeakReference(t);
+                    table_keys2table[key] = wr;
+                }
                 return (Table<D>)wr.Target;
             }
             static Dictionary<string, WeakReference> table_keys2table = new Dictionary<string, WeakReference>();
@@ -114,7 +114,7 @@ namespace Cliver
                         {
                             foreach (string l in System.IO.File.ReadAllLines(Log))
                             {
-                                Match m = Regex.Match(l, @"flushed:\s+(\d+)");
+                                Match m = Regex.Match(l, @"flushed:\s+\[(\d+)\]");
                                 if (m.Success)
                                 {
                                     int p1 = int.Parse(m.Groups[1].Value);
@@ -198,7 +198,7 @@ namespace Cliver
                 }
                 catch
                 {
-                    //when Dispose is called from finalizer, files may be closed and so an exception be thrown
+                    //when Dispose is called from finalizer, files may be already closed and so exception thrown
                 }
             }
 
@@ -225,7 +225,7 @@ namespace Cliver
                     log_writer.Dispose();
                 log_writer = new StreamWriter(Log, false);
                 ((StreamWriter)log_writer).AutoFlush = true;
-                log_writer.WriteLine("flushed: " + base.Count);
+                log_writer.WriteLine("flushed: [" + base.Count + "]");
             }
 
             public void Drop()
@@ -257,38 +257,58 @@ namespace Cliver
             }
 
             /// <summary>
-            /// Use it rather than Add/Insert to make Table work as an ordered HashSet
+            /// Table works as an ordered HashSet
             /// </summary>
             /// <param name="document"></param>
             /// <returns></returns>
-            public SaveResults Save(D document)
+            public Results Save(D document)
             {
                 int i = base.IndexOf(document);
                 if (i >= 0)
                 {
                     file_writer.WriteLine(JsonConvert.SerializeObject(document, Formatting.None));
                     log_writer.WriteLine("replaced: " + i);
-                    return SaveResults.UPDATED;
+                    return Results.UPDATED;
                 }
                 else
                 {
                     file_writer.WriteLine(JsonConvert.SerializeObject(document, Formatting.None));
                     base.Add(document);
                     log_writer.WriteLine("added: " + (base.Count - 1));
-                    return SaveResults.ADDED;
+                    return Results.ADDED;
                 }
             }
-            public enum SaveResults
+            public enum Results
             {
                 ADDED,
                 UPDATED,
+                MOVED2TOP,
+                MOVED,
+                INSERTED,
             }
 
-            public void Add(D document)
+            /// <summary>
+            /// Table works as a HashSet
+            /// </summary>
+            /// <param name="document"></param>
+            public Results Add(D document)
             {
-                file_writer.WriteLine(JsonConvert.SerializeObject(document, Formatting.None));
-                base.Add(document);
-                log_writer.WriteLine("added: " + (base.Count - 1));
+                int i = base.IndexOf(document);
+                if (i >= 0)
+                {
+                    file_writer.WriteLine(JsonConvert.SerializeObject(document, Formatting.None));
+                    base.RemoveAt(i);
+                    base.Add(document);
+                    log_writer.WriteLine("deleted: " + i + "\r\nadded: " + (base.Count - 1));
+                    return Results.MOVED2TOP;
+                }
+                else
+                {
+                    file_writer.WriteLine(JsonConvert.SerializeObject(document, Formatting.None));
+                    base.Add(document);
+                    log_writer.WriteLine("added: " + (base.Count - 1));
+                    return Results.ADDED;
+                }
             }
 
             public void AddRange(IEnumerable<D> documents)
@@ -297,11 +317,28 @@ namespace Cliver
                 base.AddRange(documents);
             }
 
-            public void Insert(int index, D document)
+            /// <summary>
+            /// Table works as a HashSet
+            /// </summary>
+            /// <param name="document"></param>
+            public Results Insert(int index, D document)
             {
-                file_writer.WriteLine(JsonConvert.SerializeObject(document, Formatting.None));
-                base.Insert(index, document);
-                log_writer.WriteLine("inserted: " + index);
+                int i = base.IndexOf(document);
+                if (i >= 0)
+                {
+                    file_writer.WriteLine(JsonConvert.SerializeObject(document, Formatting.None));
+                    base.RemoveAt(i);
+                    base.Insert(index, document);
+                    log_writer.WriteLine("replaced: " + i);
+                    return Results.MOVED;
+                }
+                else
+                {
+                    file_writer.WriteLine(JsonConvert.SerializeObject(document, Formatting.None));
+                    base.Insert(index, document);
+                    log_writer.WriteLine("inserted: " + index);
+                    return Results.INSERTED;
+                }
             }
 
             public void InsertRange(int index, IEnumerable<D> documents)
@@ -364,11 +401,11 @@ namespace Cliver
             }
         }
 
-        public static string GetNormalized(string s)
-        {
-            if (s == null)
-                return null;
-            return Regex.Replace(s.ToLower(), @" +", " ").Trim();
-        }
+        //public static string GetNormalized(string s)
+        //{
+        //    if (s == null)
+        //        return null;
+        //    return Regex.Replace(s.ToLower(), @" +", " ").Trim();
+        //}
     }
 }
