@@ -112,6 +112,8 @@ namespace Cliver
 
             virtual public void Dispose()
             {
+                if (Directory == null)//disposed
+                    return;
                 lock (table_directories2table_manager)
                 {
                     TableManager<Table<D>, D> tm;

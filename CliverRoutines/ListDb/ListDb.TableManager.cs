@@ -70,9 +70,9 @@ namespace Cliver
             public TableManager(string directory)
             {
                 Type = typeof(T);
-                File = directory + ".json";
-                Log = directory + ".jsondb.log";
+                File = directory + "\\" + Type.Name + ".listdb";
                 new_file = File + ".new";
+                Log = directory + "\\" + Type.Name + ".listdb.log";
 
                 if (System.IO.File.Exists(new_file))
                 {
@@ -85,54 +85,57 @@ namespace Cliver
 
                 if (System.IO.File.Exists(File))
                 {
+                    List<int> deleted = new List<int>();
+                    string[] log_ls;
                     if (System.IO.File.Exists(Log))
+                        log_ls = System.IO.File.ReadAllLines(Log);
+                    else
+                        log_ls = new string[0];
+                    foreach (string l in log_ls)
                     {
-                        List<int> deleted = new List<int>();
-                        string last_l = null;
-                        foreach (string l in System.IO.File.ReadAllLines(Log))
+                        Match m = Regex.Match(l, @"deleted:\s+(\d+)");
+                        if (m.Success)
                         {
-                            last_l = l;
-                            Match m = Regex.Match(l, @"deleted:\s+(\d+)");
-                            if (m.Success)
-                            {
-                                deleted.Add(int.Parse(m.Groups[1].Value));
+                            deleted.Add(int.Parse(m.Groups[1].Value));
+                            continue;
+                        }
+                        //m = Regex.Match(l, @"added:\s+(\d+)");
+                    }
+                    base_index = deleted.Count;
+                    using (TextReader fr = new StreamReader(File))
+                    {
+                        int i = 0;
+                        for (string l = fr.ReadLine(); l != null; l = fr.ReadLine())
+                        {
+                            if (deleted.Contains(i++))
                                 continue;
-                            }
-                            //m = Regex.Match(l, @"added:\s+(\d+)");
+                            List.Add(JsonConvert.DeserializeObject<D>(l));
                         }
-                        base_index = deleted.Count;
-                        using (TextReader fr = new StreamReader(File))
-                        {
-                            int i = 0;
-                            for (string l = fr.ReadLine(); l != null; l = fr.ReadLine())
-                            {
-                                if (deleted.Contains(i++))
-                                    continue;
-                                List.Add(JsonConvert.DeserializeObject<D>(l));
-                            }
-                        }
-                        {//if replacing was broken rollback to the old document
-                            Match m = Regex.Match(last_l, @"replacing:\s+(\d+)\s+with\s+(\d+)");
-                            if (m.Success)
+                    }
+                    if (log_ls.Length > 0)
+                    {
+                        Match m = Regex.Match(log_ls[log_ls.Length - 1], @"replacing:\s+(\d+)\s+with\s+(\d+)");
+                        if (m.Success)
+                        {//replacing was broken so delete the new document if it was added
+                            int i2 = int.Parse(m.Groups[2].Value);
+                            if (i2 < List.Count)
                             {
                                 log_writer = new StreamWriter(Log, true);
                                 ((StreamWriter)log_writer).AutoFlush = true;
-                                Delete(List[List.Count - 1]);
+                                Delete(List[i2]);
                                 log_writer.Dispose();
                                 base_index--;
                             }
                         }
                     }
                 }
-                else
-                    List = new List<D>();
 
                 file_writer = new StreamWriter(File, true);
                 ((StreamWriter)file_writer).AutoFlush = true;
                 log_writer = new StreamWriter(Log, true);
                 ((StreamWriter)log_writer).AutoFlush = true;
             }
-            readonly int base_index = 0;
+            int base_index = 0;
 
             public SaveResults Save(D document)
             {
@@ -142,7 +145,7 @@ namespace Cliver
                 {
                     log_writer.WriteLine("replacing: " + (base_index + i) + " with " + (base_index + List.Count));
                     file_writer.WriteLine(JsonConvert.SerializeObject(document, Formatting.None));
-                    log_writer.WriteLine("deleted: " + (base_index + i));
+                    log_writer.WriteLine("deleted: " + (base_index + i) + " added: " + (base_index + List.Count));
                     sr = SaveResults.UPDATED;
                 }
                 else
@@ -173,6 +176,7 @@ namespace Cliver
                 {
                     foreach (D d in List)
                         new_file_writer.WriteLine(JsonConvert.SerializeObject(d, Formatting.None));
+                    new_file_writer.Flush();
                 }
 
                 if (file_writer != null)
@@ -180,12 +184,16 @@ namespace Cliver
                 if (System.IO.File.Exists(File))
                     System.IO.File.Delete(File);
                 System.IO.File.Move(new_file, File);
-                file_writer = new StreamWriter(File, false);
+                file_writer = new StreamWriter(File, true);
+                ((StreamWriter)file_writer).AutoFlush = true;
 
                 if (log_writer != null)
                     log_writer.Dispose();
                 log_writer = new StreamWriter(Log, false);
+                ((StreamWriter)log_writer).AutoFlush = true;
                 log_writer.WriteLine("flushed");
+
+                base_index = 0;
             }
 
             public void Drop()
@@ -195,7 +203,6 @@ namespace Cliver
                     file_writer.Dispose();
                     file_writer = null;
                 }
-
                 if (System.IO.File.Exists(File))
                     System.IO.File.Delete(File);
 
@@ -204,7 +211,6 @@ namespace Cliver
                     log_writer.Dispose();
                     log_writer = null;
                 }
-
                 if (System.IO.File.Exists(Log))
                     System.IO.File.Delete(Log);
             }
