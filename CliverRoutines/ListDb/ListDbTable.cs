@@ -30,6 +30,7 @@ namespace Cliver
                 //t.Drop();
                 t.Save(new testDocument());
                 t.Save(new testDocument());
+                t.Save(new testDocument());
                 testDocument d = t.Last();
                 d.A = "changed";
                 t.Save(d);
@@ -51,15 +52,14 @@ namespace Cliver
 
                 WeakReference wr;
                 string key = directory + "\\" + typeof(D).Name;
-                if (!table_keys2table.TryGetValue(key, out wr))
-                {
-                    if (!wr.IsAlive)
+                if (!table_keys2table.TryGetValue(key, out wr)
+                    || !wr.IsAlive
+                    )
                     {
                         Table<D> t = new Table<D>(directory);
                         wr = new WeakReference(t);
                         table_keys2table[key] = wr;
                     }
-                }
                 return (Table<D>)wr.Target;
             }
             static Dictionary<string, WeakReference> table_keys2table = new Dictionary<string, WeakReference>();
@@ -78,6 +78,7 @@ namespace Cliver
             readonly string new_file;
             //public Type DocumentType;
             public Modes Mode = Modes.FLUSH_TABLE_ON_CLOSE;
+            public readonly string Name;
 
             public enum Modes
             {
@@ -90,9 +91,11 @@ namespace Cliver
             {
                 directory = get_normalized_directory(directory);
 
-                File = directory + "\\" + GetType().Name + ".listdb";
+                Name = typeof(D).Name + "s";
+
+                File = directory + "\\" + Name + ".listdb";
                 new_file = File + ".new";
-                Log = directory + "\\" + GetType().Name + ".listdb.log";
+                Log = directory + "\\" + Name + ".listdb.log";
 
                 if (System.IO.File.Exists(new_file))
                 {
@@ -117,7 +120,7 @@ namespace Cliver
                             Match m = Regex.Match(l, @"deleted:\s+(\d+)");
                             if (m.Success)
                             {
-                                this.RemoveAt(int.Parse(m.Groups[1].Value));
+                                base.RemoveAt(int.Parse(m.Groups[1].Value));
                                 continue;
                             }
                             m = Regex.Match(l, @"replaced:\s+(\d+)");
@@ -125,10 +128,10 @@ namespace Cliver
                             {
                                 read_next(fr);
                                 int p1 = int.Parse(m.Groups[1].Value);
-                                this.RemoveAt(p1);
-                                D d = this[this.Count - 1];
-                                this.RemoveAt(this.Count - 1);
-                                this.Insert(p1, d);
+                                base.RemoveAt(p1);
+                                D d = this[base.Count - 1];
+                                base.RemoveAt(base.Count - 1);
+                                base.Insert(p1, d);
                                 continue;
                             }
                             m = Regex.Match(l, @"added:\s+(\d+)");
@@ -136,7 +139,7 @@ namespace Cliver
                             {
                                 read_next(fr);
                                 int p1 = int.Parse(m.Groups[1].Value);
-                                if (p1 != this.Count - 1)
+                                if (p1 != base.Count - 1)
                                     throw new Exception("Log file broken.");
                                 continue;
                             }
@@ -148,11 +151,11 @@ namespace Cliver
                             if (m.Success)
                             {//replacing was broken so delete the new document if it was added
                                 int i2 = int.Parse(m.Groups[2].Value);
-                                if (i2 < this.Count)
+                                if (i2 < base.Count)
                                 {
                                     log_writer = new StreamWriter(Log, true);
                                     ((StreamWriter)log_writer).AutoFlush = true;
-                                    RemoveAt(i2);
+                                    base.RemoveAt(i2);
                                     log_writer.Dispose();
                                 }
                             }
@@ -168,7 +171,7 @@ namespace Cliver
             void read_next(TextReader fr)
             {
                 string r = fr.ReadLine();
-                this.Add(JsonConvert.DeserializeObject<D>(r));
+                base.Add(JsonConvert.DeserializeObject<D>(r));
             }
 
             ~Table()
@@ -280,9 +283,21 @@ namespace Cliver
                 base.AddRange(documents);
             }
 
+            public void Insert(int index, D document)
+            {
+                throw new Exception("TBD");
+                base.Insert(index, document);
+            }
+
+            public void InsertRange(int index, IEnumerable<D> documents)
+            {
+                throw new Exception("TBD");
+                base.InsertRange(index, documents);
+            }
+
             public bool Remove(D document)
             {
-                int i = this.IndexOf(document);
+                int i = base.IndexOf(document);
                 if (i >= 0)
                 {
                     base.RemoveAt(i);
