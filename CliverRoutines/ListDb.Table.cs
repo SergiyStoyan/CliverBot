@@ -41,8 +41,13 @@ namespace Cliver
 
         public class Document
         {
-
+            //[Newtonsoft.Json.JsonIgnoreAttribute]
+            //public string test;
         }
+        
+        //public class Ignored : Attribute
+        //{
+        //}
 
         public class Table<D> : List<D>, IDisposable where D : Document, new()
         {
@@ -288,7 +293,7 @@ namespace Cliver
             }
 
             /// <summary>
-            /// Table works as a HashSet
+            /// Table works as an ordered HashSet
             /// </summary>
             /// <param name="document"></param>
             public Results Add(D document)
@@ -318,7 +323,7 @@ namespace Cliver
             }
 
             /// <summary>
-            /// Table works as a HashSet
+            /// Table works as an ordered HashSet
             /// </summary>
             /// <param name="document"></param>
             public Results Insert(int index, D document)
