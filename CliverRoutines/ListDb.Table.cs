@@ -97,10 +97,10 @@ namespace Cliver
                 FLUSH_TABLE_ON_CLOSE = 2,
             }
 
-            public delegate void SavedHandler(object document, bool as_new);
+            public delegate void SavedHandler(D document, bool as_new);
             public event SavedHandler Saved = null;
 
-            public delegate void RemovedHandler(object document, bool sucess);
+            public delegate void RemovedHandler(D document, bool sucess);
             public event RemovedHandler Removed = null;
 
             protected Table(string directory, string key)
