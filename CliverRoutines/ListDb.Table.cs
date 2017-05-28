@@ -17,7 +17,7 @@ namespace Cliver
 {
     public partial class ListDb
     {
-        public class testDocument : ListDb.Document
+        public class testDocument //: ListDb.Document
         {
             public string A = DateTime.Now.ToString() + "\r\n" + DateTime.Now.Ticks.ToString();
             public string B = "test";
@@ -39,22 +39,22 @@ namespace Cliver
             }
         }
 
-        public class Document
-        {
+        //public class Document
+        //{
             //[Newtonsoft.Json.JsonIgnoreAttribute]
             //public string test;
-        }
+        //}
 
         //public class Ignored : Attribute
         //{
         //}
 
-        public static Table<D> GetTable<D>(string directory = null) where D : Document, new()
+        public static Table<D> GetTable<D>(string directory = null) where D : new()
         {
             return Table<D>.Get(directory);
         }
 
-        public sealed class Table<D> : List<D>, IDisposable where D : Document, new()
+        public sealed class Table<D> : List<D>, IDisposable where D : new()
         {
             public static Table<D> Get(string directory = null)
             {
@@ -97,10 +97,10 @@ namespace Cliver
                 FLUSH_TABLE_ON_CLOSE = 2,
             }
 
-            public delegate void SavedHandler(Document document, bool as_new);
+            public delegate void SavedHandler(object document, bool as_new);
             public event SavedHandler Saved = null;
 
-            public delegate void RemovedHandler(Document document, bool sucess);
+            public delegate void RemovedHandler(object document, bool sucess);
             public event RemovedHandler Removed = null;
 
             protected Table(string directory = null)
@@ -404,25 +404,25 @@ namespace Cliver
                 }
             }
 
-            public D GetPrevious(D document)
-            {
-                if (document == null)
-                    return null;
-                int i = IndexOf(document);
-                if (i < 1)
-                    return null;
-                return this[i - 1];
-            }
+            //public D? GetPrevious(D document)
+            //{
+            //    if (document == null)
+            //        return null;
+            //    int i = IndexOf(document);
+            //    if (i < 1)
+            //        return null;
+            //    return (D?)this[i - 1];
+            //}
 
-            public D GetNext(D document)
-            {
-                if (document == null)
-                    return null;
-                int i = this.IndexOf(document);
-                if (i + 1 >= this.Count)
-                    return null;
-                return this[i + 1];
-            }
+            //public D? GetNext(D document)
+            //{
+            //    if (document == null)
+            //        return null;
+            //    int i = this.IndexOf(document);
+            //    if (i + 1 >= this.Count)
+            //        return null;
+            //    return (D?)this[i + 1];
+            //}
         }
 
         //public static string GetNormalized(string s)
