@@ -59,14 +59,13 @@ namespace Cliver
             public static Table<D> Get(string directory = null)
             {
                 directory = get_normalized_directory(directory);
-
                 WeakReference wr;
                 string key = directory + "\\" + typeof(D).Name;
                 if (!table_keys2table.TryGetValue(key, out wr)
                     || !wr.IsAlive
                     )
                 {
-                    Table<D> t = new Table<D>(directory);
+                    Table<D> t = new Table<D>(directory, key);
                     wr = new WeakReference(t);
                     table_keys2table[key] = wr;
                 }
@@ -89,6 +88,7 @@ namespace Cliver
             //public Type DocumentType;
             public Modes Mode = Modes.FLUSH_TABLE_ON_CLOSE;
             public readonly string Name;
+            protected readonly string key;
 
             public enum Modes
             {
@@ -103,9 +103,10 @@ namespace Cliver
             public delegate void RemovedHandler(object document, bool sucess);
             public event RemovedHandler Removed = null;
 
-            protected Table(string directory = null)
+            protected Table(string directory, string key)
             {
                 directory = get_normalized_directory(directory);
+                this.key = key;
 
                 Name = typeof(D).Name + "s";
 
@@ -205,6 +206,9 @@ namespace Cliver
             {
                 try
                 {
+                    if (table_keys2table.ContainsKey(key))
+                        table_keys2table.Remove(key);
+
                     if ((Mode & Modes.FLUSH_TABLE_ON_CLOSE) == Modes.FLUSH_TABLE_ON_CLOSE)
                         Flush();
                     if (file_writer != null)
