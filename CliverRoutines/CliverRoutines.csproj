@@ -155,6 +155,7 @@
     </Compile>
     <Compile Include="BaseService.cs" />
     <Compile Include="Config.cs" />
+    <Compile Include="ListDb.IndexedTable.cs" />
     <Compile Include="ListDb.Table.cs" />
     <Compile Include="Misc\Crypto.cs" />
     <Compile Include="Db\DbCommand.cs" />

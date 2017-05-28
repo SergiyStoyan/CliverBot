@@ -44,12 +44,17 @@ namespace Cliver
             //[Newtonsoft.Json.JsonIgnoreAttribute]
             //public string test;
         }
-        
+
         //public class Ignored : Attribute
         //{
         //}
 
-        public class Table<D> : List<D>, IDisposable where D : Document, new()
+        public static Table<D> GetTable<D>(string directory = null) where D : Document, new()
+        {
+            return Table<D>.Get(directory);
+        }
+
+        public sealed class Table<D> : List<D>, IDisposable where D : Document, new()
         {
             public static Table<D> Get(string directory = null)
             {
@@ -69,7 +74,7 @@ namespace Cliver
             }
             static Dictionary<string, WeakReference> table_keys2table = new Dictionary<string, WeakReference>();
 
-            static string get_normalized_directory(string directory = null)
+            protected static string get_normalized_directory(string directory = null)
             {
                 if (directory == null)
                     directory = Cliver.Log.GetAppCommonDataDir();
@@ -77,9 +82,9 @@ namespace Cliver
             }
 
             public readonly string Log = null;
-            TextWriter log_writer;
+            protected TextWriter log_writer;
             public readonly string File = null;
-            TextWriter file_writer;
+            protected TextWriter file_writer;
             readonly string new_file;
             //public Type DocumentType;
             public Modes Mode = Modes.FLUSH_TABLE_ON_CLOSE;
@@ -92,7 +97,13 @@ namespace Cliver
                 FLUSH_TABLE_ON_CLOSE = 2,
             }
 
-            Table(string directory = null)
+            public delegate void SavedHandler(Document document, bool as_new);
+            public event SavedHandler Saved = null;
+
+            public delegate void RemovedHandler(Document document, bool sucess);
+            public event RemovedHandler Removed = null;
+
+            protected Table(string directory = null)
             {
                 directory = get_normalized_directory(directory);
 
@@ -273,6 +284,7 @@ namespace Cliver
                 {
                     file_writer.WriteLine(JsonConvert.SerializeObject(document, Formatting.None));
                     log_writer.WriteLine("replaced: " + i);
+                    Saved?.Invoke(document, false);
                     return Results.UPDATED;
                 }
                 else
@@ -280,6 +292,7 @@ namespace Cliver
                     file_writer.WriteLine(JsonConvert.SerializeObject(document, Formatting.None));
                     base.Add(document);
                     log_writer.WriteLine("added: " + (base.Count - 1));
+                    Saved?.Invoke(document, true);
                     return Results.ADDED;
                 }
             }
@@ -305,6 +318,7 @@ namespace Cliver
                     base.RemoveAt(i);
                     base.Add(document);
                     log_writer.WriteLine("deleted: " + i + "\r\nadded: " + (base.Count - 1));
+                    Saved?.Invoke(document, false);
                     return Results.MOVED2TOP;
                 }
                 else
@@ -312,6 +326,7 @@ namespace Cliver
                     file_writer.WriteLine(JsonConvert.SerializeObject(document, Formatting.None));
                     base.Add(document);
                     log_writer.WriteLine("added: " + (base.Count - 1));
+                    Saved?.Invoke(document, true);
                     return Results.ADDED;
                 }
             }
@@ -335,6 +350,7 @@ namespace Cliver
                     base.RemoveAt(i);
                     base.Insert(index, document);
                     log_writer.WriteLine("replaced: " + i);
+                    Saved?.Invoke(document, false);
                     return Results.MOVED;
                 }
                 else
@@ -342,6 +358,7 @@ namespace Cliver
                     file_writer.WriteLine(JsonConvert.SerializeObject(document, Formatting.None));
                     base.Insert(index, document);
                     log_writer.WriteLine("inserted: " + index);
+                    Saved?.Invoke(document, true);
                     return Results.INSERTED;
                 }
             }
@@ -359,8 +376,10 @@ namespace Cliver
                 {
                     base.RemoveAt(i);
                     log_writer.WriteLine("deleted: " + i);
+                    Removed?.Invoke(document, true);
                     return true;
                 }
+                Removed?.Invoke(document, false);
                 return false;
             }
 
