@@ -95,6 +95,7 @@ namespace Cliver
                 NULL = 0,
                 KEEP_OPEN_TABLE_FOREVER = 1,//requires explicite call Close()
                 FLUSH_TABLE_ON_CLOSE = 2,
+                FLUSH_TABLE_ON_START = 4,
             }
 
             public delegate void SavedHandler(D document, bool as_new);
@@ -129,7 +130,7 @@ namespace Cliver
                     {
                         if (System.IO.File.Exists(Log))
                         {
-                            foreach (string l in System.IO.File.ReadAllLines(Log))
+                            foreach (string l in System.IO.File.ReadLines(Log))
                             {
                                 Match m = Regex.Match(l, @"flushed:\s+\[(\d+)\]");
                                 if (m.Success)
@@ -178,6 +179,17 @@ namespace Cliver
                                         throw new Exception("Log file broken.");
                                     base.Insert(p1, d);
                                     continue;
+                                }
+                            }
+                            if ((Mode & Modes.FLUSH_TABLE_ON_START) == Modes.FLUSH_TABLE_ON_START)
+                            {
+                                foreach (string l in System.IO.File.ReadLines(Log))
+                                {
+                                    if (!Regex.IsMatch(l, @"flushed:\s+\[(\d+)\]"))
+                                    {
+                                        Flush();
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -428,12 +440,5 @@ namespace Cliver
             //    return (D?)this[i + 1];
             //}
         }
-
-        //public static string GetNormalized(string s)
-        //{
-        //    if (s == null)
-        //        return null;
-        //    return Regex.Replace(s.ToLower(), @" +", " ").Trim();
-        //}
     }
 }
