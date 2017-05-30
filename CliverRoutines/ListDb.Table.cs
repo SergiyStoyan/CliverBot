@@ -54,7 +54,7 @@ namespace Cliver
             return Table<D>.Get(directory);
         }
 
-        public sealed class Table<D> : List<D>, IDisposable where D : new()
+        public class Table<D> : List<D>, IDisposable where D : new()
         {
             public static Table<D> Get(string directory = null)
             {
@@ -71,7 +71,7 @@ namespace Cliver
                 }
                 return (Table<D>)wr.Target;
             }
-            static Dictionary<string, WeakReference> table_keys2table = new Dictionary<string, WeakReference>();
+            protected static Dictionary<string, WeakReference> table_keys2table = new Dictionary<string, WeakReference>();
 
             protected static string get_normalized_directory(string directory = null)
             {
@@ -293,7 +293,7 @@ namespace Cliver
             /// </summary>
             /// <param name="document"></param>
             /// <returns></returns>
-            public Results Save(D document)
+            virtual  public Results Save(D document)
             {
                 int i = base.IndexOf(document);
                 if (i >= 0)
@@ -325,7 +325,7 @@ namespace Cliver
             /// Table works as an ordered HashSet
             /// </summary>
             /// <param name="document"></param>
-            public Results Add(D document)
+            virtual public Results Add(D document)
             {
                 int i = base.IndexOf(document);
                 if (i >= 0)
@@ -357,7 +357,7 @@ namespace Cliver
             /// Table works as an ordered HashSet
             /// </summary>
             /// <param name="document"></param>
-            public Results Insert(int index, D document)
+            virtual public Results Insert(int index, D document)
             {
                 int i = base.IndexOf(document);
                 if (i >= 0)
