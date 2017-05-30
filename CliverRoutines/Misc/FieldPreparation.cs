@@ -11,11 +11,16 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Collections.Generic;
 using System;
+using System.Reflection;
 
 namespace Cliver
 {
     public class FieldPreparation
     {
+        public class IgnoredField : Attribute
+        {
+        }
+
         public class Html
         {
             public static string Normalize(string value)
@@ -62,6 +67,8 @@ namespace Cliver
                 List<string> ss = new List<string>();
                 foreach (System.Reflection.PropertyInfo pi in o.GetType().GetProperties())
                 {
+                    if (pi.GetCustomAttribute<FieldPreparation.IgnoredField>() != null)
+                        continue;
                     string s;
                     object p = pi.GetValue(o, null);
                     if (pi.PropertyType == typeof(string))
@@ -97,6 +104,8 @@ namespace Cliver
                 Dictionary<string, object> d = new Dictionary<string, object>();
                 foreach (System.Reflection.PropertyInfo pi in o.GetType().GetProperties())
                 {
+                    if (pi.GetCustomAttribute<FieldPreparation.IgnoredField>() != null)
+                        continue;
                     object p = pi.GetValue(o, null);
                     if (pi.PropertyType == typeof(string))
                         p = GetDbField((string)p);
@@ -178,6 +187,8 @@ namespace Cliver
             List<string> ss = new List<string>();
             foreach (System.Reflection.PropertyInfo pi in o.GetType().GetProperties())
             {
+                if (pi.GetCustomAttribute<FieldPreparation.IgnoredField>() != null)
+                    continue;
                 string s;
                 object p = pi.GetValue(o, null);
                 if (pi.PropertyType == typeof(string))
@@ -213,6 +224,8 @@ namespace Cliver
             Dictionary<string, object> d = new Dictionary<string, object>();
             foreach (System.Reflection.PropertyInfo pi in o.GetType().GetProperties())
             {
+                if (pi.GetCustomAttribute<FieldPreparation.IgnoredField>() != null)
+                    continue;
                 object p = pi.GetValue(o, null);
                 if (pi.PropertyType == typeof(string))
                     p = GetDbField((string)p, default_value);
