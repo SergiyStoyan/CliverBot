@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using System.IO;
 using Newtonsoft.Json;
+using System.Reflection;
 
 namespace Cliver
 {
@@ -45,7 +46,7 @@ namespace Cliver
             //public string test;
         //}
 
-        //public class Ignored : Attribute
+        //public class IgnoredField : Attribute
         //{
         //}
 
