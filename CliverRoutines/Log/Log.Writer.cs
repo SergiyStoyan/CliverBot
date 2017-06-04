@@ -116,8 +116,8 @@ namespace Cliver
             {
                 string m;
                 string d;
-                Log.GetExceptionMessage(e, out m, out d);
-                Write(Log.MessageType.ERROR, m);
+                GetExceptionMessage(e, out m, out d);
+                Write(MessageType.ERROR, m);
             }
 
             /// <summary>
@@ -126,12 +126,17 @@ namespace Cliver
             /// <param name="e"></param>
             public void Error(string message)
             {
-                Write(Log.MessageType.ERROR, message, Log.GetStackString());
+                Write(MessageType.ERROR, message, GetStackString());
+            }
+
+            public void Error(string message, Exception e)
+            {
+                Write(MessageType.ERROR, message, "\r\n\r\n" + GetExceptionMessage(e));
             }
 
             public void Error2(string message)
             {
-                Write(Log.MessageType.ERROR, message);
+                Write(MessageType.ERROR, message);
             }
 
             /// <summary>
@@ -141,9 +146,9 @@ namespace Cliver
             public void Trace(object message = null)
             {
                 if (message != null)
-                    Write(Log.MessageType.TRACE, message.ToString(), Log.GetStackString());
+                    Write(MessageType.TRACE, message.ToString(), GetStackString());
                 else
-                    Write(Log.MessageType.TRACE, null, Log.GetStackString());
+                    Write(MessageType.TRACE, null, GetStackString());
             }
 
             /// <summary>
@@ -155,8 +160,8 @@ namespace Cliver
                 lock (this)
                 {
                     if (Name != MAIN_THREAD_LOG_NAME)
-                        Log.Main.Write("EXITING: due to thread #" + Name + ". See the respective Log");
-                    Write(Log.MessageType.EXIT, message, Log.GetStackString());
+                        Main.Write("EXITING: due to thread #" + Name + ". See the respective Log");
+                    Write(MessageType.EXIT, message, Log.GetStackString());
                 }
             }
 
@@ -165,8 +170,8 @@ namespace Cliver
                 lock (this)
                 {
                     if (Name != MAIN_THREAD_LOG_NAME)
-                        Log.Main.Write("EXITING: due to thread #" + Name + ". See the respective Log");
-                    Write(Log.MessageType.EXIT, message);
+                        Main.Write("EXITING: due to thread #" + Name + ". See the respective Log");
+                    Write(MessageType.EXIT, message);
                 }
             }
 
@@ -179,11 +184,11 @@ namespace Cliver
                 lock (this)
                 {
                     if (Name != MAIN_THREAD_LOG_NAME)
-                        Log.Main.Write("EXITING: due to thread #" + Name + ". See the respective Log");
+                        Main.Write("EXITING: due to thread #" + Name + ". See the respective Log");
                     string m;
                     string d;
-                    Log.GetExceptionMessage(e, out m, out d);
-                    Write(Log.MessageType.EXIT, m, d);
+                    GetExceptionMessage(e, out m, out d);
+                    Write(MessageType.EXIT, m, d);
                 }
             }
 
@@ -196,7 +201,7 @@ namespace Cliver
             /// <param name="e"></param>
             public void Warning(string message)
             {
-                Write(Log.MessageType.WARNING, message);
+                Write(MessageType.WARNING, message);
             }
 
             /// <summary>
@@ -207,8 +212,8 @@ namespace Cliver
             {
                 string m;
                 string d;
-                Log.GetExceptionMessage(e, out m, out d);
-                Write(Log.MessageType.WARNING, m, d);
+                GetExceptionMessage(e, out m, out d);
+                Write(MessageType.WARNING, m, d);
             }
 
             /// <summary>
@@ -217,7 +222,7 @@ namespace Cliver
             /// <param name="e"></param>
             public void Inform(string message)
             {
-                Write(Log.MessageType.INFORM, message);
+                Write(MessageType.INFORM, message);
             }
 
             public void Write(string line)
