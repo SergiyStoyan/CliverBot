@@ -32,7 +32,8 @@ namespace Cliver
             for (int i = 0; i != VisualTreeHelper.GetChildrenCount(parent); ++i)
             {
                 DependencyObject child = VisualTreeHelper.GetChild(parent, i);
-                if (!IsValid(child)) { return false; }
+                if (!IsValid(child))
+                    return false; 
             }
 
             return true;
@@ -193,6 +194,26 @@ namespace Cliver
         {
             // to clear an error, we simply remove all bindings to our dummy property.
             BindingOperations.ClearBinding(element, DummyProperty);
+        }
+
+        public static DataGridCell GetCell(this DataGrid grid, DataGridRow row, int columnIndex = 0)
+        {
+            if (row == null)
+                return null;
+
+            var presenters = row.FindVisualChildrenOfType<System.Windows.Controls.Primitives.DataGridCellsPresenter>().ToList();
+            if (presenters.Count < 1)
+                return null;
+
+            var cell = (DataGridCell)presenters[0].ItemContainerGenerator.ContainerFromIndex(columnIndex);
+            if (cell != null)
+                return cell;
+
+            // now try to bring into view and retreive the cell
+            grid.ScrollIntoView(row, grid.Columns[columnIndex]);
+            cell = (DataGridCell)presenters[0].ItemContainerGenerator.ContainerFromIndex(columnIndex);
+
+            return cell;
         }
     }
 }
