@@ -219,6 +219,10 @@ namespace Cliver
             {
                 try
                 {
+                    if (disposed)
+                        return;
+                    disposed = true;
+
                     if (table_keys2table.ContainsKey(key))
                         table_keys2table.Remove(key);
 
@@ -234,6 +238,7 @@ namespace Cliver
                     //when Dispose is called from finalizer, files may be already closed and so exception thrown
                 }
             }
+            protected bool disposed = false;
 
             public void Flush()
             {
