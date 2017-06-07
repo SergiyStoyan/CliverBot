@@ -21,8 +21,25 @@ namespace Cliver
     /// <summary>
     /// Alternative to .NET settings. Inheritors of this class are automatically managed by Config.
     /// </summary>
-    public class Settings : Serializable
+    abstract public class Settings : Serializable
     {
+        public void Reset()
+        {
+            Serializable s = Create(GetType(), __File);
+            foreach (FieldInfo fi in GetType().GetFields(BindingFlags.Public | BindingFlags.Instance))
+                fi.SetValue(this, fi.GetValue(s));
+        }
+
+        public S GetResetInstance<S>() where S : Settings, new()
+        {
+            return Create<S>(__File);
+        }
+
+        //public Settings GetResetInstance()
+        //{
+        //    return (Settings)Create(GetType(), __File);
+        //}
+
         /// <summary>
         /// this object is ever to be loaded
         /// </summary>

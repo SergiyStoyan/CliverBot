@@ -6,6 +6,7 @@ using System.Web.Script.Serialization;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Xml;
+using System.Reflection;
 
 namespace Cliver
 {
@@ -21,7 +22,7 @@ namespace Cliver
         static public T Create<T>(string file) where T : Serializable, new()
         {
             T t = get<T>(file, true);
-            t.Created();
+            t.Loaded();
             return t;
         }
 
@@ -85,15 +86,9 @@ namespace Cliver
 
         }
 
-        virtual public void Created()
-        {
-
-        }
-
         virtual public void Saving()
         {
 
         }
     }
 }
-
