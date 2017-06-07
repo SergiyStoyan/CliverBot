@@ -70,7 +70,7 @@ namespace Cliver
                     if (pi.GetCustomAttribute<FieldPreparation.IgnoredField>() != null)
                         continue;
                     string s;
-                    object p = pi.GetValue(o, null);
+                    object p = pi.GetValue(o);
                     if (pi.PropertyType == typeof(string))
                         s = (string)p;
                     else if (p != null)
@@ -106,7 +106,7 @@ namespace Cliver
                 {
                     if (pi.GetCustomAttribute<FieldPreparation.IgnoredField>() != null)
                         continue;
-                    object p = pi.GetValue(o, null);
+                    object p = pi.GetValue(o);
                     if (pi.PropertyType == typeof(string))
                         p = GetDbField((string)p);
                     d[pi.Name] = p;
@@ -190,7 +190,7 @@ namespace Cliver
                 if (pi.GetCustomAttribute<FieldPreparation.IgnoredField>() != null)
                     continue;
                 string s;
-                object p = pi.GetValue(o, null);
+                object p = pi.GetValue(o);
                 if (pi.PropertyType == typeof(string))
                     s = (string)p;
                 else if (p != null)
@@ -199,6 +199,14 @@ namespace Cliver
                     s = null;
                 ss.Add(GetCsvField(s, separator, normalize));
             }
+            return string.Join(separator.Value, ss);
+        }
+
+        public static string GetCsvHeaderLine(IEnumerable<string> headers, FieldSeparator separator, bool normalize = true)
+        {
+            List<string> ss = new List<string>();
+            foreach (string h in headers)
+                ss.Add(GetCsvField(h, separator, normalize));
             return string.Join(separator.Value, ss);
         }
 
@@ -226,7 +234,7 @@ namespace Cliver
             {
                 if (pi.GetCustomAttribute<FieldPreparation.IgnoredField>() != null)
                     continue;
-                object p = pi.GetValue(o, null);
+                object p = pi.GetValue(o);
                 if (pi.PropertyType == typeof(string))
                     p = GetDbField((string)p, default_value);
                 d[pi.Name] = p;
