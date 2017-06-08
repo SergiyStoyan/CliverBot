@@ -33,8 +33,8 @@ namespace Cliver
 
             if (icon != null)
             {
+                int w = icon.Width - image_box.Width;
                 image_box.Image = (Image)icon.ToBitmap();
-                int w = image_box.Image.Width - icon.Width;
                 if (w > 0)
                 {
                     this.Width += w;
@@ -59,16 +59,18 @@ namespace Cliver
 
             if (!button_auto_size)
             {
-                int max_width = 0;
+                Size max_size = new Size(0,0);
                 foreach (Button b in flowLayoutPanel1.Controls)
                 {
-                    if (b.Width > max_width)
-                        max_width = b.Width;
+                    if (b.Width > max_size.Width)
+                        max_size.Width = b.Width;
+                    if (b.Height > max_size.Height)
+                        max_size.Height = b.Height;
                 }
                 foreach (Button b in flowLayoutPanel1.Controls)
                 {
                     b.AutoSize = false;
-                    b.Width = max_width;
+                    b.Size = max_size;
                 }
             }
 
