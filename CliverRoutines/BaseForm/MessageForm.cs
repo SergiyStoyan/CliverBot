@@ -19,21 +19,22 @@ namespace Cliver
     /// <summary>
     /// Dynamic dialog box with many answer cases
     /// </summary>
-    public partial class MessageForm : BaseForm
+    public partial class MessageForm : Form
     {
         public MessageForm(string caption, Icon icon, string message, string[] buttons, int default_button, Form owner, bool button_auto_size = false)
         {
             InitializeComponent();
 
+            this.Icon = AssemblyRoutines.GetAppIcon();
+
             this.MaximizeBox = true;
 
             Owner = owner;
 
-            int width = icon.Width;
             if (icon != null)
             {
                 image_box.Image = (Image)icon.ToBitmap();
-                int w = image_box.Image.Width - width;
+                int w = image_box.Image.Width - icon.Width;
                 if (w > 0)
                 {
                     this.Width += w;
@@ -48,12 +49,27 @@ namespace Cliver
             {
                 Button b = new Button();
                 b.Tag = i;
-                b.AutoSize = button_auto_size;
                 b.Text = buttons[i];
+                b.AutoSize = true;
                 b.Click += b_Click;
                 flowLayoutPanel1.Controls.Add(b);
                 if (i == default_button)
                     b.Select();
+            }
+
+            if (!button_auto_size)
+            {
+                int max_width = 0;
+                foreach (Button b in flowLayoutPanel1.Controls)
+                {
+                    if (b.Width > max_width)
+                        max_width = b.Width;
+                }
+                foreach (Button b in flowLayoutPanel1.Controls)
+                {
+                    b.AutoSize = false;
+                    b.Width = max_width;
+                }
             }
 
             //Size s = this.message.GetPreferredSize(new Size(Screen.PrimaryScreen.WorkingArea.Width * 3 / 4, Screen.PrimaryScreen.WorkingArea.Height * 3 / 4));
