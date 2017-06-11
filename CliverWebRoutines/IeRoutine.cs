@@ -47,7 +47,6 @@ namespace Cliver.BotWeb
                 browser.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(Browser_DocumentCompleted);
                 browser.NewWindow += new System.ComponentModel.CancelEventHandler(browser_NewWindow);
                 browser.ProgressChanged += new WebBrowserProgressChangedEventHandler(browser_ProgressChanged);
-                //browser.ScriptErrorsSuppressed = Settings.Web.flagWebBrowserScriptErrorsSuppressed;   
                 this.browser = browser;
 
                 //needed to make google (and probably other sites) work correctly
@@ -308,7 +307,8 @@ namespace Cliver.BotWeb
                         IE_result = WaitForCompletion(timeout_in_mss);
                     else
                     {
-                        if (timeout_in_mss < 0) timeout_in_mss = Settings.Browser.PageCompletedTimeoutInSeconds * 1000;
+                        if (timeout_in_mss < 0)
+                            timeout_in_mss = Settings.Browser.PageCompletedTimeoutInSeconds * 1000;
                         IE_result = (IeRoutines.WaitForCondition(browser, return_if_exists, timeout_in_mss) != null);
                     }
                     browser.Invoke(() => { HtmlDoc = browser.Document; });
@@ -530,12 +530,16 @@ namespace Cliver.BotWeb
         {
             foreach (System.Windows.Forms.HtmlWindow f in window.Frames)
             {
-                //if (HtmlFrameDocs == null)
-                //    HtmlFrameDocs = new HtmlFrames();
-
-                string current_path = path + ((path == null) ? "" : ">") + f.Name;
-                HtmlFrameDocs[current_path] = f.Document;
-                get_frames(f, current_path);
+                try
+                {
+                    //string current_path = path + ((path == null) ? "" : ">") + f.Name;
+                    //HtmlFrameDocs[current_path] = f.Document;
+                    //get_frames(f, current_path);
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e);
+                }
             }
         }
 
@@ -547,18 +551,18 @@ namespace Cliver.BotWeb
 
             try
             {
-                if (url == "about:blank")
-                {
-                    e.Cancel = true;
-                    return;
-                }
+                //if (url == "about:blank")
+                //{
+                //    e.Cancel = true;
+                //    return;
+                //}
                 if (Regex.IsMatch(url, @"\.(gif|jpg|jpeg|png|bmp)&", RegexOptions.Compiled | RegexOptions.IgnoreCase))
                 {
                     e.Cancel = true;
                     return;
                 }
 
-                HtmlDoc = null;
+                //HtmlDoc = null;
                 //HtmlFrameDocs = null;
                 //HtmlFrameDocs.Clear();
                 //saved_file = null;

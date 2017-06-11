@@ -31,18 +31,15 @@ namespace Cliver.Bot
                 if (FileName == null)
                 {
                     if (FileFormat == FileFormatEnum.NULL)
-                    {
-                        FileName = Cliver.Log.EntryAssemblyName;
                         FileFormat = FileFormatEnum.TSV;
-                    }
-                    string fiel_name = Cliver.Log.EntryAssemblyName;
+                    string file_name = ProgramRoutines.GetAppName();
                     switch (FileFormat)
                     {
                         case FileFormatEnum.CSV:
-                            FileName = fiel_name + ".csv";
+                            FileName = file_name + ".csv";
                             break;
                         case FileFormatEnum.TSV:
-                            FileName = fiel_name + ".tsv";
+                            FileName = file_name + ".tsv";
                             break;
                         case FileFormatEnum.XLS:
                             throw new Exception("XLS format not implemented.");

@@ -26,6 +26,16 @@ namespace Cliver.BotCustomization
             InitializeComponent();
         }
 
+        ~IeRoutineBotThreadControl()
+        {
+            if (Browser != null)
+            {
+                Browser.Stop();
+                Browser.Dispose();
+                Browser = null;
+            }
+        }
+
         public WebRoutine WR
         {
             set
@@ -56,8 +66,7 @@ namespace Cliver.BotCustomization
                 else
                     progressBar.Maximum = max;
                 progressBar.Value = point;
-            }
-                );
+            });
         }
 
         void WebRoutine_Loading(string m)
