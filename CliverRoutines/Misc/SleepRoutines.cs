@@ -37,7 +37,7 @@ namespace Cliver
                 o = get_object();
                 if (o != null)
                     break;
-                Application.DoEvents();
+                //Application.DoEvents();
                 Thread.Sleep(spin_sleep_in_mss);
             }
             return o;
@@ -50,7 +50,7 @@ namespace Cliver
             {
                 if (check_condition())
                     return true;
-                Application.DoEvents();
+                //Application.DoEvents();
                 Thread.Sleep(spin_sleep_in_mss);
             }
             return false;
@@ -61,7 +61,7 @@ namespace Cliver
             DateTime dt = DateTime.Now + new TimeSpan(0, 0, 0, 0, mss);
             while (dt > DateTime.Now)
             {
-                Application.DoEvents();
+                //Application.DoEvents();
                 Thread.Sleep(spin_sleep_in_mss);
             }
         }        

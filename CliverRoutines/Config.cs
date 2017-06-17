@@ -30,15 +30,22 @@ namespace Cliver
                 fi.SetValue(this, fi.GetValue(s));
         }
 
+        public void Reload()
+        {
+            Serializable s = Load(GetType(), __File);
+            foreach (FieldInfo fi in GetType().GetFields(BindingFlags.Public | BindingFlags.Instance))
+                fi.SetValue(this, fi.GetValue(s));
+        }
+
         public S GetResetInstance<S>() where S : Settings, new()
         {
             return Create<S>(__File);
         }
 
-        //public Settings GetResetInstance()
-        //{
-        //    return (Settings)Create(GetType(), __File);
-        //}
+        public S GetReloadedInstance<S>() where S : Settings, new()
+        {
+            return Load<S>(__File);
+        }
 
         /// <summary>
         /// this object is ever to be loaded

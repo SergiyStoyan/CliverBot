@@ -63,7 +63,8 @@ namespace Cliver
                         service_t = null;
                         //exiting_service_t.Join();
                         while (exiting_service_t.IsAlive)
-                            Application.DoEvents();
+                            //Application.DoEvents();
+                            Thread.Sleep(50);
                     }
                 }
             }
