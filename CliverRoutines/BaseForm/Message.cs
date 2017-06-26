@@ -90,9 +90,9 @@ namespace Cliver
             ShowDialog(Application.ProductName, SystemIcons.Error, message, new string[1] { "OK" }, 0, owner);
         }
 
-        public static bool YesNo(string question, Form owner = null)
+        public static bool YesNo(string question, Form owner = null, Icons icon = Icons.Question)
         {
-            return ShowDialog(Application.ProductName, SystemIcons.Question, question, new string[2] { "Yes", "No" }, 0, owner) == 0;
+            return ShowDialog(Application.ProductName, get_icon(icon), question, new string[2] { "Yes", "No" }, 0, owner) == 0;
         }
 
         public static int ShowDialog(string title, Icon icon, string message, string[] buttons, int default_button, Form owner, bool? button_autosize = null, bool? no_duplicate = null, bool? topmost = null)
@@ -146,6 +146,31 @@ namespace Cliver
             return result;
         }
         static Dictionary<string, string> callers2message = new Dictionary<string, string>();
+        public enum Icons
+        {
+            Information,
+            Warning,
+            Error,
+            Question,
+            Exclamation,
+        }
+        static Icon get_icon(Icons icon)
+        {
+            switch(icon)
+            {
+                case Icons.Information:
+                    return SystemIcons.Information;
+                case Icons.Warning:
+                    return SystemIcons.Warning;
+                case Icons.Error:
+                    return SystemIcons.Error;
+                case Icons.Question:
+                    return SystemIcons.Question;
+                case Icons.Exclamation:
+                    return SystemIcons.Exclamation;
+                default: throw new Exception("No option: " + icon);
+            }
+        }
     }
 }
 
