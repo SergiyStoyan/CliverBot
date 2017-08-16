@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Data;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Reflection;
 
 namespace Cliver
 {
@@ -122,28 +123,44 @@ namespace Cliver
         public static IEnumerable<DependencyObject> GetChildren(this DependencyObject ob)
         {
             int childCount = VisualTreeHelper.GetChildrenCount(ob);
-
             for (int i = 0; i < childCount; i++)
-            {
                 yield return VisualTreeHelper.GetChild(ob, i);
-            }
         }
 
         public static T GetVisualChild<T>(this Visual parent) where T : Visual
         {
             T child = default(T);
-
-            for (int index = 0; index < VisualTreeHelper.GetChildrenCount(parent); index++)
+            int childCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (int index = 0; index < childCount; index++)
             {
                 Visual visualChild = (Visual)VisualTreeHelper.GetChild(parent, index);
                 child = visualChild as T;
-
-                if (child == null)
-                    child = GetVisualChild<T>(visualChild);//Find Recursively
-                else
+                if (child != null)
                     return child;
+                child = GetVisualChild<T>(visualChild);//Find Recursively
             }
             return child;
+        }
+        
+        /// <summary>
+         /// Get next tab order element.
+         /// </summary>
+         /// <param name="e">The element to get next tab order</param>
+         /// <param name="container">The container element owning 'e'. Make sure this is a container of 'e'.</param>
+         /// <param name="goDownOnly">True if search only itself and inside of 'container'; otherwise false.
+         /// If true and next tab order element is outside of 'container', result in null.</param>
+         /// <returns>Next tab order element or null if not found</returns>
+        static public DependencyObject GetNextTabElement(this DependencyObject e, DependencyObject container, bool goDownOnly)
+        {
+            var navigation = typeof(FrameworkElement)
+                .GetProperty("KeyboardNavigation", BindingFlags.NonPublic | BindingFlags.Static)
+                .GetValue(null);
+
+            var method = navigation
+                .GetType()
+                .GetMethod("GetNextTab", BindingFlags.NonPublic | BindingFlags.Instance);
+
+            return method.Invoke(navigation, new object[] { e, container, goDownOnly }) as DependencyObject;
         }
     }
 
