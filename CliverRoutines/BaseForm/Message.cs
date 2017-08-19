@@ -47,6 +47,8 @@ namespace Cliver
         /// </summary>
         public static bool NoDuplicate = true;
 
+        public static bool ShowDetailsOnException = true;
+
         public static void Inform(string message, Form owner = null)
         {
             ShowDialog(Application.ProductName, SystemIcons.Information, message, new string[1] { "OK" }, 0, owner);
@@ -64,6 +66,12 @@ namespace Cliver
         
         public static void Error(Exception e, Form owner = null)
         {
+            if(!ShowDetailsOnException)
+            {
+                Error(e.Message, owner);
+                return;
+            }
+
             List<string> ms = new List<string>();
             bool stack_trace_added = false;
             for (; e != null; e = e.InnerException)
