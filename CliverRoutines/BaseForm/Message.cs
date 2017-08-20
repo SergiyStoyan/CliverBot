@@ -93,6 +93,11 @@ namespace Cliver
             Error(e.Message, owner);
         }
 
+        public static void Error2(string subtitle, Exception e, Form owner = null)
+        {
+            Error(subtitle + "\r\n\r\n" + e.Message, owner);
+        }
+
         public static void Error(string message, Form owner = null)
         {
             ShowDialog(Application.ProductName, SystemIcons.Error, message, new string[1] { "OK" }, 0, owner);
