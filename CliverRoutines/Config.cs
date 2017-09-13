@@ -69,8 +69,11 @@ namespace Cliver
         /// However, objects attributed with [Settings.Obligatory] will be loaded in any way.
         /// </summary>
         /// <param name="required_object_names"></param>
-        public static void Initialize(IEnumerable<string> required_object_names = null)
+        /// <param name="assembly_name_regex_pattern"></param>
+        public static void Initialize(string assembly_name_regex_pattern = @"^Cliver", IEnumerable<string> required_object_names = null)
         {
+            Config.assembly_name_regex_pattern = assembly_name_regex_pattern;
+
             Config.required_object_names.Clear();
             if (required_object_names == null)
                 return;
@@ -78,6 +81,7 @@ namespace Cliver
                 Config.required_object_names.Add(name);
         }
         static readonly HashSet<string> required_object_names = new HashSet<string>();
+        static string assembly_name_regex_pattern = null;
 
         public const string CONFIG_FOLDER_NAME = "config";
         public const string FILE_EXTENSION = "json";
@@ -92,7 +96,7 @@ namespace Cliver
                 object_names2serializable.Clear();
                 List<Assembly> sas = new List<Assembly>();
                 sas.Add(Assembly.GetEntryAssembly());
-                foreach (AssemblyName an in Assembly.GetEntryAssembly().GetReferencedAssemblies().Where(an => Regex.IsMatch(an.Name, @"^Cliver")))
+                foreach (AssemblyName an in Assembly.GetEntryAssembly().GetReferencedAssemblies().Where(an => Regex.IsMatch(an.Name, assembly_name_regex_pattern)))
                     sas.Add(Assembly.Load(an));
                 foreach (Assembly sa in sas)
                 {
