@@ -23,18 +23,28 @@ namespace Cliver
 {
     public static class NetworkRoutines
     {
-        static public IPEndPoint GetLocalIp()
+        static public IPAddress GetLocalIp(IPAddress destination_ip)
         {
             using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
             {
-                socket.Connect("8.8.8.8", 65530);
-                return socket.LocalEndPoint as IPEndPoint;
+                try
+                {
+                    socket.Connect(destination_ip, 0);
+                }
+                catch(Exception e)
+                {
+                    return null;
+                }
+                IPEndPoint iep = (IPEndPoint)socket.LocalEndPoint;
+                if (iep == null)
+                    return null;
+                return iep.Address;
             }
         }
 
-        static public string GetLocalIpAsString()
+        static public string GetLocalIpAsString(IPAddress destination_ip)
         {
-            return GetLocalIp().Address.ToString();
+            return GetLocalIp(destination_ip)?.ToString();
         }
     }
 }
