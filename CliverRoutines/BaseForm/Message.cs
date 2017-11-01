@@ -72,6 +72,11 @@ namespace Cliver
                 return;
             }
 
+            ShowDialog(Application.ProductName, SystemIcons.Error, GetExceptionDetails(e), new string[1] { "OK" }, 0, owner);
+        }
+
+        public static string GetExceptionDetails(Exception e)
+        {
             List<string> ms = new List<string>();
             bool stack_trace_added = false;
             for (; e != null; e = e.InnerException)
@@ -84,8 +89,7 @@ namespace Cliver
                 }
                 ms.Add(s);
             }
-
-            ShowDialog(Application.ProductName, SystemIcons.Error, string.Join("\r\n=>\r\n", ms), new string[1] { "OK" }, 0, owner);
+            return string.Join("\r\n=>\r\n", ms);
         }
 
         public static void Error2(Exception e, Form owner = null)

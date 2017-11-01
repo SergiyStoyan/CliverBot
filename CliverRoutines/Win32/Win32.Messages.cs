@@ -1006,1974 +1006,1974 @@ namespace Cliver
         public const uint WA_INACTIVE = 0x0000;
         public const uint SC_MAXIMIZE = 0xF030; // Maximize event -  from Winuser.h
         public const uint SC_RESTORE = 0xF120; // Restore event -  from Winuser.h
-            public const uint WM_NULL = 0x0000;
-            public const uint WM_CREATE = 0x0001;
-            public const uint
-                WM_DESTROY = 0x0002;
-            public const uint
-                WM_MOVE = 0x0003;
-            public const uint
-                WM_SIZE = 0x0005;
-            public const uint
-                WM_ACTIVATE = 0x0006;
-            public const uint
-                WM_SETFOCUS = 0x0007;
-            public const uint
-                WM_KILLFOCUS = 0x0008;
-            public const uint
-                WM_ENABLE = 0x000A;
-            public const uint
-                WM_SETREDRAW = 0x000B;
-            public const uint
-                WM_SETTEXT = 0x000C;
-            public const uint
-                WM_GETTEXT = 0x000D;
-            public const uint
-                WM_GETTEXTLENGTH = 0x000E;
-            public const uint
-                WM_PAINT = 0x000F;
-            public const uint
-                WM_CLOSE = 0x0010;
-            public const uint
-                WM_QUERYENDSESSION = 0x0011;
-            public const uint
-                WM_QUERYOPEN = 0x0013;
-            public const uint
-                WM_ENDSESSION = 0x0016;
-            public const uint
-                WM_QUIT = 0x0012;
-            public const uint
-                WM_ERASEBKGND = 0x0014;
-            public const uint
-                WM_SYSCOLORCHANGE = 0x0015;
-            public const uint
-                WM_SHOWWINDOW = 0x0018;
-            public const uint
-                WM_WININICHANGE = 0x001A;
-            public const uint
-                WM_SETTINGCHANGE = 0x001A;
-            public const uint
-                WM_DEVMODECHANGE = 0x001B;
-            public const uint
-                WM_ACTIVATEAPP = 0x001C;
-            public const uint
-                WM_FONTCHANGE = 0x001D;
-            public const uint
-                WM_TIMECHANGE = 0x001E;
-            public const uint
-                WM_CANCELMODE = 0x001F;
-            public const uint
-                WM_SETCURSOR = 0x0020;
-            public const uint
-                WM_MOUSEACTIVATE = 0x0021;
-            public const uint
-                WM_CHILDACTIVATE = 0x0022;
-            public const uint
-                WM_QUEUESYNC = 0x0023;
-            public const uint
-                WM_GETMINMAXINFO = 0x0024;
-            public const uint
-                WM_PAINTICON = 0x0026;
-            public const uint
-                WM_ICONERASEBKGND = 0x0027;
-            public const uint
-                WM_NEXTDLGCTL = 0x0028;
-            public const uint
-                WM_SPOOLERSTATUS = 0x002A;
-            public const uint
-                WM_DRAWITEM = 0x002B;
-            public const uint
-                WM_MEASUREITEM = 0x002C;
-            public const uint
-                WM_DELETEITEM = 0x002D;
-            public const uint
-                WM_VKEYTOITEM = 0x002E;
-            public const uint
-                WM_CHARTOITEM = 0x002F;
-            public const uint
-                WM_SETFONT = 0x0030;
-            public const uint
-                WM_GETFONT = 0x0031;
-            public const uint
-                WM_SETHOTKEY = 0x0032;
-            public const uint
-                WM_GETHOTKEY = 0x0033;
-            public const uint
-                WM_QUERYDRAGICON = 0x0037;
-            public const uint
-                WM_COMPAREITEM = 0x0039;
-            public const uint
-                WM_GETOBJECT = 0x003D;
-            public const uint
-                WM_COMPACTING = 0x0041;
-            public const uint
-                WM_COMMNOTIFY = 0x0044;
-            public const uint
-                WM_WINDOWPOSCHANGING = 0x0046;
-            public const uint
-                WM_WINDOWPOSCHANGED = 0x0047;
-            public const uint
-                WM_POWER = 0x0048;
-            public const uint
-                WM_COPYDATA = 0x004A;
-            public const uint
-                WM_CANCELJOURNAL = 0x004B;
-            public const uint
-                WM_NOTIFY = 0x004E;
-            public const uint
-                WM_INPUTLANGCHANGEREQUEST = 0x0050;
-            public const uint
-                WM_INPUTLANGCHANGE = 0x0051;
-            public const uint
-                WM_TCARD = 0x0052;
-            public const uint
-                WM_HELP = 0x0053;
-            public const uint
-                WM_USERCHANGED = 0x0054;
-            public const uint
-                WM_NOTIFYFORMAT = 0x0055;
-            public const uint
-                WM_CONTEXTMENU = 0x007B;
-            public const uint
-                WM_STYLECHANGING = 0x007C;
-            public const uint
-                WM_STYLECHANGED = 0x007D;
-            public const uint
-                WM_DISPLAYCHANGE = 0x007E;
-            public const uint
-                WM_GETICON = 0x007F;
-            public const uint
-                WM_SETICON = 0x0080;
-            public const uint
-                WM_NCCREATE = 0x0081;
-            public const uint
-                WM_NCDESTROY = 0x0082;
-            public const uint
-                WM_NCCALCSIZE = 0x0083;
-            public const uint
-                WM_NCHITTEST = 0x0084;
-            public const uint
-                WM_NCPAINT = 0x0085;
-            public const uint
-                WM_NCACTIVATE = 0x0086;
-            public const uint
-                WM_GETDLGCODE = 0x0087;
-            public const uint
-                WM_SYNCPAINT = 0x0088;
-            public const uint
-                WM_NCMOUSEMOVE = 0x00A0;
-            public const uint
-                WM_NCLBUTTONDOWN = 0x00A1;
-            public const uint
-                WM_NCLBUTTONUP = 0x00A2;
-            public const uint
-                WM_NCLBUTTONDBLCLK = 0x00A3;
-            public const uint
-                WM_NCRBUTTONDOWN = 0x00A4;
-            public const uint
-                WM_NCRBUTTONUP = 0x00A5;
-            public const uint
-                WM_NCRBUTTONDBLCLK = 0x00A6;
-            public const uint
-                WM_NCMBUTTONDOWN = 0x00A7;
-            public const uint
-                WM_NCMBUTTONUP = 0x00A8;
-            public const uint
-                WM_NCMBUTTONDBLCLK = 0x00A9;
-            public const uint
-                WM_NCXBUTTONDOWN = 0x00AB;
-            public const uint
-                WM_NCXBUTTONUP = 0x00AC;
-            public const uint
-                WM_NCXBUTTONDBLCLK = 0x00AD;
-            public const uint
-                WM_INPUT = 0x00FF;
-            public const uint
-                WM_KEYFIRST = 0x0100;
-            public const uint
-                WM_KEYDOWN = 0x0100;
-            public const uint
-                WM_KEYUP = 0x0101;
-            public const uint
-                WM_CHAR = 0x0102;
-            public const uint
-                WM_DEADCHAR = 0x0103;
-            public const uint
-                WM_SYSKEYDOWN = 0x0104;
-            public const uint
-                WM_SYSKEYUP = 0x0105;
-            public const uint
-                WM_SYSCHAR = 0x0106;
-            public const uint
-                WM_SYSDEADCHAR = 0x0107;
-            public const uint
-                WM_UNICHAR = 0x0109;
-            public const uint
-                WM_KEYLAST_NT501 = 0x0109;
-            public const uint
-                UNICODE_NOCHAR = 0xFFFF;
-            public const uint
-                WM_KEYLAST_PRE501 = 0x0108;
-            public const uint
-                WM_IME_STARTCOMPOSITION = 0x010D;
-            public const uint
-                WM_IME_ENDCOMPOSITION = 0x010E;
-            public const uint
-                WM_IME_COMPOSITION = 0x010F;
-            public const uint
-                WM_IME_KEYLAST = 0x010F;
-            public const uint
-                WM_INITDIALOG = 0x0110;
-            public const uint
-                WM_COMMAND = 0x0111;
-            public const uint
-                WM_SYSCOMMAND = 0x0112;
-            public const uint
-                WM_TIMER = 0x0113;
-            public const uint
-                WM_HSCROLL = 0x0114;
-            public const uint
-                WM_VSCROLL = 0x0115;
-            public const uint
-                WM_INITMENU = 0x0116;
-            public const uint
-                WM_INITMENUPOPUP = 0x0117;
-            public const uint
-                WM_MENUSELECT = 0x011F;
-            public const uint
-                WM_MENUCHAR = 0x0120;
-            public const uint
-                WM_ENTERIDLE = 0x0121;
-            public const uint
-                WM_MENURBUTTONUP = 0x0122;
-            public const uint
-                WM_MENUDRAG = 0x0123;
-            public const uint
-                WM_MENUGETOBJECT = 0x0124;
-            public const uint
-                WM_UNINITMENUPOPUP = 0x0125;
-            public const uint
-                WM_MENUCOMMAND = 0x0126;
-            public const uint
-                WM_CHANGEUISTATE = 0x0127;
-            public const uint
-                WM_UPDATEUISTATE = 0x0128;
-            public const uint
-                WM_QUERYUISTATE = 0x0129;
-            public const uint
-                WM_CTLCOLORMSGBOX = 0x0132;
-            public const uint
-                WM_CTLCOLOREDIT = 0x0133;
-            public const uint
-                WM_CTLCOLORLISTBOX = 0x0134;
-            public const uint
-                WM_CTLCOLORBTN = 0x0135;
-            public const uint
-                WM_CTLCOLORDLG = 0x0136;
-            public const uint
-                WM_CTLCOLORSCROLLBAR = 0x0137;
-            public const uint
-                WM_CTLCOLORSTATIC = 0x0138;
-            public const uint
-                WM_MOUSEFIRST = 0x0200;
-            public const uint
-                WM_MOUSEMOVE = 0x0200;
-            public const uint
-                WM_LBUTTONDOWN = 0x0201;
-            public const uint
-                WM_LBUTTONUP = 0x0202;
-            public const uint
-                WM_LBUTTONDBLCLK = 0x0203;
-            public const uint
-                WM_RBUTTONDOWN = 0x0204;
-            public const uint
-                WM_RBUTTONUP = 0x0205;
-            public const uint
-                WM_RBUTTONDBLCLK = 0x0206;
-            public const uint
-                WM_MBUTTONDOWN = 0x0207;
-            public const uint
-                WM_MBUTTONUP = 0x0208;
-            public const uint
-                WM_MBUTTONDBLCLK = 0x0209;
-            public const uint
-                WM_MOUSEWHEEL = 0x020A;
-            public const uint
-                WM_XBUTTONDOWN = 0x020B;
-            public const uint
-                WM_XBUTTONUP = 0x020C;
-            public const uint
-                WM_XBUTTONDBLCLK = 0x020D;
-            public const uint
-                WM_MOUSELAST_5 = 0x020D;
-            public const uint
-                WM_MOUSELAST_4 = 0x020A;
-            public const uint
-                WM_MOUSELAST_PRE_4 = 0x0209;
-            public const uint
-                WM_PARENTNOTIFY = 0x0210;
-            public const uint
-                WM_ENTERMENULOOP = 0x0211;
-            public const uint
-                WM_EXITMENULOOP = 0x0212;
-            public const uint
-                WM_NEXTMENU = 0x0213;
-            public const uint
-                WM_SIZING = 0x0214;
-            public const uint
-                WM_CAPTURECHANGED = 0x0215;
-            public const uint
-                WM_MOVING = 0x0216;
-            public const uint
-                WM_POWERBROADCAST = 0x0218;
-            public const uint
-                WM_DEVICECHANGE = 0x0219;
-            public const uint
-                WM_MDICREATE = 0x0220;
-            public const uint
-                WM_MDIDESTROY = 0x0221;
-            public const uint
-                WM_MDIACTIVATE = 0x0222;
-            public const uint
-                WM_MDIRESTORE = 0x0223;
-            public const uint
-                WM_MDINEXT = 0x0224;
-            public const uint
-                WM_MDIMAXIMIZE = 0x0225;
-            public const uint
-                WM_MDITILE = 0x0226;
-            public const uint
-                WM_MDICASCADE = 0x0227;
-            public const uint
-                WM_MDIICONARRANGE = 0x0228;
-            public const uint
-                WM_MDIGETACTIVE = 0x0229;
-            public const uint
-                WM_MDISETMENU = 0x0230;
-            public const uint
-                WM_ENTERSIZEMOVE = 0x0231;
-            public const uint
-                WM_EXITSIZEMOVE = 0x0232;
-            public const uint
-                WM_DROPFILES = 0x0233;
-            public const uint
-                WM_MDIREFRESHMENU = 0x0234;
-            public const uint
-                WM_IME_SETCONTEXT = 0x0281;
-            public const uint
-                WM_IME_NOTIFY = 0x0282;
-            public const uint
-                WM_IME_CONTROL = 0x0283;
-            public const uint
-                WM_IME_COMPOSITIONFULL = 0x0284;
-            public const uint
-                WM_IME_SELECT = 0x0285;
-            public const uint
-                WM_IME_CHAR = 0x0286;
-            public const uint
-                WM_IME_REQUEST = 0x0288;
-            public const uint
-                WM_IME_KEYDOWN = 0x0290;
-            public const uint
-                WM_IME_KEYUP = 0x0291;
-            public const uint
-                WM_MOUSEHOVER = 0x02A1;
-            public const uint
-                WM_MOUSELEAVE = 0x02A3;
-            public const uint
-                WM_NCMOUSEHOVER = 0x02A0;
-            public const uint
-                WM_NCMOUSELEAVE = 0x02A2;
-            public const uint
-                WM_WTSSESSION_CHANGE = 0x02B1;
-            public const uint
-                WM_TABLET_FIRST = 0x02c0;
-            public const uint
-                WM_TABLET_LAST = 0x02df;
-            public const uint
-                WM_CUT = 0x0300;
-            public const uint
-                WM_COPY = 0x0301;
-            public const uint
-                WM_PASTE = 0x0302;
-            public const uint
-                WM_CLEAR = 0x0303;
-            public const uint
-                WM_UNDO = 0x0304;
-            public const uint
-                WM_RENDERFORMAT = 0x0305;
-            public const uint
-                WM_RENDERALLFORMATS = 0x0306;
-            public const uint
-                WM_DESTROYCLIPBOARD = 0x0307;
-            public const uint
-                WM_DRAWCLIPBOARD = 0x0308;
-            public const uint
-                WM_PAINTCLIPBOARD = 0x0309;
-            public const uint
-                WM_VSCROLLCLIPBOARD = 0x030A;
-            public const uint
-                WM_SIZECLIPBOARD = 0x030B;
-            public const uint
-                WM_ASKCBFORMATNAME = 0x030C;
-            public const uint
-                WM_CHANGECBCHAIN = 0x030D;
-            public const uint
-                WM_HSCROLLCLIPBOARD = 0x030E;
-            public const uint
-                WM_QUERYNEWPALETTE = 0x030F;
-            public const uint
-                WM_PALETTEISCHANGING = 0x0310;
-            public const uint
-                WM_PALETTECHANGED = 0x0311;
-            public const uint
-                WM_HOTKEY = 0x0312;
-            public const uint
-                WM_PRINT = 0x0317;
-            public const uint
-                WM_PRINTCLIENT = 0x0318;
-            public const uint
-                WM_APPCOMMAND = 0x0319;
-            public const uint
-                WM_THEMECHANGED = 0x031A;
-            public const uint
-                WM_HANDHELDFIRST = 0x0358;
-            public const uint
-                WM_HANDHELDLAST = 0x035F;
-            public const uint
-                WM_AFXFIRST = 0x0360;
-            public const uint
-                WM_AFXLAST = 0x037F;
-            public const uint
-                WM_PENWINFIRST = 0x0380;
-            public const uint
-                WM_PENWINLAST = 0x038F;
-            public const uint
-                WM_APP = 0x8000;
-            public const uint
-                WM_USER = 0x0400;
-            public const uint
-                EM_GETSEL = 0x00B0;
-            public const uint
-                EM_SETSEL = 0x00B1;
-            public const uint
-                EM_GETRECT = 0x00B2;
-            public const uint
-                EM_SETRECT = 0x00B3;
-            public const uint
-                EM_SETRECTNP = 0x00B4;
-            public const uint
-                EM_SCROLL = 0x00B5;
-            public const uint
-                EM_LINESCROLL = 0x00B6;
-            public const uint
-                EM_SCROLLCARET = 0x00B7;
-            public const uint
-                EM_GETMODIFY = 0x00B8;
-            public const uint
-                EM_SETMODIFY = 0x00B9;
-            public const uint
-                EM_GETLINECOUNT = 0x00BA;
-            public const uint
-                EM_LINEINDEX = 0x00BB;
-            public const uint
-                EM_SETHANDLE = 0x00BC;
-            public const uint
-                EM_GETHANDLE = 0x00BD;
-            public const uint
-                EM_GETTHUMB = 0x00BE;
-            public const uint
-                EM_LINELENGTH = 0x00C1;
-            public const uint
-                EM_REPLACESEL = 0x00C2;
-            public const uint
-                EM_GETLINE = 0x00C4;
-            public const uint
-                EM_LIMITTEXT = 0x00C5;
-            public const uint
-                EM_CANUNDO = 0x00C6;
-            public const uint
-                EM_UNDO = 0x00C7;
-            public const uint
-                EM_FMTLINES = 0x00C8;
-            public const uint
-                EM_LINEFROMCHAR = 0x00C9;
-            public const uint
-                EM_SETTABSTOPS = 0x00CB;
-            public const uint
-                EM_SETPASSWORDCHAR = 0x00CC;
-            public const uint
-                EM_EMPTYUNDOBUFFER = 0x00CD;
-            public const uint
-                EM_GETFIRSTVISIBLELINE = 0x00CE;
-            public const uint
-                EM_SETREADONLY = 0x00CF;
-            public const uint
-                EM_SETWORDBREAKPROC = 0x00D0;
-            public const uint
-                EM_GETWORDBREAKPROC = 0x00D1;
-            public const uint
-                EM_GETPASSWORDCHAR = 0x00D2;
-            public const uint
-                EM_SETMARGINS = 0x00D3;
-            public const uint
-                EM_GETMARGINS = 0x00D4;
-            public const uint
-                EM_SETLIMITTEXT = EM_LIMITTEXT;
-            public const uint
-                EM_GETLIMITTEXT = 0x00D5;
-            public const uint
-                EM_POSFROMCHAR = 0x00D6;
-            public const uint
-                EM_CHARFROMPOS = 0x00D7;
-            public const uint
-                EM_SETIMESTATUS = 0x00D8;
-            public const uint
-                EM_GETIMESTATUS = 0x00D9;
-            public const uint
-                BM_GETCHECK = 0x00F0;
-            public const uint
-                BM_SETCHECK = 0x00F1;
-            public const uint
-                BM_GETSTATE = 0x00F2;
-            public const uint
-                BM_SETSTATE = 0x00F3;
-            public const uint
-                BM_SETSTYLE = 0x00F4;
-            public const uint
-                BM_CLICK = 0x00F5;
-            public const uint
-                BM_GETIMAGE = 0x00F6;
-            public const uint
-                BM_SETIMAGE = 0x00F7;
-            public const uint
-                STM_SETICON = 0x0170;
-            public const uint
-                STM_GETICON = 0x0171;
-            public const uint
-                STM_SETIMAGE = 0x0172;
-            public const uint
-                STM_GETIMAGE = 0x0173;
-            public const uint
-                STM_MSGMAX = 0x0174;
-            public const uint
-                DM_GETDEFID = (WM_USER + 0);
-            public const uint
-                DM_SETDEFID = (WM_USER + 1);
-            public const uint
-                DM_REPOSITION = (WM_USER + 2);
-            public const uint
-                LB_ADDSTRING = 0x0180;
-            public const uint
-                LB_INSERTSTRING = 0x0181;
-            public const uint
-                LB_DELETESTRING = 0x0182;
-            public const uint
-                LB_SELITEMRANGEEX = 0x0183;
-            public const uint
-                LB_RESETCONTENT = 0x0184;
-            public const uint
-                LB_SETSEL = 0x0185;
-            public const uint
-                LB_SETCURSEL = 0x0186;
-            public const uint
-                LB_GETSEL = 0x0187;
-            public const uint
-                LB_GETCURSEL = 0x0188;
-            public const uint
-                LB_GETTEXT = 0x0189;
-            public const uint
-                LB_GETTEXTLEN = 0x018A;
-            public const uint
-                LB_GETCOUNT = 0x018B;
-            public const uint
-                LB_SELECTSTRING = 0x018C;
-            public const uint
-                LB_DIR = 0x018D;
-            public const uint
-                LB_GETTOPINDEX = 0x018E;
-            public const uint
-                LB_FINDSTRING = 0x018F;
-            public const uint
-                LB_GETSELCOUNT = 0x0190;
-            public const uint
-                LB_GETSELITEMS = 0x0191;
-            public const uint
-                LB_SETTABSTOPS = 0x0192;
-            public const uint
-                LB_GETHORIZONTALEXTENT = 0x0193;
-            public const uint
-                LB_SETHORIZONTALEXTENT = 0x0194;
-            public const uint
-                LB_SETCOLUMNWIDTH = 0x0195;
-            public const uint
-                LB_ADDFILE = 0x0196;
-            public const uint
-                LB_SETTOPINDEX = 0x0197;
-            public const uint
-                LB_GETITEMRECT = 0x0198;
-            public const uint
-                LB_GETITEMDATA = 0x0199;
-            public const uint
-                LB_SETITEMDATA = 0x019A;
-            public const uint
-                LB_SELITEMRANGE = 0x019B;
-            public const uint
-                LB_SETANCHORINDEX = 0x019C;
-            public const uint
-                LB_GETANCHORINDEX = 0x019D;
-            public const uint
-                LB_SETCARETINDEX = 0x019E;
-            public const uint
-                LB_GETCARETINDEX = 0x019F;
-            public const uint
-                LB_SETITEMHEIGHT = 0x01A0;
-            public const uint
-                LB_GETITEMHEIGHT = 0x01A1;
-            public const uint
-                LB_FINDSTRINGEXACT = 0x01A2;
-            public const uint
-                LB_SETLOCALE = 0x01A5;
-            public const uint
-                LB_GETLOCALE = 0x01A6;
-            public const uint
-                LB_SETCOUNT = 0x01A7;
-            public const uint
-                LB_INITSTORAGE = 0x01A8;
-            public const uint
-                LB_ITEMFROMPOINT = 0x01A9;
-            public const uint
-                LB_MULTIPLEADDSTRING = 0x01B1;
-            public const uint
-                LB_GETLISTBOXINFO = 0x01B2;
-            public const uint
-                LB_MSGMAX_501 = 0x01B3;
-            public const uint
-                LB_MSGMAX_WCE4 = 0x01B1;
-            public const uint
-                LB_MSGMAX_4 = 0x01B0;
-            public const uint
-                LB_MSGMAX_PRE4 = 0x01A8;
-            public const uint
-                CB_GETEDITSEL = 0x0140;
-            public const uint
-                CB_LIMITTEXT = 0x0141;
-            public const uint
-                CB_SETEDITSEL = 0x0142;
-            public const uint
-                CB_ADDSTRING = 0x0143;
-            public const uint
-                CB_DELETESTRING = 0x0144;
-            public const uint
-                CB_DIR = 0x0145;
-            public const uint
-                CB_GETCOUNT = 0x0146;
-            public const uint
-                CB_GETCURSEL = 0x0147;
-            public const uint
-                CB_GETLBTEXT = 0x0148;
-            public const uint
-                CB_GETLBTEXTLEN = 0x0149;
-            public const uint
-                CB_INSERTSTRING = 0x014A;
-            public const uint
-                CB_RESETCONTENT = 0x014B;
-            public const uint
-                CB_FINDSTRING = 0x014C;
-            public const uint
-                CB_SELECTSTRING = 0x014D;
-            public const uint
-                CB_SETCURSEL = 0x014E;
-            public const uint
-                CB_SHOWDROPDOWN = 0x014F;
-            public const uint
-                CB_GETITEMDATA = 0x0150;
-            public const uint
-                CB_SETITEMDATA = 0x0151;
-            public const uint
-                CB_GETDROPPEDCONTROLRECT = 0x0152;
-            public const uint
-                CB_SETITEMHEIGHT = 0x0153;
-            public const uint
-                CB_GETITEMHEIGHT = 0x0154;
-            public const uint
-                CB_SETEXTENDEDUI = 0x0155;
-            public const uint
-                CB_GETEXTENDEDUI = 0x0156;
-            public const uint
-                CB_GETDROPPEDSTATE = 0x0157;
-            public const uint
-                CB_FINDSTRINGEXACT = 0x0158;
-            public const uint
-                CB_SETLOCALE = 0x0159;
-            public const uint
-                CB_GETLOCALE = 0x015A;
-            public const uint
-                CB_GETTOPINDEX = 0x015B;
-            public const uint
-                CB_SETTOPINDEX = 0x015C;
-            public const uint
-                CB_GETHORIZONTALEXTENT = 0x015d;
-            public const uint
-                CB_SETHORIZONTALEXTENT = 0x015e;
-            public const uint
-                CB_GETDROPPEDWIDTH = 0x015f;
-            public const uint
-                CB_SETDROPPEDWIDTH = 0x0160;
-            public const uint
-                CB_INITSTORAGE = 0x0161;
-            public const uint
-                CB_MULTIPLEADDSTRING = 0x0163;
-            public const uint
-                CB_GETCOMBOBOXINFO = 0x0164;
-            public const uint
-                CB_MSGMAX_501 = 0x0165;
-            public const uint
-                CB_MSGMAX_WCE400 = 0x0163;
-            public const uint
-                CB_MSGMAX_400 = 0x0162;
-            public const uint
-                CB_MSGMAX_PRE400 = 0x015B;
-            public const uint
-                SBM_SETPOS = 0x00E0;
-            public const uint
-                SBM_GETPOS = 0x00E1;
-            public const uint
-                SBM_SETRANGE = 0x00E2;
-            public const uint
-                SBM_SETRANGEREDRAW = 0x00E6;
-            public const uint
-                SBM_GETRANGE = 0x00E3;
-            public const uint
-                SBM_ENABLE_ARROWS = 0x00E4;
-            public const uint
-                SBM_SETSCROLLINFO = 0x00E9;
-            public const uint
-                SBM_GETSCROLLINFO = 0x00EA;
-            public const uint
-                SBM_GETSCROLLBARINFO = 0x00EB;
-            public const uint
-                LVM_FIRST = 0x1000;
-            public const uint // ListView messages
-                TV_FIRST = 0x1100;
-            public const uint // TreeView messages
-                HDM_FIRST = 0x1200;
-            public const uint // Header messages
-                TCM_FIRST = 0x1300;
-            public const uint // Tab control messages
-                PGM_FIRST = 0x1400;
-            public const uint // Pager control messages
-                ECM_FIRST = 0x1500;
-            public const uint // Edit control messages
-                BCM_FIRST = 0x1600;
-            public const uint // Button control messages
-                CBM_FIRST = 0x1700;
-            public const uint // Combobox control messages
-                CCM_FIRST = 0x2000;
-            public const uint // Common control shared messages
-                CCM_LAST = (CCM_FIRST + 0x200);
-            public const uint
-                CCM_SETBKCOLOR = (CCM_FIRST + 1);
-            public const uint
-                CCM_SETCOLORSCHEME = (CCM_FIRST + 2);
-            public const uint
-                CCM_GETCOLORSCHEME = (CCM_FIRST + 3);
-            public const uint
-                CCM_GETDROPTARGET = (CCM_FIRST + 4);
-            public const uint
-                CCM_SETUNICODEFORMAT = (CCM_FIRST + 5);
-            public const uint
-                CCM_GETUNICODEFORMAT = (CCM_FIRST + 6);
-            public const uint
-                CCM_SETVERSION = (CCM_FIRST + 0x7);
-            public const uint
-                CCM_GETVERSION = (CCM_FIRST + 0x8);
-            public const uint
-                CCM_SETNOTIFYWINDOW = (CCM_FIRST + 0x9);
-            public const uint
-                CCM_SETWINDOWTHEME = (CCM_FIRST + 0xb);
-            public const uint
-                CCM_DPISCALE = (CCM_FIRST + 0xc);
-            public const uint
-                HDM_GETITEMCOUNT = (HDM_FIRST + 0);
-            public const uint
-                HDM_INSERTITEMA = (HDM_FIRST + 1);
-            public const uint
-                HDM_INSERTITEMW = (HDM_FIRST + 10);
-            public const uint
-                HDM_DELETEITEM = (HDM_FIRST + 2);
-            public const uint
-                HDM_GETITEMA = (HDM_FIRST + 3);
-            public const uint
-                HDM_GETITEMW = (HDM_FIRST + 11);
-            public const uint
-                HDM_SETITEMA = (HDM_FIRST + 4);
-            public const uint
-                HDM_SETITEMW = (HDM_FIRST + 12);
-            public const uint
-                HDM_LAYOUT = (HDM_FIRST + 5);
-            public const uint
-                HDM_HITTEST = (HDM_FIRST + 6);
-            public const uint
-                HDM_GETITEMRECT = (HDM_FIRST + 7);
-            public const uint
-                HDM_SETIMAGELIST = (HDM_FIRST + 8);
-            public const uint
-                HDM_GETIMAGELIST = (HDM_FIRST + 9);
-            public const uint
-                HDM_ORDERTOINDEX = (HDM_FIRST + 15);
-            public const uint
-                HDM_CREATEDRAGIMAGE = (HDM_FIRST + 16);
-            public const uint
-                HDM_GETORDERARRAY = (HDM_FIRST + 17);
-            public const uint
-                HDM_SETORDERARRAY = (HDM_FIRST + 18);
-            public const uint
-                HDM_SETHOTDIVIDER = (HDM_FIRST + 19);
-            public const uint
-                HDM_SETBITMAPMARGIN = (HDM_FIRST + 20);
-            public const uint
-                HDM_GETBITMAPMARGIN = (HDM_FIRST + 21);
-            public const uint
-                HDM_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT;
-            public const uint
-                HDM_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT;
-            public const uint
-                HDM_SETFILTERCHANGETIMEOUT = (HDM_FIRST + 22);
-            public const uint
-                HDM_EDITFILTER = (HDM_FIRST + 23);
-            public const uint
-                HDM_CLEARFILTER = (HDM_FIRST + 24);
-            public const uint
-                TB_ENABLEBUTTON = (WM_USER + 1);
-            public const uint
-                TB_CHECKBUTTON = (WM_USER + 2);
-            public const uint
-                TB_PRESSBUTTON = (WM_USER + 3);
-            public const uint
-                TB_HIDEBUTTON = (WM_USER + 4);
-            public const uint
-                TB_INDETERMINATE = (WM_USER + 5);
-            public const uint
-                TB_MARKBUTTON = (WM_USER + 6);
-            public const uint
-                TB_ISBUTTONENABLED = (WM_USER + 9);
-            public const uint
-                TB_ISBUTTONCHECKED = (WM_USER + 10);
-            public const uint
-                TB_ISBUTTONPRESSED = (WM_USER + 11);
-            public const uint
-                TB_ISBUTTONHIDDEN = (WM_USER + 12);
-            public const uint
-                TB_ISBUTTONINDETERMINATE = (WM_USER + 13);
-            public const uint
-                TB_ISBUTTONHIGHLIGHTED = (WM_USER + 14);
-            public const uint
-                TB_SETSTATE = (WM_USER + 17);
-            public const uint
-                TB_GETSTATE = (WM_USER + 18);
-            public const uint
-                TB_ADDBITMAP = (WM_USER + 19);
-            public const uint
-                TB_ADDBUTTONSA = (WM_USER + 20);
-            public const uint
-                TB_INSERTBUTTONA = (WM_USER + 21);
-            public const uint
-                TB_ADDBUTTONS = (WM_USER + 20);
-            public const uint
-                TB_INSERTBUTTON = (WM_USER + 21);
-            public const uint
-                TB_DELETEBUTTON = (WM_USER + 22);
-            public const uint
-                TB_GETBUTTON = (WM_USER + 23);
-            public const uint
-                TB_BUTTONCOUNT = (WM_USER + 24);
-            public const uint
-                TB_COMMANDTOINDEX = (WM_USER + 25);
-            public const uint
-                TB_SAVERESTOREA = (WM_USER + 26);
-            public const uint
-                TB_SAVERESTOREW = (WM_USER + 76);
-            public const uint
-                TB_CUSTOMIZE = (WM_USER + 27);
-            public const uint
-                TB_ADDSTRINGA = (WM_USER + 28);
-            public const uint
-                TB_ADDSTRINGW = (WM_USER + 77);
-            public const uint
-                TB_GETITEMRECT = (WM_USER + 29);
-            public const uint
-                TB_BUTTONSTRUCTSIZE = (WM_USER + 30);
-            public const uint
-                TB_SETBUTTONSIZE = (WM_USER + 31);
-            public const uint
-                TB_SETBITMAPSIZE = (WM_USER + 32);
-            public const uint
-                TB_AUTOSIZE = (WM_USER + 33);
-            public const uint
-                TB_GETTOOLTIPS = (WM_USER + 35);
-            public const uint
-                TB_SETTOOLTIPS = (WM_USER + 36);
-            public const uint
-                TB_SETPARENT = (WM_USER + 37);
-            public const uint
-                TB_SETROWS = (WM_USER + 39);
-            public const uint
-                TB_GETROWS = (WM_USER + 40);
-            public const uint
-                TB_SETCMDID = (WM_USER + 42);
-            public const uint
-                TB_CHANGEBITMAP = (WM_USER + 43);
-            public const uint
-                TB_GETBITMAP = (WM_USER + 44);
-            public const uint
-                TB_GETBUTTONTEXTA = (WM_USER + 45);
-            public const uint
-                TB_GETBUTTONTEXTW = (WM_USER + 75);
-            public const uint
-                TB_REPLACEBITMAP = (WM_USER + 46);
-            public const uint
-                TB_SETINDENT = (WM_USER + 47);
-            public const uint
-                TB_SETIMAGELIST = (WM_USER + 48);
-            public const uint
-                TB_GETIMAGELIST = (WM_USER + 49);
-            public const uint
-                TB_LOADIMAGES = (WM_USER + 50);
-            public const uint
-                TB_GETRECT = (WM_USER + 51);
-            public const uint
-                TB_SETHOTIMAGELIST = (WM_USER + 52);
-            public const uint
-                TB_GETHOTIMAGELIST = (WM_USER + 53);
-            public const uint
-                TB_SETDISABLEDIMAGELIST = (WM_USER + 54);
-            public const uint
-                TB_GETDISABLEDIMAGELIST = (WM_USER + 55);
-            public const uint
-                TB_SETSTYLE = (WM_USER + 56);
-            public const uint
-                TB_GETSTYLE = (WM_USER + 57);
-            public const uint
-                TB_GETBUTTONSIZE = (WM_USER + 58);
-            public const uint
-                TB_SETBUTTONWIDTH = (WM_USER + 59);
-            public const uint
-                TB_SETMAXTEXTROWS = (WM_USER + 60);
-            public const uint
-                TB_GETTEXTROWS = (WM_USER + 61);
-            public const uint
-                TB_GETOBJECT = (WM_USER + 62);
-            public const uint
-                TB_GETHOTITEM = (WM_USER + 71);
-            public const uint
-                TB_SETHOTITEM = (WM_USER + 72);
-            public const uint
-                TB_SETANCHORHIGHLIGHT = (WM_USER + 73);
-            public const uint
-                TB_GETANCHORHIGHLIGHT = (WM_USER + 74);
-            public const uint
-                TB_MAPACCELERATORA = (WM_USER + 78);
-            public const uint
-                TB_GETINSERTMARK = (WM_USER + 79);
-            public const uint
-                TB_SETINSERTMARK = (WM_USER + 80);
-            public const uint
-                TB_INSERTMARKHITTEST = (WM_USER + 81);
-            public const uint
-                TB_MOVEBUTTON = (WM_USER + 82);
-            public const uint
-                TB_GETMAXSIZE = (WM_USER + 83);
-            public const uint
-                TB_SETEXTENDEDSTYLE = (WM_USER + 84);
-            public const uint
-                TB_GETEXTENDEDSTYLE = (WM_USER + 85);
-            public const uint
-                TB_GETPADDING = (WM_USER + 86);
-            public const uint
-                TB_SETPADDING = (WM_USER + 87);
-            public const uint
-                TB_SETINSERTMARKCOLOR = (WM_USER + 88);
-            public const uint
-                TB_GETINSERTMARKCOLOR = (WM_USER + 89);
-            public const uint
-                TB_SETCOLORSCHEME = CCM_SETCOLORSCHEME;
-            public const uint
-                TB_GETCOLORSCHEME = CCM_GETCOLORSCHEME;
-            public const uint
-                TB_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT;
-            public const uint
-                TB_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT;
-            public const uint
-                TB_MAPACCELERATORW = (WM_USER + 90);
-            public const uint
-                TB_GETBITMAPFLAGS = (WM_USER + 41);
-            public const uint
-                TB_GETBUTTONINFOW = (WM_USER + 63);
-            public const uint
-                TB_SETBUTTONINFOW = (WM_USER + 64);
-            public const uint
-                TB_GETBUTTONINFOA = (WM_USER + 65);
-            public const uint
-                TB_SETBUTTONINFOA = (WM_USER + 66);
-            public const uint
-                TB_INSERTBUTTONW = (WM_USER + 67);
-            public const uint
-                TB_ADDBUTTONSW = (WM_USER + 68);
-            public const uint
-                TB_HITTEST = (WM_USER + 69);
-            public const uint
-                TB_SETDRAWTEXTFLAGS = (WM_USER + 70);
-            public const uint
-                TB_GETSTRINGW = (WM_USER + 91);
-            public const uint
-                TB_GETSTRINGA = (WM_USER + 92);
-            public const uint
-                TB_GETMETRICS = (WM_USER + 101);
-            public const uint
-                TB_SETMETRICS = (WM_USER + 102);
-            public const uint
-                TB_SETWINDOWTHEME = CCM_SETWINDOWTHEME;
-            public const uint
-                RB_INSERTBANDA = (WM_USER + 1);
-            public const uint
-                RB_DELETEBAND = (WM_USER + 2);
-            public const uint
-                RB_GETBARINFO = (WM_USER + 3);
-            public const uint
-                RB_SETBARINFO = (WM_USER + 4);
-            public const uint
-                RB_GETBANDINFO = (WM_USER + 5);
-            public const uint
-                RB_SETBANDINFOA = (WM_USER + 6);
-            public const uint
-                RB_SETPARENT = (WM_USER + 7);
-            public const uint
-                RB_HITTEST = (WM_USER + 8);
-            public const uint
-                RB_GETRECT = (WM_USER + 9);
-            public const uint
-                RB_INSERTBANDW = (WM_USER + 10);
-            public const uint
-                RB_SETBANDINFOW = (WM_USER + 11);
-            public const uint
-                RB_GETBANDCOUNT = (WM_USER + 12);
-            public const uint
-                RB_GETROWCOUNT = (WM_USER + 13);
-            public const uint
-                RB_GETROWHEIGHT = (WM_USER + 14);
-            public const uint
-                RB_IDTOINDEX = (WM_USER + 16);
-            public const uint
-                RB_GETTOOLTIPS = (WM_USER + 17);
-            public const uint
-                RB_SETTOOLTIPS = (WM_USER + 18);
-            public const uint
-                RB_SETBKCOLOR = (WM_USER + 19);
-            public const uint
-                RB_GETBKCOLOR = (WM_USER + 20);
-            public const uint
-                RB_SETTEXTCOLOR = (WM_USER + 21);
-            public const uint
-                RB_GETTEXTCOLOR = (WM_USER + 22);
-            public const uint
-                RB_SIZETORECT = (WM_USER + 23);
-            public const uint
-                RB_SETCOLORSCHEME = CCM_SETCOLORSCHEME;
-            public const uint
-                RB_GETCOLORSCHEME = CCM_GETCOLORSCHEME;
-            public const uint
-                RB_BEGINDRAG = (WM_USER + 24);
-            public const uint
-                RB_ENDDRAG = (WM_USER + 25);
-            public const uint
-                RB_DRAGMOVE = (WM_USER + 26);
-            public const uint
-                RB_GETBARHEIGHT = (WM_USER + 27);
-            public const uint
-                RB_GETBANDINFOW = (WM_USER + 28);
-            public const uint
-                RB_GETBANDINFOA = (WM_USER + 29);
-            public const uint
-                RB_MINIMIZEBAND = (WM_USER + 30);
-            public const uint
-                RB_MAXIMIZEBAND = (WM_USER + 31);
-            public const uint
-                RB_GETDROPTARGET = (CCM_GETDROPTARGET);
-            public const uint
-                RB_GETBANDBORDERS = (WM_USER + 34);
-            public const uint
-                RB_SHOWBAND = (WM_USER + 35);
-            public const uint
-                RB_SETPALETTE = (WM_USER + 37);
-            public const uint
-                RB_GETPALETTE = (WM_USER + 38);
-            public const uint
-                RB_MOVEBAND = (WM_USER + 39);
-            public const uint
-                RB_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT;
-            public const uint
-                RB_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT;
-            public const uint
-                RB_GETBANDMARGINS = (WM_USER + 40);
-            public const uint
-                RB_SETWINDOWTHEME = CCM_SETWINDOWTHEME;
-            public const uint
-                RB_PUSHCHEVRON = (WM_USER + 43);
-            public const uint
-                TTM_ACTIVATE = (WM_USER + 1);
-            public const uint
-                TTM_SETDELAYTIME = (WM_USER + 3);
-            public const uint
-                TTM_ADDTOOLA = (WM_USER + 4);
-            public const uint
-                TTM_ADDTOOLW = (WM_USER + 50);
-            public const uint
-                TTM_DELTOOLA = (WM_USER + 5);
-            public const uint
-                TTM_DELTOOLW = (WM_USER + 51);
-            public const uint
-                TTM_NEWTOOLRECTA = (WM_USER + 6);
-            public const uint
-                TTM_NEWTOOLRECTW = (WM_USER + 52);
-            public const uint
-                TTM_RELAYEVENT = (WM_USER + 7);
-            public const uint
-                TTM_GETTOOLINFOA = (WM_USER + 8);
-            public const uint
-                TTM_GETTOOLINFOW = (WM_USER + 53);
-            public const uint
-                TTM_SETTOOLINFOA = (WM_USER + 9);
-            public const uint
-                TTM_SETTOOLINFOW = (WM_USER + 54);
-            public const uint
-                TTM_HITTESTA = (WM_USER + 10);
-            public const uint
-                TTM_HITTESTW = (WM_USER + 55);
-            public const uint
-                TTM_GETTEXTA = (WM_USER + 11);
-            public const uint
-                TTM_GETTEXTW = (WM_USER + 56);
-            public const uint
-                TTM_UPDATETIPTEXTA = (WM_USER + 12);
-            public const uint
-                TTM_UPDATETIPTEXTW = (WM_USER + 57);
-            public const uint
-                TTM_GETTOOLCOUNT = (WM_USER + 13);
-            public const uint
-                TTM_ENUMTOOLSA = (WM_USER + 14);
-            public const uint
-                TTM_ENUMTOOLSW = (WM_USER + 58);
-            public const uint
-                TTM_GETCURRENTTOOLA = (WM_USER + 15);
-            public const uint
-                TTM_GETCURRENTTOOLW = (WM_USER + 59);
-            public const uint
-                TTM_WINDOWFROMPOINT = (WM_USER + 16);
-            public const uint
-                TTM_TRACKACTIVATE = (WM_USER + 17);
-            public const uint
-                TTM_TRACKPOSITION = (WM_USER + 18);
-            public const uint
-                TTM_SETTIPBKCOLOR = (WM_USER + 19);
-            public const uint
-                TTM_SETTIPTEXTCOLOR = (WM_USER + 20);
-            public const uint
-                TTM_GETDELAYTIME = (WM_USER + 21);
-            public const uint
-                TTM_GETTIPBKCOLOR = (WM_USER + 22);
-            public const uint
-                TTM_GETTIPTEXTCOLOR = (WM_USER + 23);
-            public const uint
-                TTM_SETMAXTIPWIDTH = (WM_USER + 24);
-            public const uint
-                TTM_GETMAXTIPWIDTH = (WM_USER + 25);
-            public const uint
-                TTM_SETMARGIN = (WM_USER + 26);
-            public const uint
-                TTM_GETMARGIN = (WM_USER + 27);
-            public const uint
-                TTM_POP = (WM_USER + 28);
-            public const uint
-                TTM_UPDATE = (WM_USER + 29);
-            public const uint
-                TTM_GETBUBBLESIZE = (WM_USER + 30);
-            public const uint
-                TTM_ADJUSTRECT = (WM_USER + 31);
-            public const uint
-                TTM_SETTITLEA = (WM_USER + 32);
-            public const uint
-                TTM_SETTITLEW = (WM_USER + 33);
-            public const uint
-                TTM_POPUP = (WM_USER + 34);
-            public const uint
-                TTM_GETTITLE = (WM_USER + 35);
-            public const uint
-                TTM_SETWINDOWTHEME = CCM_SETWINDOWTHEME;
-            public const uint
-                SB_SETTEXTA = (WM_USER + 1);
-            public const uint
-                SB_SETTEXTW = (WM_USER + 11);
-            public const uint
-                SB_GETTEXTA = (WM_USER + 2);
-            public const uint
-                SB_GETTEXTW = (WM_USER + 13);
-            public const uint
-                SB_GETTEXTLENGTHA = (WM_USER + 3);
-            public const uint
-                SB_GETTEXTLENGTHW = (WM_USER + 12);
-            public const uint
-                SB_SETPARTS = (WM_USER + 4);
-            public const uint
-                SB_GETPARTS = (WM_USER + 6);
-            public const uint
-                SB_GETBORDERS = (WM_USER + 7);
-            public const uint
-                SB_SETMINHEIGHT = (WM_USER + 8);
-            public const uint
-                SB_SIMPLE = (WM_USER + 9);
-            public const uint
-                SB_GETRECT = (WM_USER + 10);
-            public const uint
-                SB_ISSIMPLE = (WM_USER + 14);
-            public const uint
-                SB_SETICON = (WM_USER + 15);
-            public const uint
-                SB_SETTIPTEXTA = (WM_USER + 16);
-            public const uint
-                SB_SETTIPTEXTW = (WM_USER + 17);
-            public const uint
-                SB_GETTIPTEXTA = (WM_USER + 18);
-            public const uint
-                SB_GETTIPTEXTW = (WM_USER + 19);
-            public const uint
-                SB_GETICON = (WM_USER + 20);
-            public const uint
-                SB_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT;
-            public const uint
-                SB_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT;
-            public const uint
-                SB_SETBKCOLOR = CCM_SETBKCOLOR;
-            public const uint
-                SB_SIMPLEID = 0x00ff;
-            public const uint
-                TBM_GETPOS = (WM_USER);
-            public const uint
-                TBM_GETRANGEMIN = (WM_USER + 1);
-            public const uint
-                TBM_GETRANGEMAX = (WM_USER + 2);
-            public const uint
-                TBM_GETTIC = (WM_USER + 3);
-            public const uint
-                TBM_SETTIC = (WM_USER + 4);
-            public const uint
-                TBM_SETPOS = (WM_USER + 5);
-            public const uint
-                TBM_SETRANGE = (WM_USER + 6);
-            public const uint
-                TBM_SETRANGEMIN = (WM_USER + 7);
-            public const uint
-                TBM_SETRANGEMAX = (WM_USER + 8);
-            public const uint
-                TBM_CLEARTICS = (WM_USER + 9);
-            public const uint
-                TBM_SETSEL = (WM_USER + 10);
-            public const uint
-                TBM_SETSELSTART = (WM_USER + 11);
-            public const uint
-                TBM_SETSELEND = (WM_USER + 12);
-            public const uint
-                TBM_GETPTICS = (WM_USER + 14);
-            public const uint
-                TBM_GETTICPOS = (WM_USER + 15);
-            public const uint
-                TBM_GETNUMTICS = (WM_USER + 16);
-            public const uint
-                TBM_GETSELSTART = (WM_USER + 17);
-            public const uint
-                TBM_GETSELEND = (WM_USER + 18);
-            public const uint
-                TBM_CLEARSEL = (WM_USER + 19);
-            public const uint
-                TBM_SETTICFREQ = (WM_USER + 20);
-            public const uint
-                TBM_SETPAGESIZE = (WM_USER + 21);
-            public const uint
-                TBM_GETPAGESIZE = (WM_USER + 22);
-            public const uint
-                TBM_SETLINESIZE = (WM_USER + 23);
-            public const uint
-                TBM_GETLINESIZE = (WM_USER + 24);
-            public const uint
-                TBM_GETTHUMBRECT = (WM_USER + 25);
-            public const uint
-                TBM_GETCHANNELRECT = (WM_USER + 26);
-            public const uint
-                TBM_SETTHUMBLENGTH = (WM_USER + 27);
-            public const uint
-                TBM_GETTHUMBLENGTH = (WM_USER + 28);
-            public const uint
-                TBM_SETTOOLTIPS = (WM_USER + 29);
-            public const uint
-                TBM_GETTOOLTIPS = (WM_USER + 30);
-            public const uint
-                TBM_SETTIPSIDE = (WM_USER + 31);
-            public const uint
-                TBM_SETBUDDY = (WM_USER + 32);
-            public const uint
-                TBM_GETBUDDY = (WM_USER + 33);
-            public const uint
-                TBM_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT;
-            public const uint
-                TBM_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT;
-            public const uint
-                DL_BEGINDRAG = (WM_USER + 133);
-            public const uint
-                DL_DRAGGING = (WM_USER + 134);
-            public const uint
-                DL_DROPPED = (WM_USER + 135);
-            public const uint
-                DL_CANCELDRAG = (WM_USER + 136);
-            public const uint
-                UDM_SETRANGE = (WM_USER + 101);
-            public const uint
-                UDM_GETRANGE = (WM_USER + 102);
-            public const uint
-                UDM_SETPOS = (WM_USER + 103);
-            public const uint
-                UDM_GETPOS = (WM_USER + 104);
-            public const uint
-                UDM_SETBUDDY = (WM_USER + 105);
-            public const uint
-                UDM_GETBUDDY = (WM_USER + 106);
-            public const uint
-                UDM_SETACCEL = (WM_USER + 107);
-            public const uint
-                UDM_GETACCEL = (WM_USER + 108);
-            public const uint
-                UDM_SETBASE = (WM_USER + 109);
-            public const uint
-                UDM_GETBASE = (WM_USER + 110);
-            public const uint
-                UDM_SETRANGE32 = (WM_USER + 111);
-            public const uint
-                UDM_GETRANGE32 = (WM_USER + 112);
-            public const uint
-                UDM_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT;
-            public const uint
-                UDM_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT;
-            public const uint
-                UDM_SETPOS32 = (WM_USER + 113);
-            public const uint
-                UDM_GETPOS32 = (WM_USER + 114);
-            public const uint
-                PBM_SETRANGE = (WM_USER + 1);
-            public const uint
-                PBM_SETPOS = (WM_USER + 2);
-            public const uint
-                PBM_DELTAPOS = (WM_USER + 3);
-            public const uint
-                PBM_SETSTEP = (WM_USER + 4);
-            public const uint
-                PBM_STEPIT = (WM_USER + 5);
-            public const uint
-                PBM_SETRANGE32 = (WM_USER + 6);
-            public const uint
-                PBM_GETRANGE = (WM_USER + 7);
-            public const uint
-                PBM_GETPOS = (WM_USER + 8);
-            public const uint
-                PBM_SETBARCOLOR = (WM_USER + 9);
-            public const uint
-                PBM_SETBKCOLOR = CCM_SETBKCOLOR;
-            public const uint
-                HKM_SETHOTKEY = (WM_USER + 1);
-            public const uint
-                HKM_GETHOTKEY = (WM_USER + 2);
-            public const uint
-                HKM_SETRULES = (WM_USER + 3);
-            public const uint
-                LVM_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT;
-            public const uint
-                LVM_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT;
-            public const uint
-                LVM_GETBKCOLOR = (LVM_FIRST + 0);
-            public const uint
-                LVM_SETBKCOLOR = (LVM_FIRST + 1);
-            public const uint
-                LVM_GETIMAGELIST = (LVM_FIRST + 2);
-            public const uint
-                LVM_SETIMAGELIST = (LVM_FIRST + 3);
-            public const uint
-                LVM_GETITEMCOUNT = (LVM_FIRST + 4);
-            public const uint
-                LVM_GETITEMA = (LVM_FIRST + 5);
-            public const uint
-                LVM_GETITEMW = (LVM_FIRST + 75);
-            public const uint
-                LVM_SETITEMA = (LVM_FIRST + 6);
-            public const uint
-                LVM_SETITEMW = (LVM_FIRST + 76);
-            public const uint
-                LVM_INSERTITEMA = (LVM_FIRST + 7);
-            public const uint
-                LVM_INSERTITEMW = (LVM_FIRST + 77);
-            public const uint
-                LVM_DELETEITEM = (LVM_FIRST + 8);
-            public const uint
-                LVM_DELETEALLITEMS = (LVM_FIRST + 9);
-            public const uint
-                LVM_GETCALLBACKMASK = (LVM_FIRST + 10);
-            public const uint
-                LVM_SETCALLBACKMASK = (LVM_FIRST + 11);
-            public const uint
-                LVM_FINDITEMA = (LVM_FIRST + 13);
-            public const uint
-                LVM_FINDITEMW = (LVM_FIRST + 83);
-            public const uint
-                LVM_GETITEMRECT = (LVM_FIRST + 14);
-            public const uint
-                LVM_SETITEMPOSITION = (LVM_FIRST + 15);
-            public const uint
-                LVM_GETITEMPOSITION = (LVM_FIRST + 16);
-            public const uint
-                LVM_GETSTRINGWIDTHA = (LVM_FIRST + 17);
-            public const uint
-                LVM_GETSTRINGWIDTHW = (LVM_FIRST + 87);
-            public const uint
-                LVM_HITTEST = (LVM_FIRST + 18);
-            public const uint
-                LVM_ENSUREVISIBLE = (LVM_FIRST + 19);
-            public const uint
-                LVM_SCROLL = (LVM_FIRST + 20);
-            public const uint
-                LVM_REDRAWITEMS = (LVM_FIRST + 21);
-            public const uint
-                LVM_ARRANGE = (LVM_FIRST + 22);
-            public const uint
-                LVM_EDITLABELA = (LVM_FIRST + 23);
-            public const uint
-                LVM_EDITLABELW = (LVM_FIRST + 118);
-            public const uint
-                LVM_GETEDITCONTROL = (LVM_FIRST + 24);
-            public const uint
-                LVM_GETCOLUMNA = (LVM_FIRST + 25);
-            public const uint
-                LVM_GETCOLUMNW = (LVM_FIRST + 95);
-            public const uint
-                LVM_SETCOLUMNA = (LVM_FIRST + 26);
-            public const uint
-                LVM_SETCOLUMNW = (LVM_FIRST + 96);
-            public const uint
-                LVM_INSERTCOLUMNA = (LVM_FIRST + 27);
-            public const uint
-                LVM_INSERTCOLUMNW = (LVM_FIRST + 97);
-            public const uint
-                LVM_DELETECOLUMN = (LVM_FIRST + 28);
-            public const uint
-                LVM_GETCOLUMNWIDTH = (LVM_FIRST + 29);
-            public const uint
-                LVM_SETCOLUMNWIDTH = (LVM_FIRST + 30);
-            public const uint
-                LVM_CREATEDRAGIMAGE = (LVM_FIRST + 33);
-            public const uint
-                LVM_GETVIEWRECT = (LVM_FIRST + 34);
-            public const uint
-                LVM_GETTEXTCOLOR = (LVM_FIRST + 35);
-            public const uint
-                LVM_SETTEXTCOLOR = (LVM_FIRST + 36);
-            public const uint
-                LVM_GETTEXTBKCOLOR = (LVM_FIRST + 37);
-            public const uint
-                LVM_SETTEXTBKCOLOR = (LVM_FIRST + 38);
-            public const uint
-                LVM_GETTOPINDEX = (LVM_FIRST + 39);
-            public const uint
-                LVM_GETCOUNTPERPAGE = (LVM_FIRST + 40);
-            public const uint
-                LVM_GETORIGIN = (LVM_FIRST + 41);
-            public const uint
-                LVM_UPDATE = (LVM_FIRST + 42);
-            public const uint
-                LVM_SETITEMSTATE = (LVM_FIRST + 43);
-            public const uint
-                LVM_GETITEMSTATE = (LVM_FIRST + 44);
-            public const uint
-                LVM_GETITEMTEXTA = (LVM_FIRST + 45);
-            public const uint
-                LVM_GETITEMTEXTW = (LVM_FIRST + 115);
-            public const uint
-                LVM_SETITEMTEXTA = (LVM_FIRST + 46);
-            public const uint
-                LVM_SETITEMTEXTW = (LVM_FIRST + 116);
-            public const uint
-                LVM_SETITEMCOUNT = (LVM_FIRST + 47);
-            public const uint
-                LVM_SORTITEMS = (LVM_FIRST + 48);
-            public const uint
-                LVM_SETITEMPOSITION32 = (LVM_FIRST + 49);
-            public const uint
-                LVM_GETSELECTEDCOUNT = (LVM_FIRST + 50);
-            public const uint
-                LVM_GETITEMSPACING = (LVM_FIRST + 51);
-            public const uint
-                LVM_GETISEARCHSTRINGA = (LVM_FIRST + 52);
-            public const uint
-                LVM_GETISEARCHSTRINGW = (LVM_FIRST + 117);
-            public const uint
-                LVM_SETICONSPACING = (LVM_FIRST + 53);
-            public const uint
-                LVM_SETEXTENDEDLISTVIEWSTYLE = (LVM_FIRST + 54);
-            public const uint
-                LVM_GETEXTENDEDLISTVIEWSTYLE = (LVM_FIRST + 55);
-            public const uint
-                LVM_GETSUBITEMRECT = (LVM_FIRST + 56);
-            public const uint
-                LVM_SUBITEMHITTEST = (LVM_FIRST + 57);
-            public const uint
-                LVM_SETCOLUMNORDERARRAY = (LVM_FIRST + 58);
-            public const uint
-                LVM_GETCOLUMNORDERARRAY = (LVM_FIRST + 59);
-            public const uint
-                LVM_SETHOTITEM = (LVM_FIRST + 60);
-            public const uint
-                LVM_GETHOTITEM = (LVM_FIRST + 61);
-            public const uint
-                LVM_SETHOTCURSOR = (LVM_FIRST + 62);
-            public const uint
-                LVM_GETHOTCURSOR = (LVM_FIRST + 63);
-            public const uint
-                LVM_APPROXIMATEVIEWRECT = (LVM_FIRST + 64);
-            public const uint
-                LVM_SETWORKAREAS = (LVM_FIRST + 65);
-            public const uint
-                LVM_GETWORKAREAS = (LVM_FIRST + 70);
-            public const uint
-                LVM_GETNUMBEROFWORKAREAS = (LVM_FIRST + 73);
-            public const uint
-                LVM_GETSELECTIONMARK = (LVM_FIRST + 66);
-            public const uint
-                LVM_SETSELECTIONMARK = (LVM_FIRST + 67);
-            public const uint
-                LVM_SETHOVERTIME = (LVM_FIRST + 71);
-            public const uint
-                LVM_GETHOVERTIME = (LVM_FIRST + 72);
-            public const uint
-                LVM_SETTOOLTIPS = (LVM_FIRST + 74);
-            public const uint
-                LVM_GETTOOLTIPS = (LVM_FIRST + 78);
-            public const uint
-                LVM_SORTITEMSEX = (LVM_FIRST + 81);
-            public const uint
-                LVM_SETBKIMAGEA = (LVM_FIRST + 68);
-            public const uint
-                LVM_SETBKIMAGEW = (LVM_FIRST + 138);
-            public const uint
-                LVM_GETBKIMAGEA = (LVM_FIRST + 69);
-            public const uint
-                LVM_GETBKIMAGEW = (LVM_FIRST + 139);
-            public const uint
-                LVM_SETSELECTEDCOLUMN = (LVM_FIRST + 140);
-            public const uint
-                LVM_SETTILEWIDTH = (LVM_FIRST + 141);
-            public const uint
-                LVM_SETVIEW = (LVM_FIRST + 142);
-            public const uint
-                LVM_GETVIEW = (LVM_FIRST + 143);
-            public const uint
-                LVM_INSERTGROUP = (LVM_FIRST + 145);
-            public const uint
-                LVM_SETGROUPINFO = (LVM_FIRST + 147);
-            public const uint
-                LVM_GETGROUPINFO = (LVM_FIRST + 149);
-            public const uint
-                LVM_REMOVEGROUP = (LVM_FIRST + 150);
-            public const uint
-                LVM_MOVEGROUP = (LVM_FIRST + 151);
-            public const uint
-                LVM_MOVEITEMTOGROUP = (LVM_FIRST + 154);
-            public const uint
-                LVM_SETGROUPMETRICS = (LVM_FIRST + 155);
-            public const uint
-                LVM_GETGROUPMETRICS = (LVM_FIRST + 156);
-            public const uint
-                LVM_ENABLEGROUPVIEW = (LVM_FIRST + 157);
-            public const uint
-                LVM_SORTGROUPS = (LVM_FIRST + 158);
-            public const uint
-                LVM_INSERTGROUPSORTED = (LVM_FIRST + 159);
-            public const uint
-                LVM_REMOVEALLGROUPS = (LVM_FIRST + 160);
-            public const uint
-                LVM_HASGROUP = (LVM_FIRST + 161);
-            public const uint
-                LVM_SETTILEVIEWINFO = (LVM_FIRST + 162);
-            public const uint
-                LVM_GETTILEVIEWINFO = (LVM_FIRST + 163);
-            public const uint
-                LVM_SETTILEINFO = (LVM_FIRST + 164);
-            public const uint
-                LVM_GETTILEINFO = (LVM_FIRST + 165);
-            public const uint
-                LVM_SETINSERTMARK = (LVM_FIRST + 166);
-            public const uint
-                LVM_GETINSERTMARK = (LVM_FIRST + 167);
-            public const uint
-                LVM_INSERTMARKHITTEST = (LVM_FIRST + 168);
-            public const uint
-                LVM_GETINSERTMARKRECT = (LVM_FIRST + 169);
-            public const uint
-                LVM_SETINSERTMARKCOLOR = (LVM_FIRST + 170);
-            public const uint
-                LVM_GETINSERTMARKCOLOR = (LVM_FIRST + 171);
-            public const uint
-                LVM_SETINFOTIP = (LVM_FIRST + 173);
-            public const uint
-                LVM_GETSELECTEDCOLUMN = (LVM_FIRST + 174);
-            public const uint
-                LVM_ISGROUPVIEWENABLED = (LVM_FIRST + 175);
-            public const uint
-                LVM_GETOUTLINECOLOR = (LVM_FIRST + 176);
-            public const uint
-                LVM_SETOUTLINECOLOR = (LVM_FIRST + 177);
-            public const uint
-                LVM_CANCELEDITLABEL = (LVM_FIRST + 179);
-            public const uint
-                LVM_MAPINDEXTOID = (LVM_FIRST + 180);
-            public const uint
-                LVM_MAPIDTOINDEX = (LVM_FIRST + 181);
-            public const uint
-                TVM_INSERTITEMA = (TV_FIRST + 0);
-            public const uint
-                TVM_INSERTITEMW = (TV_FIRST + 50);
-            public const uint
-                TVM_DELETEITEM = (TV_FIRST + 1);
-            public const uint
-                TVM_EXPAND = (TV_FIRST + 2);
-            public const uint
-                TVM_GETITEMRECT = (TV_FIRST + 4);
-            public const uint
-                TVM_GETCOUNT = (TV_FIRST + 5);
-            public const uint
-                TVM_GETINDENT = (TV_FIRST + 6);
-            public const uint
-                TVM_SETINDENT = (TV_FIRST + 7);
-            public const uint
-                TVM_GETIMAGELIST = (TV_FIRST + 8);
-            public const uint
-                TVM_SETIMAGELIST = (TV_FIRST + 9);
-            public const uint
-                TVM_GETNEXTITEM = (TV_FIRST + 10);
-            public const uint
-                TVM_SELECTITEM = (TV_FIRST + 11);
-            public const uint
-                TVM_GETITEMA = (TV_FIRST + 12);
-            public const uint
-                TVM_GETITEMW = (TV_FIRST + 62);
-            public const uint
-                TVM_SETITEMA = (TV_FIRST + 13);
-            public const uint
-                TVM_SETITEMW = (TV_FIRST + 63);
-            public const uint
-                TVM_EDITLABELA = (TV_FIRST + 14);
-            public const uint
-                TVM_EDITLABELW = (TV_FIRST + 65);
-            public const uint
-                TVM_GETEDITCONTROL = (TV_FIRST + 15);
-            public const uint
-                TVM_GETVISIBLECOUNT = (TV_FIRST + 16);
-            public const uint
-                TVM_HITTEST = (TV_FIRST + 17);
-            public const uint
-                TVM_CREATEDRAGIMAGE = (TV_FIRST + 18);
-            public const uint
-                TVM_SORTCHILDREN = (TV_FIRST + 19);
-            public const uint
-                TVM_ENSUREVISIBLE = (TV_FIRST + 20);
-            public const uint
-                TVM_SORTCHILDRENCB = (TV_FIRST + 21);
-            public const uint
-                TVM_ENDEDITLABELNOW = (TV_FIRST + 22);
-            public const uint
-                TVM_GETISEARCHSTRINGA = (TV_FIRST + 23);
-            public const uint
-                TVM_GETISEARCHSTRINGW = (TV_FIRST + 64);
-            public const uint
-                TVM_SETTOOLTIPS = (TV_FIRST + 24);
-            public const uint
-                TVM_GETTOOLTIPS = (TV_FIRST + 25);
-            public const uint
-                TVM_SETINSERTMARK = (TV_FIRST + 26);
-            public const uint
-                TVM_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT;
-            public const uint
-                TVM_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT;
-            public const uint
-                TVM_SETITEMHEIGHT = (TV_FIRST + 27);
-            public const uint
-                TVM_GETITEMHEIGHT = (TV_FIRST + 28);
-            public const uint
-                TVM_SETBKCOLOR = (TV_FIRST + 29);
-            public const uint
-                TVM_SETTEXTCOLOR = (TV_FIRST + 30);
-            public const uint
-                TVM_GETBKCOLOR = (TV_FIRST + 31);
-            public const uint
-                TVM_GETTEXTCOLOR = (TV_FIRST + 32);
-            public const uint
-                TVM_SETSCROLLTIME = (TV_FIRST + 33);
-            public const uint
-                TVM_GETSCROLLTIME = (TV_FIRST + 34);
-            public const uint
-                TVM_SETINSERTMARKCOLOR = (TV_FIRST + 37);
-            public const uint
-                TVM_GETINSERTMARKCOLOR = (TV_FIRST + 38);
-            public const uint
-                TVM_GETITEMSTATE = (TV_FIRST + 39);
-            public const uint
-                TVM_SETLINECOLOR = (TV_FIRST + 40);
-            public const uint
-                TVM_GETLINECOLOR = (TV_FIRST + 41);
-            public const uint
-                TVM_MAPACCIDTOHTREEITEM = (TV_FIRST + 42);
-            public const uint
-                TVM_MAPHTREEITEMTOACCID = (TV_FIRST + 43);
-            public const uint
-                CBEM_INSERTITEMA = (WM_USER + 1);
-            public const uint
-                CBEM_SETIMAGELIST = (WM_USER + 2);
-            public const uint
-                CBEM_GETIMAGELIST = (WM_USER + 3);
-            public const uint
-                CBEM_GETITEMA = (WM_USER + 4);
-            public const uint
-                CBEM_SETITEMA = (WM_USER + 5);
-            public const uint
-                CBEM_DELETEITEM = CB_DELETESTRING;
-            public const uint
-                CBEM_GETCOMBOCONTROL = (WM_USER + 6);
-            public const uint
-                CBEM_GETEDITCONTROL = (WM_USER + 7);
-            public const uint
-                CBEM_SETEXTENDEDSTYLE = (WM_USER + 14);
-            public const uint
-                CBEM_GETEXTENDEDSTYLE = (WM_USER + 9);
-            public const uint
-                CBEM_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT;
-            public const uint
-                CBEM_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT;
-            public const uint
-                CBEM_SETEXSTYLE = (WM_USER + 8);
-            public const uint
-                CBEM_GETEXSTYLE = (WM_USER + 9);
-            public const uint
-                CBEM_HASEDITCHANGED = (WM_USER + 10);
-            public const uint
-                CBEM_INSERTITEMW = (WM_USER + 11);
-            public const uint
-                CBEM_SETITEMW = (WM_USER + 12);
-            public const uint
-                CBEM_GETITEMW = (WM_USER + 13);
-            public const uint
-                TCM_GETIMAGELIST = (TCM_FIRST + 2);
-            public const uint
-                TCM_SETIMAGELIST = (TCM_FIRST + 3);
-            public const uint
-                TCM_GETITEMCOUNT = (TCM_FIRST + 4);
-            public const uint
-                TCM_GETITEMA = (TCM_FIRST + 5);
-            public const uint
-                TCM_GETITEMW = (TCM_FIRST + 60);
-            public const uint
-                TCM_SETITEMA = (TCM_FIRST + 6);
-            public const uint
-                TCM_SETITEMW = (TCM_FIRST + 61);
-            public const uint
-                TCM_INSERTITEMA = (TCM_FIRST + 7);
-            public const uint
-                TCM_INSERTITEMW = (TCM_FIRST + 62);
-            public const uint
-                TCM_DELETEITEM = (TCM_FIRST + 8);
-            public const uint
-                TCM_DELETEALLITEMS = (TCM_FIRST + 9);
-            public const uint
-                TCM_GETITEMRECT = (TCM_FIRST + 10);
-            public const uint
-                TCM_GETCURSEL = (TCM_FIRST + 11);
-            public const uint
-                TCM_SETCURSEL = (TCM_FIRST + 12);
-            public const uint
-                TCM_HITTEST = (TCM_FIRST + 13);
-            public const uint
-                TCM_SETITEMEXTRA = (TCM_FIRST + 14);
-            public const uint
-                TCM_ADJUSTRECT = (TCM_FIRST + 40);
-            public const uint
-                TCM_SETITEMSIZE = (TCM_FIRST + 41);
-            public const uint
-                TCM_REMOVEIMAGE = (TCM_FIRST + 42);
-            public const uint
-                TCM_SETPADDING = (TCM_FIRST + 43);
-            public const uint
-                TCM_GETROWCOUNT = (TCM_FIRST + 44);
-            public const uint
-                TCM_GETTOOLTIPS = (TCM_FIRST + 45);
-            public const uint
-                TCM_SETTOOLTIPS = (TCM_FIRST + 46);
-            public const uint
-                TCM_GETCURFOCUS = (TCM_FIRST + 47);
-            public const uint
-                TCM_SETCURFOCUS = (TCM_FIRST + 48);
-            public const uint
-                TCM_SETMINTABWIDTH = (TCM_FIRST + 49);
-            public const uint
-                TCM_DESELECTALL = (TCM_FIRST + 50);
-            public const uint
-                TCM_HIGHLIGHTITEM = (TCM_FIRST + 51);
-            public const uint
-                TCM_SETEXTENDEDSTYLE = (TCM_FIRST + 52);
-            public const uint
-                TCM_GETEXTENDEDSTYLE = (TCM_FIRST + 53);
-            public const uint
-                TCM_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT;
-            public const uint
-                TCM_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT;
-            public const uint
-                ACM_OPENA = (WM_USER + 100);
-            public const uint
-                ACM_OPENW = (WM_USER + 103);
-            public const uint
-                ACM_PLAY = (WM_USER + 101);
-            public const uint
-                ACM_STOP = (WM_USER + 102);
-            public const uint
-                MCM_FIRST = 0x1000;
-            public const uint
-                MCM_GETCURSEL = (MCM_FIRST + 1);
-            public const uint
-                MCM_SETCURSEL = (MCM_FIRST + 2);
-            public const uint
-                MCM_GETMAXSELCOUNT = (MCM_FIRST + 3);
-            public const uint
-                MCM_SETMAXSELCOUNT = (MCM_FIRST + 4);
-            public const uint
-                MCM_GETSELRANGE = (MCM_FIRST + 5);
-            public const uint
-                MCM_SETSELRANGE = (MCM_FIRST + 6);
-            public const uint
-                MCM_GETMONTHRANGE = (MCM_FIRST + 7);
-            public const uint
-                MCM_SETDAYSTATE = (MCM_FIRST + 8);
-            public const uint
-                MCM_GETMINREQRECT = (MCM_FIRST + 9);
-            public const uint
-                MCM_SETCOLOR = (MCM_FIRST + 10);
-            public const uint
-                MCM_GETCOLOR = (MCM_FIRST + 11);
-            public const uint
-                MCM_SETTODAY = (MCM_FIRST + 12);
-            public const uint
-                MCM_GETTODAY = (MCM_FIRST + 13);
-            public const uint
-                MCM_HITTEST = (MCM_FIRST + 14);
-            public const uint
-                MCM_SETFIRSTDAYOFWEEK = (MCM_FIRST + 15);
-            public const uint
-                MCM_GETFIRSTDAYOFWEEK = (MCM_FIRST + 16);
-            public const uint
-                MCM_GETRANGE = (MCM_FIRST + 17);
-            public const uint
-                MCM_SETRANGE = (MCM_FIRST + 18);
-            public const uint
-                MCM_GETMONTHDELTA = (MCM_FIRST + 19);
-            public const uint
-                MCM_SETMONTHDELTA = (MCM_FIRST + 20);
-            public const uint
-                MCM_GETMAXTODAYWIDTH = (MCM_FIRST + 21);
-            public const uint
-                MCM_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT;
-            public const uint
-                MCM_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT;
-            public const uint
-                DTM_FIRST = 0x1000;
-            public const uint
-                DTM_GETSYSTEMTIME = (DTM_FIRST + 1);
-            public const uint
-                DTM_SETSYSTEMTIME = (DTM_FIRST + 2);
-            public const uint
-                DTM_GETRANGE = (DTM_FIRST + 3);
-            public const uint
-                DTM_SETRANGE = (DTM_FIRST + 4);
-            public const uint
-                DTM_SETFORMATA = (DTM_FIRST + 5);
-            public const uint
-                DTM_SETFORMATW = (DTM_FIRST + 50);
-            public const uint
-                DTM_SETMCCOLOR = (DTM_FIRST + 6);
-            public const uint
-                DTM_GETMCCOLOR = (DTM_FIRST + 7);
-            public const uint
-                DTM_GETMONTHCAL = (DTM_FIRST + 8);
-            public const uint
-                DTM_SETMCFONT = (DTM_FIRST + 9);
-            public const uint
-                DTM_GETMCFONT = (DTM_FIRST + 10);
-            public const uint
-                PGM_SETCHILD = (PGM_FIRST + 1);
-            public const uint
-                PGM_RECALCSIZE = (PGM_FIRST + 2);
-            public const uint
-                PGM_FORWARDMOUSE = (PGM_FIRST + 3);
-            public const uint
-                PGM_SETBKCOLOR = (PGM_FIRST + 4);
-            public const uint
-                PGM_GETBKCOLOR = (PGM_FIRST + 5);
-            public const uint
-                PGM_SETBORDER = (PGM_FIRST + 6);
-            public const uint
-                PGM_GETBORDER = (PGM_FIRST + 7);
-            public const uint
-                PGM_SETPOS = (PGM_FIRST + 8);
-            public const uint
-                PGM_GETPOS = (PGM_FIRST + 9);
-            public const uint
-                PGM_SETBUTTONSIZE = (PGM_FIRST + 10);
-            public const uint
-                PGM_GETBUTTONSIZE = (PGM_FIRST + 11);
-            public const uint
-                PGM_GETBUTTONSTATE = (PGM_FIRST + 12);
-            public const uint
-                PGM_GETDROPTARGET = CCM_GETDROPTARGET;
-            public const uint
-                BCM_GETIDEALSIZE = (BCM_FIRST + 0x0001);
-            public const uint
-                BCM_SETIMAGELIST = (BCM_FIRST + 0x0002);
-            public const uint
-                BCM_GETIMAGELIST = (BCM_FIRST + 0x0003);
-            public const uint
-                BCM_SETTEXTMARGIN = (BCM_FIRST + 0x0004);
-            public const uint
-                BCM_GETTEXTMARGIN = (BCM_FIRST + 0x0005);
-            public const uint
-                EM_SETCUEBANNER = (ECM_FIRST + 1);
-            public const uint
-                EM_GETCUEBANNER = (ECM_FIRST + 2);
-            public const uint
-                EM_SHOWBALLOONTIP = (ECM_FIRST + 3);
-            public const uint
-                EM_HIDEBALLOONTIP = (ECM_FIRST + 4);
-            public const uint
-                CB_SETMINVISIBLE = (CBM_FIRST + 1);
-            public const uint
-                CB_GETMINVISIBLE = (CBM_FIRST + 2);
-            public const uint
-                LM_HITTEST = (WM_USER + 0x300);
-            public const uint
-                LM_GETIDEALHEIGHT = (WM_USER + 0x301);
-            public const uint
-                LM_SETITEM = (WM_USER + 0x302);
-            public const uint
-                LM_GETITEM = (WM_USER + 0x303);
+        public const uint WM_NULL = 0x0000;
+        public const uint WM_CREATE = 0x0001;
+        public const uint
+            WM_DESTROY = 0x0002;
+        public const uint
+            WM_MOVE = 0x0003;
+        public const uint
+            WM_SIZE = 0x0005;
+        public const uint
+            WM_ACTIVATE = 0x0006;
+        public const uint
+            WM_SETFOCUS = 0x0007;
+        public const uint
+            WM_KILLFOCUS = 0x0008;
+        public const uint
+            WM_ENABLE = 0x000A;
+        public const uint
+            WM_SETREDRAW = 0x000B;
+        public const uint
+            WM_SETTEXT = 0x000C;
+        public const uint
+            WM_GETTEXT = 0x000D;
+        public const uint
+            WM_GETTEXTLENGTH = 0x000E;
+        public const uint
+            WM_PAINT = 0x000F;
+        public const uint
+            WM_CLOSE = 0x0010;
+        public const uint
+            WM_QUERYENDSESSION = 0x0011;
+        public const uint
+            WM_QUERYOPEN = 0x0013;
+        public const uint
+            WM_ENDSESSION = 0x0016;
+        public const uint
+            WM_QUIT = 0x0012;
+        public const uint
+            WM_ERASEBKGND = 0x0014;
+        public const uint
+            WM_SYSCOLORCHANGE = 0x0015;
+        public const uint
+            WM_SHOWWINDOW = 0x0018;
+        public const uint
+            WM_WININICHANGE = 0x001A;
+        public const uint
+            WM_SETTINGCHANGE = 0x001A;
+        public const uint
+            WM_DEVMODECHANGE = 0x001B;
+        public const uint
+            WM_ACTIVATEAPP = 0x001C;
+        public const uint
+            WM_FONTCHANGE = 0x001D;
+        public const uint
+            WM_TIMECHANGE = 0x001E;
+        public const uint
+            WM_CANCELMODE = 0x001F;
+        public const uint
+            WM_SETCURSOR = 0x0020;
+        public const uint
+            WM_MOUSEACTIVATE = 0x0021;
+        public const uint
+            WM_CHILDACTIVATE = 0x0022;
+        public const uint
+            WM_QUEUESYNC = 0x0023;
+        public const uint
+            WM_GETMINMAXINFO = 0x0024;
+        public const uint
+            WM_PAINTICON = 0x0026;
+        public const uint
+            WM_ICONERASEBKGND = 0x0027;
+        public const uint
+            WM_NEXTDLGCTL = 0x0028;
+        public const uint
+            WM_SPOOLERSTATUS = 0x002A;
+        public const uint
+            WM_DRAWITEM = 0x002B;
+        public const uint
+            WM_MEASUREITEM = 0x002C;
+        public const uint
+            WM_DELETEITEM = 0x002D;
+        public const uint
+            WM_VKEYTOITEM = 0x002E;
+        public const uint
+            WM_CHARTOITEM = 0x002F;
+        public const uint
+            WM_SETFONT = 0x0030;
+        public const uint
+            WM_GETFONT = 0x0031;
+        public const uint
+            WM_SETHOTKEY = 0x0032;
+        public const uint
+            WM_GETHOTKEY = 0x0033;
+        public const uint
+            WM_QUERYDRAGICON = 0x0037;
+        public const uint
+            WM_COMPAREITEM = 0x0039;
+        public const uint
+            WM_GETOBJECT = 0x003D;
+        public const uint
+            WM_COMPACTING = 0x0041;
+        public const uint
+            WM_COMMNOTIFY = 0x0044;
+        public const uint
+            WM_WINDOWPOSCHANGING = 0x0046;
+        public const uint
+            WM_WINDOWPOSCHANGED = 0x0047;
+        public const uint
+            WM_POWER = 0x0048;
+        public const uint
+            WM_COPYDATA = 0x004A;
+        public const uint
+            WM_CANCELJOURNAL = 0x004B;
+        public const uint
+            WM_NOTIFY = 0x004E;
+        public const uint
+            WM_INPUTLANGCHANGEREQUEST = 0x0050;
+        public const uint
+            WM_INPUTLANGCHANGE = 0x0051;
+        public const uint
+            WM_TCARD = 0x0052;
+        public const uint
+            WM_HELP = 0x0053;
+        public const uint
+            WM_USERCHANGED = 0x0054;
+        public const uint
+            WM_NOTIFYFORMAT = 0x0055;
+        public const uint
+            WM_CONTEXTMENU = 0x007B;
+        public const uint
+            WM_STYLECHANGING = 0x007C;
+        public const uint
+            WM_STYLECHANGED = 0x007D;
+        public const uint
+            WM_DISPLAYCHANGE = 0x007E;
+        public const uint
+            WM_GETICON = 0x007F;
+        public const uint
+            WM_SETICON = 0x0080;
+        public const uint
+            WM_NCCREATE = 0x0081;
+        public const uint
+            WM_NCDESTROY = 0x0082;
+        public const uint
+            WM_NCCALCSIZE = 0x0083;
+        public const uint
+            WM_NCHITTEST = 0x0084;
+        public const uint
+            WM_NCPAINT = 0x0085;
+        public const uint
+            WM_NCACTIVATE = 0x0086;
+        public const uint
+            WM_GETDLGCODE = 0x0087;
+        public const uint
+            WM_SYNCPAINT = 0x0088;
+        public const uint
+            WM_NCMOUSEMOVE = 0x00A0;
+        public const uint
+            WM_NCLBUTTONDOWN = 0x00A1;
+        public const uint
+            WM_NCLBUTTONUP = 0x00A2;
+        public const uint
+            WM_NCLBUTTONDBLCLK = 0x00A3;
+        public const uint
+            WM_NCRBUTTONDOWN = 0x00A4;
+        public const uint
+            WM_NCRBUTTONUP = 0x00A5;
+        public const uint
+            WM_NCRBUTTONDBLCLK = 0x00A6;
+        public const uint
+            WM_NCMBUTTONDOWN = 0x00A7;
+        public const uint
+            WM_NCMBUTTONUP = 0x00A8;
+        public const uint
+            WM_NCMBUTTONDBLCLK = 0x00A9;
+        public const uint
+            WM_NCXBUTTONDOWN = 0x00AB;
+        public const uint
+            WM_NCXBUTTONUP = 0x00AC;
+        public const uint
+            WM_NCXBUTTONDBLCLK = 0x00AD;
+        public const uint
+            WM_INPUT = 0x00FF;
+        public const uint
+            WM_KEYFIRST = 0x0100;
+        public const uint
+            WM_KEYDOWN = 0x0100;
+        public const uint
+            WM_KEYUP = 0x0101;
+        public const uint
+            WM_CHAR = 0x0102;
+        public const uint
+            WM_DEADCHAR = 0x0103;
+        public const uint
+            WM_SYSKEYDOWN = 0x0104;
+        public const uint
+            WM_SYSKEYUP = 0x0105;
+        public const uint
+            WM_SYSCHAR = 0x0106;
+        public const uint
+            WM_SYSDEADCHAR = 0x0107;
+        public const uint
+            WM_UNICHAR = 0x0109;
+        public const uint
+            WM_KEYLAST_NT501 = 0x0109;
+        public const uint
+            UNICODE_NOCHAR = 0xFFFF;
+        public const uint
+            WM_KEYLAST_PRE501 = 0x0108;
+        public const uint
+            WM_IME_STARTCOMPOSITION = 0x010D;
+        public const uint
+            WM_IME_ENDCOMPOSITION = 0x010E;
+        public const uint
+            WM_IME_COMPOSITION = 0x010F;
+        public const uint
+            WM_IME_KEYLAST = 0x010F;
+        public const uint
+            WM_INITDIALOG = 0x0110;
+        public const uint
+            WM_COMMAND = 0x0111;
+        public const uint
+            WM_SYSCOMMAND = 0x0112;
+        public const uint
+            WM_TIMER = 0x0113;
+        public const uint
+            WM_HSCROLL = 0x0114;
+        public const uint
+            WM_VSCROLL = 0x0115;
+        public const uint
+            WM_INITMENU = 0x0116;
+        public const uint
+            WM_INITMENUPOPUP = 0x0117;
+        public const uint
+            WM_MENUSELECT = 0x011F;
+        public const uint
+            WM_MENUCHAR = 0x0120;
+        public const uint
+            WM_ENTERIDLE = 0x0121;
+        public const uint
+            WM_MENURBUTTONUP = 0x0122;
+        public const uint
+            WM_MENUDRAG = 0x0123;
+        public const uint
+            WM_MENUGETOBJECT = 0x0124;
+        public const uint
+            WM_UNINITMENUPOPUP = 0x0125;
+        public const uint
+            WM_MENUCOMMAND = 0x0126;
+        public const uint
+            WM_CHANGEUISTATE = 0x0127;
+        public const uint
+            WM_UPDATEUISTATE = 0x0128;
+        public const uint
+            WM_QUERYUISTATE = 0x0129;
+        public const uint
+            WM_CTLCOLORMSGBOX = 0x0132;
+        public const uint
+            WM_CTLCOLOREDIT = 0x0133;
+        public const uint
+            WM_CTLCOLORLISTBOX = 0x0134;
+        public const uint
+            WM_CTLCOLORBTN = 0x0135;
+        public const uint
+            WM_CTLCOLORDLG = 0x0136;
+        public const uint
+            WM_CTLCOLORSCROLLBAR = 0x0137;
+        public const uint
+            WM_CTLCOLORSTATIC = 0x0138;
+        public const uint
+            WM_MOUSEFIRST = 0x0200;
+        public const uint
+            WM_MOUSEMOVE = 0x0200;
+        public const uint
+            WM_LBUTTONDOWN = 0x0201;
+        public const uint
+            WM_LBUTTONUP = 0x0202;
+        public const uint
+            WM_LBUTTONDBLCLK = 0x0203;
+        public const uint
+            WM_RBUTTONDOWN = 0x0204;
+        public const uint
+            WM_RBUTTONUP = 0x0205;
+        public const uint
+            WM_RBUTTONDBLCLK = 0x0206;
+        public const uint
+            WM_MBUTTONDOWN = 0x0207;
+        public const uint
+            WM_MBUTTONUP = 0x0208;
+        public const uint
+            WM_MBUTTONDBLCLK = 0x0209;
+        public const uint
+            WM_MOUSEWHEEL = 0x020A;
+        public const uint
+            WM_XBUTTONDOWN = 0x020B;
+        public const uint
+            WM_XBUTTONUP = 0x020C;
+        public const uint
+            WM_XBUTTONDBLCLK = 0x020D;
+        public const uint
+            WM_MOUSELAST_5 = 0x020D;
+        public const uint
+            WM_MOUSELAST_4 = 0x020A;
+        public const uint
+            WM_MOUSELAST_PRE_4 = 0x0209;
+        public const uint
+            WM_PARENTNOTIFY = 0x0210;
+        public const uint
+            WM_ENTERMENULOOP = 0x0211;
+        public const uint
+            WM_EXITMENULOOP = 0x0212;
+        public const uint
+            WM_NEXTMENU = 0x0213;
+        public const uint
+            WM_SIZING = 0x0214;
+        public const uint
+            WM_CAPTURECHANGED = 0x0215;
+        public const uint
+            WM_MOVING = 0x0216;
+        public const uint
+            WM_POWERBROADCAST = 0x0218;
+        public const uint
+            WM_DEVICECHANGE = 0x0219;
+        public const uint
+            WM_MDICREATE = 0x0220;
+        public const uint
+            WM_MDIDESTROY = 0x0221;
+        public const uint
+            WM_MDIACTIVATE = 0x0222;
+        public const uint
+            WM_MDIRESTORE = 0x0223;
+        public const uint
+            WM_MDINEXT = 0x0224;
+        public const uint
+            WM_MDIMAXIMIZE = 0x0225;
+        public const uint
+            WM_MDITILE = 0x0226;
+        public const uint
+            WM_MDICASCADE = 0x0227;
+        public const uint
+            WM_MDIICONARRANGE = 0x0228;
+        public const uint
+            WM_MDIGETACTIVE = 0x0229;
+        public const uint
+            WM_MDISETMENU = 0x0230;
+        public const uint
+            WM_ENTERSIZEMOVE = 0x0231;
+        public const uint
+            WM_EXITSIZEMOVE = 0x0232;
+        public const uint
+            WM_DROPFILES = 0x0233;
+        public const uint
+            WM_MDIREFRESHMENU = 0x0234;
+        public const uint
+            WM_IME_SETCONTEXT = 0x0281;
+        public const uint
+            WM_IME_NOTIFY = 0x0282;
+        public const uint
+            WM_IME_CONTROL = 0x0283;
+        public const uint
+            WM_IME_COMPOSITIONFULL = 0x0284;
+        public const uint
+            WM_IME_SELECT = 0x0285;
+        public const uint
+            WM_IME_CHAR = 0x0286;
+        public const uint
+            WM_IME_REQUEST = 0x0288;
+        public const uint
+            WM_IME_KEYDOWN = 0x0290;
+        public const uint
+            WM_IME_KEYUP = 0x0291;
+        public const uint
+            WM_MOUSEHOVER = 0x02A1;
+        public const uint
+            WM_MOUSELEAVE = 0x02A3;
+        public const uint
+            WM_NCMOUSEHOVER = 0x02A0;
+        public const uint
+            WM_NCMOUSELEAVE = 0x02A2;
+        public const uint
+            WM_WTSSESSION_CHANGE = 0x02B1;
+        public const uint
+            WM_TABLET_FIRST = 0x02c0;
+        public const uint
+            WM_TABLET_LAST = 0x02df;
+        public const uint
+            WM_CUT = 0x0300;
+        public const uint
+            WM_COPY = 0x0301;
+        public const uint
+            WM_PASTE = 0x0302;
+        public const uint
+            WM_CLEAR = 0x0303;
+        public const uint
+            WM_UNDO = 0x0304;
+        public const uint
+            WM_RENDERFORMAT = 0x0305;
+        public const uint
+            WM_RENDERALLFORMATS = 0x0306;
+        public const uint
+            WM_DESTROYCLIPBOARD = 0x0307;
+        public const uint
+            WM_DRAWCLIPBOARD = 0x0308;
+        public const uint
+            WM_PAINTCLIPBOARD = 0x0309;
+        public const uint
+            WM_VSCROLLCLIPBOARD = 0x030A;
+        public const uint
+            WM_SIZECLIPBOARD = 0x030B;
+        public const uint
+            WM_ASKCBFORMATNAME = 0x030C;
+        public const uint
+            WM_CHANGECBCHAIN = 0x030D;
+        public const uint
+            WM_HSCROLLCLIPBOARD = 0x030E;
+        public const uint
+            WM_QUERYNEWPALETTE = 0x030F;
+        public const uint
+            WM_PALETTEISCHANGING = 0x0310;
+        public const uint
+            WM_PALETTECHANGED = 0x0311;
+        public const uint
+            WM_HOTKEY = 0x0312;
+        public const uint
+            WM_PRINT = 0x0317;
+        public const uint
+            WM_PRINTCLIENT = 0x0318;
+        public const uint
+            WM_APPCOMMAND = 0x0319;
+        public const uint
+            WM_THEMECHANGED = 0x031A;
+        public const uint
+            WM_HANDHELDFIRST = 0x0358;
+        public const uint
+            WM_HANDHELDLAST = 0x035F;
+        public const uint
+            WM_AFXFIRST = 0x0360;
+        public const uint
+            WM_AFXLAST = 0x037F;
+        public const uint
+            WM_PENWINFIRST = 0x0380;
+        public const uint
+            WM_PENWINLAST = 0x038F;
+        public const uint
+            WM_APP = 0x8000;
+        public const uint
+            WM_USER = 0x0400;
+        public const uint
+            EM_GETSEL = 0x00B0;
+        public const uint
+            EM_SETSEL = 0x00B1;
+        public const uint
+            EM_GETRECT = 0x00B2;
+        public const uint
+            EM_SETRECT = 0x00B3;
+        public const uint
+            EM_SETRECTNP = 0x00B4;
+        public const uint
+            EM_SCROLL = 0x00B5;
+        public const uint
+            EM_LINESCROLL = 0x00B6;
+        public const uint
+            EM_SCROLLCARET = 0x00B7;
+        public const uint
+            EM_GETMODIFY = 0x00B8;
+        public const uint
+            EM_SETMODIFY = 0x00B9;
+        public const uint
+            EM_GETLINECOUNT = 0x00BA;
+        public const uint
+            EM_LINEINDEX = 0x00BB;
+        public const uint
+            EM_SETHANDLE = 0x00BC;
+        public const uint
+            EM_GETHANDLE = 0x00BD;
+        public const uint
+            EM_GETTHUMB = 0x00BE;
+        public const uint
+            EM_LINELENGTH = 0x00C1;
+        public const uint
+            EM_REPLACESEL = 0x00C2;
+        public const uint
+            EM_GETLINE = 0x00C4;
+        public const uint
+            EM_LIMITTEXT = 0x00C5;
+        public const uint
+            EM_CANUNDO = 0x00C6;
+        public const uint
+            EM_UNDO = 0x00C7;
+        public const uint
+            EM_FMTLINES = 0x00C8;
+        public const uint
+            EM_LINEFROMCHAR = 0x00C9;
+        public const uint
+            EM_SETTABSTOPS = 0x00CB;
+        public const uint
+            EM_SETPASSWORDCHAR = 0x00CC;
+        public const uint
+            EM_EMPTYUNDOBUFFER = 0x00CD;
+        public const uint
+            EM_GETFIRSTVISIBLELINE = 0x00CE;
+        public const uint
+            EM_SETREADONLY = 0x00CF;
+        public const uint
+            EM_SETWORDBREAKPROC = 0x00D0;
+        public const uint
+            EM_GETWORDBREAKPROC = 0x00D1;
+        public const uint
+            EM_GETPASSWORDCHAR = 0x00D2;
+        public const uint
+            EM_SETMARGINS = 0x00D3;
+        public const uint
+            EM_GETMARGINS = 0x00D4;
+        public const uint
+            EM_SETLIMITTEXT = EM_LIMITTEXT;
+        public const uint
+            EM_GETLIMITTEXT = 0x00D5;
+        public const uint
+            EM_POSFROMCHAR = 0x00D6;
+        public const uint
+            EM_CHARFROMPOS = 0x00D7;
+        public const uint
+            EM_SETIMESTATUS = 0x00D8;
+        public const uint
+            EM_GETIMESTATUS = 0x00D9;
+        public const uint
+            BM_GETCHECK = 0x00F0;
+        public const uint
+            BM_SETCHECK = 0x00F1;
+        public const uint
+            BM_GETSTATE = 0x00F2;
+        public const uint
+            BM_SETSTATE = 0x00F3;
+        public const uint
+            BM_SETSTYLE = 0x00F4;
+        public const uint
+            BM_CLICK = 0x00F5;
+        public const uint
+            BM_GETIMAGE = 0x00F6;
+        public const uint
+            BM_SETIMAGE = 0x00F7;
+        public const uint
+            STM_SETICON = 0x0170;
+        public const uint
+            STM_GETICON = 0x0171;
+        public const uint
+            STM_SETIMAGE = 0x0172;
+        public const uint
+            STM_GETIMAGE = 0x0173;
+        public const uint
+            STM_MSGMAX = 0x0174;
+        public const uint
+            DM_GETDEFID = (WM_USER + 0);
+        public const uint
+            DM_SETDEFID = (WM_USER + 1);
+        public const uint
+            DM_REPOSITION = (WM_USER + 2);
+        public const uint
+            LB_ADDSTRING = 0x0180;
+        public const uint
+            LB_INSERTSTRING = 0x0181;
+        public const uint
+            LB_DELETESTRING = 0x0182;
+        public const uint
+            LB_SELITEMRANGEEX = 0x0183;
+        public const uint
+            LB_RESETCONTENT = 0x0184;
+        public const uint
+            LB_SETSEL = 0x0185;
+        public const uint
+            LB_SETCURSEL = 0x0186;
+        public const uint
+            LB_GETSEL = 0x0187;
+        public const uint
+            LB_GETCURSEL = 0x0188;
+        public const uint
+            LB_GETTEXT = 0x0189;
+        public const uint
+            LB_GETTEXTLEN = 0x018A;
+        public const uint
+            LB_GETCOUNT = 0x018B;
+        public const uint
+            LB_SELECTSTRING = 0x018C;
+        public const uint
+            LB_DIR = 0x018D;
+        public const uint
+            LB_GETTOPINDEX = 0x018E;
+        public const uint
+            LB_FINDSTRING = 0x018F;
+        public const uint
+            LB_GETSELCOUNT = 0x0190;
+        public const uint
+            LB_GETSELITEMS = 0x0191;
+        public const uint
+            LB_SETTABSTOPS = 0x0192;
+        public const uint
+            LB_GETHORIZONTALEXTENT = 0x0193;
+        public const uint
+            LB_SETHORIZONTALEXTENT = 0x0194;
+        public const uint
+            LB_SETCOLUMNWIDTH = 0x0195;
+        public const uint
+            LB_ADDFILE = 0x0196;
+        public const uint
+            LB_SETTOPINDEX = 0x0197;
+        public const uint
+            LB_GETITEMRECT = 0x0198;
+        public const uint
+            LB_GETITEMDATA = 0x0199;
+        public const uint
+            LB_SETITEMDATA = 0x019A;
+        public const uint
+            LB_SELITEMRANGE = 0x019B;
+        public const uint
+            LB_SETANCHORINDEX = 0x019C;
+        public const uint
+            LB_GETANCHORINDEX = 0x019D;
+        public const uint
+            LB_SETCARETINDEX = 0x019E;
+        public const uint
+            LB_GETCARETINDEX = 0x019F;
+        public const uint
+            LB_SETITEMHEIGHT = 0x01A0;
+        public const uint
+            LB_GETITEMHEIGHT = 0x01A1;
+        public const uint
+            LB_FINDSTRINGEXACT = 0x01A2;
+        public const uint
+            LB_SETLOCALE = 0x01A5;
+        public const uint
+            LB_GETLOCALE = 0x01A6;
+        public const uint
+            LB_SETCOUNT = 0x01A7;
+        public const uint
+            LB_INITSTORAGE = 0x01A8;
+        public const uint
+            LB_ITEMFROMPOINT = 0x01A9;
+        public const uint
+            LB_MULTIPLEADDSTRING = 0x01B1;
+        public const uint
+            LB_GETLISTBOXINFO = 0x01B2;
+        public const uint
+            LB_MSGMAX_501 = 0x01B3;
+        public const uint
+            LB_MSGMAX_WCE4 = 0x01B1;
+        public const uint
+            LB_MSGMAX_4 = 0x01B0;
+        public const uint
+            LB_MSGMAX_PRE4 = 0x01A8;
+        public const uint
+            CB_GETEDITSEL = 0x0140;
+        public const uint
+            CB_LIMITTEXT = 0x0141;
+        public const uint
+            CB_SETEDITSEL = 0x0142;
+        public const uint
+            CB_ADDSTRING = 0x0143;
+        public const uint
+            CB_DELETESTRING = 0x0144;
+        public const uint
+            CB_DIR = 0x0145;
+        public const uint
+            CB_GETCOUNT = 0x0146;
+        public const uint
+            CB_GETCURSEL = 0x0147;
+        public const uint
+            CB_GETLBTEXT = 0x0148;
+        public const uint
+            CB_GETLBTEXTLEN = 0x0149;
+        public const uint
+            CB_INSERTSTRING = 0x014A;
+        public const uint
+            CB_RESETCONTENT = 0x014B;
+        public const uint
+            CB_FINDSTRING = 0x014C;
+        public const uint
+            CB_SELECTSTRING = 0x014D;
+        public const uint
+            CB_SETCURSEL = 0x014E;
+        public const uint
+            CB_SHOWDROPDOWN = 0x014F;
+        public const uint
+            CB_GETITEMDATA = 0x0150;
+        public const uint
+            CB_SETITEMDATA = 0x0151;
+        public const uint
+            CB_GETDROPPEDCONTROLRECT = 0x0152;
+        public const uint
+            CB_SETITEMHEIGHT = 0x0153;
+        public const uint
+            CB_GETITEMHEIGHT = 0x0154;
+        public const uint
+            CB_SETEXTENDEDUI = 0x0155;
+        public const uint
+            CB_GETEXTENDEDUI = 0x0156;
+        public const uint
+            CB_GETDROPPEDSTATE = 0x0157;
+        public const uint
+            CB_FINDSTRINGEXACT = 0x0158;
+        public const uint
+            CB_SETLOCALE = 0x0159;
+        public const uint
+            CB_GETLOCALE = 0x015A;
+        public const uint
+            CB_GETTOPINDEX = 0x015B;
+        public const uint
+            CB_SETTOPINDEX = 0x015C;
+        public const uint
+            CB_GETHORIZONTALEXTENT = 0x015d;
+        public const uint
+            CB_SETHORIZONTALEXTENT = 0x015e;
+        public const uint
+            CB_GETDROPPEDWIDTH = 0x015f;
+        public const uint
+            CB_SETDROPPEDWIDTH = 0x0160;
+        public const uint
+            CB_INITSTORAGE = 0x0161;
+        public const uint
+            CB_MULTIPLEADDSTRING = 0x0163;
+        public const uint
+            CB_GETCOMBOBOXINFO = 0x0164;
+        public const uint
+            CB_MSGMAX_501 = 0x0165;
+        public const uint
+            CB_MSGMAX_WCE400 = 0x0163;
+        public const uint
+            CB_MSGMAX_400 = 0x0162;
+        public const uint
+            CB_MSGMAX_PRE400 = 0x015B;
+        public const uint
+            SBM_SETPOS = 0x00E0;
+        public const uint
+            SBM_GETPOS = 0x00E1;
+        public const uint
+            SBM_SETRANGE = 0x00E2;
+        public const uint
+            SBM_SETRANGEREDRAW = 0x00E6;
+        public const uint
+            SBM_GETRANGE = 0x00E3;
+        public const uint
+            SBM_ENABLE_ARROWS = 0x00E4;
+        public const uint
+            SBM_SETSCROLLINFO = 0x00E9;
+        public const uint
+            SBM_GETSCROLLINFO = 0x00EA;
+        public const uint
+            SBM_GETSCROLLBARINFO = 0x00EB;
+        public const uint
+            LVM_FIRST = 0x1000;
+        public const uint // ListView messages
+            TV_FIRST = 0x1100;
+        public const uint // TreeView messages
+            HDM_FIRST = 0x1200;
+        public const uint // Header messages
+            TCM_FIRST = 0x1300;
+        public const uint // Tab control messages
+            PGM_FIRST = 0x1400;
+        public const uint // Pager control messages
+            ECM_FIRST = 0x1500;
+        public const uint // Edit control messages
+            BCM_FIRST = 0x1600;
+        public const uint // Button control messages
+            CBM_FIRST = 0x1700;
+        public const uint // Combobox control messages
+            CCM_FIRST = 0x2000;
+        public const uint // Common control shared messages
+            CCM_LAST = (CCM_FIRST + 0x200);
+        public const uint
+            CCM_SETBKCOLOR = (CCM_FIRST + 1);
+        public const uint
+            CCM_SETCOLORSCHEME = (CCM_FIRST + 2);
+        public const uint
+            CCM_GETCOLORSCHEME = (CCM_FIRST + 3);
+        public const uint
+            CCM_GETDROPTARGET = (CCM_FIRST + 4);
+        public const uint
+            CCM_SETUNICODEFORMAT = (CCM_FIRST + 5);
+        public const uint
+            CCM_GETUNICODEFORMAT = (CCM_FIRST + 6);
+        public const uint
+            CCM_SETVERSION = (CCM_FIRST + 0x7);
+        public const uint
+            CCM_GETVERSION = (CCM_FIRST + 0x8);
+        public const uint
+            CCM_SETNOTIFYWINDOW = (CCM_FIRST + 0x9);
+        public const uint
+            CCM_SETWINDOWTHEME = (CCM_FIRST + 0xb);
+        public const uint
+            CCM_DPISCALE = (CCM_FIRST + 0xc);
+        public const uint
+            HDM_GETITEMCOUNT = (HDM_FIRST + 0);
+        public const uint
+            HDM_INSERTITEMA = (HDM_FIRST + 1);
+        public const uint
+            HDM_INSERTITEMW = (HDM_FIRST + 10);
+        public const uint
+            HDM_DELETEITEM = (HDM_FIRST + 2);
+        public const uint
+            HDM_GETITEMA = (HDM_FIRST + 3);
+        public const uint
+            HDM_GETITEMW = (HDM_FIRST + 11);
+        public const uint
+            HDM_SETITEMA = (HDM_FIRST + 4);
+        public const uint
+            HDM_SETITEMW = (HDM_FIRST + 12);
+        public const uint
+            HDM_LAYOUT = (HDM_FIRST + 5);
+        public const uint
+            HDM_HITTEST = (HDM_FIRST + 6);
+        public const uint
+            HDM_GETITEMRECT = (HDM_FIRST + 7);
+        public const uint
+            HDM_SETIMAGELIST = (HDM_FIRST + 8);
+        public const uint
+            HDM_GETIMAGELIST = (HDM_FIRST + 9);
+        public const uint
+            HDM_ORDERTOINDEX = (HDM_FIRST + 15);
+        public const uint
+            HDM_CREATEDRAGIMAGE = (HDM_FIRST + 16);
+        public const uint
+            HDM_GETORDERARRAY = (HDM_FIRST + 17);
+        public const uint
+            HDM_SETORDERARRAY = (HDM_FIRST + 18);
+        public const uint
+            HDM_SETHOTDIVIDER = (HDM_FIRST + 19);
+        public const uint
+            HDM_SETBITMAPMARGIN = (HDM_FIRST + 20);
+        public const uint
+            HDM_GETBITMAPMARGIN = (HDM_FIRST + 21);
+        public const uint
+            HDM_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT;
+        public const uint
+            HDM_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT;
+        public const uint
+            HDM_SETFILTERCHANGETIMEOUT = (HDM_FIRST + 22);
+        public const uint
+            HDM_EDITFILTER = (HDM_FIRST + 23);
+        public const uint
+            HDM_CLEARFILTER = (HDM_FIRST + 24);
+        public const uint
+            TB_ENABLEBUTTON = (WM_USER + 1);
+        public const uint
+            TB_CHECKBUTTON = (WM_USER + 2);
+        public const uint
+            TB_PRESSBUTTON = (WM_USER + 3);
+        public const uint
+            TB_HIDEBUTTON = (WM_USER + 4);
+        public const uint
+            TB_INDETERMINATE = (WM_USER + 5);
+        public const uint
+            TB_MARKBUTTON = (WM_USER + 6);
+        public const uint
+            TB_ISBUTTONENABLED = (WM_USER + 9);
+        public const uint
+            TB_ISBUTTONCHECKED = (WM_USER + 10);
+        public const uint
+            TB_ISBUTTONPRESSED = (WM_USER + 11);
+        public const uint
+            TB_ISBUTTONHIDDEN = (WM_USER + 12);
+        public const uint
+            TB_ISBUTTONINDETERMINATE = (WM_USER + 13);
+        public const uint
+            TB_ISBUTTONHIGHLIGHTED = (WM_USER + 14);
+        public const uint
+            TB_SETSTATE = (WM_USER + 17);
+        public const uint
+            TB_GETSTATE = (WM_USER + 18);
+        public const uint
+            TB_ADDBITMAP = (WM_USER + 19);
+        public const uint
+            TB_ADDBUTTONSA = (WM_USER + 20);
+        public const uint
+            TB_INSERTBUTTONA = (WM_USER + 21);
+        public const uint
+            TB_ADDBUTTONS = (WM_USER + 20);
+        public const uint
+            TB_INSERTBUTTON = (WM_USER + 21);
+        public const uint
+            TB_DELETEBUTTON = (WM_USER + 22);
+        public const uint
+            TB_GETBUTTON = (WM_USER + 23);
+        public const uint
+            TB_BUTTONCOUNT = (WM_USER + 24);
+        public const uint
+            TB_COMMANDTOINDEX = (WM_USER + 25);
+        public const uint
+            TB_SAVERESTOREA = (WM_USER + 26);
+        public const uint
+            TB_SAVERESTOREW = (WM_USER + 76);
+        public const uint
+            TB_CUSTOMIZE = (WM_USER + 27);
+        public const uint
+            TB_ADDSTRINGA = (WM_USER + 28);
+        public const uint
+            TB_ADDSTRINGW = (WM_USER + 77);
+        public const uint
+            TB_GETITEMRECT = (WM_USER + 29);
+        public const uint
+            TB_BUTTONSTRUCTSIZE = (WM_USER + 30);
+        public const uint
+            TB_SETBUTTONSIZE = (WM_USER + 31);
+        public const uint
+            TB_SETBITMAPSIZE = (WM_USER + 32);
+        public const uint
+            TB_AUTOSIZE = (WM_USER + 33);
+        public const uint
+            TB_GETTOOLTIPS = (WM_USER + 35);
+        public const uint
+            TB_SETTOOLTIPS = (WM_USER + 36);
+        public const uint
+            TB_SETPARENT = (WM_USER + 37);
+        public const uint
+            TB_SETROWS = (WM_USER + 39);
+        public const uint
+            TB_GETROWS = (WM_USER + 40);
+        public const uint
+            TB_SETCMDID = (WM_USER + 42);
+        public const uint
+            TB_CHANGEBITMAP = (WM_USER + 43);
+        public const uint
+            TB_GETBITMAP = (WM_USER + 44);
+        public const uint
+            TB_GETBUTTONTEXTA = (WM_USER + 45);
+        public const uint
+            TB_GETBUTTONTEXTW = (WM_USER + 75);
+        public const uint
+            TB_REPLACEBITMAP = (WM_USER + 46);
+        public const uint
+            TB_SETINDENT = (WM_USER + 47);
+        public const uint
+            TB_SETIMAGELIST = (WM_USER + 48);
+        public const uint
+            TB_GETIMAGELIST = (WM_USER + 49);
+        public const uint
+            TB_LOADIMAGES = (WM_USER + 50);
+        public const uint
+            TB_GETRECT = (WM_USER + 51);
+        public const uint
+            TB_SETHOTIMAGELIST = (WM_USER + 52);
+        public const uint
+            TB_GETHOTIMAGELIST = (WM_USER + 53);
+        public const uint
+            TB_SETDISABLEDIMAGELIST = (WM_USER + 54);
+        public const uint
+            TB_GETDISABLEDIMAGELIST = (WM_USER + 55);
+        public const uint
+            TB_SETSTYLE = (WM_USER + 56);
+        public const uint
+            TB_GETSTYLE = (WM_USER + 57);
+        public const uint
+            TB_GETBUTTONSIZE = (WM_USER + 58);
+        public const uint
+            TB_SETBUTTONWIDTH = (WM_USER + 59);
+        public const uint
+            TB_SETMAXTEXTROWS = (WM_USER + 60);
+        public const uint
+            TB_GETTEXTROWS = (WM_USER + 61);
+        public const uint
+            TB_GETOBJECT = (WM_USER + 62);
+        public const uint
+            TB_GETHOTITEM = (WM_USER + 71);
+        public const uint
+            TB_SETHOTITEM = (WM_USER + 72);
+        public const uint
+            TB_SETANCHORHIGHLIGHT = (WM_USER + 73);
+        public const uint
+            TB_GETANCHORHIGHLIGHT = (WM_USER + 74);
+        public const uint
+            TB_MAPACCELERATORA = (WM_USER + 78);
+        public const uint
+            TB_GETINSERTMARK = (WM_USER + 79);
+        public const uint
+            TB_SETINSERTMARK = (WM_USER + 80);
+        public const uint
+            TB_INSERTMARKHITTEST = (WM_USER + 81);
+        public const uint
+            TB_MOVEBUTTON = (WM_USER + 82);
+        public const uint
+            TB_GETMAXSIZE = (WM_USER + 83);
+        public const uint
+            TB_SETEXTENDEDSTYLE = (WM_USER + 84);
+        public const uint
+            TB_GETEXTENDEDSTYLE = (WM_USER + 85);
+        public const uint
+            TB_GETPADDING = (WM_USER + 86);
+        public const uint
+            TB_SETPADDING = (WM_USER + 87);
+        public const uint
+            TB_SETINSERTMARKCOLOR = (WM_USER + 88);
+        public const uint
+            TB_GETINSERTMARKCOLOR = (WM_USER + 89);
+        public const uint
+            TB_SETCOLORSCHEME = CCM_SETCOLORSCHEME;
+        public const uint
+            TB_GETCOLORSCHEME = CCM_GETCOLORSCHEME;
+        public const uint
+            TB_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT;
+        public const uint
+            TB_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT;
+        public const uint
+            TB_MAPACCELERATORW = (WM_USER + 90);
+        public const uint
+            TB_GETBITMAPFLAGS = (WM_USER + 41);
+        public const uint
+            TB_GETBUTTONINFOW = (WM_USER + 63);
+        public const uint
+            TB_SETBUTTONINFOW = (WM_USER + 64);
+        public const uint
+            TB_GETBUTTONINFOA = (WM_USER + 65);
+        public const uint
+            TB_SETBUTTONINFOA = (WM_USER + 66);
+        public const uint
+            TB_INSERTBUTTONW = (WM_USER + 67);
+        public const uint
+            TB_ADDBUTTONSW = (WM_USER + 68);
+        public const uint
+            TB_HITTEST = (WM_USER + 69);
+        public const uint
+            TB_SETDRAWTEXTFLAGS = (WM_USER + 70);
+        public const uint
+            TB_GETSTRINGW = (WM_USER + 91);
+        public const uint
+            TB_GETSTRINGA = (WM_USER + 92);
+        public const uint
+            TB_GETMETRICS = (WM_USER + 101);
+        public const uint
+            TB_SETMETRICS = (WM_USER + 102);
+        public const uint
+            TB_SETWINDOWTHEME = CCM_SETWINDOWTHEME;
+        public const uint
+            RB_INSERTBANDA = (WM_USER + 1);
+        public const uint
+            RB_DELETEBAND = (WM_USER + 2);
+        public const uint
+            RB_GETBARINFO = (WM_USER + 3);
+        public const uint
+            RB_SETBARINFO = (WM_USER + 4);
+        public const uint
+            RB_GETBANDINFO = (WM_USER + 5);
+        public const uint
+            RB_SETBANDINFOA = (WM_USER + 6);
+        public const uint
+            RB_SETPARENT = (WM_USER + 7);
+        public const uint
+            RB_HITTEST = (WM_USER + 8);
+        public const uint
+            RB_GETRECT = (WM_USER + 9);
+        public const uint
+            RB_INSERTBANDW = (WM_USER + 10);
+        public const uint
+            RB_SETBANDINFOW = (WM_USER + 11);
+        public const uint
+            RB_GETBANDCOUNT = (WM_USER + 12);
+        public const uint
+            RB_GETROWCOUNT = (WM_USER + 13);
+        public const uint
+            RB_GETROWHEIGHT = (WM_USER + 14);
+        public const uint
+            RB_IDTOINDEX = (WM_USER + 16);
+        public const uint
+            RB_GETTOOLTIPS = (WM_USER + 17);
+        public const uint
+            RB_SETTOOLTIPS = (WM_USER + 18);
+        public const uint
+            RB_SETBKCOLOR = (WM_USER + 19);
+        public const uint
+            RB_GETBKCOLOR = (WM_USER + 20);
+        public const uint
+            RB_SETTEXTCOLOR = (WM_USER + 21);
+        public const uint
+            RB_GETTEXTCOLOR = (WM_USER + 22);
+        public const uint
+            RB_SIZETORECT = (WM_USER + 23);
+        public const uint
+            RB_SETCOLORSCHEME = CCM_SETCOLORSCHEME;
+        public const uint
+            RB_GETCOLORSCHEME = CCM_GETCOLORSCHEME;
+        public const uint
+            RB_BEGINDRAG = (WM_USER + 24);
+        public const uint
+            RB_ENDDRAG = (WM_USER + 25);
+        public const uint
+            RB_DRAGMOVE = (WM_USER + 26);
+        public const uint
+            RB_GETBARHEIGHT = (WM_USER + 27);
+        public const uint
+            RB_GETBANDINFOW = (WM_USER + 28);
+        public const uint
+            RB_GETBANDINFOA = (WM_USER + 29);
+        public const uint
+            RB_MINIMIZEBAND = (WM_USER + 30);
+        public const uint
+            RB_MAXIMIZEBAND = (WM_USER + 31);
+        public const uint
+            RB_GETDROPTARGET = (CCM_GETDROPTARGET);
+        public const uint
+            RB_GETBANDBORDERS = (WM_USER + 34);
+        public const uint
+            RB_SHOWBAND = (WM_USER + 35);
+        public const uint
+            RB_SETPALETTE = (WM_USER + 37);
+        public const uint
+            RB_GETPALETTE = (WM_USER + 38);
+        public const uint
+            RB_MOVEBAND = (WM_USER + 39);
+        public const uint
+            RB_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT;
+        public const uint
+            RB_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT;
+        public const uint
+            RB_GETBANDMARGINS = (WM_USER + 40);
+        public const uint
+            RB_SETWINDOWTHEME = CCM_SETWINDOWTHEME;
+        public const uint
+            RB_PUSHCHEVRON = (WM_USER + 43);
+        public const uint
+            TTM_ACTIVATE = (WM_USER + 1);
+        public const uint
+            TTM_SETDELAYTIME = (WM_USER + 3);
+        public const uint
+            TTM_ADDTOOLA = (WM_USER + 4);
+        public const uint
+            TTM_ADDTOOLW = (WM_USER + 50);
+        public const uint
+            TTM_DELTOOLA = (WM_USER + 5);
+        public const uint
+            TTM_DELTOOLW = (WM_USER + 51);
+        public const uint
+            TTM_NEWTOOLRECTA = (WM_USER + 6);
+        public const uint
+            TTM_NEWTOOLRECTW = (WM_USER + 52);
+        public const uint
+            TTM_RELAYEVENT = (WM_USER + 7);
+        public const uint
+            TTM_GETTOOLINFOA = (WM_USER + 8);
+        public const uint
+            TTM_GETTOOLINFOW = (WM_USER + 53);
+        public const uint
+            TTM_SETTOOLINFOA = (WM_USER + 9);
+        public const uint
+            TTM_SETTOOLINFOW = (WM_USER + 54);
+        public const uint
+            TTM_HITTESTA = (WM_USER + 10);
+        public const uint
+            TTM_HITTESTW = (WM_USER + 55);
+        public const uint
+            TTM_GETTEXTA = (WM_USER + 11);
+        public const uint
+            TTM_GETTEXTW = (WM_USER + 56);
+        public const uint
+            TTM_UPDATETIPTEXTA = (WM_USER + 12);
+        public const uint
+            TTM_UPDATETIPTEXTW = (WM_USER + 57);
+        public const uint
+            TTM_GETTOOLCOUNT = (WM_USER + 13);
+        public const uint
+            TTM_ENUMTOOLSA = (WM_USER + 14);
+        public const uint
+            TTM_ENUMTOOLSW = (WM_USER + 58);
+        public const uint
+            TTM_GETCURRENTTOOLA = (WM_USER + 15);
+        public const uint
+            TTM_GETCURRENTTOOLW = (WM_USER + 59);
+        public const uint
+            TTM_WINDOWFROMPOINT = (WM_USER + 16);
+        public const uint
+            TTM_TRACKACTIVATE = (WM_USER + 17);
+        public const uint
+            TTM_TRACKPOSITION = (WM_USER + 18);
+        public const uint
+            TTM_SETTIPBKCOLOR = (WM_USER + 19);
+        public const uint
+            TTM_SETTIPTEXTCOLOR = (WM_USER + 20);
+        public const uint
+            TTM_GETDELAYTIME = (WM_USER + 21);
+        public const uint
+            TTM_GETTIPBKCOLOR = (WM_USER + 22);
+        public const uint
+            TTM_GETTIPTEXTCOLOR = (WM_USER + 23);
+        public const uint
+            TTM_SETMAXTIPWIDTH = (WM_USER + 24);
+        public const uint
+            TTM_GETMAXTIPWIDTH = (WM_USER + 25);
+        public const uint
+            TTM_SETMARGIN = (WM_USER + 26);
+        public const uint
+            TTM_GETMARGIN = (WM_USER + 27);
+        public const uint
+            TTM_POP = (WM_USER + 28);
+        public const uint
+            TTM_UPDATE = (WM_USER + 29);
+        public const uint
+            TTM_GETBUBBLESIZE = (WM_USER + 30);
+        public const uint
+            TTM_ADJUSTRECT = (WM_USER + 31);
+        public const uint
+            TTM_SETTITLEA = (WM_USER + 32);
+        public const uint
+            TTM_SETTITLEW = (WM_USER + 33);
+        public const uint
+            TTM_POPUP = (WM_USER + 34);
+        public const uint
+            TTM_GETTITLE = (WM_USER + 35);
+        public const uint
+            TTM_SETWINDOWTHEME = CCM_SETWINDOWTHEME;
+        public const uint
+            SB_SETTEXTA = (WM_USER + 1);
+        public const uint
+            SB_SETTEXTW = (WM_USER + 11);
+        public const uint
+            SB_GETTEXTA = (WM_USER + 2);
+        public const uint
+            SB_GETTEXTW = (WM_USER + 13);
+        public const uint
+            SB_GETTEXTLENGTHA = (WM_USER + 3);
+        public const uint
+            SB_GETTEXTLENGTHW = (WM_USER + 12);
+        public const uint
+            SB_SETPARTS = (WM_USER + 4);
+        public const uint
+            SB_GETPARTS = (WM_USER + 6);
+        public const uint
+            SB_GETBORDERS = (WM_USER + 7);
+        public const uint
+            SB_SETMINHEIGHT = (WM_USER + 8);
+        public const uint
+            SB_SIMPLE = (WM_USER + 9);
+        public const uint
+            SB_GETRECT = (WM_USER + 10);
+        public const uint
+            SB_ISSIMPLE = (WM_USER + 14);
+        public const uint
+            SB_SETICON = (WM_USER + 15);
+        public const uint
+            SB_SETTIPTEXTA = (WM_USER + 16);
+        public const uint
+            SB_SETTIPTEXTW = (WM_USER + 17);
+        public const uint
+            SB_GETTIPTEXTA = (WM_USER + 18);
+        public const uint
+            SB_GETTIPTEXTW = (WM_USER + 19);
+        public const uint
+            SB_GETICON = (WM_USER + 20);
+        public const uint
+            SB_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT;
+        public const uint
+            SB_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT;
+        public const uint
+            SB_SETBKCOLOR = CCM_SETBKCOLOR;
+        public const uint
+            SB_SIMPLEID = 0x00ff;
+        public const uint
+            TBM_GETPOS = (WM_USER);
+        public const uint
+            TBM_GETRANGEMIN = (WM_USER + 1);
+        public const uint
+            TBM_GETRANGEMAX = (WM_USER + 2);
+        public const uint
+            TBM_GETTIC = (WM_USER + 3);
+        public const uint
+            TBM_SETTIC = (WM_USER + 4);
+        public const uint
+            TBM_SETPOS = (WM_USER + 5);
+        public const uint
+            TBM_SETRANGE = (WM_USER + 6);
+        public const uint
+            TBM_SETRANGEMIN = (WM_USER + 7);
+        public const uint
+            TBM_SETRANGEMAX = (WM_USER + 8);
+        public const uint
+            TBM_CLEARTICS = (WM_USER + 9);
+        public const uint
+            TBM_SETSEL = (WM_USER + 10);
+        public const uint
+            TBM_SETSELSTART = (WM_USER + 11);
+        public const uint
+            TBM_SETSELEND = (WM_USER + 12);
+        public const uint
+            TBM_GETPTICS = (WM_USER + 14);
+        public const uint
+            TBM_GETTICPOS = (WM_USER + 15);
+        public const uint
+            TBM_GETNUMTICS = (WM_USER + 16);
+        public const uint
+            TBM_GETSELSTART = (WM_USER + 17);
+        public const uint
+            TBM_GETSELEND = (WM_USER + 18);
+        public const uint
+            TBM_CLEARSEL = (WM_USER + 19);
+        public const uint
+            TBM_SETTICFREQ = (WM_USER + 20);
+        public const uint
+            TBM_SETPAGESIZE = (WM_USER + 21);
+        public const uint
+            TBM_GETPAGESIZE = (WM_USER + 22);
+        public const uint
+            TBM_SETLINESIZE = (WM_USER + 23);
+        public const uint
+            TBM_GETLINESIZE = (WM_USER + 24);
+        public const uint
+            TBM_GETTHUMBRECT = (WM_USER + 25);
+        public const uint
+            TBM_GETCHANNELRECT = (WM_USER + 26);
+        public const uint
+            TBM_SETTHUMBLENGTH = (WM_USER + 27);
+        public const uint
+            TBM_GETTHUMBLENGTH = (WM_USER + 28);
+        public const uint
+            TBM_SETTOOLTIPS = (WM_USER + 29);
+        public const uint
+            TBM_GETTOOLTIPS = (WM_USER + 30);
+        public const uint
+            TBM_SETTIPSIDE = (WM_USER + 31);
+        public const uint
+            TBM_SETBUDDY = (WM_USER + 32);
+        public const uint
+            TBM_GETBUDDY = (WM_USER + 33);
+        public const uint
+            TBM_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT;
+        public const uint
+            TBM_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT;
+        public const uint
+            DL_BEGINDRAG = (WM_USER + 133);
+        public const uint
+            DL_DRAGGING = (WM_USER + 134);
+        public const uint
+            DL_DROPPED = (WM_USER + 135);
+        public const uint
+            DL_CANCELDRAG = (WM_USER + 136);
+        public const uint
+            UDM_SETRANGE = (WM_USER + 101);
+        public const uint
+            UDM_GETRANGE = (WM_USER + 102);
+        public const uint
+            UDM_SETPOS = (WM_USER + 103);
+        public const uint
+            UDM_GETPOS = (WM_USER + 104);
+        public const uint
+            UDM_SETBUDDY = (WM_USER + 105);
+        public const uint
+            UDM_GETBUDDY = (WM_USER + 106);
+        public const uint
+            UDM_SETACCEL = (WM_USER + 107);
+        public const uint
+            UDM_GETACCEL = (WM_USER + 108);
+        public const uint
+            UDM_SETBASE = (WM_USER + 109);
+        public const uint
+            UDM_GETBASE = (WM_USER + 110);
+        public const uint
+            UDM_SETRANGE32 = (WM_USER + 111);
+        public const uint
+            UDM_GETRANGE32 = (WM_USER + 112);
+        public const uint
+            UDM_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT;
+        public const uint
+            UDM_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT;
+        public const uint
+            UDM_SETPOS32 = (WM_USER + 113);
+        public const uint
+            UDM_GETPOS32 = (WM_USER + 114);
+        public const uint
+            PBM_SETRANGE = (WM_USER + 1);
+        public const uint
+            PBM_SETPOS = (WM_USER + 2);
+        public const uint
+            PBM_DELTAPOS = (WM_USER + 3);
+        public const uint
+            PBM_SETSTEP = (WM_USER + 4);
+        public const uint
+            PBM_STEPIT = (WM_USER + 5);
+        public const uint
+            PBM_SETRANGE32 = (WM_USER + 6);
+        public const uint
+            PBM_GETRANGE = (WM_USER + 7);
+        public const uint
+            PBM_GETPOS = (WM_USER + 8);
+        public const uint
+            PBM_SETBARCOLOR = (WM_USER + 9);
+        public const uint
+            PBM_SETBKCOLOR = CCM_SETBKCOLOR;
+        public const uint
+            HKM_SETHOTKEY = (WM_USER + 1);
+        public const uint
+            HKM_GETHOTKEY = (WM_USER + 2);
+        public const uint
+            HKM_SETRULES = (WM_USER + 3);
+        public const uint
+            LVM_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT;
+        public const uint
+            LVM_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT;
+        public const uint
+            LVM_GETBKCOLOR = (LVM_FIRST + 0);
+        public const uint
+            LVM_SETBKCOLOR = (LVM_FIRST + 1);
+        public const uint
+            LVM_GETIMAGELIST = (LVM_FIRST + 2);
+        public const uint
+            LVM_SETIMAGELIST = (LVM_FIRST + 3);
+        public const uint
+            LVM_GETITEMCOUNT = (LVM_FIRST + 4);
+        public const uint
+            LVM_GETITEMA = (LVM_FIRST + 5);
+        public const uint
+            LVM_GETITEMW = (LVM_FIRST + 75);
+        public const uint
+            LVM_SETITEMA = (LVM_FIRST + 6);
+        public const uint
+            LVM_SETITEMW = (LVM_FIRST + 76);
+        public const uint
+            LVM_INSERTITEMA = (LVM_FIRST + 7);
+        public const uint
+            LVM_INSERTITEMW = (LVM_FIRST + 77);
+        public const uint
+            LVM_DELETEITEM = (LVM_FIRST + 8);
+        public const uint
+            LVM_DELETEALLITEMS = (LVM_FIRST + 9);
+        public const uint
+            LVM_GETCALLBACKMASK = (LVM_FIRST + 10);
+        public const uint
+            LVM_SETCALLBACKMASK = (LVM_FIRST + 11);
+        public const uint
+            LVM_FINDITEMA = (LVM_FIRST + 13);
+        public const uint
+            LVM_FINDITEMW = (LVM_FIRST + 83);
+        public const uint
+            LVM_GETITEMRECT = (LVM_FIRST + 14);
+        public const uint
+            LVM_SETITEMPOSITION = (LVM_FIRST + 15);
+        public const uint
+            LVM_GETITEMPOSITION = (LVM_FIRST + 16);
+        public const uint
+            LVM_GETSTRINGWIDTHA = (LVM_FIRST + 17);
+        public const uint
+            LVM_GETSTRINGWIDTHW = (LVM_FIRST + 87);
+        public const uint
+            LVM_HITTEST = (LVM_FIRST + 18);
+        public const uint
+            LVM_ENSUREVISIBLE = (LVM_FIRST + 19);
+        public const uint
+            LVM_SCROLL = (LVM_FIRST + 20);
+        public const uint
+            LVM_REDRAWITEMS = (LVM_FIRST + 21);
+        public const uint
+            LVM_ARRANGE = (LVM_FIRST + 22);
+        public const uint
+            LVM_EDITLABELA = (LVM_FIRST + 23);
+        public const uint
+            LVM_EDITLABELW = (LVM_FIRST + 118);
+        public const uint
+            LVM_GETEDITCONTROL = (LVM_FIRST + 24);
+        public const uint
+            LVM_GETCOLUMNA = (LVM_FIRST + 25);
+        public const uint
+            LVM_GETCOLUMNW = (LVM_FIRST + 95);
+        public const uint
+            LVM_SETCOLUMNA = (LVM_FIRST + 26);
+        public const uint
+            LVM_SETCOLUMNW = (LVM_FIRST + 96);
+        public const uint
+            LVM_INSERTCOLUMNA = (LVM_FIRST + 27);
+        public const uint
+            LVM_INSERTCOLUMNW = (LVM_FIRST + 97);
+        public const uint
+            LVM_DELETECOLUMN = (LVM_FIRST + 28);
+        public const uint
+            LVM_GETCOLUMNWIDTH = (LVM_FIRST + 29);
+        public const uint
+            LVM_SETCOLUMNWIDTH = (LVM_FIRST + 30);
+        public const uint
+            LVM_CREATEDRAGIMAGE = (LVM_FIRST + 33);
+        public const uint
+            LVM_GETVIEWRECT = (LVM_FIRST + 34);
+        public const uint
+            LVM_GETTEXTCOLOR = (LVM_FIRST + 35);
+        public const uint
+            LVM_SETTEXTCOLOR = (LVM_FIRST + 36);
+        public const uint
+            LVM_GETTEXTBKCOLOR = (LVM_FIRST + 37);
+        public const uint
+            LVM_SETTEXTBKCOLOR = (LVM_FIRST + 38);
+        public const uint
+            LVM_GETTOPINDEX = (LVM_FIRST + 39);
+        public const uint
+            LVM_GETCOUNTPERPAGE = (LVM_FIRST + 40);
+        public const uint
+            LVM_GETORIGIN = (LVM_FIRST + 41);
+        public const uint
+            LVM_UPDATE = (LVM_FIRST + 42);
+        public const uint
+            LVM_SETITEMSTATE = (LVM_FIRST + 43);
+        public const uint
+            LVM_GETITEMSTATE = (LVM_FIRST + 44);
+        public const uint
+            LVM_GETITEMTEXTA = (LVM_FIRST + 45);
+        public const uint
+            LVM_GETITEMTEXTW = (LVM_FIRST + 115);
+        public const uint
+            LVM_SETITEMTEXTA = (LVM_FIRST + 46);
+        public const uint
+            LVM_SETITEMTEXTW = (LVM_FIRST + 116);
+        public const uint
+            LVM_SETITEMCOUNT = (LVM_FIRST + 47);
+        public const uint
+            LVM_SORTITEMS = (LVM_FIRST + 48);
+        public const uint
+            LVM_SETITEMPOSITION32 = (LVM_FIRST + 49);
+        public const uint
+            LVM_GETSELECTEDCOUNT = (LVM_FIRST + 50);
+        public const uint
+            LVM_GETITEMSPACING = (LVM_FIRST + 51);
+        public const uint
+            LVM_GETISEARCHSTRINGA = (LVM_FIRST + 52);
+        public const uint
+            LVM_GETISEARCHSTRINGW = (LVM_FIRST + 117);
+        public const uint
+            LVM_SETICONSPACING = (LVM_FIRST + 53);
+        public const uint
+            LVM_SETEXTENDEDLISTVIEWSTYLE = (LVM_FIRST + 54);
+        public const uint
+            LVM_GETEXTENDEDLISTVIEWSTYLE = (LVM_FIRST + 55);
+        public const uint
+            LVM_GETSUBITEMRECT = (LVM_FIRST + 56);
+        public const uint
+            LVM_SUBITEMHITTEST = (LVM_FIRST + 57);
+        public const uint
+            LVM_SETCOLUMNORDERARRAY = (LVM_FIRST + 58);
+        public const uint
+            LVM_GETCOLUMNORDERARRAY = (LVM_FIRST + 59);
+        public const uint
+            LVM_SETHOTITEM = (LVM_FIRST + 60);
+        public const uint
+            LVM_GETHOTITEM = (LVM_FIRST + 61);
+        public const uint
+            LVM_SETHOTCURSOR = (LVM_FIRST + 62);
+        public const uint
+            LVM_GETHOTCURSOR = (LVM_FIRST + 63);
+        public const uint
+            LVM_APPROXIMATEVIEWRECT = (LVM_FIRST + 64);
+        public const uint
+            LVM_SETWORKAREAS = (LVM_FIRST + 65);
+        public const uint
+            LVM_GETWORKAREAS = (LVM_FIRST + 70);
+        public const uint
+            LVM_GETNUMBEROFWORKAREAS = (LVM_FIRST + 73);
+        public const uint
+            LVM_GETSELECTIONMARK = (LVM_FIRST + 66);
+        public const uint
+            LVM_SETSELECTIONMARK = (LVM_FIRST + 67);
+        public const uint
+            LVM_SETHOVERTIME = (LVM_FIRST + 71);
+        public const uint
+            LVM_GETHOVERTIME = (LVM_FIRST + 72);
+        public const uint
+            LVM_SETTOOLTIPS = (LVM_FIRST + 74);
+        public const uint
+            LVM_GETTOOLTIPS = (LVM_FIRST + 78);
+        public const uint
+            LVM_SORTITEMSEX = (LVM_FIRST + 81);
+        public const uint
+            LVM_SETBKIMAGEA = (LVM_FIRST + 68);
+        public const uint
+            LVM_SETBKIMAGEW = (LVM_FIRST + 138);
+        public const uint
+            LVM_GETBKIMAGEA = (LVM_FIRST + 69);
+        public const uint
+            LVM_GETBKIMAGEW = (LVM_FIRST + 139);
+        public const uint
+            LVM_SETSELECTEDCOLUMN = (LVM_FIRST + 140);
+        public const uint
+            LVM_SETTILEWIDTH = (LVM_FIRST + 141);
+        public const uint
+            LVM_SETVIEW = (LVM_FIRST + 142);
+        public const uint
+            LVM_GETVIEW = (LVM_FIRST + 143);
+        public const uint
+            LVM_INSERTGROUP = (LVM_FIRST + 145);
+        public const uint
+            LVM_SETGROUPINFO = (LVM_FIRST + 147);
+        public const uint
+            LVM_GETGROUPINFO = (LVM_FIRST + 149);
+        public const uint
+            LVM_REMOVEGROUP = (LVM_FIRST + 150);
+        public const uint
+            LVM_MOVEGROUP = (LVM_FIRST + 151);
+        public const uint
+            LVM_MOVEITEMTOGROUP = (LVM_FIRST + 154);
+        public const uint
+            LVM_SETGROUPMETRICS = (LVM_FIRST + 155);
+        public const uint
+            LVM_GETGROUPMETRICS = (LVM_FIRST + 156);
+        public const uint
+            LVM_ENABLEGROUPVIEW = (LVM_FIRST + 157);
+        public const uint
+            LVM_SORTGROUPS = (LVM_FIRST + 158);
+        public const uint
+            LVM_INSERTGROUPSORTED = (LVM_FIRST + 159);
+        public const uint
+            LVM_REMOVEALLGROUPS = (LVM_FIRST + 160);
+        public const uint
+            LVM_HASGROUP = (LVM_FIRST + 161);
+        public const uint
+            LVM_SETTILEVIEWINFO = (LVM_FIRST + 162);
+        public const uint
+            LVM_GETTILEVIEWINFO = (LVM_FIRST + 163);
+        public const uint
+            LVM_SETTILEINFO = (LVM_FIRST + 164);
+        public const uint
+            LVM_GETTILEINFO = (LVM_FIRST + 165);
+        public const uint
+            LVM_SETINSERTMARK = (LVM_FIRST + 166);
+        public const uint
+            LVM_GETINSERTMARK = (LVM_FIRST + 167);
+        public const uint
+            LVM_INSERTMARKHITTEST = (LVM_FIRST + 168);
+        public const uint
+            LVM_GETINSERTMARKRECT = (LVM_FIRST + 169);
+        public const uint
+            LVM_SETINSERTMARKCOLOR = (LVM_FIRST + 170);
+        public const uint
+            LVM_GETINSERTMARKCOLOR = (LVM_FIRST + 171);
+        public const uint
+            LVM_SETINFOTIP = (LVM_FIRST + 173);
+        public const uint
+            LVM_GETSELECTEDCOLUMN = (LVM_FIRST + 174);
+        public const uint
+            LVM_ISGROUPVIEWENABLED = (LVM_FIRST + 175);
+        public const uint
+            LVM_GETOUTLINECOLOR = (LVM_FIRST + 176);
+        public const uint
+            LVM_SETOUTLINECOLOR = (LVM_FIRST + 177);
+        public const uint
+            LVM_CANCELEDITLABEL = (LVM_FIRST + 179);
+        public const uint
+            LVM_MAPINDEXTOID = (LVM_FIRST + 180);
+        public const uint
+            LVM_MAPIDTOINDEX = (LVM_FIRST + 181);
+        public const uint
+            TVM_INSERTITEMA = (TV_FIRST + 0);
+        public const uint
+            TVM_INSERTITEMW = (TV_FIRST + 50);
+        public const uint
+            TVM_DELETEITEM = (TV_FIRST + 1);
+        public const uint
+            TVM_EXPAND = (TV_FIRST + 2);
+        public const uint
+            TVM_GETITEMRECT = (TV_FIRST + 4);
+        public const uint
+            TVM_GETCOUNT = (TV_FIRST + 5);
+        public const uint
+            TVM_GETINDENT = (TV_FIRST + 6);
+        public const uint
+            TVM_SETINDENT = (TV_FIRST + 7);
+        public const uint
+            TVM_GETIMAGELIST = (TV_FIRST + 8);
+        public const uint
+            TVM_SETIMAGELIST = (TV_FIRST + 9);
+        public const uint
+            TVM_GETNEXTITEM = (TV_FIRST + 10);
+        public const uint
+            TVM_SELECTITEM = (TV_FIRST + 11);
+        public const uint
+            TVM_GETITEMA = (TV_FIRST + 12);
+        public const uint
+            TVM_GETITEMW = (TV_FIRST + 62);
+        public const uint
+            TVM_SETITEMA = (TV_FIRST + 13);
+        public const uint
+            TVM_SETITEMW = (TV_FIRST + 63);
+        public const uint
+            TVM_EDITLABELA = (TV_FIRST + 14);
+        public const uint
+            TVM_EDITLABELW = (TV_FIRST + 65);
+        public const uint
+            TVM_GETEDITCONTROL = (TV_FIRST + 15);
+        public const uint
+            TVM_GETVISIBLECOUNT = (TV_FIRST + 16);
+        public const uint
+            TVM_HITTEST = (TV_FIRST + 17);
+        public const uint
+            TVM_CREATEDRAGIMAGE = (TV_FIRST + 18);
+        public const uint
+            TVM_SORTCHILDREN = (TV_FIRST + 19);
+        public const uint
+            TVM_ENSUREVISIBLE = (TV_FIRST + 20);
+        public const uint
+            TVM_SORTCHILDRENCB = (TV_FIRST + 21);
+        public const uint
+            TVM_ENDEDITLABELNOW = (TV_FIRST + 22);
+        public const uint
+            TVM_GETISEARCHSTRINGA = (TV_FIRST + 23);
+        public const uint
+            TVM_GETISEARCHSTRINGW = (TV_FIRST + 64);
+        public const uint
+            TVM_SETTOOLTIPS = (TV_FIRST + 24);
+        public const uint
+            TVM_GETTOOLTIPS = (TV_FIRST + 25);
+        public const uint
+            TVM_SETINSERTMARK = (TV_FIRST + 26);
+        public const uint
+            TVM_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT;
+        public const uint
+            TVM_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT;
+        public const uint
+            TVM_SETITEMHEIGHT = (TV_FIRST + 27);
+        public const uint
+            TVM_GETITEMHEIGHT = (TV_FIRST + 28);
+        public const uint
+            TVM_SETBKCOLOR = (TV_FIRST + 29);
+        public const uint
+            TVM_SETTEXTCOLOR = (TV_FIRST + 30);
+        public const uint
+            TVM_GETBKCOLOR = (TV_FIRST + 31);
+        public const uint
+            TVM_GETTEXTCOLOR = (TV_FIRST + 32);
+        public const uint
+            TVM_SETSCROLLTIME = (TV_FIRST + 33);
+        public const uint
+            TVM_GETSCROLLTIME = (TV_FIRST + 34);
+        public const uint
+            TVM_SETINSERTMARKCOLOR = (TV_FIRST + 37);
+        public const uint
+            TVM_GETINSERTMARKCOLOR = (TV_FIRST + 38);
+        public const uint
+            TVM_GETITEMSTATE = (TV_FIRST + 39);
+        public const uint
+            TVM_SETLINECOLOR = (TV_FIRST + 40);
+        public const uint
+            TVM_GETLINECOLOR = (TV_FIRST + 41);
+        public const uint
+            TVM_MAPACCIDTOHTREEITEM = (TV_FIRST + 42);
+        public const uint
+            TVM_MAPHTREEITEMTOACCID = (TV_FIRST + 43);
+        public const uint
+            CBEM_INSERTITEMA = (WM_USER + 1);
+        public const uint
+            CBEM_SETIMAGELIST = (WM_USER + 2);
+        public const uint
+            CBEM_GETIMAGELIST = (WM_USER + 3);
+        public const uint
+            CBEM_GETITEMA = (WM_USER + 4);
+        public const uint
+            CBEM_SETITEMA = (WM_USER + 5);
+        public const uint
+            CBEM_DELETEITEM = CB_DELETESTRING;
+        public const uint
+            CBEM_GETCOMBOCONTROL = (WM_USER + 6);
+        public const uint
+            CBEM_GETEDITCONTROL = (WM_USER + 7);
+        public const uint
+            CBEM_SETEXTENDEDSTYLE = (WM_USER + 14);
+        public const uint
+            CBEM_GETEXTENDEDSTYLE = (WM_USER + 9);
+        public const uint
+            CBEM_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT;
+        public const uint
+            CBEM_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT;
+        public const uint
+            CBEM_SETEXSTYLE = (WM_USER + 8);
+        public const uint
+            CBEM_GETEXSTYLE = (WM_USER + 9);
+        public const uint
+            CBEM_HASEDITCHANGED = (WM_USER + 10);
+        public const uint
+            CBEM_INSERTITEMW = (WM_USER + 11);
+        public const uint
+            CBEM_SETITEMW = (WM_USER + 12);
+        public const uint
+            CBEM_GETITEMW = (WM_USER + 13);
+        public const uint
+            TCM_GETIMAGELIST = (TCM_FIRST + 2);
+        public const uint
+            TCM_SETIMAGELIST = (TCM_FIRST + 3);
+        public const uint
+            TCM_GETITEMCOUNT = (TCM_FIRST + 4);
+        public const uint
+            TCM_GETITEMA = (TCM_FIRST + 5);
+        public const uint
+            TCM_GETITEMW = (TCM_FIRST + 60);
+        public const uint
+            TCM_SETITEMA = (TCM_FIRST + 6);
+        public const uint
+            TCM_SETITEMW = (TCM_FIRST + 61);
+        public const uint
+            TCM_INSERTITEMA = (TCM_FIRST + 7);
+        public const uint
+            TCM_INSERTITEMW = (TCM_FIRST + 62);
+        public const uint
+            TCM_DELETEITEM = (TCM_FIRST + 8);
+        public const uint
+            TCM_DELETEALLITEMS = (TCM_FIRST + 9);
+        public const uint
+            TCM_GETITEMRECT = (TCM_FIRST + 10);
+        public const uint
+            TCM_GETCURSEL = (TCM_FIRST + 11);
+        public const uint
+            TCM_SETCURSEL = (TCM_FIRST + 12);
+        public const uint
+            TCM_HITTEST = (TCM_FIRST + 13);
+        public const uint
+            TCM_SETITEMEXTRA = (TCM_FIRST + 14);
+        public const uint
+            TCM_ADJUSTRECT = (TCM_FIRST + 40);
+        public const uint
+            TCM_SETITEMSIZE = (TCM_FIRST + 41);
+        public const uint
+            TCM_REMOVEIMAGE = (TCM_FIRST + 42);
+        public const uint
+            TCM_SETPADDING = (TCM_FIRST + 43);
+        public const uint
+            TCM_GETROWCOUNT = (TCM_FIRST + 44);
+        public const uint
+            TCM_GETTOOLTIPS = (TCM_FIRST + 45);
+        public const uint
+            TCM_SETTOOLTIPS = (TCM_FIRST + 46);
+        public const uint
+            TCM_GETCURFOCUS = (TCM_FIRST + 47);
+        public const uint
+            TCM_SETCURFOCUS = (TCM_FIRST + 48);
+        public const uint
+            TCM_SETMINTABWIDTH = (TCM_FIRST + 49);
+        public const uint
+            TCM_DESELECTALL = (TCM_FIRST + 50);
+        public const uint
+            TCM_HIGHLIGHTITEM = (TCM_FIRST + 51);
+        public const uint
+            TCM_SETEXTENDEDSTYLE = (TCM_FIRST + 52);
+        public const uint
+            TCM_GETEXTENDEDSTYLE = (TCM_FIRST + 53);
+        public const uint
+            TCM_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT;
+        public const uint
+            TCM_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT;
+        public const uint
+            ACM_OPENA = (WM_USER + 100);
+        public const uint
+            ACM_OPENW = (WM_USER + 103);
+        public const uint
+            ACM_PLAY = (WM_USER + 101);
+        public const uint
+            ACM_STOP = (WM_USER + 102);
+        public const uint
+            MCM_FIRST = 0x1000;
+        public const uint
+            MCM_GETCURSEL = (MCM_FIRST + 1);
+        public const uint
+            MCM_SETCURSEL = (MCM_FIRST + 2);
+        public const uint
+            MCM_GETMAXSELCOUNT = (MCM_FIRST + 3);
+        public const uint
+            MCM_SETMAXSELCOUNT = (MCM_FIRST + 4);
+        public const uint
+            MCM_GETSELRANGE = (MCM_FIRST + 5);
+        public const uint
+            MCM_SETSELRANGE = (MCM_FIRST + 6);
+        public const uint
+            MCM_GETMONTHRANGE = (MCM_FIRST + 7);
+        public const uint
+            MCM_SETDAYSTATE = (MCM_FIRST + 8);
+        public const uint
+            MCM_GETMINREQRECT = (MCM_FIRST + 9);
+        public const uint
+            MCM_SETCOLOR = (MCM_FIRST + 10);
+        public const uint
+            MCM_GETCOLOR = (MCM_FIRST + 11);
+        public const uint
+            MCM_SETTODAY = (MCM_FIRST + 12);
+        public const uint
+            MCM_GETTODAY = (MCM_FIRST + 13);
+        public const uint
+            MCM_HITTEST = (MCM_FIRST + 14);
+        public const uint
+            MCM_SETFIRSTDAYOFWEEK = (MCM_FIRST + 15);
+        public const uint
+            MCM_GETFIRSTDAYOFWEEK = (MCM_FIRST + 16);
+        public const uint
+            MCM_GETRANGE = (MCM_FIRST + 17);
+        public const uint
+            MCM_SETRANGE = (MCM_FIRST + 18);
+        public const uint
+            MCM_GETMONTHDELTA = (MCM_FIRST + 19);
+        public const uint
+            MCM_SETMONTHDELTA = (MCM_FIRST + 20);
+        public const uint
+            MCM_GETMAXTODAYWIDTH = (MCM_FIRST + 21);
+        public const uint
+            MCM_SETUNICODEFORMAT = CCM_SETUNICODEFORMAT;
+        public const uint
+            MCM_GETUNICODEFORMAT = CCM_GETUNICODEFORMAT;
+        public const uint
+            DTM_FIRST = 0x1000;
+        public const uint
+            DTM_GETSYSTEMTIME = (DTM_FIRST + 1);
+        public const uint
+            DTM_SETSYSTEMTIME = (DTM_FIRST + 2);
+        public const uint
+            DTM_GETRANGE = (DTM_FIRST + 3);
+        public const uint
+            DTM_SETRANGE = (DTM_FIRST + 4);
+        public const uint
+            DTM_SETFORMATA = (DTM_FIRST + 5);
+        public const uint
+            DTM_SETFORMATW = (DTM_FIRST + 50);
+        public const uint
+            DTM_SETMCCOLOR = (DTM_FIRST + 6);
+        public const uint
+            DTM_GETMCCOLOR = (DTM_FIRST + 7);
+        public const uint
+            DTM_GETMONTHCAL = (DTM_FIRST + 8);
+        public const uint
+            DTM_SETMCFONT = (DTM_FIRST + 9);
+        public const uint
+            DTM_GETMCFONT = (DTM_FIRST + 10);
+        public const uint
+            PGM_SETCHILD = (PGM_FIRST + 1);
+        public const uint
+            PGM_RECALCSIZE = (PGM_FIRST + 2);
+        public const uint
+            PGM_FORWARDMOUSE = (PGM_FIRST + 3);
+        public const uint
+            PGM_SETBKCOLOR = (PGM_FIRST + 4);
+        public const uint
+            PGM_GETBKCOLOR = (PGM_FIRST + 5);
+        public const uint
+            PGM_SETBORDER = (PGM_FIRST + 6);
+        public const uint
+            PGM_GETBORDER = (PGM_FIRST + 7);
+        public const uint
+            PGM_SETPOS = (PGM_FIRST + 8);
+        public const uint
+            PGM_GETPOS = (PGM_FIRST + 9);
+        public const uint
+            PGM_SETBUTTONSIZE = (PGM_FIRST + 10);
+        public const uint
+            PGM_GETBUTTONSIZE = (PGM_FIRST + 11);
+        public const uint
+            PGM_GETBUTTONSTATE = (PGM_FIRST + 12);
+        public const uint
+            PGM_GETDROPTARGET = CCM_GETDROPTARGET;
+        public const uint
+            BCM_GETIDEALSIZE = (BCM_FIRST + 0x0001);
+        public const uint
+            BCM_SETIMAGELIST = (BCM_FIRST + 0x0002);
+        public const uint
+            BCM_GETIMAGELIST = (BCM_FIRST + 0x0003);
+        public const uint
+            BCM_SETTEXTMARGIN = (BCM_FIRST + 0x0004);
+        public const uint
+            BCM_GETTEXTMARGIN = (BCM_FIRST + 0x0005);
+        public const uint
+            EM_SETCUEBANNER = (ECM_FIRST + 1);
+        public const uint
+            EM_GETCUEBANNER = (ECM_FIRST + 2);
+        public const uint
+            EM_SHOWBALLOONTIP = (ECM_FIRST + 3);
+        public const uint
+            EM_HIDEBALLOONTIP = (ECM_FIRST + 4);
+        public const uint
+            CB_SETMINVISIBLE = (CBM_FIRST + 1);
+        public const uint
+            CB_GETMINVISIBLE = (CBM_FIRST + 2);
+        public const uint
+            LM_HITTEST = (WM_USER + 0x300);
+        public const uint
+            LM_GETIDEALHEIGHT = (WM_USER + 0x301);
+        public const uint
+            LM_SETITEM = (WM_USER + 0x302);
+        public const uint
+            LM_GETITEM = (WM_USER + 0x303);
         //}
     }
 }

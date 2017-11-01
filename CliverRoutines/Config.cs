@@ -96,7 +96,7 @@ namespace Cliver
                 object_names2serializable.Clear();
                 List<Assembly> sas = new List<Assembly>();
                 sas.Add(Assembly.GetEntryAssembly());
-                foreach (AssemblyName an in Assembly.GetEntryAssembly().GetReferencedAssemblies().Where(an => Regex.IsMatch(an.Name, assembly_name_regex_pattern)))
+                foreach (AssemblyName an in Assembly.GetEntryAssembly().GetReferencedAssemblies().Where(an => assembly_name_regex_pattern != null ? Regex.IsMatch(an.Name, assembly_name_regex_pattern) : true))
                     sas.Add(Assembly.Load(an));
                 foreach (Assembly sa in sas)
                 {
