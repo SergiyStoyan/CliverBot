@@ -15,6 +15,9 @@ namespace Cliver
 {
     public partial class Win32
     {
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool CloseHandle(IntPtr hObject);
+
         [DllImport("kernel32.dll")]
         public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
 
