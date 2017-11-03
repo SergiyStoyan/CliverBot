@@ -168,6 +168,7 @@
     <Compile Include="Misc\Enum.cs" />
     <Compile Include="Misc\AssemblyRoutines.cs" />
     <Compile Include="Misc\ImageRoutines.cs" />
+    <Compile Include="Misc\SystemRoutines.cs" />
     <Compile Include="Misc\SystemInfo.cs" />
     <Compile Include="Misc\ProgramRoutines.cs" />
     <Compile Include="Misc\ConvertionRoutines.cs" />

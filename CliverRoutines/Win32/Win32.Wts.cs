@@ -77,8 +77,8 @@ namespace Cliver
 
         [DllImport("Wtsapi32.dll")]
         public static extern void WTSFreeMemory(IntPtr pointer);
-        
-        [DllImport("wtsapi32.dll", SetLastError = true)]
+
+        [DllImport("kernel32.dll")]
         public static extern uint WTSGetActiveConsoleSessionId();
     }
 }

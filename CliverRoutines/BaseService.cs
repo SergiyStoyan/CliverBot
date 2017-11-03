@@ -104,4 +104,29 @@ namespace Cliver
 
         }
     }
+
+    public abstract class BaseService2
+    {
+        public delegate void OnStateChanged();
+        public event OnStateChanged StateChanged = null;
+
+        public bool Running
+        {
+            set
+            {
+                running = value;
+
+                SetRunning(value);
+
+                StateChanged?.Invoke();
+            }
+            get
+            {
+                return running;
+            }
+        }
+        bool running = false;
+        
+        abstract protected void SetRunning(bool run);
+    }
 }
