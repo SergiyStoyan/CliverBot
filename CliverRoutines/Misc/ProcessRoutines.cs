@@ -224,17 +224,17 @@ namespace Cliver
             }
 
             [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
-            static extern IntPtr CreateJobObject(object a, string lpName);
+            static extern IntPtr CreateJobObject(IntPtr a, string lpName);
 
             [DllImport("kernel32.dll")]
-            static extern bool SetInformationJobObject(IntPtr hJob, JobObjectInfoType infoType, IntPtr lpJobObjectInfo, uint cbJobObjectInfoLength);
+            static extern bool SetInformationJobObject(IntPtr hJob, JobObjectInfoType infoType, IntPtr lpJobObjectInfo, UInt32 cbJobObjectInfoLength);
 
             [DllImport("kernel32.dll", SetLastError = true)]
             static extern bool AssignProcessToJobObject(IntPtr job, IntPtr process);
-
+            
             public Job()
             {
-                m_handle = CreateJobObject(null, null);
+                job_handle = CreateJobObject(IntPtr.Zero, null);
 
                 JOBOBJECT_BASIC_LIMIT_INFORMATION info = new JOBOBJECT_BASIC_LIMIT_INFORMATION();
                 info.LimitFlags = 0x2000;
@@ -246,18 +246,18 @@ namespace Cliver
                 IntPtr extendedInfoPtr = Marshal.AllocHGlobal(length);
                 Marshal.StructureToPtr(extendedInfo, extendedInfoPtr, false);
 
-                SetInformationJobObject(m_handle, JobObjectInfoType.ExtendedLimitInformation, extendedInfoPtr, (uint)length);
-                if(Marshal.GetLastWin32Error() != 0)//for unclear reason SetInformationJobObject returns false
+                if(!SetInformationJobObject(job_handle, JobObjectInfoType.ExtendedLimitInformation, extendedInfoPtr, (uint)length))
+                //if(Marshal.GetLastWin32Error() != 0)//for unclear reason SetInformationJobObject returns false
                     throw new Exception("Unable to set information. Error: " + Win32Routines.GetLastErrorMessage());
             }
-            private IntPtr m_handle;
+            private IntPtr job_handle;
 
             public void Dispose()
             {
-                if (m_handle != IntPtr.Zero)
+                if (job_handle != IntPtr.Zero)
                 {
-                    Win32.CloseHandle(m_handle);
-                    m_handle = IntPtr.Zero;
+                    Win32.CloseHandle(job_handle);
+                    job_handle = IntPtr.Zero;
                 }
 
                 //GC.SuppressFinalize(this);
@@ -265,7 +265,7 @@ namespace Cliver
             
             public bool MakeProcessLiveNoLongerThanJob(Process p)
             {
-                return AssignProcessToJobObject(m_handle, p.Handle);
+                return AssignProcessToJobObject(job_handle, p.Handle);
             }
         }
     }
