@@ -246,8 +246,9 @@ namespace Cliver
                 IntPtr extendedInfoPtr = Marshal.AllocHGlobal(length);
                 Marshal.StructureToPtr(extendedInfo, extendedInfoPtr, false);
 
-                if (!SetInformationJobObject(m_handle, JobObjectInfoType.ExtendedLimitInformation, extendedInfoPtr, (uint)length))
-                    throw new Exception(string.Format("Unable to set information.  Error: {0}", Marshal.GetLastWin32Error()));
+                SetInformationJobObject(m_handle, JobObjectInfoType.ExtendedLimitInformation, extendedInfoPtr, (uint)length);
+                if(Marshal.GetLastWin32Error() != 0)//for unclear reason SetInformationJobObject returns false
+                    throw new Exception("Unable to set information. Error: " + Win32Routines.GetLastErrorMessage());
             }
             private IntPtr m_handle;
 

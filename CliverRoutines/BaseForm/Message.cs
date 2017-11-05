@@ -47,7 +47,13 @@ namespace Cliver
         /// </summary>
         public static bool NoDuplicate = true;
 
-        public static bool ShowDetailsOnException = true;
+        public static bool ShowDetailsOnException =
+#if DEBUG
+            true
+#else
+            false
+#endif
+            ;
 
         public static void Inform(string message, Form owner = null)
         {
@@ -59,20 +65,33 @@ namespace Cliver
             ShowDialog(Application.ProductName, SystemIcons.Exclamation, message, new string[1] { "OK" }, 0, owner);
         }
 
+        public static void Exclaim(Exception e, Form owner = null)
+        {
+            if (!ShowDetailsOnException)
+                ShowDialog(Application.ProductName, SystemIcons.Exclamation, e.Message, new string[1] { "OK" }, 0, owner);
+            else
+                ShowDialog(Application.ProductName, SystemIcons.Exclamation, GetExceptionDetails(e), new string[1] { "OK" }, 0, owner);
+        }
+
         public static void Warning(string message, Form owner = null)
         {
             ShowDialog(Application.ProductName, SystemIcons.Warning, message, new string[1] { "OK" }, 0, owner);
         }
-        
+
+        public static void Warning(Exception e, Form owner = null)
+        {
+            if (!ShowDetailsOnException)
+                ShowDialog(Application.ProductName, SystemIcons.Warning, e.Message, new string[1] { "OK" }, 0, owner);
+            else
+                ShowDialog(Application.ProductName, SystemIcons.Warning, GetExceptionDetails(e), new string[1] { "OK" }, 0, owner);
+        }
+
         public static void Error(Exception e, Form owner = null)
         {
             if(!ShowDetailsOnException)
-            {
                 Error(e.Message, owner);
-                return;
-            }
-
-            ShowDialog(Application.ProductName, SystemIcons.Error, GetExceptionDetails(e), new string[1] { "OK" }, 0, owner);
+            else
+                ShowDialog(Application.ProductName, SystemIcons.Error, GetExceptionDetails(e), new string[1] { "OK" }, 0, owner);
         }
 
         public static string GetExceptionDetails(Exception e)
