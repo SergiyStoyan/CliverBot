@@ -23,7 +23,7 @@ namespace Cliver
 {
     public static class NetworkRoutines
     {
-        static public IPAddress GetLocalIp(IPAddress destination_ip)
+        static public IPAddress GetLocalIpForDestination(IPAddress destination_ip)
         {
             using (Socket socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
             {
@@ -42,9 +42,27 @@ namespace Cliver
             }
         }
 
-        static public string GetLocalIpAsString(IPAddress destination_ip)
+        public static bool IsNetworkAvailable()
         {
-            return GetLocalIp(destination_ip)?.ToString();
+            return System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable();
+        }
+
+        //public static string GetLocalIPAddress()
+        //{
+        //    var host = Dns.GetHostEntry(Dns.GetHostName());
+        //    foreach (var ip in host.AddressList)
+        //    {
+        //        if (ip.AddressFamily == AddressFamily.InterNetwork)
+        //        {
+        //            return ip.ToString();
+        //        }
+        //    }
+        //    throw new Exception("No network adapters with an IPv4 address in the system!");
+        //}
+
+        static public string GetLocalIpForDestinationAsString(IPAddress destination_ip)
+        {
+            return GetLocalIpForDestination(destination_ip)?.ToString();
         }
     }
 }
