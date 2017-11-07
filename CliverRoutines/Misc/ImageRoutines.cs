@@ -97,6 +97,21 @@ namespace Cliver
             return b2;
         }
 
+        public static Bitmap GetInverted(Bitmap b)
+        {
+            Bitmap b2 = new Bitmap(b);
+            for (int x = 0; x < b.Width; x++)
+            {
+                for (int y = 0; y < b.Height; y++)
+                {
+                    Color c = b.GetPixel(x, y);
+                    Color c2 = Color.FromArgb(c.A, 255 - c.R, 255 - c.G, 255 - c.B);
+                    b2.SetPixel(x, y, c2);
+                }
+            }
+            return b2;
+        }
+
         public static System.Windows.Media.ImageSource ToImageSource(this System.Drawing.Icon icon)
         {
             return System.Windows.Interop.Imaging.CreateBitmapSourceFromHIcon(

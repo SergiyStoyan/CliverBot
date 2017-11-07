@@ -15,6 +15,10 @@ namespace Cliver
 {
     public partial class Win32
     {
+        [DllImport("shell32.dll", SetLastError = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        public static extern bool IsUserAnAdmin();
+
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern bool CloseHandle(IntPtr hObject);
 

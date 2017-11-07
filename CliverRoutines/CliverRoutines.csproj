@@ -120,6 +120,7 @@
     <Reference Include="System.DirectoryServices">
       <Name>System.DirectoryServices</Name>
     </Reference>
+    <Reference Include="System.DirectoryServices.AccountManagement" />
     <Reference Include="System.Drawing">
       <Name>System.Drawing</Name>
     </Reference>
@@ -168,6 +169,7 @@
     <Compile Include="Misc\Enum.cs" />
     <Compile Include="Misc\AssemblyRoutines.cs" />
     <Compile Include="Misc\ImageRoutines.cs" />
+    <Compile Include="Misc\WindowsUserRoutines.cs" />
     <Compile Include="Misc\SystemRoutines.cs" />
     <Compile Include="Misc\SystemInfo.cs" />
     <Compile Include="Misc\ProgramRoutines.cs" />

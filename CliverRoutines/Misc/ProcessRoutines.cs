@@ -24,16 +24,13 @@ using System.Net.NetworkInformation;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Management;
+using System.DirectoryServices.ActiveDirectory;
+using System.DirectoryServices.AccountManagement;
 
 namespace Cliver
 {
     public static class ProcessRoutines
     {
-        public static bool IsElevated()
-        {
-            return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
-        }
-
         public static bool IsProgramRunningAlready()
         {
             Process p = Process.GetCurrentProcess();
@@ -110,7 +107,7 @@ namespace Cliver
             ManagementObjectSearcher searcher = new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + process_id);
             foreach (ManagementObject mo in searcher.Get())
                 KillProcessTree(Convert.ToInt32(mo["ProcessID"]));
-            
+
             Process p;
             try
             {
@@ -155,42 +152,15 @@ namespace Cliver
         /// </summary>
         public class AntiZombieJob : IDisposable
         {
-            enum JobObjectInfoType
+            [StructLayout(LayoutKind.Sequential)]
+            struct JOBOBJECT_EXTENDED_LIMIT_INFORMATION
             {
-                AssociateCompletionPortInformation = 7,
-                BasicLimitInformation = 2,
-                BasicUIRestrictions = 4,
-                EndOfJobTimeInformation = 6,
-                ExtendedLimitInformation = 9,
-                SecurityLimitInformation = 5,
-                GroupInformation = 11
-            }
-
-            public enum JOBOBJECTLIMIT : uint
-            {
-                // Basic Limits
-                Workingset = 0x00000001,
-                ProcessTime = 0x00000002,
-                JobTime = 0x00000004,
-                ActiveProcess = 0x00000008,
-                Affinity = 0x00000010,
-                PriorityClass = 0x00000020,
-                PreserveJobTime = 0x00000040,
-                SchedulingClass = 0x00000080,
-
-                // Extended Limits
-                ProcessMemory = 0x00000100,
-                JobMemory = 0x00000200,
-                DieOnUnhandledException = 0x00000400,
-                BreakawayOk = 0x00000800,
-                SilentBreakawayOk = 0x00001000,
-                KillOnJobClose = 0x00002000,
-                SubsetAffinity = 0x00004000,
-
-                // Notification Limits
-                JobReadBytes = 0x00010000,
-                JobWriteBytes = 0x00020000,
-                RateControl = 0x00040000,
+                public JOBOBJECT_BASIC_LIMIT_INFORMATION BasicLimitInformation;
+                public IO_COUNTERS IoInfo;
+                public UInt32 ProcessMemoryLimit;
+                public UInt32 JobMemoryLimit;
+                public UInt32 PeakProcessMemoryUsed;
+                public UInt32 PeakJobMemoryUsed;
             }
             //[StructLayout(LayoutKind.Sequential)]
             //struct JOBOBJECT_BASIC_LIMIT_INFORMATION//win32
@@ -224,12 +194,37 @@ namespace Cliver
                 public Int64 PerProcessUserTimeLimit;
                 public Int64 PerJobUserTimeLimit;
                 public JOBOBJECTLIMIT LimitFlags;
-                public UIntPtr MinimumWorkingSetSize;
-                public UIntPtr MaximumWorkingSetSize;
+                public UInt32 MinimumWorkingSetSize;
+                public UInt32 MaximumWorkingSetSize;
                 public UInt32 ActiveProcessLimit;
-                public Int64 Affinity;
+                //public Int64 Affinity;
+                public UInt32 Affinity;
                 public UInt32 PriorityClass;
                 public UInt32 SchedulingClass;
+            }
+            public enum JOBOBJECTLIMIT : UInt32
+            {
+                // Basic Limits
+                Workingset = 0x00000001,
+                ProcessTime = 0x00000002,
+                JobTime = 0x00000004,
+                ActiveProcess = 0x00000008,
+                Affinity = 0x00000010,
+                PriorityClass = 0x00000020,
+                PreserveJobTime = 0x00000040,
+                SchedulingClass = 0x00000080,
+                // Extended Limits
+                ProcessMemory = 0x00000100,
+                JobMemory = 0x00000200,
+                DieOnUnhandledException = 0x00000400,
+                BreakawayOk = 0x00000800,
+                SilentBreakawayOk = 0x00001000,
+                KillOnJobClose = 0x00002000,
+                SubsetAffinity = 0x00004000,
+                // Notification Limits
+                JobReadBytes = 0x00010000,
+                JobWriteBytes = 0x00020000,
+                RateControl = 0x00040000,
             }
             [StructLayout(LayoutKind.Sequential)]
             struct IO_COUNTERS
@@ -242,44 +237,48 @@ namespace Cliver
                 public UInt64 OtherTransferCount;
             }
 
-            [StructLayout(LayoutKind.Sequential)]
-            struct JOBOBJECT_EXTENDED_LIMIT_INFORMATION
+            enum JobObjectInfoType
             {
-                public JOBOBJECT_BASIC_LIMIT_INFORMATION BasicLimitInformation;
-                public IO_COUNTERS IoInfo;
-                public UInt32 ProcessMemoryLimit;
-                public UInt32 JobMemoryLimit;
-                public UInt32 PeakProcessMemoryUsed;
-                public UInt32 PeakJobMemoryUsed;
+                AssociateCompletionPortInformation = 7,
+                BasicLimitInformation = 2,
+                BasicUIRestrictions = 4,
+                EndOfJobTimeInformation = 6,
+                ExtendedLimitInformation = 9,
+                SecurityLimitInformation = 5,
+                GroupInformation = 11
             }
 
             [DllImport("kernel32.dll", CharSet = CharSet.Unicode)]
-            static extern IntPtr CreateJobObject(IntPtr a, string lpName);
+            static extern IntPtr CreateJobObject(IntPtr lpJobAttributes, string lpName);
 
             [DllImport("kernel32.dll")]
             static extern bool SetInformationJobObject(IntPtr hJob, JobObjectInfoType infoType, IntPtr lpJobObjectInfo, UInt32 cbJobObjectInfoLength);
+            //[DllImport("kernel32.dll")]
+            //static extern bool SetInformationJobObject(IntPtr hJob, uint infoType, ref JOBOBJECT_EXTENDED_LIMIT_INFORMATION lpJobObjectInfo, UInt32 cbJobObjectInfoLength);
 
             [DllImport("kernel32.dll", SetLastError = true)]
             static extern bool AssignProcessToJobObject(IntPtr job, IntPtr process);
-            
+
             public AntiZombieJob()
             {
                 jobHandle = CreateJobObject(IntPtr.Zero, null);
 
-                JOBOBJECT_EXTENDED_LIMIT_INFORMATION jeli = new JOBOBJECT_EXTENDED_LIMIT_INFORMATION();
+                jeli = new JOBOBJECT_EXTENDED_LIMIT_INFORMATION();
                 jeli.BasicLimitInformation.LimitFlags = JOBOBJECTLIMIT.KillOnJobClose;
 
                 int jeliSize = Marshal.SizeOf(typeof(JOBOBJECT_EXTENDED_LIMIT_INFORMATION));
                 extendedInfoPtr = Marshal.AllocHGlobal(jeliSize);
-                Marshal.StructureToPtr(jeli, extendedInfoPtr, false);
+                Marshal.StructureToPtr<JOBOBJECT_EXTENDED_LIMIT_INFORMATION>(jeli, extendedInfoPtr, false);
 
                 if (!SetInformationJobObject(jobHandle, JobObjectInfoType.ExtendedLimitInformation, extendedInfoPtr, (uint)jeliSize))
-                        //SetInformationJobObject(jobHandle, JobObjectInfoType.ExtendedLimitInformation, extendedInfoPtr, (uint)length);
-                        //if(Marshal.GetLastWin32Error() != 0)//for unclear reason SetInformationJobObject returns false with no error
+                    //if (!SetInformationJobObject(jobHandle, (uint)JobObjectInfoType.ExtendedLimitInformation, ref jeli, (uint)jeliSize))
+                    //SetInformationJobObject(jobHandle, JobObjectInfoType.ExtendedLimitInformation, extendedInfoPtr, (uint)length);
+                    if (Marshal.GetLastWin32Error() != 0)//for unclear reason SetInformationJobObject returns false with no error
                         throw new Exception("Unable to set information. Error: " + Win32Routines.GetLastErrorMessage());
             }
             IntPtr jobHandle = IntPtr.Zero;
             IntPtr extendedInfoPtr = IntPtr.Zero;
+            JOBOBJECT_EXTENDED_LIMIT_INFORMATION jeli;
 
             public void Dispose()
             {
@@ -296,11 +295,57 @@ namespace Cliver
 
                 //GC.SuppressFinalize(this);
             }
-            
+
             public bool MakeProcessLiveNoLongerThanJob(Process p)
             {
                 return AssignProcessToJobObject(jobHandle, p.Handle);
             }
+        }
+
+        /// <summary>
+        /// !!! UGLY WAY !!!
+        /// Make the host process a system-critical process so that it cannot be terminated without causing a shutdown of the entire system.
+        /// </summary>
+        public static class Protection
+        {
+            [DllImport("ntdll.dll", SetLastError = true)]
+            //undocumented functionality making the host process unkillable
+            private static extern void RtlSetProcessIsCritical(UInt32 v1, UInt32 v2, UInt32 v3);
+
+            static object lockObject = new object();
+            
+            public static bool On
+            {
+                get
+                {
+                    return On;
+                }
+                set
+                {
+                    lock (lockObject)
+                    {
+                        if (value)
+                        {
+                            if (!on)
+                            {
+                                System.Diagnostics.Process.EnterDebugMode();
+                                RtlSetProcessIsCritical(1, 0, 0);
+                                on = true;
+                            }
+                        }
+                        else
+                        {
+                            if (on)
+                            {
+                                RtlSetProcessIsCritical(0, 0, 0);
+                                on = false;
+                            }
+                        }
+                    }
+
+                }
+            }
+            static volatile bool on = false;
         }
     }
 }
