@@ -306,7 +306,7 @@ namespace Cliver
         /// !!! UGLY WAY !!!
         /// Make the host process a system-critical process so that it cannot be terminated without causing a shutdown of the entire system.
         /// </summary>
-        public static class Protection
+        public static class CurrentProcessProtection
         {
             [DllImport("ntdll.dll", SetLastError = true)]
             //undocumented functionality making the host process unkillable
