@@ -128,7 +128,7 @@ namespace Cliver
         }
 
         /// <summary>
-        /// Write the stack informtion for the caller to the current thread's log
+        /// Write the stack information about the caller to the current thread's log
         /// </summary>
         /// <param name="e"></param>
         static public void Trace(object message = null)
