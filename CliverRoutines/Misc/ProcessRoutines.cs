@@ -153,7 +153,7 @@ namespace Cliver
         /// <summary>
         /// Making a process live no longer than this object
         /// </summary>
-        public class Job : IDisposable
+        public class AntiZombieJob : IDisposable
         {
             enum JobObjectInfoType
             {
@@ -166,14 +166,32 @@ namespace Cliver
                 GroupInformation = 11
             }
 
-            [StructLayout(LayoutKind.Sequential)]
-            struct SECURITY_ATTRIBUTES
+            public enum JOBOBJECTLIMIT : uint
             {
-                public int nLength;
-                public IntPtr lpSecurityDescriptor;
-                public int bInheritHandle;
-            }
+                // Basic Limits
+                Workingset = 0x00000001,
+                ProcessTime = 0x00000002,
+                JobTime = 0x00000004,
+                ActiveProcess = 0x00000008,
+                Affinity = 0x00000010,
+                PriorityClass = 0x00000020,
+                PreserveJobTime = 0x00000040,
+                SchedulingClass = 0x00000080,
 
+                // Extended Limits
+                ProcessMemory = 0x00000100,
+                JobMemory = 0x00000200,
+                DieOnUnhandledException = 0x00000400,
+                BreakawayOk = 0x00000800,
+                SilentBreakawayOk = 0x00001000,
+                KillOnJobClose = 0x00002000,
+                SubsetAffinity = 0x00004000,
+
+                // Notification Limits
+                JobReadBytes = 0x00010000,
+                JobWriteBytes = 0x00020000,
+                RateControl = 0x00040000,
+            }
             //[StructLayout(LayoutKind.Sequential)]
             //struct JOBOBJECT_BASIC_LIMIT_INFORMATION//win32
             //{
@@ -187,20 +205,32 @@ namespace Cliver
             //    public Int16 PriorityClass;
             //    public Int16 SchedulingClass;
             //}
+            //[StructLayout(LayoutKind.Sequential)]
+            //struct JOBOBJECT_BASIC_LIMIT_INFORMATION//win64
+            //{
+            //    public Int64 PerProcessUserTimeLimit;
+            //    public Int64 PerJobUserTimeLimit;
+            //    public JOBOBJECTLIMIT LimitFlags;
+            //    public UIntPtr MinimumWorkingSetSize;
+            //    public UIntPtr MaximumWorkingSetSize;
+            //    public Int16 ActiveProcessLimit;
+            //    public Int64 Affinity;
+            //    public Int16 PriorityClass;
+            //    public Int16 SchedulingClass;
+            //}
             [StructLayout(LayoutKind.Sequential)]
-            struct JOBOBJECT_BASIC_LIMIT_INFORMATION//win64
+            struct JOBOBJECT_BASIC_LIMIT_INFORMATION
             {
                 public Int64 PerProcessUserTimeLimit;
                 public Int64 PerJobUserTimeLimit;
-                public Int16 LimitFlags;
+                public JOBOBJECTLIMIT LimitFlags;
                 public UIntPtr MinimumWorkingSetSize;
                 public UIntPtr MaximumWorkingSetSize;
-                public Int16 ActiveProcessLimit;
+                public UInt32 ActiveProcessLimit;
                 public Int64 Affinity;
-                public Int16 PriorityClass;
-                public Int16 SchedulingClass;
+                public UInt32 PriorityClass;
+                public UInt32 SchedulingClass;
             }
-
             [StructLayout(LayoutKind.Sequential)]
             struct IO_COUNTERS
             {
@@ -232,33 +262,36 @@ namespace Cliver
             [DllImport("kernel32.dll", SetLastError = true)]
             static extern bool AssignProcessToJobObject(IntPtr job, IntPtr process);
             
-            public Job()
+            public AntiZombieJob()
             {
-                job_handle = CreateJobObject(IntPtr.Zero, null);
+                jobHandle = CreateJobObject(IntPtr.Zero, null);
 
-                JOBOBJECT_BASIC_LIMIT_INFORMATION info = new JOBOBJECT_BASIC_LIMIT_INFORMATION();
-                info.LimitFlags = 0x2000;
+                JOBOBJECT_EXTENDED_LIMIT_INFORMATION jeli = new JOBOBJECT_EXTENDED_LIMIT_INFORMATION();
+                jeli.BasicLimitInformation.LimitFlags = JOBOBJECTLIMIT.KillOnJobClose;
 
-                JOBOBJECT_EXTENDED_LIMIT_INFORMATION extendedInfo = new JOBOBJECT_EXTENDED_LIMIT_INFORMATION();
-                extendedInfo.BasicLimitInformation = info;
+                int jeliSize = Marshal.SizeOf(typeof(JOBOBJECT_EXTENDED_LIMIT_INFORMATION));
+                extendedInfoPtr = Marshal.AllocHGlobal(jeliSize);
+                Marshal.StructureToPtr(jeli, extendedInfoPtr, false);
 
-                int length = Marshal.SizeOf(typeof(JOBOBJECT_EXTENDED_LIMIT_INFORMATION));
-                IntPtr extendedInfoPtr = Marshal.AllocHGlobal(length);
-                Marshal.StructureToPtr(extendedInfo, extendedInfoPtr, false);
-
-                //if (!SetInformationJobObject(job_handle, JobObjectInfoType.ExtendedLimitInformation, extendedInfoPtr, (uint)length))
-                SetInformationJobObject(job_handle, JobObjectInfoType.ExtendedLimitInformation, extendedInfoPtr, (uint)length);
-                if(Marshal.GetLastWin32Error() != 0)//for unclear reason SetInformationJobObject returns false with no error
-                    throw new Exception("Unable to set information. Error: " + Win32Routines.GetLastErrorMessage());
+                if (!SetInformationJobObject(jobHandle, JobObjectInfoType.ExtendedLimitInformation, extendedInfoPtr, (uint)jeliSize))
+                        //SetInformationJobObject(jobHandle, JobObjectInfoType.ExtendedLimitInformation, extendedInfoPtr, (uint)length);
+                        //if(Marshal.GetLastWin32Error() != 0)//for unclear reason SetInformationJobObject returns false with no error
+                        throw new Exception("Unable to set information. Error: " + Win32Routines.GetLastErrorMessage());
             }
-            private IntPtr job_handle;
+            IntPtr jobHandle = IntPtr.Zero;
+            IntPtr extendedInfoPtr = IntPtr.Zero;
 
             public void Dispose()
             {
-                if (job_handle != IntPtr.Zero)
+                if (jobHandle != IntPtr.Zero)
                 {
-                    Win32.CloseHandle(job_handle);
-                    job_handle = IntPtr.Zero;
+                    Win32.CloseHandle(jobHandle);
+                    jobHandle = IntPtr.Zero;
+                }
+                if (extendedInfoPtr != IntPtr.Zero)
+                {
+                    Marshal.FreeHGlobal(extendedInfoPtr);
+                    extendedInfoPtr = IntPtr.Zero;
                 }
 
                 //GC.SuppressFinalize(this);
@@ -266,7 +299,7 @@ namespace Cliver
             
             public bool MakeProcessLiveNoLongerThanJob(Process p)
             {
-                return AssignProcessToJobObject(job_handle, p.Handle);
+                return AssignProcessToJobObject(jobHandle, p.Handle);
             }
         }
     }
