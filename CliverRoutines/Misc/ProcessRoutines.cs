@@ -313,7 +313,7 @@ namespace Cliver
             private static extern void RtlSetProcessIsCritical(UInt32 v1, UInt32 v2, UInt32 v3);
 
             static object lockObject = new object();
-            
+
             public static bool On
             {
                 get
@@ -347,5 +347,49 @@ namespace Cliver
             }
             static volatile bool on = false;
         }
+
+        public static bool ProcessHasElevatedPrivileges(Process process)
+        {
+            if (IsUacEnabled)
+            {
+                IntPtr tokenHandle;
+                if (!Win32.OpenProcessToken(process.Handle, Win32.TOKEN_READ, out tokenHandle))
+                    throw new ApplicationException("Could not get process token.  Win32 Error Code: " + Marshal.GetLastWin32Error());
+
+                Win32.TOKEN_ELEVATION_TYPE elevationResult = Win32.TOKEN_ELEVATION_TYPE.TokenElevationTypeDefault;
+
+                int elevationResultSize = Marshal.SizeOf((int)elevationResult);
+                IntPtr tokenInformation = Marshal.AllocHGlobal(elevationResultSize);
+                try
+                {
+                    uint returnedSize = 0;
+                    if (!Win32.GetTokenInformation(tokenHandle, Win32.TOKEN_INFORMATION_CLASS.TokenElevationType, tokenInformation, (uint)elevationResultSize, out returnedSize))
+                        throw new ApplicationException("Unable to determine the current elevation.");
+                    return (Win32.TOKEN_ELEVATION_TYPE)Marshal.ReadInt32(tokenInformation) == Win32.TOKEN_ELEVATION_TYPE.TokenElevationTypeFull;
+                }
+                finally
+                {
+                    if (tokenInformation != IntPtr.Zero)
+                        Marshal.FreeHGlobal(tokenInformation);
+                }
+            }
+            else
+            {
+                WindowsIdentity identity = WindowsIdentity.GetCurrent();
+                WindowsPrincipal principal = new WindowsPrincipal(identity);
+                return principal.IsInRole(WindowsBuiltInRole.Administrator);
+            }
+        }
+        public static bool IsUacEnabled
+        {
+            get
+            {
+                Microsoft.Win32.RegistryKey uacKey = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(uacRegistryKey, false);
+                bool result = uacKey.GetValue(uacRegistryValue).Equals(1);
+                return result;
+            }
+        }
+        private const string uacRegistryKey = "Software\\Microsoft\\Windows\\CurrentVersion\\Policies\\System";
+        private const string uacRegistryValue = "EnableLUA";
     }
 }

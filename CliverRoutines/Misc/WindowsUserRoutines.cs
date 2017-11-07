@@ -96,49 +96,6 @@ namespace Cliver
         //    return false;
         //}
 
-        [DllImport("advapi32.dll", SetLastError = true)]
-        static extern bool GetTokenInformation(IntPtr tokenHandle, TokenInformationClass tokenInformationClass, IntPtr tokenInformation, int tokenInformationLength, out int returnLength);
-
-        enum TokenInformationClass
-        {
-            TokenUser = 1,
-            TokenGroups,
-            TokenPrivileges,
-            TokenOwner,
-            TokenPrimaryGroup,
-            TokenDefaultDacl,
-            TokenSource,
-            TokenType,
-            TokenImpersonationLevel,
-            TokenStatistics,
-            TokenRestrictedSids,
-            TokenSessionId,
-            TokenGroupsAndPrivileges,
-            TokenSessionReference,
-            TokenSandBoxInert,
-            TokenAuditPolicy,
-            TokenOrigin,
-            TokenElevationType,
-            TokenLinkedToken,
-            TokenElevation,
-            TokenHasRestrictions,
-            TokenAccessInformation,
-            TokenVirtualizationAllowed,
-            TokenVirtualizationEnabled,
-            TokenIntegrityLevel,
-            TokenUiAccess,
-            TokenMandatoryPolicy,
-            TokenLogonSid,
-            MaxTokenInfoClass
-        }
-
-        enum TokenElevationType
-        {
-            TokenElevationTypeDefault = 1,
-            TokenElevationTypeFull,
-            TokenElevationTypeLimited
-        }
-
         static public bool CurrentUserIsAdministrator()
         {
             var identity = WindowsIdentity.GetCurrent();
@@ -157,18 +114,19 @@ namespace Cliver
             IntPtr tokenInformation = Marshal.AllocHGlobal(tokenInfLength);
             try
             {
-                if (!GetTokenInformation(identity.Token, TokenInformationClass.TokenElevationType, tokenInformation, tokenInfLength, out tokenInfLength))
+                uint returnedSize = 0;
+                if (!Win32.GetTokenInformation(identity.Token, Win32.TOKEN_INFORMATION_CLASS.TokenElevationType, tokenInformation, (uint)tokenInfLength, out returnedSize))
                     throw new InvalidOperationException("Couldn't get token information", Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error()));
 
-                switch ((TokenElevationType)Marshal.ReadInt32(tokenInformation))
+                switch ((Win32.TOKEN_ELEVATION_TYPE)Marshal.ReadInt32(tokenInformation))
                 {
-                    case TokenElevationType.TokenElevationTypeDefault:
+                    case Win32.TOKEN_ELEVATION_TYPE.TokenElevationTypeDefault:
                         // TokenElevationTypeDefault - User is not using a split token, so they cannot elevate.
                         return false;
-                    case TokenElevationType.TokenElevationTypeFull:
+                    case Win32.TOKEN_ELEVATION_TYPE.TokenElevationTypeFull:
                         // TokenElevationTypeFull - User has a split token, and the process is running elevated. Assuming they're an administrator.
                         return true;
-                    case TokenElevationType.TokenElevationTypeLimited:
+                    case Win32.TOKEN_ELEVATION_TYPE.TokenElevationTypeLimited:
                         // TokenElevationTypeLimited - User has a split token, but the process is not running elevated. Assuming they're an administrator.
                         return true;
                     default:
