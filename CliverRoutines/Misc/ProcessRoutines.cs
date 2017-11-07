@@ -148,9 +148,9 @@ namespace Cliver
         }
 
         /// <summary>
-        /// Making a process live no longer than this object
+        /// Makes processes live no longer than this object
         /// </summary>
-        public class AntiZombieJob : IDisposable
+        public static class AntiZombieTracker
         {
             public enum JobObjectInfoType
             {
@@ -214,8 +214,8 @@ namespace Cliver
 
             [DllImport("kernel32.dll", SetLastError = true)]
             static extern bool AssignProcessToJobObject(IntPtr job, IntPtr process);
-
-            public AntiZombieJob()
+            
+            static void initialize()
             {
                 // This feature requires Windows 8 or later. To support Windows 7 requires
                 //  registry settings to be added if you are using Visual Studio plus an
@@ -247,26 +247,23 @@ namespace Cliver
                     extendedInfoPtr = IntPtr.Zero;
                 }
             }
-            IntPtr jobHandle = IntPtr.Zero;
+            // Windows will automatically close any open job handles when our process terminates.
+            // When the job handle is closed, the child processes will be killed.
+            static IntPtr jobHandle = IntPtr.Zero;
 
-            public void Dispose()
+            public static void KillTrackedProcesses()
             {
                 if (jobHandle != IntPtr.Zero)
                 {
-                    // When the job handle is closed, the child processes will be killed.
-                    // Windows will automatically close any open job handles when our process terminates.
                     Win32.CloseHandle(jobHandle);
                     jobHandle = IntPtr.Zero;
                 }
             }
 
-            ~AntiZombieJob()
+            public static void Track(Process process)
             {
-                Dispose();
-            }
-
-            public void MakeProcessLiveNoLongerThanJob(Process process)
-            {
+                if (jobHandle == IntPtr.Zero)
+                    initialize();
                 if (!AssignProcessToJobObject(jobHandle, process.Handle))
                     throw new Exception("AssignProcessToJobObject: " + Win32Routines.GetLastErrorMessage());
             }
