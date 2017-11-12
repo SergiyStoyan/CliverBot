@@ -52,6 +52,17 @@ namespace Cliver
             return System.Windows.Forms.SystemInformation.UserName;
         }
 
+        static public string GetUserName3()
+        {
+            //return Regex.Replace(Environment.UserName, @".*\\", "");//RunAs ?
+            return Regex.Replace(WindowsIdentity.GetCurrent().Name, @".*\\", "");
+        }
+
+        static public string GetUserName4()
+        {
+            return UserPrincipal.Current.DisplayName;//long time
+        }
+
         public static bool CurrentUserHasElevatedPrivileges()
         {
             return new WindowsPrincipal(WindowsIdentity.GetCurrent()).IsInRole(WindowsBuiltInRole.Administrator);
