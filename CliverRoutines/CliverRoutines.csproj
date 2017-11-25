@@ -194,6 +194,7 @@
     <Compile Include="Misc\DateTimeRoutines.cs" />
     <Compile Include="Misc\PathRoutines.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Win32\Win32.Process.cs" />
     <Compile Include="Win32\Win32.Monitor.cs" />
     <Compile Include="Win32\Win32.Authorization.cs" />
     <Compile Include="Win32\Win32.Wts.cs" />
