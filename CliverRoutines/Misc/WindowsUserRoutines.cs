@@ -60,7 +60,7 @@ namespace Cliver
 
         static public string GetUserName4()
         {
-            return UserPrincipal.Current.DisplayName;//long time
+            return UserPrincipal.Current.DisplayName;//runs unacceptably long time
         }
 
         public static bool CurrentUserHasElevatedPrivileges()
