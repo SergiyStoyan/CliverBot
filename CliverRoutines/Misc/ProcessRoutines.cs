@@ -228,7 +228,7 @@ namespace Cliver
                 //string jobName = "AntiZombieJob_" + Process.GetCurrentProcess().Id;//Can be NULL. If it's not null, it has to be unique.
                 jobHandle = CreateJobObject(IntPtr.Zero, null);
                 if (jobHandle == null)
-                    throw new Exception("CreateJobObject: " + Win32Routines.GetLastErrorMessage());
+                    throw new Exception("CreateJobObject: " + Win32Error.GetLastErrorMessage());
                 JOBOBJECT_BASIC_LIMIT_INFORMATION jbli = new JOBOBJECT_BASIC_LIMIT_INFORMATION();
                 jbli.LimitFlags = JOBOBJECTLIMIT.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;
                 JOBOBJECT_EXTENDED_LIMIT_INFORMATION extendedInfo = new JOBOBJECT_EXTENDED_LIMIT_INFORMATION();
@@ -239,7 +239,7 @@ namespace Cliver
                 {
                     Marshal.StructureToPtr(extendedInfo, extendedInfoPtr, false);
                     if (!SetInformationJobObject(jobHandle, JobObjectInfoType.ExtendedLimitInformation, extendedInfoPtr, (uint)length))
-                        throw new Exception("SetInformationJobObject: " + Win32Routines.GetLastErrorMessage());
+                        throw new Exception("SetInformationJobObject: " + Win32Error.GetLastErrorMessage());
                 }
                 finally
                 {
@@ -265,7 +265,7 @@ namespace Cliver
                 if (jobHandle == IntPtr.Zero)
                     initialize();
                 if (!AssignProcessToJobObject(jobHandle, process.Handle))
-                    throw new Exception("AssignProcessToJobObject: " + Win32Routines.GetLastErrorMessage());
+                    throw new Exception("!AssignProcessToJobObject. " + Win32Error.GetLastErrorAndMessage());
             }
         }
 
