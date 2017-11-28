@@ -150,7 +150,7 @@ namespace Cliver
         /// <summary>
         /// Makes processes live no longer than this object
         /// </summary>
-        public static class AntiZombieTracker
+        public class AntiZombieTracker
         {
             public enum JobObjectInfoType
             {
@@ -215,7 +215,7 @@ namespace Cliver
             [DllImport("kernel32.dll", SetLastError = true)]
             static extern bool AssignProcessToJobObject(IntPtr job, IntPtr process);
             
-            static void initialize()
+            void initialize()
             {
                 // This feature requires Windows 8 or later. To support Windows 7 requires
                 //  registry settings to be added if you are using Visual Studio plus an
@@ -249,9 +249,9 @@ namespace Cliver
             }
             // Windows will automatically close any open job handles when our process terminates.
             // When the job handle is closed, the child processes will be killed.
-            static IntPtr jobHandle = IntPtr.Zero;
+            IntPtr jobHandle = IntPtr.Zero;
 
-            public static void KillTrackedProcesses()
+            public void KillTrackedProcesses()
             {
                 if (jobHandle != IntPtr.Zero)
                 {
@@ -260,13 +260,15 @@ namespace Cliver
                 }
             }
 
-            public static void Track(Process process)
+            public void Track(Process process)
             {
                 if (jobHandle == IntPtr.Zero)
                     initialize();
                 if (!AssignProcessToJobObject(jobHandle, process.Handle))
-                    throw new Exception("!AssignProcessToJobObject. " + Win32Error.GetLastErrorAndMessage());
+                    throw new Exception("!AssignProcessToJobObject. " + Win32Error.GetLastError());
             }
+
+            public static AntiZombieTracker This = new AntiZombieTracker();
         }
 
         /// <summary>

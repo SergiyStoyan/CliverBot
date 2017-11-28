@@ -19,11 +19,5 @@ namespace Cliver
             Win32Exception e = GetLastError();
             return e?.Message;
         }
-
-        public static string GetLastErrorAndMessage()
-        {
-            Win32Exception e = GetLastError();
-            return "Error: (" + GetLastError() + ") " + GetLastErrorMessage();
-        }
     }
 }

@@ -159,7 +159,7 @@ public const int STARTF_USESTDHANDLES      =   0x00000100;
         [DllImport("userenv.dll", SetLastError = true)]
         public static extern bool CreateEnvironmentBlock(ref IntPtr lpEnvironment, IntPtr hToken, bool bInherit);
 
-        public static IntPtr CreateProcessInConsoleSession(String commandLine, uint dwCreationFlags = 0, STARTUPINFO? startupInfo = null, bool bElevate = false)
+        public static uint CreateProcessInConsoleSession(String commandLine, uint dwCreationFlags = 0, STARTUPINFO? startupInfo = null, bool bElevate = false)
         {
             IntPtr hUserToken = IntPtr.Zero, hUserTokenDup = IntPtr.Zero, hPToken = IntPtr.Zero, hProcess = IntPtr.Zero;
             try
@@ -172,11 +172,11 @@ public const int STARTF_USESTDHANDLES      =   0x00000100;
 
                 uint hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
                 if (hSnap == INVALID_HANDLE_VALUE)
-                    throw new Exception("CreateToolhelp32Snapshot == INVALID_HANDLE_VALUE. " + Win32Error.GetLastErrorAndMessage());
+                    throw new Exception("CreateToolhelp32Snapshot == INVALID_HANDLE_VALUE. " + Win32Error.GetLastError());
 
                 procEntry.dwSize = (uint)Marshal.SizeOf(procEntry); //sizeof(PROCESSENTRY32);
                 if (Process32First(hSnap, ref procEntry) == 0)
-                    throw new Exception("Process32First == 0. " + Win32Error.GetLastErrorAndMessage());
+                    throw new Exception("Process32First == 0. " + Win32Error.GetLastError());
 
                 uint winlogonPid = 0;
                 String strCmp = "explorer.exe";
@@ -198,9 +198,9 @@ public const int STARTF_USESTDHANDLES      =   0x00000100;
                     throw new Exception("winlogonPid == 0");
 
                 //Get the user token used by DuplicateTokenEx
-                WTSQueryUserToken(dwSessionId, ref hUserToken);
-                if (hUserToken == IntPtr.Zero)
-                    throw new Exception("WTSQueryUserToken == 0. " + Win32Error.GetLastErrorAndMessage());
+                //WTSQueryUserToken(dwSessionId, ref hUserToken);
+                //if (hUserToken == IntPtr.Zero)
+                //    throw new Exception("WTSQueryUserToken == 0. " + Win32Error.GetLastError());
 
                 STARTUPINFO si;
                 if (startupInfo != null)
@@ -213,18 +213,18 @@ public const int STARTF_USESTDHANDLES      =   0x00000100;
                 var luid = new LUID();
                 hProcess = OpenProcess(MAXIMUM_ALLOWED, false, winlogonPid);
                 if (hProcess == IntPtr.Zero)
-                    throw new Exception("OpenProcess == IntPtr.Zero. " + Win32Error.GetLastErrorAndMessage());
+                    throw new Exception("OpenProcess == IntPtr.Zero. " + Win32Error.GetLastError());
 
                 if (!OpenProcessToken(hProcess, TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY | TOKEN_DUPLICATE | TOKEN_ASSIGN_PRIMARY | TOKEN_ADJUST_SESSIONID | TOKEN_READ | TOKEN_WRITE, ref hPToken))
-                    throw new Exception("!OpenProcessToken. " + Win32Error.GetLastErrorAndMessage());
+                    throw new Exception("!OpenProcessToken. " + Win32Error.GetLastError());
 
                 if (!LookupPrivilegeValue(IntPtr.Zero, SE_DEBUG_NAME, ref luid))
-                    throw new Exception("!LookupPrivilegeValue. " + Win32Error.GetLastErrorAndMessage());
+                    throw new Exception("!LookupPrivilegeValue. " + Win32Error.GetLastError());
 
                 var sa = new SECURITY_ATTRIBUTES();
                 sa.Length = Marshal.SizeOf(sa);
                 if (!DuplicateTokenEx(hPToken, MAXIMUM_ALLOWED, ref sa, (int)SECURITY_IMPERSONATION_LEVEL.SecurityIdentification, (int)TOKEN_TYPE.TokenPrimary, ref hUserTokenDup))
-                    throw new Exception("!DuplicateTokenEx. " + Win32Error.GetLastErrorAndMessage());
+                    throw new Exception("!DuplicateTokenEx. " + Win32Error.GetLastError());
 
                 if (bElevate)
                 {
@@ -238,9 +238,9 @@ public const int STARTF_USESTDHANDLES      =   0x00000100;
 
                     //Adjust Token privilege
                     if (!SetTokenInformation(hUserTokenDup, TOKEN_INFORMATION_CLASS.TokenSessionId, ref dwSessionId, (uint)IntPtr.Size))
-                        throw new Exception("!SetTokenInformation. " + Win32Error.GetLastErrorAndMessage());
+                        throw new Exception("!SetTokenInformation. " + Win32Error.GetLastError());
                     if (!AdjustTokenPrivileges(hUserTokenDup, false, ref tp, Marshal.SizeOf(tp), /*(PTOKEN_PRIVILEGES)*/IntPtr.Zero, IntPtr.Zero))
-                        throw new Exception("!AdjustTokenPrivileges. " + Win32Error.GetLastErrorAndMessage());
+                        throw new Exception("!AdjustTokenPrivileges. " + Win32Error.GetLastError());
                 }
 
                 dwCreationFlags |= dwCreationFlagValues.NORMAL_PRIORITY_CLASS| dwCreationFlagValues.CREATE_NEW_CONSOLE;
@@ -264,8 +264,8 @@ public const int STARTF_USESTDHANDLES      =   0x00000100;
                 ref si, // pointer to STARTUPINFO structure
                 out pi // receives information about new process
                 ))
-                    throw new Exception("!CreateProcessAsUser. " + Win32Error.GetLastErrorAndMessage());
-                return pi.hProcess;
+                    throw new Exception("!CreateProcessAsUser. " + Win32Error.GetLastError());
+                return pi.dwProcessId;
             }
             //catch(Exception e)
             //{
