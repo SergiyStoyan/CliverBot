@@ -262,6 +262,8 @@ namespace Cliver
 
             public void Track(Process process)
             {
+                //All processes associated with a job must run in the same session. 
+                //A job is associated with the session of the first process to be assigned to the job.
                 if (jobHandle == IntPtr.Zero)
                     initialize();
                 if (!AssignProcessToJobObject(jobHandle, process.Handle))
