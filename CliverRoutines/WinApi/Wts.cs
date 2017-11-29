@@ -11,9 +11,9 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Cliver
+namespace Cliver.WinApi
 {
-    public partial class Win32Wts
+    public partial class Wts
     {
         public enum WTS_CONNECTSTATE_CLASS
         {

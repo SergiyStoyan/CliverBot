@@ -228,7 +228,7 @@ namespace Cliver
                 //string jobName = "AntiZombieJob_" + Process.GetCurrentProcess().Id;//Can be NULL. If it's not null, it has to be unique.
                 jobHandle = CreateJobObject(IntPtr.Zero, null);
                 if (jobHandle == null)
-                    throw new Exception("CreateJobObject: " + Win32Error.GetLastErrorMessage());
+                    throw new Exception("CreateJobObject: " + ErrorRoutines.GetLastErrorMessage());
                 JOBOBJECT_BASIC_LIMIT_INFORMATION jbli = new JOBOBJECT_BASIC_LIMIT_INFORMATION();
                 jbli.LimitFlags = JOBOBJECTLIMIT.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;
                 JOBOBJECT_EXTENDED_LIMIT_INFORMATION extendedInfo = new JOBOBJECT_EXTENDED_LIMIT_INFORMATION();
@@ -239,7 +239,7 @@ namespace Cliver
                 {
                     Marshal.StructureToPtr(extendedInfo, extendedInfoPtr, false);
                     if (!SetInformationJobObject(jobHandle, JobObjectInfoType.ExtendedLimitInformation, extendedInfoPtr, (uint)length))
-                        throw new Exception("SetInformationJobObject: " + Win32Error.GetLastErrorMessage());
+                        throw new Exception("SetInformationJobObject: " + ErrorRoutines.GetLastErrorMessage());
                 }
                 finally
                 {
@@ -255,7 +255,7 @@ namespace Cliver
             {
                 if (jobHandle != IntPtr.Zero)
                 {
-                    Win32.CloseHandle(jobHandle);
+                    WinApi.Kernel32.CloseHandle(jobHandle);
                     jobHandle = IntPtr.Zero;
                 }
             }
@@ -267,7 +267,7 @@ namespace Cliver
                 if (jobHandle == IntPtr.Zero)
                     initialize();
                 if (!AssignProcessToJobObject(jobHandle, process.Handle))
-                    throw new Exception("!AssignProcessToJobObject. " + Win32Error.GetLastError());
+                    throw new Exception("!AssignProcessToJobObject. " + ErrorRoutines.GetLastError());
             }
 
             public static AntiZombieTracker This = new AntiZombieTracker();
@@ -324,19 +324,19 @@ namespace Cliver
             if (IsUacEnabled)
             {
                 IntPtr tokenHandle;
-                if (!Win32.OpenProcessToken(process.Handle, Win32.TOKEN_READ, out tokenHandle))
+                if (!WinApi.Advapi32.OpenProcessToken(process.Handle, WinApi.Advapi32.TOKEN_READ, out tokenHandle))
                     throw new ApplicationException("Could not get process token.  Win32 Error Code: " + Marshal.GetLastWin32Error());
 
-                Win32.TOKEN_ELEVATION_TYPE elevationResult = Win32.TOKEN_ELEVATION_TYPE.TokenElevationTypeDefault;
+                WinApi.Advapi32.TOKEN_ELEVATION_TYPE elevationResult = WinApi.Advapi32.TOKEN_ELEVATION_TYPE.TokenElevationTypeDefault;
 
                 int elevationResultSize = Marshal.SizeOf((int)elevationResult);
                 IntPtr tokenInformation = Marshal.AllocHGlobal(elevationResultSize);
                 try
                 {
                     uint returnedSize = 0;
-                    if (!Win32.GetTokenInformation(tokenHandle, Win32.TOKEN_INFORMATION_CLASS.TokenElevationType, tokenInformation, (uint)elevationResultSize, out returnedSize))
+                    if (!WinApi.Advapi32.GetTokenInformation(tokenHandle, WinApi.Advapi32.TOKEN_INFORMATION_CLASS.TokenElevationType, tokenInformation, (uint)elevationResultSize, out returnedSize))
                         throw new ApplicationException("Unable to determine the current elevation.");
-                    return (Win32.TOKEN_ELEVATION_TYPE)Marshal.ReadInt32(tokenInformation) == Win32.TOKEN_ELEVATION_TYPE.TokenElevationTypeFull;
+                    return (WinApi.Advapi32.TOKEN_ELEVATION_TYPE)Marshal.ReadInt32(tokenInformation) == WinApi.Advapi32.TOKEN_ELEVATION_TYPE.TokenElevationTypeFull;
                 }
                 finally
                 {

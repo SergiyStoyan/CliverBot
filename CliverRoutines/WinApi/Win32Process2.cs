@@ -142,17 +142,17 @@ namespace Cliver
             var sessionCount = 0;
 
             // Get a handle to the user access token for the current active session.
-            if (Win32Wts.WTSEnumerateSessions(WTS_CURRENT_SERVER_HANDLE, 0, 1, ref pSessionInfo, ref sessionCount) != 0)
+            if (WinApi.Wts.WTSEnumerateSessions(WTS_CURRENT_SERVER_HANDLE, 0, 1, ref pSessionInfo, ref sessionCount) != 0)
             {
-                var arrayElementSize = Marshal.SizeOf(typeof(Win32Wts.WTS_SESSION_INFO));
+                var arrayElementSize = Marshal.SizeOf(typeof(WinApi.Wts.WTS_SESSION_INFO));
                 var current = pSessionInfo;
 
                 for (var i = 0; i < sessionCount; i++)
                 {
-                    var si = (Win32Wts.WTS_SESSION_INFO)Marshal.PtrToStructure((IntPtr)current, typeof(Win32Wts.WTS_SESSION_INFO));
+                    var si = (WinApi.Wts.WTS_SESSION_INFO)Marshal.PtrToStructure((IntPtr)current, typeof(WinApi.Wts.WTS_SESSION_INFO));
                     current += arrayElementSize;
 
-                    if (si.State == Win32Wts.WTS_CONNECTSTATE_CLASS.WTSActive)
+                    if (si.State == WinApi.Wts.WTS_CONNECTSTATE_CLASS.WTSActive)
                     {
                         activeSessionId = si.SessionID;
                     }
@@ -162,10 +162,10 @@ namespace Cliver
             // If enumerating did not work, fall back to the old method
             if (activeSessionId == INVALID_SESSION_ID)
             {
-                activeSessionId = Win32Wts.WTSGetActiveConsoleSessionId();
+                activeSessionId = WinApi.Wts.WTSGetActiveConsoleSessionId();
             }
 
-            if (Win32Wts.WTSQueryUserToken(activeSessionId, ref hImpersonationToken) != 0)
+            if (WinApi.Wts.WTSQueryUserToken(activeSessionId, ref hImpersonationToken) != 0)
             {
                 // Convert the impersonation token to a primary token
                 bResult = DuplicateTokenEx(hImpersonationToken, 0, IntPtr.Zero,

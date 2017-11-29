@@ -38,38 +38,38 @@ namespace Cliver
             try
             {
                 int strLen;
-                if (Win32Wts.WTSQuerySessionInformation(IntPtr.Zero, sessionId, Win32Wts.WTS_INFO_CLASS.WTSUserName, out buffer, out strLen))
+                if (WinApi.Wts.WTSQuerySessionInformation(IntPtr.Zero, sessionId, WinApi.Wts.WTS_INFO_CLASS.WTSUserName, out buffer, out strLen))
                 {
                     username = Marshal.PtrToStringAnsi(buffer);
                     if (!prependDomain)
                         return username;
-                    Win32Wts.WTSFreeMemory(buffer);
+                    WinApi.Wts.WTSFreeMemory(buffer);
                     buffer = IntPtr.Zero;
-                    if (Win32Wts.WTSQuerySessionInformation(IntPtr.Zero, sessionId, Win32Wts.WTS_INFO_CLASS.WTSDomainName, out buffer, out strLen))
+                    if (WinApi.Wts.WTSQuerySessionInformation(IntPtr.Zero, sessionId, WinApi.Wts.WTS_INFO_CLASS.WTSDomainName, out buffer, out strLen))
                         return Marshal.PtrToStringAnsi(buffer) + "\\" + username;
                 }
             }
             finally
             {
                 if (buffer != IntPtr.Zero)
-                    Win32Wts.WTSFreeMemory(buffer);
+                    WinApi.Wts.WTSFreeMemory(buffer);
             }
             return username;
         }
 
         static public string GetUserName()
         {
-            uint session_id = Win32Wts.WTSGetActiveConsoleSessionId();
+            uint session_id = WinApi.Wts.WTSGetActiveConsoleSessionId();
             if (session_id == 0xFFFFFFFF)
                 return null;
 
             IntPtr buffer;
             int strLen;
-            if (!Win32Wts.WTSQuerySessionInformation(IntPtr.Zero, session_id, Win32Wts.WTS_INFO_CLASS.WTSUserName, out buffer, out strLen) || strLen < 1)
+            if (!WinApi.Wts.WTSQuerySessionInformation(IntPtr.Zero, session_id, WinApi.Wts.WTS_INFO_CLASS.WTSUserName, out buffer, out strLen) || strLen < 1)
                 return null;
 
             string userName = Marshal.PtrToStringAnsi(buffer);
-            Win32Wts.WTSFreeMemory(buffer);
+            WinApi.Wts.WTSFreeMemory(buffer);
             return userName;
         }
 
@@ -152,18 +152,18 @@ namespace Cliver
             try
             {
                 uint returnedSize = 0;
-                if (!Win32.GetTokenInformation(identity.Token, Win32.TOKEN_INFORMATION_CLASS.TokenElevationType, tokenInformation, (uint)tokenInfLength, out returnedSize))
+                if (!WinApi.Advapi32.GetTokenInformation(identity.Token, WinApi.Advapi32.TOKEN_INFORMATION_CLASS.TokenElevationType, tokenInformation, (uint)tokenInfLength, out returnedSize))
                     throw new InvalidOperationException("Couldn't get token information", Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error()));
 
-                switch ((Win32.TOKEN_ELEVATION_TYPE)Marshal.ReadInt32(tokenInformation))
+                switch ((WinApi.Advapi32.TOKEN_ELEVATION_TYPE)Marshal.ReadInt32(tokenInformation))
                 {
-                    case Win32.TOKEN_ELEVATION_TYPE.TokenElevationTypeDefault:
+                    case WinApi.Advapi32.TOKEN_ELEVATION_TYPE.TokenElevationTypeDefault:
                         // TokenElevationTypeDefault - User is not using a split token, so they cannot elevate.
                         return false;
-                    case Win32.TOKEN_ELEVATION_TYPE.TokenElevationTypeFull:
+                    case WinApi.Advapi32.TOKEN_ELEVATION_TYPE.TokenElevationTypeFull:
                         // TokenElevationTypeFull - User has a split token, and the process is running elevated. Assuming they're an administrator.
                         return true;
-                    case Win32.TOKEN_ELEVATION_TYPE.TokenElevationTypeLimited:
+                    case WinApi.Advapi32.TOKEN_ELEVATION_TYPE.TokenElevationTypeLimited:
                         // TokenElevationTypeLimited - User has a split token, but the process is not running elevated. Assuming they're an administrator.
                         return true;
                     default:

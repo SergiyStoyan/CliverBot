@@ -995,12 +995,10 @@
 //}
 
 
-namespace Cliver
+namespace Cliver.WinApi
 {
-    partial class Win32
+    public class Messages
     {
-        //public class Messages
-        //{
         public const uint WA_ACTIVE = 0x0001;
         public const uint WA_CLICKACTIVE = 0x0002;
         public const uint WA_INACTIVE = 0x0000;
@@ -2974,6 +2972,5 @@ namespace Cliver
             LM_SETITEM = (WM_USER + 0x302);
         public const uint
             LM_GETITEM = (WM_USER + 0x303);
-        //}
     }
 }

@@ -11,79 +11,28 @@ using System;
 using System.Runtime.InteropServices;
 using System.Text;
 
-namespace Cliver
+namespace Cliver.WinApi
 {
-    public partial class Win32
+    public partial class User32
     {
-        [DllImport("shell32.dll", SetLastError = true)]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool IsUserAnAdmin();
+        //public class MemoryProtection
+        //{
+        //    public const int PAGE_READWRITE = 0x04;
+        //    public const int PAGE_NOACCESS = 0x01;
+        //    public const int PAGE_GUARD = 0x100;
+        //}
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern bool CloseHandle(IntPtr hObject);
+        //public class MemoryState
+        //{
+        //    public const int MEM_COMMIT = 0x00001000;
+        //}
 
-        [DllImport("kernel32.dll")]
-        public static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
-
-        public class MemoryProtection
-        {
-            public const int PAGE_READWRITE = 0x04;
-            public const int PAGE_NOACCESS = 0x01;
-            public const int PAGE_GUARD = 0x100;
-        }
-
-        public class MemoryState
-        {
-            public const int MEM_COMMIT = 0x00001000;
-        }
-
-        public class ProcessRights
-        {
-            public const int PROCESS_QUERY_INFORMATION = 0x0400;
-            public const int PROCESS_WM_READ = 0x0010;
-        }
-
-        [DllImport("kernel32.dll")]
-        public static extern bool ReadProcessMemory(int hProcess, int lpBaseAddress, byte[] lpBuffer, int dwSize, ref int lpNumberOfBytesRead);
-
-        [DllImport("kernel32.dll")]
-        public static extern void GetSystemInfo(out SYSTEM_INFO lpSystemInfo);
-
-        public struct SYSTEM_INFO
-        {
-            public ushort processorArchitecture;
-            ushort reserved;
-            public uint pageSize;
-            public UIntPtr minimumApplicationAddress;
-            public UIntPtr maximumApplicationAddress;
-            public UIntPtr activeProcessorMask;
-            public uint numberOfProcessors;
-            public uint processorType;
-            public uint allocationGranularity;
-            public ushort processorLevel;
-            public ushort processorRevision;
-        }
-
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern int VirtualQueryEx(IntPtr hProcess, IntPtr lpAddress, out MEMORY_BASIC_INFORMATION lpBuffer, uint dwLength);
-
-        public struct MEMORY_BASIC_INFORMATION
-        {
-            public Int32 BaseAddress;
-            public Int32 AllocationBase;
-            public Int32 AllocationProtect;
-            public Int32 RegionSize;
-            public Int32 State;
-            public Int32 Protect;
-            public Int32 lType;
-        }
-
-        //public delegate bool EnumProc(IntPtr hwnd, int lParam);
-
-        public delegate bool EnumProc(IntPtr hwnd, IntPtr lParam);
-        //public delegate IntPtr HookProc(IntPtr nCode, IntPtr wParam, IntPtr lParam);
-
-        public delegate IntPtr HookProc(int nCode, IntPtr wParam, IntPtr lParam);
+        //public class ProcessRights
+        //{
+        //    public const int PROCESS_QUERY_INFORMATION = 0x0400;
+        //    public const int PROCESS_WM_READ = 0x0010;
+        //}
+        
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern IntPtr GetActiveWindow();
@@ -100,17 +49,27 @@ namespace Cliver
         [DllImport("user32.dll", SetLastError = true)]
         public static extern byte VkKeyScan(char c);
 
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern int GetLastError();
-
-        //[DllImport("kernel32.dll", SetLastError = true)]
-        //public static extern int FormatMessage(int   dwFlags,  _In_opt_ LPCVOID lpSource,  _In_ DWORD   dwMessageId,  _In_ DWORD   dwLanguageId,  _Out_ LPTSTR  lpBuffer,  _In_ DWORD   nSize,  _In_opt_ va_list *Arguments);
-
-        [DllImport("kernel32.dll")]
-        public static extern uint GetCurrentThreadId();
-
         [DllImport("user32.dll")]
         public static extern IntPtr SetWindowsHookEx(HookType hook, HookProc callback, IntPtr hMod, uint dwThreadId);
+        public enum HookType : uint
+        {
+            WH_JOURNALRECORD = 0,
+            WH_JOURNALPLAYBACK = 1,
+            WH_KEYBOARD = 2,
+            WH_GETMESSAGE = 3,
+            WH_CALLWNDPROC = 4,
+            WH_CBT = 5,
+            WH_SYSMSGFILTER = 6,
+            WH_MOUSE = 7,
+            WH_HARDWARE = 8,
+            WH_DEBUG = 9,
+            WH_SHELL = 10,
+            WH_FOREGROUNDIDLE = 11,
+            WH_CALLWNDPROCRET = 12,
+            WH_KEYBOARD_LL = 13,
+            WH_MOUSE_LL = 14
+        }
+        public delegate IntPtr HookProc(int nCode, IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32.dll")]
         public static extern IntPtr UnhookWindowsHookEx(IntPtr hhk);
@@ -228,11 +187,11 @@ namespace Cliver
         [DllImport("User32.dll", EntryPoint = "SetActiveWindow")]
         public static extern int SetActiveWindow(IntPtr hwnd);
 
-        [DllImport("user32")]
+        [DllImport("user32.dll")]
         public static extern bool EnumWindows(EnumProc cbf, int lParam);
-        //public static extern int EnumWindows(EnumProc cbf, int lParam);
+        public delegate bool EnumProc(IntPtr hwnd, IntPtr lParam);
 
-        [DllImport("user32")]
+        [DllImport("user32.dll")]
         public static extern int EnumChildWindows(IntPtr hwnd, EnumProc cbf, int lParam);
 
         [DllImport("user32.dll")]
@@ -240,59 +199,76 @@ namespace Cliver
 
         [DllImport("User32.dll", EntryPoint = "EnumThreadWindows")]
         public static extern bool EnumThreadWindows(uint dwThreadId, EnumProc cbf, IntPtr lParam);
-
-        [DllImport("Wininet.dll", SetLastError = true)]
-        //public static extern bool GetUrlCacheEntryInfo(string Url, StringBuilder CacheFile, ref int Size);
-        public static extern bool GetUrlCacheEntryInfo(string Url, IntPtr lpCacheEntryInfo, ref int Size);
-
+        
         [DllImport("User32.dll", EntryPoint = "EnumThreadWindows")]
         public static extern bool EnumThreadWindows(uint dwThreadId, EnumProc cbf, int lParam);
 
-        [DllImport("wininet.dll", SetLastError = true)]
-        public static extern bool InternetGetCookieEx(string url, string cookieName, StringBuilder cookieData, ref int size, Int32 dwFlags, IntPtr lpReserved);
-        public const Int32 InternetCookieHttponly = 0x2000;
-
-        [DllImport("wininet.dll")]
-        public static extern bool InternetGetCookie(string Url, string CookieName, StringBuilder CookieData, ref int Size);
-
-        [DllImport("wininet.dll", CharSet = CharSet.Auto, SetLastError = true)]
-        public static extern bool InternetSetCookie(string lpszUrlName, string lbszCookieName, string lpszCookieData);
-
-        public enum HookType : uint
+        [StructLayout(LayoutKind.Sequential)]
+        public struct RECT
         {
-            WH_JOURNALRECORD = 0,
-            WH_JOURNALPLAYBACK = 1,
-            WH_KEYBOARD = 2,
-            WH_GETMESSAGE = 3,
-            WH_CALLWNDPROC = 4,
-            WH_CBT = 5,
-            WH_SYSMSGFILTER = 6,
-            WH_MOUSE = 7,
-            WH_HARDWARE = 8,
-            WH_DEBUG = 9,
-            WH_SHELL = 10,
-            WH_FOREGROUNDIDLE = 11,
-            WH_CALLWNDPROCRET = 12,
-            WH_KEYBOARD_LL = 13,
-            WH_MOUSE_LL = 14
+            public int Left;
+            public int Top;
+            public int Right;
+            public int Bottom;
         }
 
-        public struct CWPRETSTRUCT
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
+        public struct MONITORINFOEX
         {
-            public IntPtr lResult;
-            public IntPtr lParam;
-            public IntPtr wParam;
-            public uint message;
-            public IntPtr hwnd;
-        };
+            public int Size;
+            public RECT Monitor;
+            public RECT WorkArea;
+            public uint Flags;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+            public string DeviceName;
+        }
 
-        [StructLayout(LayoutKind.Sequential)]
-        public struct CWPSTRUCT
+        [DllImport("user32.dll", CharSet = CharSet.Unicode)]
+        public static extern bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFOEX lpmi);
+
+        public delegate bool MonitorEnumDelegate(IntPtr hMonitor, IntPtr hdcMonitor, ref RECT lprcMonitor, IntPtr dwData);
+
+        [DllImport("user32.dll")]
+        public static extern bool EnumDisplayMonitors(IntPtr hdc, IntPtr lprcClip, MonitorEnumDelegate lpfnEnum, IntPtr dwData);
+
+        [DllImport("user32.dll")]
+        public static extern bool EnumDisplayDevices(string lpDevice, uint iDevNum, ref DISPLAY_DEVICE lpDisplayDevice, uint dwFlags);
+
+        [Flags()]
+        public enum DisplayDeviceStateFlags : int
         {
-            public IntPtr lparam;
-            public IntPtr wparam;
-            public int message;
-            public IntPtr hwnd;
+            /// <summary>The device is part of the desktop.</summary>
+            AttachedToDesktop = 0x1,
+            MultiDriver = 0x2,
+            /// <summary>The device is part of the desktop.</summary>
+            PrimaryDevice = 0x4,
+            /// <summary>Represents a pseudo device used to mirror application drawing for remoting or other purposes.</summary>
+            MirroringDriver = 0x8,
+            /// <summary>The device is VGA compatible.</summary>
+            VGACompatible = 0x16,
+            /// <summary>The device is removable; it cannot be the primary display.</summary>
+            Removable = 0x20,
+            /// <summary>The device has more display modes than its output devices support.</summary>
+            ModesPruned = 0x8000000,
+            Remote = 0x4000000,
+            Disconnect = 0x2000000
+        }
+
+        [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+        public struct DISPLAY_DEVICE
+        {
+            [MarshalAs(UnmanagedType.U4)]
+            public int cb;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
+            public string DeviceName;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            public string DeviceString;
+            [MarshalAs(UnmanagedType.U4)]
+            public DisplayDeviceStateFlags StateFlags;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            public string DeviceID;
+            [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 128)]
+            public string DeviceKey;
         }
     }
 }

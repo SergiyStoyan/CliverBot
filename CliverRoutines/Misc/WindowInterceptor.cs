@@ -17,7 +17,7 @@ namespace Cliver
         static object static_lock_variable = new object();
 
         static IntPtr hook_id = IntPtr.Zero;
-        static Win32.HookProc cbf = new Win32.HookProc(wnd_hook_proc);
+        static WinApi.User32.HookProc cbf = new WinApi.User32.HookProc(wnd_hook_proc);
 
         static IntPtr[] owner_windows = new IntPtr[0];
         static Dictionary<IntPtr, Cliver.Log.Writer> owner_window_logs = new Dictionary<IntPtr, Cliver.Log.Writer>();
@@ -43,7 +43,7 @@ namespace Cliver
                     owner_window_logs[owner_window] = Log.This;
 
                     if (hook_id == IntPtr.Zero)
-                        hook_id = Win32.SetWindowsHookEx(Win32.HookType.WH_CALLWNDPROCRET, cbf, IntPtr.Zero, Win32.GetCurrentThreadId());
+                        hook_id = WinApi.User32.SetWindowsHookEx(WinApi.User32.HookType.WH_CALLWNDPROCRET, cbf, IntPtr.Zero, WinApi.Kernel32.GetCurrentThreadId());
                 }
                 catch (Exception e)
                 {
@@ -71,7 +71,7 @@ namespace Cliver
 
                     if (owner_windows.Length < 1 && hook_id != IntPtr.Zero)
                     {
-                        Win32.UnhookWindowsHookEx(hook_id);
+                        WinApi.User32.UnhookWindowsHookEx(hook_id);
                         hook_id = IntPtr.Zero;
                     }
                 }
@@ -120,7 +120,7 @@ namespace Cliver
 
                     if (hook_id != IntPtr.Zero)
                     {
-                        Win32.UnhookWindowsHookEx(hook_id);
+                        WinApi.User32.UnhookWindowsHookEx(hook_id);
                         hook_id = IntPtr.Zero;
                     }
                 }
@@ -138,31 +138,31 @@ namespace Cliver
                 try
                 {
                     if (nCode < 0)
-                        return Win32.CallNextHookEx(hook_id, nCode, wParam, lParam);
+                        return WinApi.User32.CallNextHookEx(hook_id, nCode, wParam, lParam);
 
-                    Win32.CWPRETSTRUCT msg = (Win32.CWPRETSTRUCT)Marshal.PtrToStructure(lParam, typeof(Win32.CWPRETSTRUCT));
+                    WinApi.Wininet.CWPRETSTRUCT msg = (WinApi.Wininet.CWPRETSTRUCT)Marshal.PtrToStructure(lParam, typeof(WinApi.Wininet.CWPRETSTRUCT));
 
-                    if (msg.message == (uint)Win32.WM_SHOWWINDOW)
+                    if (msg.message == (uint)WinApi.Messages.WM_SHOWWINDOW)
                     {
                         //check if owner is that was specified
-                        IntPtr h = Win32.GetWindow(msg.hwnd, Win32.GetWindowCmd.GW_OWNER);
+                        IntPtr h = WinApi.User32.GetWindow(msg.hwnd, WinApi.User32.GetWindowCmd.GW_OWNER);
                         foreach (IntPtr owner_window in owner_windows)
                         {
                             if (owner_window != h)
                             {
                                 StringBuilder text2 = new StringBuilder(255);
-                                Win32.GetWindowText(h, text2, 255);
+                                WinApi.User32.GetWindowText(h, text2, 255);
                                 if (!text2.ToString().Contains("WindowsFormsParkingWindow"))
                                     continue;
                             }
 
                             StringBuilder text = new StringBuilder(255);
-                            Win32.GetWindowText(msg.hwnd, text, 255);
+                            WinApi.User32.GetWindowText(msg.hwnd, text, 255);
                             owner_window_logs[owner_window].Write("Intercepted dialog box: " + text.ToString());
 
                             //short dw = (short)Win32.Functions.SendMessage(msg.hwnd, (uint)Win32.Messages.DM_GETDEFID, 0, 0);
                             //Win32.Functions.EndDialog(msg.hwnd, (IntPtr)dw);
-                            Win32.SendMessage(msg.hwnd, (uint)Win32.WM_CLOSE, 0, 0);
+                            WinApi.User32.SendMessage(msg.hwnd, (uint)WinApi.Messages.WM_CLOSE, 0, 0);
                         }
                     }
                 }
@@ -171,7 +171,7 @@ namespace Cliver
                     Log.Main.Exit(e);
                 }
 
-                return Win32.CallNextHookEx(hook_id, nCode, wParam, lParam);
+                return WinApi.User32.CallNextHookEx(hook_id, nCode, wParam, lParam);
             }
         }
     }

@@ -7,7 +7,7 @@ using System.ComponentModel;
 
 namespace Cliver
 {
-    public class Win32Error
+    public class ErrorRoutines
     {
         public static Win32Exception GetLastError()
         {
