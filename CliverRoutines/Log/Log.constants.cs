@@ -38,8 +38,8 @@ namespace Cliver
 
             AppDir = AppDomain.CurrentDomain.BaseDirectory;
 
-            AppCommonDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CliverSoft\\" + Log.ProcessName;
-
+            CliverSoftCommonDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CliverSoft\\";
+            AppCommonDataDir = CliverSoftCommonDataDir + Log.ProcessName;
             //Log.DeleteOldLogs();
         }
 
@@ -49,17 +49,15 @@ namespace Cliver
         public static readonly string ProcessName;
 
         /// <summary>
+        /// Directory where the CliverSoft's application data independent on user are located.
+        /// </summary>
+        public static readonly string CliverSoftCommonDataDir;
+
+        /// <summary>
         /// Directory where the application's data files independent on user are located.
         /// </summary>
         public static readonly string AppCommonDataDir;
 
-        public static string GetAppCommonDataDir()
-        {
-            if (!Directory.Exists(Cliver.Log.AppCommonDataDir))
-                Directory.CreateDirectory(Cliver.Log.AppCommonDataDir);
-            return AppCommonDataDir;
-        }
-        
         /// <summary>
         /// Directory where the application binary is located.
         /// </summary>
@@ -77,7 +75,7 @@ namespace Cliver
                     Thread delete_old_logs = null;
                     lock (lock_object)
                     {
-                        if (!string.IsNullOrEmpty(pre_work_dir) && pre_work_dir.Contains(":"))
+                        if (pre_work_dir != null && pre_work_dir.Contains(":"))
                         {
                             work_dir = pre_work_dir + @"\" + Log.ProcessName + WorkDirPrefix;
                             if (write_log && !Directory.Exists(work_dir))
@@ -85,20 +83,20 @@ namespace Cliver
                                 {
                                     Directory.CreateDirectory(work_dir);
                                 }
-                                catch { }
+                                catch
+                                {
+                                    pre_work_dir = null;
+                                }
                         }
-                        if (work_dir == null || !Directory.Exists(work_dir))
+                        if (string.IsNullOrWhiteSpace(work_dir) || !Directory.Exists(work_dir))
                         {
                             foreach (string base_dir in new string[] {
                                 Log.AppDir,
-                                Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData),
-                                System.IO.Path.GetTempPath()
+                                CliverSoftCommonDataDir,
+                                System.IO.Path.GetTempPath() + "\\CliverSoft"
                             })
                             {
-                                if (string.IsNullOrEmpty(pre_work_dir))
-                                    work_dir = base_dir + @"\" + Log.ProcessName + WorkDirPrefix;
-                                else
-                                    work_dir = base_dir + @"\" + pre_work_dir + @"\" + Log.ProcessName + WorkDirPrefix;
+                                work_dir = base_dir + @"\" + pre_work_dir + @"\" + Log.ProcessName + WorkDirPrefix;
                                 if (!write_log)
                                     break;
                                 if (Directory.Exists(work_dir))

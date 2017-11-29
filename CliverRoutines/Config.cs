@@ -61,7 +61,7 @@ namespace Cliver
     {
         static Config()
         {
-            DefaultStorageDir = Log.GetAppCommonDataDir() + "\\" + CONFIG_FOLDER_NAME;
+            DefaultStorageDir = Log.AppCommonDataDir + "\\" + CONFIG_FOLDER_NAME;
         }
 
         /// <summary>

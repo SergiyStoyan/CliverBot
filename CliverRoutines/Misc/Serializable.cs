@@ -29,7 +29,7 @@ namespace Cliver
         static T get<T>(string file, bool ignore_file_content) where T : Serializable, new()
         {
             if (!file.Contains(":"))
-                file = Log.GetAppCommonDataDir() + "\\" + file;
+                file = Log.AppCommonDataDir + "\\" + file;
             T s;
             if (!ignore_file_content && File.Exists(file))
                 s = Cliver.SerializationRoutines.Json.Load<T>(file);
@@ -56,7 +56,7 @@ namespace Cliver
         static Serializable get(Type serializable_type, string file, bool ignore_file_content)
         {
             if (!file.Contains(":"))
-                file = Log.GetAppCommonDataDir() + "\\" + file;
+                file = Log.AppCommonDataDir + "\\" + file;
             Serializable s;
             if (!ignore_file_content && File.Exists(file))
                 s = (Serializable)Cliver.SerializationRoutines.Json.Load(serializable_type, file);

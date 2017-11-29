@@ -77,7 +77,7 @@ namespace Cliver
             protected static string get_normalized_directory(string directory = null)
             {
                 if (directory == null)
-                    directory = Cliver.Log.GetAppCommonDataDir();
+                    directory = Cliver.Log.AppCommonDataDir;
                 return PathRoutines.GetNormalizedPath(directory);
             }
 
