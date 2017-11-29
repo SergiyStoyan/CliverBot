@@ -151,70 +151,7 @@ namespace Cliver
         /// Makes processes live no longer than this object
         /// </summary>
         public class AntiZombieTracker
-        {
-            public enum JobObjectInfoType
-            {
-                AssociateCompletionPortInformation = 7,
-                BasicLimitInformation = 2,
-                BasicUIRestrictions = 4,
-                EndOfJobTimeInformation = 6,
-                ExtendedLimitInformation = 9,
-                SecurityLimitInformation = 5,
-                GroupInformation = 11
-            }
-
-            [StructLayout(LayoutKind.Sequential)]
-            public struct JOBOBJECT_BASIC_LIMIT_INFORMATION
-            {
-                public Int64 PerProcessUserTimeLimit;
-                public Int64 PerJobUserTimeLimit;
-                public JOBOBJECTLIMIT LimitFlags;
-                public UIntPtr MinimumWorkingSetSize;
-                public UIntPtr MaximumWorkingSetSize;
-                public UInt32 ActiveProcessLimit;
-                public Int64 Affinity;
-                public UInt32 PriorityClass;
-                public UInt32 SchedulingClass;
-            }
-
-            [Flags]
-            public enum JOBOBJECTLIMIT : uint
-            {
-                JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE = 0x2000
-            }
-
-            [StructLayout(LayoutKind.Sequential)]
-            public struct IO_COUNTERS
-            {
-                public UInt64 ReadOperationCount;
-                public UInt64 WriteOperationCount;
-                public UInt64 OtherOperationCount;
-                public UInt64 ReadTransferCount;
-                public UInt64 WriteTransferCount;
-                public UInt64 OtherTransferCount;
-            }
-
-            [StructLayout(LayoutKind.Sequential)]
-            public struct JOBOBJECT_EXTENDED_LIMIT_INFORMATION
-            {
-                public JOBOBJECT_BASIC_LIMIT_INFORMATION BasicLimitInformation;
-                public IO_COUNTERS IoInfo;
-                public UIntPtr ProcessMemoryLimit;
-                public UIntPtr JobMemoryLimit;
-                public UIntPtr PeakProcessMemoryUsed;
-                public UIntPtr PeakJobMemoryUsed;
-            }
-
-            [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-            static extern IntPtr CreateJobObject(IntPtr lpJobAttributes, string name);
-
-            [DllImport("kernel32.dll", SetLastError = true)]
-            static extern bool SetInformationJobObject(IntPtr job, JobObjectInfoType infoType,
-                IntPtr lpJobObjectInfo, uint cbJobObjectInfoLength);
-
-            [DllImport("kernel32.dll", SetLastError = true)]
-            static extern bool AssignProcessToJobObject(IntPtr job, IntPtr process);
-            
+        {            
             void initialize()
             {
                 // This feature requires Windows 8 or later. To support Windows 7 requires
@@ -226,19 +163,19 @@ namespace Cliver
                 //    return;
 
                 //string jobName = "AntiZombieJob_" + Process.GetCurrentProcess().Id;//Can be NULL. If it's not null, it has to be unique.
-                jobHandle = CreateJobObject(IntPtr.Zero, null);
+                jobHandle = WinApi.Kernel32.CreateJobObject(IntPtr.Zero, null);
                 if (jobHandle == null)
                     throw new Exception("CreateJobObject: " + ErrorRoutines.GetLastErrorMessage());
-                JOBOBJECT_BASIC_LIMIT_INFORMATION jbli = new JOBOBJECT_BASIC_LIMIT_INFORMATION();
-                jbli.LimitFlags = JOBOBJECTLIMIT.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;
-                JOBOBJECT_EXTENDED_LIMIT_INFORMATION extendedInfo = new JOBOBJECT_EXTENDED_LIMIT_INFORMATION();
+                WinApi.Kernel32.JOBOBJECT_BASIC_LIMIT_INFORMATION jbli = new WinApi.Kernel32.JOBOBJECT_BASIC_LIMIT_INFORMATION();
+                jbli.LimitFlags = WinApi.Kernel32.JOBOBJECTLIMIT.JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE;
+                WinApi.Kernel32.JOBOBJECT_EXTENDED_LIMIT_INFORMATION extendedInfo = new WinApi.Kernel32.JOBOBJECT_EXTENDED_LIMIT_INFORMATION();
                 extendedInfo.BasicLimitInformation = jbli;
-                int length = Marshal.SizeOf(typeof(JOBOBJECT_EXTENDED_LIMIT_INFORMATION));
+                int length = Marshal.SizeOf(typeof(WinApi.Kernel32.JOBOBJECT_EXTENDED_LIMIT_INFORMATION));
                 IntPtr extendedInfoPtr = Marshal.AllocHGlobal(length);
                 try
                 {
                     Marshal.StructureToPtr(extendedInfo, extendedInfoPtr, false);
-                    if (!SetInformationJobObject(jobHandle, JobObjectInfoType.ExtendedLimitInformation, extendedInfoPtr, (uint)length))
+                    if (!WinApi.Kernel32.SetInformationJobObject(jobHandle, WinApi.Kernel32.JobObjectInfoType.ExtendedLimitInformation, extendedInfoPtr, (uint)length))
                         throw new Exception("SetInformationJobObject: " + ErrorRoutines.GetLastErrorMessage());
                 }
                 finally
@@ -250,6 +187,11 @@ namespace Cliver
             // Windows will automatically close any open job handles when our process terminates.
             // When the job handle is closed, the child processes will be killed.
             IntPtr jobHandle = IntPtr.Zero;
+
+            ~AntiZombieTracker()
+            {
+                KillTrackedProcesses();
+            }
 
             public void KillTrackedProcesses()
             {
@@ -266,7 +208,7 @@ namespace Cliver
                 //A job is associated with the session of the first process to be assigned to the job.
                 if (jobHandle == IntPtr.Zero)
                     initialize();
-                if (!AssignProcessToJobObject(jobHandle, process.Handle))
+                if (!WinApi.Kernel32.AssignProcessToJobObject(jobHandle, process.Handle))
                     throw new Exception("!AssignProcessToJobObject. " + ErrorRoutines.GetLastError());
             }
 

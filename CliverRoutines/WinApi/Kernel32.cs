@@ -55,7 +55,7 @@ namespace Cliver.WinApi
 
         [DllImport("kernel32.dll")]
         public static extern int Process32Next(uint hSnapshot, ref PROCESSENTRY32 lppe);
-        
+
         [StructLayout(LayoutKind.Sequential)]
         public struct PROCESSENTRY32
         {
@@ -72,10 +72,10 @@ namespace Cliver.WinApi
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 260)]
             public readonly string szExeFile;
         }
-        
+
         [DllImport("kernel32.dll", SetLastError = true)]
         public static extern uint CreateToolhelp32Snapshot(uint dwFlags, uint th32ProcessID);
-        
+
         [DllImport("kernel32.dll")]
         public static extern bool ProcessIdToSessionId(uint dwProcessId, ref uint pSessionId);
 
@@ -139,5 +139,66 @@ namespace Cliver.WinApi
             OPEN_ALWAYS = 4,
             TRUNCATE_EXISTING = 5,
         }
+
+        [DllImport("kernel32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
+        public static extern IntPtr CreateJobObject(IntPtr lpJobAttributes, string name);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool SetInformationJobObject(IntPtr job, JobObjectInfoType infoType, IntPtr lpJobObjectInfo, uint cbJobObjectInfoLength);
+        public enum JobObjectInfoType
+        {
+            AssociateCompletionPortInformation = 7,
+            BasicLimitInformation = 2,
+            BasicUIRestrictions = 4,
+            EndOfJobTimeInformation = 6,
+            ExtendedLimitInformation = 9,
+            SecurityLimitInformation = 5,
+            GroupInformation = 11
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct JOBOBJECT_BASIC_LIMIT_INFORMATION
+        {
+            public Int64 PerProcessUserTimeLimit;
+            public Int64 PerJobUserTimeLimit;
+            public JOBOBJECTLIMIT LimitFlags;
+            public UIntPtr MinimumWorkingSetSize;
+            public UIntPtr MaximumWorkingSetSize;
+            public UInt32 ActiveProcessLimit;
+            public Int64 Affinity;
+            public UInt32 PriorityClass;
+            public UInt32 SchedulingClass;
+        }
+
+        [Flags]
+        public enum JOBOBJECTLIMIT : uint
+        {
+            JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE = 0x2000
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct IO_COUNTERS
+        {
+            public UInt64 ReadOperationCount;
+            public UInt64 WriteOperationCount;
+            public UInt64 OtherOperationCount;
+            public UInt64 ReadTransferCount;
+            public UInt64 WriteTransferCount;
+            public UInt64 OtherTransferCount;
+        }
+
+        [StructLayout(LayoutKind.Sequential)]
+        public struct JOBOBJECT_EXTENDED_LIMIT_INFORMATION
+        {
+            public JOBOBJECT_BASIC_LIMIT_INFORMATION BasicLimitInformation;
+            public IO_COUNTERS IoInfo;
+            public UIntPtr ProcessMemoryLimit;
+            public UIntPtr JobMemoryLimit;
+            public UIntPtr PeakProcessMemoryUsed;
+            public UIntPtr PeakJobMemoryUsed;
+        }
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        public static extern bool AssignProcessToJobObject(IntPtr job, IntPtr process);
     }
 }
