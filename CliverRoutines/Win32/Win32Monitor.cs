@@ -13,7 +13,7 @@ using System.Text;
 
 namespace Cliver
 {
-    public partial class Win32
+    public partial class Win32Monitor
     {
         [StructLayout(LayoutKind.Sequential)]
         public struct RECT
@@ -37,6 +37,7 @@ namespace Cliver
 
         [DllImport("user32.dll", CharSet = CharSet.Unicode)]
         public static extern bool GetMonitorInfo(IntPtr hMonitor, ref MONITORINFOEX lpmi);
+
         public delegate bool MonitorEnumDelegate(IntPtr hMonitor, IntPtr hdcMonitor, ref RECT lprcMonitor, IntPtr dwData);
 
         [DllImport("user32.dll")]
