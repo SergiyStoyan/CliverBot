@@ -31,19 +31,45 @@ namespace Cliver
 {
     public static class WindowsUserRoutines
     {
+        public static string GetUserNameBySessionId(uint sessionId, bool prependDomain = false)
+        {
+            string username = null;//"SYSTEM";
+            IntPtr buffer = IntPtr.Zero;
+            try
+            {
+                int strLen;
+                if (Win32Wts.WTSQuerySessionInformation(IntPtr.Zero, sessionId, Win32Wts.WTS_INFO_CLASS.WTSUserName, out buffer, out strLen))
+                {
+                    username = Marshal.PtrToStringAnsi(buffer);
+                    if (!prependDomain)
+                        return username;
+                    Win32Wts.WTSFreeMemory(buffer);
+                    buffer = IntPtr.Zero;
+                    if (Win32Wts.WTSQuerySessionInformation(IntPtr.Zero, sessionId, Win32Wts.WTS_INFO_CLASS.WTSDomainName, out buffer, out strLen))
+                        return Marshal.PtrToStringAnsi(buffer) + "\\" + username;
+                }
+            }
+            finally
+            {
+                if (buffer != IntPtr.Zero)
+                    Win32Wts.WTSFreeMemory(buffer);
+            }
+            return username;
+        }
+
         static public string GetUserName()
         {
-            uint session_id = Cliver.Win32.WTSGetActiveConsoleSessionId();
+            uint session_id = Win32Wts.WTSGetActiveConsoleSessionId();
             if (session_id == 0xFFFFFFFF)
                 return null;
 
             IntPtr buffer;
             int strLen;
-            if (!Cliver.Win32.WTSQuerySessionInformation(IntPtr.Zero, session_id, Cliver.Win32.WTS_INFO_CLASS.WTSUserName, out buffer, out strLen) || strLen < 1)
+            if (!Win32Wts.WTSQuerySessionInformation(IntPtr.Zero, session_id, Win32Wts.WTS_INFO_CLASS.WTSUserName, out buffer, out strLen) || strLen < 1)
                 return null;
 
             string userName = Marshal.PtrToStringAnsi(buffer);
-            Cliver.Win32.WTSFreeMemory(buffer);
+            Win32Wts.WTSFreeMemory(buffer);
             return userName;
         }
 

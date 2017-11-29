@@ -8,12 +8,13 @@
 //********************************************************************************************
 
 using System;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Cliver
 {
-    public class Win32Process
+    public class Win32Process3
     {
         public enum TOKEN_INFORMATION_CLASS
         {
@@ -124,7 +125,7 @@ public const int STARTF_USESTDHANDLES      =   0x00000100;
 
         public const int TOKEN_EXECUTE = STANDARD_RIGHTS_EXECUTE;
 
-        public const uint MAXIMUM_ALLOWED = 0x2000000;
+        public const int MAXIMUM_ALLOWED = 0x2000000;
 
         public const string SE_DEBUG_NAME = "SeDebugPrivilege";
         public const string SE_RESTORE_NAME = "SeRestorePrivilege";
@@ -159,43 +160,46 @@ public const int STARTF_USESTDHANDLES      =   0x00000100;
         [DllImport("userenv.dll", SetLastError = true)]
         public static extern bool CreateEnvironmentBlock(ref IntPtr lpEnvironment, IntPtr hToken, bool bInherit);
 
-        public static uint CreateProcessInConsoleSession(String commandLine, uint dwCreationFlags = 0, STARTUPINFO? startupInfo = null, bool bElevate = false)
+        public static uint CreateProcessInSession(uint dwSessionId, String commandLine, uint dwCreationFlags = 0, STARTUPINFO? startupInfo = null, bool bElevate = false)
         {
-            IntPtr hUserToken = IntPtr.Zero, hUserTokenDup = IntPtr.Zero, hPToken = IntPtr.Zero, hProcess = IntPtr.Zero;
+            IntPtr hUserToken = IntPtr.Zero;
+            IntPtr hUserTokenDup = IntPtr.Zero;
+            IntPtr hPToken = IntPtr.Zero;
+            IntPtr hProcess = IntPtr.Zero;
             try
             {
                 // Log the client on to the local computer.
-                uint dwSessionId = Win32Wts.WTSGetActiveConsoleSessionId();
+                //uint dwSessionId = WTSGetActiveConsoleSessionId();
 
-                // Find the winlogon process
-                var procEntry = new PROCESSENTRY32();
+                //// Find the winlogon process
+                //var procEntry = new PROCESSENTRY32();
 
-                uint hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
-                if (hSnap == INVALID_HANDLE_VALUE)
-                    throw new Exception("CreateToolhelp32Snapshot == INVALID_HANDLE_VALUE. " + Win32Error.GetLastError());
+                //uint hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+                //if (hSnap == INVALID_HANDLE_VALUE)
+                //    throw new Exception("CreateToolhelp32Snapshot == INVALID_HANDLE_VALUE. " + Win32Error.GetLastError());
 
-                procEntry.dwSize = (uint)Marshal.SizeOf(procEntry); //sizeof(PROCESSENTRY32);
-                if (Process32First(hSnap, ref procEntry) == 0)
-                    throw new Exception("Process32First == 0. " + Win32Error.GetLastError());
+                //procEntry.dwSize = (uint)Marshal.SizeOf(procEntry); //sizeof(PROCESSENTRY32);
+                //if (Process32First(hSnap, ref procEntry) == 0)
+                //    throw new Exception("Process32First == 0. " + Win32Error.GetLastError());
 
-                uint winlogonPid = 0;
-                String strCmp = "explorer.exe";
-                do
-                {
-                    if (strCmp.IndexOf(procEntry.szExeFile) == 0)
-                    {
-                        // We found a winlogon process...make sure it's running in the console session
-                        uint winlogonSessId = 0;
-                        if (ProcessIdToSessionId(procEntry.th32ProcessID, ref winlogonSessId) && winlogonSessId == dwSessionId)
-                        {
-                            winlogonPid = procEntry.th32ProcessID;
-                            break;
-                        }
-                    }
-                }
-                while (Process32Next(hSnap, ref procEntry) != 0);
-                if (winlogonPid == 0)
-                    throw new Exception("winlogonPid == 0");
+                //uint winlogonPid = 0;
+                //String strCmp = "explorer.exe";
+                //do
+                //{
+                //    if (strCmp.IndexOf(procEntry.szExeFile) == 0)
+                //    {
+                //        // We found a winlogon process...make sure it's running in the console session
+                //        uint winlogonSessId = 0;
+                //        if (ProcessIdToSessionId(procEntry.th32ProcessID, ref winlogonSessId) && winlogonSessId == dwSessionId)
+                //        {
+                //            winlogonPid = procEntry.th32ProcessID;
+                //            break;
+                //        }
+                //    }
+                //}
+                //while (Process32Next(hSnap, ref procEntry) != 0);
+                //if (winlogonPid == 0)
+                //    throw new Exception("winlogonPid == 0");
 
                 //Get the user token used by DuplicateTokenEx
                 //WTSQueryUserToken(dwSessionId, ref hUserToken);
@@ -209,46 +213,47 @@ public const int STARTF_USESTDHANDLES      =   0x00000100;
                     si = new STARTUPINFO();
                 si.cb = Marshal.SizeOf(si);
                 si.lpDesktop = "winsta0\\default";
-                var tp = new TOKEN_PRIVILEGES();
-                var luid = new LUID();
-                hProcess = OpenProcess(MAXIMUM_ALLOWED, false, winlogonPid);
-                if (hProcess == IntPtr.Zero)
-                    throw new Exception("OpenProcess == IntPtr.Zero. " + Win32Error.GetLastError());
-
-                if (!OpenProcessToken(hProcess, TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY | TOKEN_DUPLICATE | TOKEN_ASSIGN_PRIMARY | TOKEN_ADJUST_SESSIONID | TOKEN_READ | TOKEN_WRITE, ref hPToken))
+                //hProcess = OpenProcess(MAXIMUM_ALLOWED, false, winlogonPid);
+                //if (hProcess == IntPtr.Zero)
+                //    throw new Exception("OpenProcess == IntPtr.Zero. " + Win32Error.GetLastError());
+                                
+                if(!OpenProcessToken(Process.GetCurrentProcess().Handle, MAXIMUM_ALLOWED, ref hPToken))
+                //if (!OpenProcessToken(hProcess, TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY | TOKEN_DUPLICATE | TOKEN_ASSIGN_PRIMARY | TOKEN_ADJUST_SESSIONID | TOKEN_READ | TOKEN_WRITE, ref hPToken))
                     throw new Exception("!OpenProcessToken. " + Win32Error.GetLastError());
 
-                if (!LookupPrivilegeValue(IntPtr.Zero, SE_DEBUG_NAME, ref luid))
-                    throw new Exception("!LookupPrivilegeValue. " + Win32Error.GetLastError());
+                //var luid = new LUID();
+                //if (!LookupPrivilegeValue(IntPtr.Zero, SE_DEBUG_NAME, ref luid))
+                //    throw new Exception("!LookupPrivilegeValue. " + Win32Error.GetLastError());
 
                 var sa = new SECURITY_ATTRIBUTES();
                 sa.Length = Marshal.SizeOf(sa);
                 if (!DuplicateTokenEx(hPToken, MAXIMUM_ALLOWED, ref sa, (int)SECURITY_IMPERSONATION_LEVEL.SecurityIdentification, (int)TOKEN_TYPE.TokenPrimary, ref hUserTokenDup))
                     throw new Exception("!DuplicateTokenEx. " + Win32Error.GetLastError());
                 
-                if (bElevate)
-                {
-                    //tp.Privileges[0].Luid = luid;
-                    //tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
-                    tp.PrivilegeCount = 1;
-                    tp.Privileges = new int[3];
-                    tp.Privileges[2] = SE_PRIVILEGE_ENABLED;
-                    tp.Privileges[1] = luid.HighPart;
-                    tp.Privileges[0] = luid.LowPart;
+                //if (bElevate)
+                //{
+                //    var tp = new TOKEN_PRIVILEGES();
+                //    //tp.Privileges[0].Luid = luid;
+                //    //tp.Privileges[0].Attributes = SE_PRIVILEGE_ENABLED;
+                //    tp.PrivilegeCount = 1;
+                //    tp.Privileges = new int[3];
+                //    tp.Privileges[2] = SE_PRIVILEGE_ENABLED;
+                //    tp.Privileges[1] = luid.HighPart;
+                //    tp.Privileges[0] = luid.LowPart;
 
-                    //Adjust Token privilege
-                    if (!SetTokenInformation(hUserTokenDup, TOKEN_INFORMATION_CLASS.TokenSessionId, ref dwSessionId, (uint)IntPtr.Size))
-                        throw new Exception("!SetTokenInformation. " + Win32Error.GetLastError());
-                    if (!AdjustTokenPrivileges(hUserTokenDup, false, ref tp, Marshal.SizeOf(tp), /*(PTOKEN_PRIVILEGES)*/IntPtr.Zero, IntPtr.Zero))
-                        throw new Exception("!AdjustTokenPrivileges. " + Win32Error.GetLastError());
-                }
+                //    //Adjust Token privilege
+                //    if (!SetTokenInformation(hUserTokenDup, TOKEN_INFORMATION_CLASS.TokenSessionId, ref dwSessionId, (uint)IntPtr.Size))
+                //        throw new Exception("!SetTokenInformation. " + Win32Error.GetLastError());
+                //    if (!AdjustTokenPrivileges(hUserTokenDup, false, ref tp, Marshal.SizeOf(tp), /*(PTOKEN_PRIVILEGES)*/IntPtr.Zero, IntPtr.Zero))
+                //        throw new Exception("!AdjustTokenPrivileges. " + Win32Error.GetLastError());
+                //}
 
-                dwCreationFlags |= dwCreationFlagValues.NORMAL_PRIORITY_CLASS| dwCreationFlagValues.CREATE_NEW_CONSOLE;
-                IntPtr pEnv = IntPtr.Zero;
-                if (CreateEnvironmentBlock(ref pEnv, hUserTokenDup, true))
-                    dwCreationFlags |= dwCreationFlagValues.CREATE_UNICODE_ENVIRONMENT;
-                else
-                    pEnv = IntPtr.Zero;
+                //dwCreationFlags |= dwCreationFlagValues.NORMAL_PRIORITY_CLASS| dwCreationFlagValues.CREATE_NEW_CONSOLE;
+                //IntPtr pEnv = IntPtr.Zero;
+                //if (CreateEnvironmentBlock(ref pEnv, hUserTokenDup, true))
+                //    dwCreationFlags |= dwCreationFlagValues.CREATE_UNICODE_ENVIRONMENT;
+                //else
+                //    pEnv = IntPtr.Zero;
 
                 // Launch the process in the client's logon session.
                 PROCESS_INFORMATION pi;
@@ -259,7 +264,7 @@ public const int STARTF_USESTDHANDLES      =   0x00000100;
                     ref sa, // pointer to thread SECURITY_ATTRIBUTES
                     false, // handles are not inheritable
                     (int)dwCreationFlags, // creation flags
-                    pEnv, // pointer to new environment block 
+                    IntPtr.Zero,//pEnv, // pointer to new environment block 
                     null, // name of current directory 
                     ref si, // pointer to STARTUPINFO structure
                     out pi // receives information about new process
@@ -281,6 +286,8 @@ public const int STARTF_USESTDHANDLES      =   0x00000100;
                     CloseHandle(hUserTokenDup);
                 if (hPToken != IntPtr.Zero)
                     CloseHandle(hPToken);
+                //if (pEnv != IntPtr.Zero)
+                //    DestroyEnvironmentBlock(pEnv);
             }
         }
 

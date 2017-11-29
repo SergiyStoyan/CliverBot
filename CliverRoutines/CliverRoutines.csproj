@@ -195,10 +195,13 @@
     <Compile Include="Misc\PathRoutines.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Win32\Win32File.cs" />
+    <Compile Include="Win32\Win32UserSession.cs" />
+    <Compile Include="Win32\Win32Process3.cs" />
+    <Compile Include="Win32\Win32Process2.cs" />
     <Compile Include="Win32\Win32Process.cs" />
     <Compile Include="Win32\Win32Monitor.cs" />
     <Compile Include="Win32\Win32.Authorization.cs" />
-    <Compile Include="Win32\Win32.Wts.cs" />
+    <Compile Include="Win32\Win32Wts.cs" />
     <Compile Include="Win32\Win32.cs" />
     <Compile Include="Win32\Win32.Messages.cs" />
     <Compile Include="Win32\Win32Error.cs" />
