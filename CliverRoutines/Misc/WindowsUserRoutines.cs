@@ -57,34 +57,34 @@ namespace Cliver
             return username;
         }
 
-        static public string GetUserName()
-        {
-            uint session_id = WinApi.Wts.WTSGetActiveConsoleSessionId();
-            if (session_id == 0xFFFFFFFF)
-                return null;
+        //static public string GetUserName()
+        //{
+        //    uint session_id = WinApi.Wts.WTSGetActiveConsoleSessionId();
+        //    if (session_id == 0xFFFFFFFF)
+        //        return null;
 
-            IntPtr buffer;
-            int strLen;
-            if (!WinApi.Wts.WTSQuerySessionInformation(IntPtr.Zero, session_id, WinApi.Wts.WTS_INFO_CLASS.WTSUserName, out buffer, out strLen) || strLen < 1)
-                return null;
+        //    IntPtr buffer;
+        //    int strLen;
+        //    if (!WinApi.Wts.WTSQuerySessionInformation(IntPtr.Zero, session_id, WinApi.Wts.WTS_INFO_CLASS.WTSUserName, out buffer, out strLen) || strLen < 1)
+        //        return null;
 
-            string userName = Marshal.PtrToStringAnsi(buffer);
-            WinApi.Wts.WTSFreeMemory(buffer);
-            return userName;
-        }
+        //    string userName = Marshal.PtrToStringAnsi(buffer);
+        //    WinApi.Wts.WTSFreeMemory(buffer);
+        //    return userName;
+        //}
 
-        static public string GetUserName2()
+        static public string GetCurrentUserName2()
         {
             return System.Windows.Forms.SystemInformation.UserName;
         }
 
-        static public string GetUserName3()
+        static public string GetCurrentUserName3()
         {
             //return Regex.Replace(Environment.UserName, @".*\\", "");//RunAs ?
             return Regex.Replace(WindowsIdentity.GetCurrent().Name, @".*\\", "");
         }
 
-        static public string GetUserName4()
+        static public string GetCurrentUserName4()
         {
             return UserPrincipal.Current.DisplayName;//runs unacceptably long time
         }

@@ -195,6 +195,7 @@
     <Compile Include="Misc\PathRoutines.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WinApi\Shell32.cs" />
+    <Compile Include="WinApi\Secur32.cs" />
     <Compile Include="WinApi\Wininet.cs" />
     <Compile Include="WinApi\Advapi32.cs" />
     <Compile Include="WinApi\Userenv.cs" />
