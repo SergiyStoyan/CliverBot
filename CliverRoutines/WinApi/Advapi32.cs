@@ -179,10 +179,10 @@ namespace Cliver.WinApi
         [StructLayout(LayoutKind.Sequential)]
         public struct TOKEN_PRIVILEGES
         {
-            internal int PrivilegeCount;
+            public int PrivilegeCount;
             //LUID_AND_ATRIBUTES
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
-            internal int[] Privileges;
+            public int[] Privileges;
         }
 
         [DllImport("advapi32.dll", SetLastError = true)]
