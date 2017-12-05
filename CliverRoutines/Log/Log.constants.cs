@@ -37,9 +37,12 @@ namespace Cliver
                 ProcessName = System.Reflection.Assembly.GetEntryAssembly().GetName(false).Name;
 
             AppDir = AppDomain.CurrentDomain.BaseDirectory;
+            
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location);
+            CompanyName = string.IsNullOrWhiteSpace(fvi.CompanyName) ? "CliverSoft" : fvi.CompanyName;
 
-            CliverSoftCommonDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\CliverSoft\\";
-            AppCommonDataDir = CliverSoftCommonDataDir + Log.ProcessName;
+            CompanyCommonDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\"+ CompanyName + "\\";
+            AppCommonDataDir = CompanyCommonDataDir + Log.ProcessName;
             //Log.DeleteOldLogs();
         }
 
@@ -48,10 +51,12 @@ namespace Cliver
         /// </summary>
         public static readonly string ProcessName;
 
+        public static readonly string CompanyName;
+
         /// <summary>
         /// Directory where the CliverSoft's application data independent on user are located.
         /// </summary>
-        public static readonly string CliverSoftCommonDataDir;
+        public static readonly string CompanyCommonDataDir;
 
         /// <summary>
         /// Directory where the application's data files independent on user are located.
@@ -92,8 +97,8 @@ namespace Cliver
                         {
                             foreach (string base_dir in new string[] {
                                 Log.AppDir,
-                                CliverSoftCommonDataDir,
-                                System.IO.Path.GetTempPath() + "\\CliverSoft"
+                                CompanyCommonDataDir,
+                                System.IO.Path.GetTempPath() + "\\" + CompanyName + "\\"
                             })
                             {
                                 work_dir = base_dir + @"\" + pre_work_dir + @"\" + Log.ProcessName + WorkDirPrefix;
