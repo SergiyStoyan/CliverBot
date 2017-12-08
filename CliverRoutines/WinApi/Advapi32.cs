@@ -15,6 +15,76 @@ namespace Cliver.WinApi
 {
     public partial class Advapi32
     {
+        [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        public class SERVICE_NOTIFY
+        {
+            public uint dwVersion;
+            public IntPtr pfnNotifyCallback;
+            public IntPtr pContext;
+            public uint dwNotificationStatus;
+            public SERVICE_STATUS_PROCESS ServiceStatus;
+            public uint dwNotificationTriggered;
+            public IntPtr pszServiceNames;
+        };
+
+        [System.Runtime.InteropServices.StructLayoutAttribute(System.Runtime.InteropServices.LayoutKind.Sequential)]
+        public struct SERVICE_STATUS_PROCESS
+        {
+            public uint dwServiceType;
+            public uint dwCurrentState;
+            public uint dwControlsAccepted;
+            public uint dwWin32ExitCode;
+            public uint dwServiceSpecificExitCode;
+            public uint dwCheckPoint;
+            public uint dwWaitHint;
+            public uint dwProcessId;
+            public uint dwServiceFlags;
+        };
+
+        [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+        public static extern IntPtr OpenService(IntPtr hSCManager, string lpServiceName, SCM_ACCESS dwDesiredAccess);
+        [Flags]
+        public enum SCM_ACCESS : uint
+        {
+            STANDARD_RIGHTS_REQUIRED = 0xF0000,
+            SC_MANAGER_CONNECT = 0x00001,
+            SC_MANAGER_CREATE_SERVICE = 0x00002,
+            SC_MANAGER_ENUMERATE_SERVICE = 0x00004,
+            SC_MANAGER_LOCK = 0x00008,
+            SC_MANAGER_QUERY_LOCK_STATUS = 0x00010,
+            SC_MANAGER_MODIFY_BOOT_CONFIG = 0x00020,
+            SC_MANAGER_ALL_ACCESS = STANDARD_RIGHTS_REQUIRED |
+                             SC_MANAGER_CONNECT |
+                             SC_MANAGER_CREATE_SERVICE |
+                             SC_MANAGER_ENUMERATE_SERVICE |
+                             SC_MANAGER_LOCK |
+                             SC_MANAGER_QUERY_LOCK_STATUS |
+                             SC_MANAGER_MODIFY_BOOT_CONFIG
+        }
+
+        [DllImport("advapi32.dll", EntryPoint = "OpenSCManagerW", ExactSpelling = true, CharSet = CharSet.Unicode, SetLastError = true)]
+        public static extern IntPtr OpenSCManager(string machineName, string databaseName, SCM_ACCESS dwAccess);
+
+        [DllImport("advapi32.dll", SetLastError = true)]
+        public static extern uint NotifyServiceStatusChange(IntPtr hService, NotifyMask dwNotifyMask, IntPtr pNotifyBuffer);
+
+        public enum NotifyMask : uint
+        {
+            SERVICE_NOTIFY_CREATED = 0x00000080,
+            SERVICE_NOTIFY_CONTINUE_PENDING = 0x00000010,
+            SERVICE_NOTIFY_DELETE_PENDING = 0x00000200,
+            SERVICE_NOTIFY_DELETED = 0x00000100,
+            SERVICE_NOTIFY_PAUSE_PENDING = 0x00000020,
+            SERVICE_NOTIFY_PAUSED = 0x00000040,
+            SERVICE_NOTIFY_RUNNING = 0x00000008,
+            SERVICE_NOTIFY_START_PENDING = 0x00000002,
+            SERVICE_NOTIFY_STOP_PENDING = 0x00000004,
+            SERVICE_NOTIFY_STOPPED = 0x00000001,
+        }
+
+        [DllImportAttribute("kernel32.dll", EntryPoint = "SleepEx")]
+        public static extern uint SleepEx(uint dwMilliseconds, [MarshalAsAttribute(UnmanagedType.Bool)] bool bAlertable);
+        
         [DllImport("advapi32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool OpenProcessToken(IntPtr ProcessHandle, DesiredAccess DesiredAccess, out IntPtr TokenHandle);
