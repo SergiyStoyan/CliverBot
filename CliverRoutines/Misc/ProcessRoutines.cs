@@ -261,8 +261,11 @@ namespace Cliver
             static volatile bool on = false;
         }
 
-        public static bool ProcessHasElevatedPrivileges(Process process)
+        public static bool ProcessHasElevatedPrivileges(Process process = null)
         {
+            if (process == null)
+                process = Process.GetCurrentProcess();
+
             if (IsUacEnabled)
             {
                 IntPtr tokenHandle;

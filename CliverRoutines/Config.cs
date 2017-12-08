@@ -47,6 +47,11 @@ namespace Cliver
             return Load<S>(__File);
         }
 
+        //static public S Load<S>(string file = null) where S : Settings, new()
+        //{
+        //    return Create<S>(file);
+        //}
+
         /// <summary>
         /// this object is ever to be loaded
         /// </summary>
