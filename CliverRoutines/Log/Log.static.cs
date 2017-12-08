@@ -256,7 +256,7 @@ namespace Cliver
             for (message = e.Message; e.InnerException != null; message += "\r\n<= " + e.Message)
                 e = e.InnerException;
 #if DEBUG            
-            details = "Module:" + e.TargetSite.Module + " \r\n\r\nStack:" + e.StackTrace;
+            details = "Module:" + e.TargetSite?.Module + " \r\n\r\nStack:" + e.StackTrace;
 #else       
             details = ""; //"Module:" + e.TargetSite.Module + " \r\n\r\nStack:" + e.StackTrace;
 #endif
