@@ -7,6 +7,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Reflection;
+using Newtonsoft.Json;
 
 namespace Cliver
 {

@@ -42,30 +42,35 @@ namespace Cliver.WinApi
         };
 
         [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Auto)]
-        public static extern IntPtr OpenService(IntPtr hSCManager, string lpServiceName, SCM_ACCESS dwDesiredAccess);
+        public static extern IntPtr OpenService(IntPtr hSCManager, string lpServiceName, OpenServiceDesiredAccess dwDesiredAccess);
         [Flags]
-        public enum SCM_ACCESS : uint
+        public enum OpenServiceDesiredAccess : uint
         {
-            STANDARD_RIGHTS_REQUIRED = 0xF0000,
-            SC_MANAGER_CONNECT = 0x00001,
-            SC_MANAGER_CREATE_SERVICE = 0x00002,
-            SC_MANAGER_ENUMERATE_SERVICE = 0x00004,
-            SC_MANAGER_LOCK = 0x00008,
-            SC_MANAGER_QUERY_LOCK_STATUS = 0x00010,
-            SC_MANAGER_MODIFY_BOOT_CONFIG = 0x00020,
-            SC_MANAGER_ALL_ACCESS = STANDARD_RIGHTS_REQUIRED |
-                             SC_MANAGER_CONNECT |
-                             SC_MANAGER_CREATE_SERVICE |
-                             SC_MANAGER_ENUMERATE_SERVICE |
-                             SC_MANAGER_LOCK |
-                             SC_MANAGER_QUERY_LOCK_STATUS |
-                             SC_MANAGER_MODIFY_BOOT_CONFIG
+            SERVICE_QUERY_STATUS = 0x0004,
         }
 
         [DllImport("advapi32.dll", EntryPoint = "OpenSCManagerW", ExactSpelling = true, CharSet = CharSet.Unicode, SetLastError = true)]
         public static extern IntPtr OpenSCManager(string machineName, string databaseName, SCM_ACCESS dwAccess);
+    [Flags]
+    public enum SCM_ACCESS : uint
+    {
+        STANDARD_RIGHTS_REQUIRED = 0xF0000,
+        SC_MANAGER_CONNECT = 0x00001,
+        SC_MANAGER_CREATE_SERVICE = 0x00002,
+        SC_MANAGER_ENUMERATE_SERVICE = 0x00004,
+        SC_MANAGER_LOCK = 0x00008,
+        SC_MANAGER_QUERY_LOCK_STATUS = 0x00010,
+        SC_MANAGER_MODIFY_BOOT_CONFIG = 0x00020,
+        SC_MANAGER_ALL_ACCESS = STANDARD_RIGHTS_REQUIRED |
+                         SC_MANAGER_CONNECT |
+                         SC_MANAGER_CREATE_SERVICE |
+                         SC_MANAGER_ENUMERATE_SERVICE |
+                         SC_MANAGER_LOCK |
+                         SC_MANAGER_QUERY_LOCK_STATUS |
+                         SC_MANAGER_MODIFY_BOOT_CONFIG
+    }
 
-        [DllImport("advapi32.dll", SetLastError = true)]
+    [DllImport("advapi32.dll", SetLastError = true)]
         public static extern uint NotifyServiceStatusChange(IntPtr hService, NotifyMask dwNotifyMask, IntPtr pNotifyBuffer);
 
         public enum NotifyMask : uint
