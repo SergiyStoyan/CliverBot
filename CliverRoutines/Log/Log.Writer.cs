@@ -216,6 +216,14 @@ namespace Cliver
                 Write(MessageType.WARNING, m, d);
             }
 
+            public void Warning2(Exception e)
+            {
+                string m;
+                string d;
+                GetExceptionMessage(e, out m, out d);
+                Write(MessageType.WARNING, m);
+            }
+
             /// <summary>
             /// Write the notification to the current thread's log.
             /// </summary>
@@ -280,23 +288,31 @@ namespace Cliver
                             log_writer = new StreamWriter(Path, true);
 
                         details = string.IsNullOrWhiteSpace(details) ? "" : "\r\n\r\n" + details;
-
-                        switch (type)
-                        {
-                            case Log.MessageType.INFORM: message = "INFORM: " + message; break;
-                            case Log.MessageType.WARNING: message = "WARNING: " + message; break;
-                            case Log.MessageType.ERROR:
-                                message = "ERROR: " + message + details;
-                                _ErrorCount++;
-                                break;
-                            case Log.MessageType.EXIT:
-                                message = "EXIT: " + message + details;
-                                _ErrorCount++;
-                                break;
-                            case Log.MessageType.TRACE: message = "TRACE: " + message; break;
-                            case Log.MessageType.LOG: break;
-                            default: throw new Exception("No case for " + type.ToString());
-                        }
+                        message = type + ": " + message + details;
+                        //switch (type)
+                        //{
+                        //    case Log.MessageType.INFORM:
+                        //        message = "INFORM: " + message;
+                        //        break;
+                        //    case Log.MessageType.WARNING:
+                        //        message = "WARNING: " + message;
+                        //        break;
+                        //    case Log.MessageType.ERROR:
+                        //        message = "ERROR: " + message + details;
+                        //        _ErrorCount++;
+                        //        break;
+                        //    case Log.MessageType.EXIT:
+                        //        message = "EXIT: " + message + details;
+                        //        _ErrorCount++;
+                        //        break;
+                        //    case Log.MessageType.TRACE:
+                        //        message = "TRACE: " + message;
+                        //        break;
+                        //    case Log.MessageType.LOG:
+                        //        break;
+                        //    default:
+                        //        throw new Exception("No case for " + type.ToString());
+                        //}
 
                         if (MaxFileSize > 0)
                         {
