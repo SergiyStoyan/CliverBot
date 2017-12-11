@@ -28,7 +28,7 @@ namespace Cliver
         {
             Log.ClearSession();
             //if (work_dir != null)
-                //return;
+            //return;
             //    throw new Exception("Initialize should not be called when log is open.");
             Log.mode = mode;
             Log.pre_work_dir = pre_work_dir;
@@ -57,7 +57,7 @@ namespace Cliver
             /// </summary>
             ONLY_LOG
         }
-        
+
         public static readonly System.Threading.Thread MainThread = System.Threading.Thread.CurrentThread;
 
         /// <summary>
@@ -240,27 +240,55 @@ namespace Cliver
             return m + " \r\n\r\n" + d;
         }
 
-//        static public void GetExceptionMessage(Exception e, out string message, out string details)
-//        {
-//            for (; e.InnerException != null; e = e.InnerException) ;
-//            message = "Exception: \r\n" + e.Message;
-//#if DEBUG            
-//            details = "Module:" + e.TargetSite.Module + " \r\n\r\nStack:" + e.StackTrace;
-//#else       
-//            details = ""; //"Module:" + e.TargetSite.Module + " \r\n\r\nStack:" + e.StackTrace;
-//#endif
-//        }
+        //        static public void GetExceptionMessage(Exception e, out string message, out string details)
+        //        {
+        //            for (; e.InnerException != null; e = e.InnerException) ;
+        //            message = "Exception: \r\n" + e.Message;
+        //#if DEBUG            
+        //            details = "Module:" + e.TargetSite.Module + " \r\n\r\nStack:" + e.StackTrace;
+        //#else       
+        //            details = ""; //"Module:" + e.TargetSite.Module + " \r\n\r\nStack:" + e.StackTrace;
+        //#endif
+        //        }
 
         static public void GetExceptionMessage(Exception e, out string message, out string details)
         {
-            for (message = e.Message; e.InnerException != null; message += "\r\n<= " + e.Message)
-                e = e.InnerException;
-#if DEBUG            
-            details = "Module:" + e.TargetSite?.Module + " \r\n\r\nStack:" + e.StackTrace;
-#else       
-            details = ""; //"Module:" + e.TargetSite.Module + " \r\n\r\nStack:" + e.StackTrace;
-#endif
+            Exception e1 = e;
+            List<string> ms = new List<string>();
+            for (; e != null; e = e.InnerException)
+            {
+                AggregateException ae = e as AggregateException;
+                if (ae != null && ae.InnerExceptions.Count > 1)
+                    ms.Add("More than 1 exception aggregated! Show [0]:" + e.Message);
+                else
+                    ms.Add(e.Message);
+                if (e.TargetSite != null)
+                    e1 = e;
+            }
+            message = string.Join("\r\n<= ", ms);
+            details = "Module:" + e1.TargetSite?.Module + " \r\n\r\nStack:" + e1.StackTrace;
+            if (e1 != e)
+                details = "(details correspond not to the deepest exception!)\r\n" + details;
         }
+        //static void getExceptionMessage(Exception e, ref string message, ref string details)
+        //{
+        //    for (; e != null; e = e.InnerException)
+        //    {
+        //        message += "\r\n<= " + e.Message;
+
+        //        AggregateException ae = e as AggregateException;
+        //        if (ae != null && ae.InnerExceptions.Count > 1)
+        //        {
+        //            foreach (Exception ex in ae.InnerExceptions)
+        //            {
+        //                message += "\r\n ---\r\n ";
+        //                getExceptionMessage(ex, ref message, ref details);
+        //            }
+        //            return;
+        //        }
+        //    }    
+        //    details += "\r\n\r\nModule:" + e.TargetSite?.Module + " \r\n\r\nStack:" + e.StackTrace;
+        //}
     }
 
     public class TerminatingException : Exception
