@@ -344,6 +344,30 @@ namespace Cliver
             }
             TextWriter log_writer = null;
             static protected System.Threading.Thread exiting_thread = null;
+            //StreamWriter create_next_log_writer()
+            //{
+            //    for (; ; )
+            //    {
+            //        int counter = 0;
+            //        file_name = Regex.Replace(file_name, @"(\d+_)(\d+)(\.[^\.]+)$",
+            //            (Match m) =>
+            //            {
+            //                counter = int.Parse(m.Groups[2].Value) + 1;
+            //                return m.Groups[1].Value + counter + m.Groups[3].Value;
+            //            }
+            //            );
+            //        if (counter < 1)
+            //            file_name = Regex.Replace(file_name, @"\.[^\.]+$", @"_1$0");
+            //        try
+            //        {
+            //            return new StreamWriter(Path, true);
+            //        }
+            //        catch (Exception e)
+            //        {
+            //            log_writer = null;
+            //        }
+            //    }
+            //}
 
             public int ErrorCount
             {

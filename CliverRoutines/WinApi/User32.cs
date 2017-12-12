@@ -32,7 +32,8 @@ namespace Cliver.WinApi
         //    public const int PROCESS_QUERY_INFORMATION = 0x0400;
         //    public const int PROCESS_WM_READ = 0x0010;
         //}
-        
+
+        public const short SW_SHOW = 5;
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern IntPtr GetActiveWindow();

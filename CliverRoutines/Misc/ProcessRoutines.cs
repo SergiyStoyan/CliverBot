@@ -29,7 +29,7 @@ using System.DirectoryServices.AccountManagement;
 
 namespace Cliver
 {
-    public static class ProcessRoutines
+    public static partial class ProcessRoutines
     {
         public static bool IsProgramRunningAlready()
         {

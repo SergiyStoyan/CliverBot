@@ -97,7 +97,10 @@ namespace Cliver.WinApi
         {
             MAXIMUM_ALLOWED = 0x2000000,
             STANDARD_RIGHTS_READ = 0x00020000,
+
             TOKEN_QUERY = 0x0008,
+            TOKEN_DUPLICATE = 0x0002,
+            TOKEN_ASSIGN_PRIMARY = 0x0001,
         }
 
         [DllImport("advapi32.dll", SetLastError = true)]
@@ -167,7 +170,7 @@ namespace Cliver.WinApi
             public IntPtr lpSecurityDescriptor;
             public bool bInheritHandle;
         }
-        public enum CreationFlags:uint
+        public enum CreationFlags : uint
         {
             DEBUG_PROCESS = 0x00000001,
             DEBUG_ONLY_THIS_PROCESS = 0x00000002,
