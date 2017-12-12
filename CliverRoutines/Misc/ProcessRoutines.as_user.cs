@@ -31,6 +31,43 @@ namespace Cliver
 {
     public static partial class ProcessRoutines
     {
+        public static uint LaunchProcessAsCurrentUser(string appCmdLine /*,int processId*/)
+        {
+            IntPtr hToken = IntPtr.Zero;
+            IntPtr envBlock = IntPtr.Zero;
+            try
+            {
+                //Either specify the processID explicitly 
+                //Or try to get it from a process owned by the user. 
+                //In this case assuming there is only one explorer.exe 
+                Process[] ps = Process.GetProcessesByName("explorer");
+                int processId = -1;//=processId 
+                if (ps.Length > 0)
+                    processId = ps[0].Id;
+                if (processId <= 1)
+                    throw new Exception("processId <= 1: " + processId);
+
+                hToken = getPrimaryToken(processId);
+                if (hToken == IntPtr.Zero)
+                    throw new Exception("!GetPrimaryToken. " + ErrorRoutines.GetLastError());
+
+                if (!Cliver.WinApi.Userenv.CreateEnvironmentBlock(ref envBlock, hToken, false))
+                    throw new Exception("!CreateEnvironmentBlock. " + ErrorRoutines.GetLastError());
+
+                return launchProcessAsUser(appCmdLine, hToken, envBlock);
+            }
+            //catch(Exception e)
+            //{
+
+            //}
+            finally
+            {
+                if (envBlock != IntPtr.Zero)
+                    Cliver.WinApi.Userenv.DestroyEnvironmentBlock(envBlock);
+                if (hToken != IntPtr.Zero)
+                    WinApi.Kernel32.CloseHandle(hToken);
+            }
+        }
         static uint launchProcessAsUser(string cmdLine, IntPtr hToken, IntPtr envBlock)
         {
             try
@@ -80,7 +117,6 @@ namespace Cliver
             {
             }
         }
-
         static IntPtr getPrimaryToken(int processId)
         {
             IntPtr hToken = IntPtr.Zero;
@@ -114,44 +150,6 @@ namespace Cliver
             //}
             finally
             {
-                if (hToken != IntPtr.Zero)
-                    WinApi.Kernel32.CloseHandle(hToken);
-            }
-        }
-
-        public static uint LaunchProcessAsCurrentUser(string appCmdLine /*,int processId*/)
-        {
-            IntPtr hToken = IntPtr.Zero;
-            IntPtr envBlock = IntPtr.Zero;
-            try
-            {
-                //Either specify the processID explicitly 
-                //Or try to get it from a process owned by the user. 
-                //In this case assuming there is only one explorer.exe 
-                Process[] ps = Process.GetProcessesByName("explorer");
-                int processId = -1;//=processId 
-                if (ps.Length > 0)
-                    processId = ps[0].Id;
-                if (processId <= 1)
-                    throw new Exception("processId <= 1: " + processId);
-
-                hToken = getPrimaryToken(processId);
-                if (hToken == IntPtr.Zero)
-                    throw new Exception("!GetPrimaryToken. " + ErrorRoutines.GetLastError());
-
-                if (!Cliver.WinApi.Userenv.CreateEnvironmentBlock(ref envBlock, hToken, false))
-                    throw new Exception("!CreateEnvironmentBlock. " + ErrorRoutines.GetLastError());
-
-                return launchProcessAsUser(appCmdLine, hToken, envBlock);
-            }
-            //catch(Exception e)
-            //{
-
-            //}
-            finally
-            {
-                if (envBlock != IntPtr.Zero)
-                    Cliver.WinApi.Userenv.DestroyEnvironmentBlock(envBlock);
                 if (hToken != IntPtr.Zero)
                     WinApi.Kernel32.CloseHandle(hToken);
             }
