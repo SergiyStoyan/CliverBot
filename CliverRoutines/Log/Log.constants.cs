@@ -299,21 +299,21 @@ namespace Cliver
         /// </summary>
         /// <param name="file">file path or name</param>
         /// <returns>absolute path</returns>
-        public static string GetAbsolutePath(string path)
-        {
-            try
-            {
-                if (path.Contains(":"))
-                    return path;
-                return System.IO.Path.GetFullPath(Log.AppDir + "\\" + path);
-            }
-            catch (Exception e)
-            {
-                LogMessage.Exit(e);
-            }
+        //public static string GetAbsolutePath(string path)
+        //{
+        //    try
+        //    {
+        //        if (path.Contains(":"))
+        //            return path;
+        //        return System.IO.Path.GetFullPath(Log.AppDir + "\\" + path);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        LogMessage.Exit(e);
+        //    }
 
-            return null;
-        }
+        //    return null;
+        //}
     }
 }
 

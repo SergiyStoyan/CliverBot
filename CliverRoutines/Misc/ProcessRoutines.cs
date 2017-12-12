@@ -261,6 +261,37 @@ namespace Cliver
             static volatile bool on = false;
         }
 
+        public static WindowsIdentity GetWindowsIdentityOfProcessUser(Process process = null)
+        {
+            if (process == null)
+                process = Process.GetCurrentProcess();
+
+            IntPtr processHandle = IntPtr.Zero;
+            try
+            {
+                WinApi.Advapi32.OpenProcessToken(process.Handle, WinApi.Advapi32.DesiredAccess.TOKEN_QUERY, out processHandle);
+               return new WindowsIdentity(processHandle);
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                if (processHandle != IntPtr.Zero)
+                    WinApi.Kernel32.CloseHandle(processHandle);
+            }
+        }
+
+        public static string GetProcessUserName(Process process = null)
+        {
+            if (process == null)
+                process = Process.GetCurrentProcess();
+            WindowsIdentity wi = GetWindowsIdentityOfProcessUser(process);
+            string user = wi.Name;
+            return Regex.Replace(wi.Name, @".*\\", "");
+        }
+
         public static bool ProcessHasElevatedPrivileges(Process process = null)
         {
             if (process == null)
@@ -269,7 +300,7 @@ namespace Cliver
             if (IsUacEnabled)
             {
                 IntPtr tokenHandle;
-                if (!WinApi.Advapi32.OpenProcessToken(process.Handle, WinApi.Advapi32.DesiredAccess.STANDARD_RIGHTS_READ| WinApi.Advapi32.DesiredAccess.TOKEN_QUERY, out tokenHandle))
+                if (!WinApi.Advapi32.OpenProcessToken(process.Handle, WinApi.Advapi32.DesiredAccess.STANDARD_RIGHTS_READ | WinApi.Advapi32.DesiredAccess.TOKEN_QUERY, out tokenHandle))
                     throw new ApplicationException("Could not get process token.  Win32 Error Code: " + Marshal.GetLastWin32Error());
 
                 WinApi.Advapi32.TOKEN_ELEVATION_TYPE elevationResult = WinApi.Advapi32.TOKEN_ELEVATION_TYPE.TokenElevationTypeDefault;
@@ -296,6 +327,7 @@ namespace Cliver
                 return principal.IsInRole(WindowsBuiltInRole.Administrator);
             }
         }
+
         public static bool IsUacEnabled
         {
             get

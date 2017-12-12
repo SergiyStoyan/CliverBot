@@ -135,10 +135,10 @@ namespace Cliver
 
         static public bool CurrentUserIsAdministrator()
         {
-            var identity = WindowsIdentity.GetCurrent();
-            if (identity == null)
+            WindowsIdentity windowsIdentity = WindowsIdentity.GetCurrent();
+            if (windowsIdentity == null)
                 throw new InvalidOperationException("Couldn't get the current user identity");
-            var principal = new WindowsPrincipal(identity);
+            var principal = new WindowsPrincipal(windowsIdentity);
             if (principal.IsInRole(WindowsBuiltInRole.Administrator))
                 return true;
 
@@ -152,7 +152,7 @@ namespace Cliver
             try
             {
                 uint returnedSize = 0;
-                if (!WinApi.Advapi32.GetTokenInformation(identity.Token, WinApi.Advapi32.TOKEN_INFORMATION_CLASS.TokenElevationType, tokenInformation, (uint)tokenInfLength, out returnedSize))
+                if (!WinApi.Advapi32.GetTokenInformation(windowsIdentity.Token, WinApi.Advapi32.TOKEN_INFORMATION_CLASS.TokenElevationType, tokenInformation, (uint)tokenInfLength, out returnedSize))
                     throw new InvalidOperationException("Couldn't get token information", Marshal.GetExceptionForHR(Marshal.GetHRForLastWin32Error()));
 
                 switch ((WinApi.Advapi32.TOKEN_ELEVATION_TYPE)Marshal.ReadInt32(tokenInformation))
