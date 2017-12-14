@@ -34,7 +34,7 @@ namespace Cliver
         /// <summary>
         /// Defines whether message boxes will be showed (run in manual mode) 
         /// </summary>
-        static public bool DisableStumblingDialogs;
+        static public bool DisableStumblingDialogs = false;
 
         public enum LogMode
         {
