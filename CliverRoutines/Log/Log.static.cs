@@ -213,15 +213,16 @@ namespace Cliver
         /// Return stack information for the caller.
         /// </summary>
         /// <returns></returns>
-        public static string GetStackString()
+        public static string GetStackString(int startFrame = 0, int frameCount = 1)
         {
             System.Diagnostics.StackTrace st = new StackTrace(true);
             StackFrame sf;
             MethodBase mb = null;
             Type dt = null;
-            for (int i = 2; ; i++)
+            int frameI = 2;
+            for (; ; frameI++)
             {
-                sf = st.GetFrame(i);
+                sf = st.GetFrame(frameI);
                 if (sf == null)
                     break;
                 mb = sf.GetMethod();
@@ -229,7 +230,18 @@ namespace Cliver
                 if (dt != typeof(Log) && dt != typeof(Log.Writer) && dt != typeof(LogMessage))
                     break;
             }
-            return "Stack: " + dt.ToString() + "::" + mb.Name + " \r\nfile: " + sf.GetFileName() + " \r\nline: " + sf.GetFileLineNumber();
+            List<string> stackSs = new List<string>();
+            int endFrameI = frameI + frameCount - 1;
+            for (frameI += startFrame; frameI <= endFrameI; frameI++)
+            {
+                sf = st.GetFrame(frameI);
+                if (sf == null)
+                    break;
+                mb = sf.GetMethod();
+                dt = mb.DeclaringType;
+                stackSs.Add("Stack: " + dt?.ToString() + "::" + mb?.Name + " \r\nfile: " + sf?.GetFileName() + " \r\nline: " + sf?.GetFileLineNumber());
+            }
+            return string.Join("\r\n", stackSs);
         }
 
         public static string GetExceptionMessage(Exception e)
@@ -253,22 +265,23 @@ namespace Cliver
 
         static public void GetExceptionMessage(Exception e, out string message, out string details)
         {
-            Exception e1 = e;
+            Exception lastE = null;
+            details = null;
             List<string> ms = new List<string>();
             for (; e != null; e = e.InnerException)
             {
                 AggregateException ae = e as AggregateException;
                 if (ae != null && ae.InnerExceptions.Count > 1)
-                    ms.Add("More than 1 exception aggregated! Show [0]:" + e.Message);
+                    ms.Add("More than 1 exception aggregated! Show only [0]:" + e.Message);
                 else
                     ms.Add(e.Message);
                 if (e.TargetSite != null)
-                    e1 = e;
+                    lastE = e;
+                else
+                    details = "(details correspond not to the deepest exception!)\r\n";
             }
             message = string.Join("\r\n<= ", ms);
-            details = "Module:" + e1.TargetSite?.Module + " \r\n\r\nStack:" + e1.StackTrace;
-            if (e1 != e)
-                details = "(details correspond not to the deepest exception!)\r\n" + details;
+            details += "Module:" + lastE?.TargetSite?.Module + " \r\n\r\nStack:" + lastE?.StackTrace;
         }
         //static void getExceptionMessage(Exception e, ref string message, ref string details)
         //{
