@@ -217,79 +217,77 @@ namespace Cliver
             //lock (lock_object)//no lock to avoid interlock when writing to log from here
             //{
             delete_old_logs_running = true;
-                try
+            try
+            {
+                if (delete_logs_older_days > 0)
                 {
-                    if (delete_logs_older_days > 0)
+                    DateTime FirstLogDate = DateTime.Now.AddDays(-delete_logs_older_days);
+
+                    DirectoryInfo di = new DirectoryInfo(Log.WorkDir);
+                    if (!di.Exists)
+                        return;
+
+                    string alert;
+                    switch (Log.mode)
                     {
-                        DateTime FirstLogDate = DateTime.Now.AddDays(-delete_logs_older_days);
-
-                        DirectoryInfo di = new DirectoryInfo(Log.WorkDir);
-                        if (!di.Exists)
-                            return;
-
-                        string alert;
-                        switch (Log.mode)
-                        {
-                            case Mode.SESSIONS:
+                        case Mode.SESSIONS:
                             //case Mode.SINGLE_SESSION:
-                                alert = "Session data including caches and logs older than " + FirstLogDate.ToString() + " should be deleted along the specified threshold.\n Delete?";
-                                foreach (DirectoryInfo d in di.GetDirectories())
+                            alert = "Session data including caches and logs older than " + FirstLogDate.ToString() + " are to be deleted.\r\nDelete?";
+                            foreach (DirectoryInfo d in di.GetDirectories())
+                            {
+                                if (main_session != null && d.FullName.StartsWith(main_session.Path, StringComparison.InvariantCultureIgnoreCase))
+                                    continue;
+                                if (d.LastWriteTime >= FirstLogDate)
+                                    continue;
+                                if (alert != null)
                                 {
-                                    if (main_session != null && d.FullName.StartsWith(main_session.Path, StringComparison.InvariantCultureIgnoreCase))
-                                        continue;
-                                    if (d.LastWriteTime >= FirstLogDate)
-                                        continue;
-                                    if (alert != null)
-                                    {
-                                        if (!LogMessage.AskYesNo(alert, true))
-                                            return;
-                                        else
-                                            alert = null;
-                                    }
-                                    Log.Main.Inform("Deleting old directory: " + d.FullName);
-                                    try
-                                    {
-                                        d.Delete(true);
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        LogMessage.Error(e);
-                                    }
+                                    if (!LogMessage.AskYesNo(alert, true))
+                                        return;
+                                    alert = null;
                                 }
-                                break;
-                            case Mode.ONLY_LOG:
-                                alert = "Logs older than " + FirstLogDate.ToString() + " should be deleted along the specified threshold.\n Delete?";
-                                foreach (FileInfo f in di.GetFiles())
+                                Log.Main.Inform("Deleting old directory: " + d.FullName);
+                                try
                                 {
-                                    if (f.LastWriteTime >= FirstLogDate)
-                                        continue;
-                                    if (alert != null)
-                                    {
-                                        if (!LogMessage.AskYesNo(alert, true))
-                                            return;
-                                        else
-                                            alert = null;
-                                    }
-                                    Log.Main.Inform("Deleting old file: " + f.FullName);
-                                    try
-                                    {
-                                        f.Delete();
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        LogMessage.Error(e);
-                                    }
+                                    d.Delete(true);
                                 }
-                                break;
-                            default:
-                                throw new Exception("Unknown LOGGING_MODE:" + Log.mode);
-                        }
+                                catch (Exception e)
+                                {
+                                    LogMessage.Error(e);
+                                }
+                            }
+                            break;
+                        case Mode.ONLY_LOG:
+                            alert = "Logs older than " + FirstLogDate.ToString() + " are to be deleted.\r\nDelete?";
+                            foreach (FileInfo f in di.GetFiles())
+                            {
+                                if (f.LastWriteTime >= FirstLogDate)
+                                    continue;
+                                if (alert != null)
+                                {
+                                    if (!LogMessage.AskYesNo(alert, true))
+                                        return;
+                                    alert = null;
+                                }
+                                Log.Main.Inform("Deleting old file: " + f.FullName);
+                                try
+                                {
+                                    f.Delete();
+                                }
+                                catch (Exception e)
+                                {
+                                    LogMessage.Error(e);
+                                }
+                            }
+                            break;
+                        default:
+                            throw new Exception("Unknown LOGGING_MODE:" + Log.mode);
                     }
                 }
-                finally
-                {
-                    delete_old_logs_running = false;
-                }
+            }
+            finally
+            {
+                delete_old_logs_running = false;
+            }
             //}
         }
         static bool delete_old_logs_running = false;

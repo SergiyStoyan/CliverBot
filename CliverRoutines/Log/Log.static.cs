@@ -266,7 +266,7 @@ namespace Cliver
         static public void GetExceptionMessage(Exception e, out string message, out string details)
         {
             Exception lastE = null;
-            details = null;
+            bool lastE_is_deepest = true;
             List<string> ms = new List<string>();
             for (; e != null; e = e.InnerException)
             {
@@ -276,12 +276,19 @@ namespace Cliver
                 else
                     ms.Add(e.Message);
                 if (e.TargetSite != null)
+                {
+                    lastE_is_deepest = true;
                     lastE = e;
+                }
                 else
-                    details = "(details correspond not to the deepest exception!)\r\n";
+                    lastE_is_deepest = false;
             }
             message = string.Join("\r\n<= ", ms);
-            details += "Module:" + lastE?.TargetSite?.Module + " \r\n\r\nStack:" + lastE?.StackTrace;
+            if (lastE_is_deepest)
+                details = null;
+            else
+                details = "(details correspond not to the deepest exception!)\r\n";
+            details += "Module: " + lastE?.TargetSite?.Module + " \r\n\r\nStack:" + lastE?.StackTrace;
         }
         //static void getExceptionMessage(Exception e, ref string message, ref string details)
         //{
