@@ -213,7 +213,7 @@ namespace Cliver
         /// Return stack information for the caller.
         /// </summary>
         /// <returns></returns>
-        public static string GetStackString(int startFrame = 0, int frameCount = 1)
+        public static string GetStackString(int startFrame = 0, int frameCount = 1, bool endOnEmptyFile = true)
         {
             System.Diagnostics.StackTrace st = new StackTrace(true);
             StackFrame sf;
@@ -231,17 +231,19 @@ namespace Cliver
                     break;
             }
             List<string> frameSs = new List<string>();
+            if (frameCount < 0)
+                frameCount = 1000;
             int endFrameI = frameI + frameCount - 1;
             for (frameI += startFrame; frameI <= endFrameI; frameI++)
             {
                 sf = st.GetFrame(frameI);
-                if (sf == null)
+                if (sf == null || endOnEmptyFile && frameSs.Count > 0 && string.IsNullOrEmpty(sf.GetFileName()))//it seems to be passing out of the application
                     break;
                 mb = sf.GetMethod();
                 dt = mb.DeclaringType;
-                frameSs.Add("Method: " + dt?.ToString() + "::" + mb?.Name + " \r\nfile: " + sf?.GetFileName() + " \r\nline: " + sf?.GetFileLineNumber());
+                frameSs.Add("method: " + dt?.ToString() + "::" + mb?.Name + " \r\nfile: " + sf.GetFileName() + " \r\nline: " + sf.GetFileLineNumber());
             }
-            return string.Join("\r\n<=\r\n", frameSs);
+            return string.Join("\r\n<=", frameSs);
         }
 
         public static string GetExceptionMessage(Exception e)
@@ -265,8 +267,8 @@ namespace Cliver
 
         static public void GetExceptionMessage(Exception e, out string message, out string details)
         {
-            Exception lastE = null;
-            bool lastE_is_deepest = true;
+            Exception lastInterestingE = null;
+            bool passedOutOfApp = false;
             List<string> ms = new List<string>();
             for (; e != null; e = e.InnerException)
             {
@@ -275,20 +277,16 @@ namespace Cliver
                     ms.Add("More than 1 exception aggregated! Show only [0]:" + e.Message);
                 else
                     ms.Add(e.Message);
-                if (e.TargetSite != null)
+                if (!passedOutOfApp)
                 {
-                    lastE_is_deepest = true;
-                    lastE = e;
+                    if (lastInterestingE != null && (e.StackTrace == null || e.TargetSite == null))//it seems to be passing out of the application
+                        passedOutOfApp = true;
+                    else
+                        lastInterestingE = e;
                 }
-                else
-                    lastE_is_deepest = false;
             }
             message = string.Join("\r\n<= ", ms);
-            if (lastE_is_deepest)
-                details = null;
-            else
-                details = "(details correspond not to the deepest exception!)\r\n";
-            details += "Module: " + lastE?.TargetSite?.Module + " \r\n\r\nStack:" + lastE?.StackTrace;
+            details = "Module: " + lastInterestingE?.TargetSite?.Module + " \r\n\r\nStack:" + lastInterestingE?.StackTrace;
         }
         //static void getExceptionMessage(Exception e, ref string message, ref string details)
         //{
