@@ -230,7 +230,7 @@ namespace Cliver
                 if (dt != typeof(Log) && dt != typeof(Log.Writer) && dt != typeof(LogMessage))
                     break;
             }
-            List<string> stackSs = new List<string>();
+            List<string> frameSs = new List<string>();
             int endFrameI = frameI + frameCount - 1;
             for (frameI += startFrame; frameI <= endFrameI; frameI++)
             {
@@ -239,9 +239,9 @@ namespace Cliver
                     break;
                 mb = sf.GetMethod();
                 dt = mb.DeclaringType;
-                stackSs.Add("Stack: " + dt?.ToString() + "::" + mb?.Name + " \r\nfile: " + sf?.GetFileName() + " \r\nline: " + sf?.GetFileLineNumber());
+                frameSs.Add("Method: " + dt?.ToString() + "::" + mb?.Name + " \r\nfile: " + sf?.GetFileName() + " \r\nline: " + sf?.GetFileLineNumber());
             }
-            return string.Join("\r\n", stackSs);
+            return string.Join("\r\n<=\r\n", frameSs);
         }
 
         public static string GetExceptionMessage(Exception e)
