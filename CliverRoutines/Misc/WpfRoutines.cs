@@ -9,11 +9,44 @@ using System.Windows.Data;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Reflection;
+using System.Windows.Media.Animation;
 
 namespace Cliver
 {
     static public class WpfRoutines
     {
+        public static void AddFadeEffect(this System.Windows.Window window, double durationMss)
+        {
+            window.IsVisibleChanged += (object sender, DependencyPropertyChangedEventArgs e) =>
+            {
+                if (!window.IsVisible)
+                    return;
+                DoubleAnimation da = new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(300));
+                da.FillBehavior = FillBehavior.Stop;
+                da.Completed += delegate
+                {
+                    window.Background.BeginAnimation(UIElement.OpacityProperty, null);
+                };
+                window.Background.BeginAnimation(UIElement.OpacityProperty, da);
+            };
+
+            window.Closing += (object sender, System.ComponentModel.CancelEventArgs e) =>
+            {
+                //if (!window.IsVisible)
+                //    return;
+                //e.Cancel = true;
+                //DoubleAnimation da = new DoubleAnimation(1, 0, TimeSpan.FromMilliseconds(200));
+                //da.FillBehavior = FillBehavior.Stop;
+                //da.Completed += delegate
+                //{
+                //    window.Background.Opacity = 0;
+                //    window.Visibility = Visibility.Hidden;
+                //    window.Close();
+                //};
+                //window.Background.BeginAnimation(UIElement.OpacityProperty, da);
+            };
+        }
+
         public static void TrimWindowSize(this System.Windows.Window window, double screen_factor = 0.8)
         {
             System.Drawing.Size s = SystemInfo.GetPrimaryScreenSize();
