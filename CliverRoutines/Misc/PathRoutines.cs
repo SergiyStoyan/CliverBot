@@ -29,12 +29,17 @@ namespace Cliver
             var p2 = Path.GetFullPath(path2).Trim().ToLower();
             return p1 == p2;
         }
-        
+
         public static string GetNormalizedPath(string path)
         {
-            return Path.GetFullPath(new Uri(path).LocalPath)
-                       .TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar)
-                       .ToUpperInvariant();
+            return Path.GetFullPath(new Uri(path).LocalPath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).ToUpperInvariant();
+        }
+
+        public static string GetAbsolutePath(string path)
+        {
+            if (path.Contains(":"))
+                return path;
+            return Log.AppDir + "\\" + path;
         }
 
         /// <summary>
