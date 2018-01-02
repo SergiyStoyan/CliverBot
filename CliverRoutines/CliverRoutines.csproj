@@ -171,6 +171,7 @@
     <Compile Include="Misc\ImageRoutines.cs" />
     <Compile Include="Misc\ProcessRoutines.AntiZombieTracker.cs" />
     <Compile Include="Misc\ProcessRoutines.CreateProcess.cs" />
+    <Compile Include="Misc\SocketRoutines.cs" />
     <Compile Include="Misc\WindowsUserRoutines.cs" />
     <Compile Include="Misc\SystemRoutines.cs" />
     <Compile Include="Misc\SystemInfo.cs" />
