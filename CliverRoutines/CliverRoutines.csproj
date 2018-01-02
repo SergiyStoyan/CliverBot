@@ -134,6 +134,7 @@
     <Reference Include="System.Windows.Forms">
       <Name>System.Windows.Forms</Name>
     </Reference>
+    <Reference Include="System.Xaml" />
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
@@ -207,6 +208,9 @@
     <Compile Include="WinApi\Kernel32.cs" />
     <Compile Include="WinApi\Win64.cs" />
     <Compile Include="Misc\WpfRoutines.cs" />
+    <Compile Include="Wpf\BaseWindow.xaml.cs">
+      <DependentUpon>BaseWindow.xaml</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="BaseForm\BaseForm.resx">
       <DependentUpon>BaseForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -256,6 +260,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="CliverRoutinesTests\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="Wpf\BaseWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
