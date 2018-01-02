@@ -42,6 +42,8 @@ namespace Cliver
         static Mode mode = Mode.ONLY_LOG;
         static string session_name_prefix = "Session";
 
+        public static bool ShowDeleteOldLogsDialog = true;
+
         public enum Mode
         {
             /// <summary>

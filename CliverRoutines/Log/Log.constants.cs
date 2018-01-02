@@ -77,7 +77,7 @@ namespace Cliver
             {
                 if (work_dir == null)
                 {
-                    Thread delete_old_logs = null;
+                    Thread deleting_old_logs_t = null;
                     lock (lock_object)
                     {
                         if (pre_work_dir != null && pre_work_dir.Contains(":"))
@@ -116,8 +116,8 @@ namespace Cliver
                             }
                         }
                         if (write_log)
-                            if (Directory.Exists(work_dir))
-                                delete_old_logs = ThreadRoutines.StartTry(Log.DeleteOldLogs);//to avoid a concurrent loop while accessing the log file from the same thread 
+                            if (Directory.Exists(work_dir) && delete_logs_older_days >= 0)
+                                deleting_old_logs_t = ThreadRoutines.StartTry(() => { Log.DeleteOldLogs(delete_logs_older_days, ShowDeleteOldLogsDialog); });//to avoid a concurrent loop while accessing the log file from the same thread 
                             else
                                 throw new Exception("Could not create log folder!");
                     }
@@ -208,7 +208,7 @@ namespace Cliver
         /// <summary>
         /// Deletes Log data from disk that is older than the specified threshold
         /// </summary>
-        public static void DeleteOldLogs()
+        public static void DeleteOldLogs(int delete_logs_older_days, bool show_dialog)
         {
             //ThreadWriter tw = Log.Main;
             //Log.Main.Inform("test");
@@ -241,6 +241,9 @@ namespace Cliver
                                     continue;
                                 if (alert != null)
                                 {
+                                    if (!show_dialog)
+                                        Log.Main.Inform("Deleting session data including caches and logs older than " + FirstLogDate.ToString());
+                                    else
                                     if (!LogMessage.AskYesNo(alert, true))
                                         return;
                                     alert = null;
@@ -264,6 +267,9 @@ namespace Cliver
                                     continue;
                                 if (alert != null)
                                 {
+                                    if (!show_dialog)
+                                        Log.Main.Inform("Deleting logs older than " + FirstLogDate.ToString());
+                                    else
                                     if (!LogMessage.AskYesNo(alert, true))
                                         return;
                                     alert = null;
