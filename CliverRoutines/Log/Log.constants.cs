@@ -41,7 +41,7 @@ namespace Cliver
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(Assembly.GetEntryAssembly().Location);
             CompanyName = string.IsNullOrWhiteSpace(fvi.CompanyName) ? "CliverSoft" : fvi.CompanyName;
 
-            CompanyCommonDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\"+ CompanyName + "\\";
+            CompanyCommonDataDir = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData) + "\\" + CompanyName + "\\";
             AppCommonDataDir = CompanyCommonDataDir + Log.ProcessName;
             //Log.DeleteOldLogs();
         }

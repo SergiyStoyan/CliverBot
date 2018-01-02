@@ -59,9 +59,21 @@ namespace Cliver
             c.Invoke(code);
         }
 
+        public static void Invoke2(this Control c, MethodInvoker code)
+        {
+            if (c.InvokeRequired)
+                c.Invoke(code);
+        }
+
         public static void BeginInvoke(this Control c, MethodInvoker code)
         {
             c.BeginInvoke(code);
+        }
+
+        public static void BeginInvoke2(this Control c, MethodInvoker code)
+        {
+            if (c.InvokeRequired)
+                c.BeginInvoke(code);
         }
 
         public static object InvokeFromUiThread(Delegate d)
