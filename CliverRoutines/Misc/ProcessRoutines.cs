@@ -26,6 +26,7 @@ using System.Security.Principal;
 using System.Management;
 using System.DirectoryServices.ActiveDirectory;
 using System.DirectoryServices.AccountManagement;
+using System.Security.AccessControl;
 
 namespace Cliver
 {
@@ -39,14 +40,38 @@ namespace Cliver
 
         public static void RunSingleProcessOnly(bool silent = false)
         {
-            string app_name = ProgramRoutines.GetAppName();
-            GLOBAL_SINGLE_PROCESS_MUTEX = new Mutex(false, @"Global\CliverSoft_" + app_name + "_SINGLE_PROCESS");
-            // Wait for a few seconds when contended, if the other instance of the program is still in progress of shutting down.
-            if (!GLOBAL_SINGLE_PROCESS_MUTEX.WaitOne(1000, false))
-                if (!silent)
-                    LogMessage.Exit2(app_name + " is already running, so this instance will exit.");
-                else
-                    Environment.Exit(0);
+            string app_name =  ProgramRoutines.GetAppName();
+            bool createdNew;
+            MutexSecurity mutexSecurity = new System.Security.AccessControl.MutexSecurity();
+            mutexSecurity.AddAccessRule(new MutexAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid, null), MutexRights.Synchronize | MutexRights.Modify, AccessControlType.Allow));
+            for (int i = 0; i < 2; i++)
+            {
+                try
+                {
+                    GLOBAL_SINGLE_PROCESS_MUTEX = new Mutex(false, @"Global\CLIVERSOFT_" + app_name + @"_SINGLE_PROCESS", out createdNew, mutexSecurity);
+                    break;
+                }
+                catch (Exception e)
+                {//An “access denied” while creating a new Mutex can happen in the following situation:
+                 //a.Process A running as an administrator creates a named mutex.
+                 //b.Process B running as a normal user attempts to access the mutex which fails with “access denied” since only Administrators can access the mutex.
+                    if (i == 0)
+                    {
+                        Thread.Sleep(1000);//wait for some time while contending, if the other instance of the program is still in progress of shutting down.
+                        continue;
+                    }
+                    if (!silent)
+                        LogMessage.Exit(e);
+                    else
+                        Environment.Exit(0);
+                }
+            }
+            if (GLOBAL_SINGLE_PROCESS_MUTEX.WaitOne(1000, false))//wait for some time while contending, if the other instance of the program is still in progress of shutting down.
+                return;
+            if (!silent)
+                LogMessage.Exit2(app_name + " is already running, so this instance will exit.");
+            else
+                Environment.Exit(0);
         }
         static Mutex GLOBAL_SINGLE_PROCESS_MUTEX = null;
 
