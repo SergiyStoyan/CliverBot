@@ -1,58 +1,26 @@
-﻿<Window x:Class="Cliver.Wpf.BaseWindow"
+﻿<Window x:Class="Cliver.Wpf.MessageWindow"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Cliver.Wpf"
              mc:Ignorable="d"
-        Background="#f3f6e7" 
+        Background="#f3f6e7" MinHeight="50" MinWidth="100"
              >
     <Window.Resources>
-        <Style TargetType="{x:Type GroupBox}">
-            <Setter Property="Margin" Value="0,10,0,10"/>
-            <Setter Property="Padding" Value="10"/>
-            <Setter Property="BorderBrush" Value="#268"/>
-            <!--Setter Property="HeaderTemplate">
-                <Setter.Value>
-                    <DataTemplate>
-                        <TextBlock Text="{Binding}" FontWeight="Bold" FontStyle="Italic"/>
-                    </DataTemplate>
-                </Setter.Value>
-            </-->
-        </Style>
-        <Style TargetType="{x:Type ComboBox}">
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-            <Setter Property="Margin" Value="0,10,0,0"/>
-            <Setter Property="Padding" Value="5"/>
-            <Setter Property="MinWidth" Value="30"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-        </Style>
-        <Style TargetType="{x:Type ComboBoxItem}">
-            <Setter Property="Padding" Value="5"/>
-        </Style>
         <Style TargetType="{x:Type Label}">
             <Setter Property="HorizontalAlignment" Value="Left"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Margin"  Value="0,10,10,0"/>
         </Style>
-        <Style TargetType="{x:Type TextBox}">
+        <Style TargetType="{x:Type RichTextBox}">
             <Setter Property="MinHeight" Value="{Binding ActualHeight, ElementName=Monitors}"/>
             <Setter Property="VerticalAlignment" Value="{Binding VerticalAlignment, ElementName=Monitors}"/>
             <Setter Property="HorizontalAlignment" Value="{Binding HorizontalAlignment, ElementName=Monitors}"/>
             <Setter Property="Margin" Value="{Binding Margin, ElementName=Monitors}"/>
             <Setter Property="MinWidth" Value="{Binding MinWidth, ElementName=Monitors}"/>
             <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, ElementName=Monitors}"/>
-            <Setter Property="TextWrapping" Value="Wrap"/>
             <Setter Property="AcceptsReturn" Value="True"/>
-        </Style>
-        <Style TargetType="{x:Type CheckBox}">
-            <Setter Property="MinHeight" Value="{Binding ActualHeight, ElementName=Monitors}"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="HorizontalAlignment" Value="{Binding HorizontalAlignment, ElementName=Monitors}"/>
-            <Setter Property="Margin" Value="{Binding Margin, ElementName=Monitors}"/>
-            <Setter Property="Margin" Value="0,10,0,-10"/>
-            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, ElementName=Monitors}"/>
         </Style>
         <Style TargetType="{x:Type Button}">
             <Setter Property="Margin" Value="10,0,0,0"/>
@@ -66,6 +34,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="20"></ColumnDefinition>
+            <ColumnDefinition Width="auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
             <ColumnDefinition Width="20"></ColumnDefinition>
         </Grid.ColumnDefinitions>
@@ -75,11 +44,10 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="10" />
         </Grid.RowDefinitions>
-        <ScrollViewer Grid.Row="1" Grid.Column="1" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Name="Container">
-        </ScrollViewer>
-        <UniformGrid HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" Rows="1" Margin="0, 20, 0, 0" DockPanel.Dock="Bottom" Name="Buttons">
-            <Button x:Name="ok" Content="OK"/>
-            <Button x:Name="close" Content="Close"/>
+        <Image Grid.Row="1" Grid.Column="1" Name="image" ></Image>
+        <RichTextBox Grid.Row="1" Grid.Column="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Name="message">
+        </RichTextBox>
+        <UniformGrid HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Rows="1" Margin="0, 20, 0, 0" DockPanel.Dock="Bottom" Name="buttons">
         </UniformGrid>
     </Grid>
 </Window>

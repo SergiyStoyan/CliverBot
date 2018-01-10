@@ -209,6 +209,10 @@
     <Compile Include="WinApi\Kernel32.cs" />
     <Compile Include="WinApi\Win64.cs" />
     <Compile Include="Misc\WpfRoutines.cs" />
+    <Compile Include="Wpf\Message.cs" />
+    <Compile Include="Wpf\MessageWindow.xaml.cs">
+      <DependentUpon>MessageWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Wpf\BaseWindow.xaml.cs">
       <DependentUpon>BaseWindow.xaml</DependentUpon>
     </Compile>
@@ -263,6 +267,10 @@
     <Folder Include="CliverRoutinesTests\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Wpf\MessageWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Wpf\BaseWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
