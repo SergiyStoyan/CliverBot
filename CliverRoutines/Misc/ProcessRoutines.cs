@@ -40,7 +40,7 @@ namespace Cliver
 
         public static void RunSingleProcessOnly(bool silent = false)
         {
-            string app_name =  ProgramRoutines.GetAppName();
+            string app_name = ProgramRoutines.GetAppName();
             bool createdNew;
             MutexSecurity mutexSecurity = new System.Security.AccessControl.MutexSecurity();
             mutexSecurity.AddAccessRule(new MutexAccessRule(new SecurityIdentifier(WellKnownSidType.WorldSid, null), MutexRights.Synchronize | MutexRights.Modify, AccessControlType.Allow));
@@ -227,7 +227,7 @@ namespace Cliver
             try
             {
                 WinApi.Advapi32.OpenProcessToken(process.Handle, WinApi.Advapi32.DesiredAccess.TOKEN_QUERY, out processHandle);
-               return new WindowsIdentity(processHandle);
+                return new WindowsIdentity(processHandle);
             }
             catch (Exception e)
             {
@@ -247,6 +247,14 @@ namespace Cliver
             WindowsIdentity wi = GetWindowsIdentityOfProcessUser(process);
             string user = wi.Name;
             return Regex.Replace(wi.Name, @".*\\", "");
+        }
+
+        public static bool ProcessIsSystem(Process process = null)
+        {
+            using (var identity = GetWindowsIdentityOfProcessUser(process))
+            {
+                return identity.IsSystem;
+            }
         }
 
         public static bool ProcessHasElevatedPrivileges(Process process = null)
