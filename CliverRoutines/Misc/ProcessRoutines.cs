@@ -258,7 +258,7 @@ namespace Cliver
             {
                 IntPtr tokenHandle;
                 if (!WinApi.Advapi32.OpenProcessToken(process.Handle, WinApi.Advapi32.DesiredAccess.STANDARD_RIGHTS_READ | WinApi.Advapi32.DesiredAccess.TOKEN_QUERY, out tokenHandle))
-                    throw new ApplicationException("Could not get process token.  Win32 Error Code: " + Marshal.GetLastWin32Error());
+                    throw new ApplicationException("Could not get process token. Win32 Error Code: " + Marshal.GetLastWin32Error());
 
                 WinApi.Advapi32.TOKEN_ELEVATION_TYPE elevationResult = WinApi.Advapi32.TOKEN_ELEVATION_TYPE.TokenElevationTypeDefault;
 
