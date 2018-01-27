@@ -45,32 +45,35 @@ namespace Cliver
             this.Text = caption;
             this.message.Text = message;
 
-            for (int i = buttons.Length - 1; i >= 0; i--)
+            if (buttons != null)
             {
-                Button b = new Button();
-                b.Tag = i;
-                b.Text = buttons[i];
-                b.AutoSize = true;
-                b.Click += b_Click;
-                flowLayoutPanel1.Controls.Add(b);
-                if (i == default_button)
-                    b.Select();
-            }
-
-            if (!button_auto_size)
-            {
-                Size max_size = new Size(0,0);
-                foreach (Button b in flowLayoutPanel1.Controls)
+                for (int i = buttons.Length - 1; i >= 0; i--)
                 {
-                    if (b.Width > max_size.Width)
-                        max_size.Width = b.Width;
-                    if (b.Height > max_size.Height)
-                        max_size.Height = b.Height;
+                    Button b = new Button();
+                    b.Tag = i;
+                    b.Text = buttons[i];
+                    b.AutoSize = true;
+                    b.Click += b_Click;
+                    flowLayoutPanel1.Controls.Add(b);
+                    if (i == default_button)
+                        b.Select();
                 }
-                foreach (Button b in flowLayoutPanel1.Controls)
+
+                if (!button_auto_size)
                 {
-                    b.AutoSize = false;
-                    b.Size = max_size;
+                    Size max_size = new Size(0, 0);
+                    foreach (Button b in flowLayoutPanel1.Controls)
+                    {
+                        if (b.Width > max_size.Width)
+                            max_size.Width = b.Width;
+                        if (b.Height > max_size.Height)
+                            max_size.Height = b.Height;
+                    }
+                    foreach (Button b in flowLayoutPanel1.Controls)
+                    {
+                        b.AutoSize = false;
+                        b.Size = max_size;
+                    }
                 }
             }
 
