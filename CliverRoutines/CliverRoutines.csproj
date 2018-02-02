@@ -169,7 +169,7 @@
     <Compile Include="Misc\Enum.cs" />
     <Compile Include="Misc\AssemblyRoutines.cs" />
     <Compile Include="Misc\ImageRoutines.cs" />
-    <Compile Include="Misc\ProcessRoutines.AntiZombieTracker.cs" />
+    <Compile Include="Misc\ProcessRoutines.AntiZombieGuard.cs" />
     <Compile Include="Misc\ProcessRoutines.CreateProcess.cs" />
     <Compile Include="Misc\SocketRoutines.cs" />
     <Compile Include="Misc\WindowsUserRoutines.cs" />

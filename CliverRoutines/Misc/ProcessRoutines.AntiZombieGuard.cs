@@ -34,7 +34,7 @@ namespace Cliver
         /// <summary>
         /// Makes processes live no longer than this object
         /// </summary>
-        public class AntiZombieTracker
+        public class AntiZombieGuard
         {            
             void initialize()
             {
@@ -72,7 +72,7 @@ namespace Cliver
             // When the job handle is closed, the child processes will be killed.
             IntPtr jobHandle = IntPtr.Zero;
 
-            ~AntiZombieTracker()
+            ~AntiZombieGuard()
             {
                 KillTrackedProcesses();
             }
@@ -96,7 +96,7 @@ namespace Cliver
                     throw new Exception("!AssignProcessToJobObject. " + ErrorRoutines.GetLastError());
             }
 
-            public static AntiZombieTracker This = new AntiZombieTracker();
+            public static AntiZombieGuard This = new AntiZombieGuard();
         }
     }
 }

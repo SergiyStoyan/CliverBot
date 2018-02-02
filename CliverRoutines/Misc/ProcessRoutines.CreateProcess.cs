@@ -31,7 +31,7 @@ namespace Cliver
 {
     public static partial class ProcessRoutines
     {
-        public static uint CreateProcessAsUserOfParentProcess(uint dwSessionId, String commandLine, WinApi.Advapi32.CreationFlags dwCreationFlags = 0, WinApi.Advapi32.STARTUPINFO? startupInfo = null)
+        public static uint CreateProcessAsUserOfCurrentProcess(uint dwSessionId, String commandLine, WinApi.Advapi32.CreationFlags dwCreationFlags = 0, WinApi.Advapi32.STARTUPINFO? startupInfo = null)
         {
             Log.Main.Inform("Launching (in session " + dwSessionId + "):\r\n" + commandLine);
 
