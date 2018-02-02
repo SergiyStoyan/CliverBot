@@ -37,34 +37,37 @@ namespace Cliver.Wpf
             TextRange tr = new TextRange(this.message.Document.ContentEnd, this.message.Document.ContentEnd);
             tr.Text = message;
 
-            for (int i = buttons.Length - 1; i >= 0; i--)
+            if (buttons != null)
             {
-                Button b = new Button();
-                b.Tag = i;
-                b.Content = buttons[i];
-                //b.AutoSize = true;
-                b.Click += b_Click;
-                this.buttons.Children.Add(b);
-                if (i == default_button)
-                    b.Focus();
-            }
+                for (int i = buttons.Length - 1; i >= 0; i--)
+                {
+                    Button b = new Button();
+                    b.Tag = i;
+                    b.Content = buttons[i];
+                    //b.AutoSize = true;
+                    b.Click += b_Click;
+                    this.buttons.Children.Add(b);
+                    if (i == default_button)
+                        b.Focus();
+                }
 
-            //if (!button_auto_size)
-            //{
-            //    Size max_size = new Size(0, 0);
-            //    foreach (Button b in flowLayoutPanel1.Controls)
-            //    {
-            //        if (b.Width > max_size.Width)
-            //            max_size.Width = b.Width;
-            //        if (b.Height > max_size.Height)
-            //            max_size.Height = b.Height;
-            //    }
-            //    foreach (Button b in flowLayoutPanel1.Controls)
-            //    {
-            //        b.AutoSize = false;
-            //        b.Size = max_size;
-            //    }
-            //}
+                //if (!button_auto_size)
+                //{
+                //    Size max_size = new Size(0, 0);
+                //    foreach (Button b in flowLayoutPanel1.Controls)
+                //    {
+                //        if (b.Width > max_size.Width)
+                //            max_size.Width = b.Width;
+                //        if (b.Height > max_size.Height)
+                //            max_size.Height = b.Height;
+                //    }
+                //    foreach (Button b in flowLayoutPanel1.Controls)
+                //    {
+                //        b.AutoSize = false;
+                //        b.Size = max_size;
+                //    }
+                //}
+            }
         }
 
         void b_Click(object sender, EventArgs e)

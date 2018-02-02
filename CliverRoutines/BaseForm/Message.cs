@@ -47,6 +47,8 @@ namespace Cliver
         /// </summary>
         public static bool NoDuplicate = true;
 
+        public readonly static string ProductName = ProductName;
+
         public static bool ShowDetailsOnException =
 #if DEBUG
             true
@@ -57,33 +59,33 @@ namespace Cliver
 
         public static void Inform(string message, Form owner = null)
         {
-            ShowDialog(Application.ProductName, SystemIcons.Information, message, new string[1] { "OK" }, 0, owner);
+            ShowDialog(ProductName, SystemIcons.Information, message, new string[1] { "OK" }, 0, owner);
         }
 
         public static void Exclaim(string message, Form owner = null)
         {
-            ShowDialog(Application.ProductName, SystemIcons.Exclamation, message, new string[1] { "OK" }, 0, owner);
+            ShowDialog(ProductName, SystemIcons.Exclamation, message, new string[1] { "OK" }, 0, owner);
         }
 
         public static void Exclaim(Exception e, Form owner = null)
         {
             if (!ShowDetailsOnException)
-                ShowDialog(Application.ProductName, SystemIcons.Exclamation, e.Message, new string[1] { "OK" }, 0, owner);
+                ShowDialog(ProductName, SystemIcons.Exclamation, e.Message, new string[1] { "OK" }, 0, owner);
             else
-                ShowDialog(Application.ProductName, SystemIcons.Exclamation, GetExceptionDetails(e), new string[1] { "OK" }, 0, owner);
+                ShowDialog(ProductName, SystemIcons.Exclamation, GetExceptionDetails(e), new string[1] { "OK" }, 0, owner);
         }
 
         public static void Warning(string message, Form owner = null)
         {
-            ShowDialog(Application.ProductName, SystemIcons.Warning, message, new string[1] { "OK" }, 0, owner);
+            ShowDialog(ProductName, SystemIcons.Warning, message, new string[1] { "OK" }, 0, owner);
         }
 
         public static void Warning(Exception e, Form owner = null)
         {
             if (!ShowDetailsOnException)
-                ShowDialog(Application.ProductName, SystemIcons.Warning, e.Message, new string[1] { "OK" }, 0, owner);
+                ShowDialog(ProductName, SystemIcons.Warning, e.Message, new string[1] { "OK" }, 0, owner);
             else
-                ShowDialog(Application.ProductName, SystemIcons.Warning, GetExceptionDetails(e), new string[1] { "OK" }, 0, owner);
+                ShowDialog(ProductName, SystemIcons.Warning, GetExceptionDetails(e), new string[1] { "OK" }, 0, owner);
         }
 
         public static void Error(Exception e, Form owner = null)
@@ -91,7 +93,7 @@ namespace Cliver
             if(!ShowDetailsOnException)
                 Error(e.Message, owner);
             else
-                ShowDialog(Application.ProductName, SystemIcons.Error, GetExceptionDetails(e), new string[1] { "OK" }, 0, owner);
+                ShowDialog(ProductName, SystemIcons.Error, GetExceptionDetails(e), new string[1] { "OK" }, 0, owner);
         }
 
         public static string GetExceptionDetails(Exception e)
@@ -123,12 +125,12 @@ namespace Cliver
 
         public static void Error(string message, Form owner = null)
         {
-            ShowDialog(Application.ProductName, SystemIcons.Error, message, new string[1] { "OK" }, 0, owner);
+            ShowDialog(ProductName, SystemIcons.Error, message, new string[1] { "OK" }, 0, owner);
         }
 
         public static bool YesNo(string question, Form owner = null, Icons icon = Icons.Question)
         {
-            return ShowDialog(Application.ProductName, get_icon(icon), question, new string[2] { "Yes", "No" }, 0, owner) == 0;
+            return ShowDialog(ProductName, get_icon(icon), question, new string[2] { "Yes", "No" }, 0, owner) == 0;
         }
 
         public static int ShowDialog(string title, Icon icon, string message, string[] buttons, int default_button, Form owner, bool? button_autosize = null, bool? no_duplicate = null, bool? topmost = null)

@@ -47,6 +47,8 @@ namespace Cliver.Wpf
         /// </summary>
         public static bool NoDuplicate = true;
 
+        public readonly static string ProductName = Application.Current != null ? ProductName : System.Windows.Forms.Application.ProductName;
+
         public static bool ShowDetailsOnException =
 #if DEBUG
             true
@@ -57,33 +59,33 @@ namespace Cliver.Wpf
 
         public static void Inform(string message, Window owner = null)
         {
-            ShowDialog(Application.Current.MainWindow.GetType().Assembly.GetName().Name, SystemIcons.Information, message, new string[1] { "OK" }, 0, owner);
+            ShowDialog(ProductName, SystemIcons.Information, message, new string[1] { "OK" }, 0, owner);
         }
 
         public static void Exclaim(string message, Window owner = null)
         {
-            ShowDialog(Application.Current.MainWindow.GetType().Assembly.GetName().Name, SystemIcons.Exclamation, message, new string[1] { "OK" }, 0, owner);
+            ShowDialog(ProductName, SystemIcons.Exclamation, message, new string[1] { "OK" }, 0, owner);
         }
 
         public static void Exclaim(Exception e, Window owner = null)
         {
             if (!ShowDetailsOnException)
-                ShowDialog(Application.Current.MainWindow.GetType().Assembly.GetName().Name, SystemIcons.Exclamation, e.Message, new string[1] { "OK" }, 0, owner);
+                ShowDialog(ProductName, SystemIcons.Exclamation, e.Message, new string[1] { "OK" }, 0, owner);
             else
-                ShowDialog(Application.Current.MainWindow.GetType().Assembly.GetName().Name, SystemIcons.Exclamation, GetExceptionDetails(e), new string[1] { "OK" }, 0, owner);
+                ShowDialog(ProductName, SystemIcons.Exclamation, GetExceptionDetails(e), new string[1] { "OK" }, 0, owner);
         }
 
         public static void Warning(string message, Window owner = null)
         {
-            ShowDialog(Application.Current.MainWindow.GetType().Assembly.GetName().Name, SystemIcons.Warning, message, new string[1] { "OK" }, 0, owner);
+            ShowDialog(ProductName, SystemIcons.Warning, message, new string[1] { "OK" }, 0, owner);
         }
 
         public static void Warning(Exception e, Window owner = null)
         {
             if (!ShowDetailsOnException)
-                ShowDialog(Application.Current.MainWindow.GetType().Assembly.GetName().Name, SystemIcons.Warning, e.Message, new string[1] { "OK" }, 0, owner);
+                ShowDialog(ProductName, SystemIcons.Warning, e.Message, new string[1] { "OK" }, 0, owner);
             else
-                ShowDialog(Application.Current.MainWindow.GetType().Assembly.GetName().Name, SystemIcons.Warning, GetExceptionDetails(e), new string[1] { "OK" }, 0, owner);
+                ShowDialog(ProductName, SystemIcons.Warning, GetExceptionDetails(e), new string[1] { "OK" }, 0, owner);
         }
 
         public static void Error(Exception e, Window owner = null)
@@ -91,7 +93,7 @@ namespace Cliver.Wpf
             if(!ShowDetailsOnException)
                 Error(e.Message, owner);
             else
-                ShowDialog(Application.Current.MainWindow.GetType().Assembly.GetName().Name, SystemIcons.Error, GetExceptionDetails(e), new string[1] { "OK" }, 0, owner);
+                ShowDialog(ProductName, SystemIcons.Error, GetExceptionDetails(e), new string[1] { "OK" }, 0, owner);
         }
 
         public static string GetExceptionDetails(Exception e)
@@ -123,12 +125,12 @@ namespace Cliver.Wpf
 
         public static void Error(string message, Window owner = null)
         {
-            ShowDialog(Application.Current.MainWindow.GetType().Assembly.GetName().Name, SystemIcons.Error, message, new string[1] { "OK" }, 0, owner);
+            ShowDialog(ProductName, SystemIcons.Error, message, new string[1] { "OK" }, 0, owner);
         }
 
         public static bool YesNo(string question, Window owner = null, Icons icon = Icons.Question)
         {
-            return ShowDialog(Application.Current.MainWindow.GetType().Assembly.GetName().Name, get_icon(icon), question, new string[2] { "Yes", "No" }, 0, owner) == 0;
+            return ShowDialog(ProductName, get_icon(icon), question, new string[2] { "Yes", "No" }, 0, owner) == 0;
         }
 
         public static int ShowDialog(string title, Icon icon, string message, string[] buttons, int default_button, Window owner, bool? button_autosize = null, bool? no_duplicate = null, bool? topmost = null)
