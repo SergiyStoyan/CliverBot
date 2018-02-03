@@ -22,10 +22,8 @@ namespace Cliver.Wpf
         {
             InitializeComponent();
 
-            this.Icon = AssemblyRoutines.GetAppIconImageSource();
-
-            this.ResizeMode = ResizeMode.CanResize;
-
+            Title = caption;
+            Icon = AssemblyRoutines.GetAppIconImageSource();            
             Owner = owner;
 
             if (icon == null)
@@ -33,9 +31,16 @@ namespace Cliver.Wpf
             else
                 image.Source = icon.ToImageSource();
 
-            this.Title = caption;
-            TextRange tr = new TextRange(this.message.Document.ContentEnd, this.message.Document.ContentEnd);
-            tr.Text = message;
+            this.message.Loaded += delegate
+              {
+
+              };
+
+            this.message.AppendText(message);
+            //TextRange tr = new TextRange(this.message.Document.ContentEnd, this.message.Document.ContentEnd);
+            //tr.Text = message;
+
+            this.SizeChanged += messageWindow_SizeChanged;
 
             if (buttons != null)
             {
@@ -69,6 +74,33 @@ namespace Cliver.Wpf
                 //}
             }
         }
+
+        private void messageWindow_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            System.Windows.Size s = message.RenderSize;
+
+            double h = RenderSize.Height - maxSize.Height;
+            if (h > 0)
+                s.Height -= h;
+
+            double w = RenderSize.Width - maxSize.Width;
+            if (w > 0)
+                s.Width -= w;
+
+            if (s.Height > s.Width)
+            {
+                double d = 100;
+                if(s.Height <= d)
+                    d = s.Height/2;
+                s.Height -= d;
+                s.Width += d;
+            }
+
+            //message.RenderSize = s;
+            message.Height = s.Height;
+            message.Width = s.Width;
+        }
+        readonly static System.Windows.Size maxSize = new System.Windows.Size(System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width * 3 / 4, System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height * 3 / 4);
 
         void b_Click(object sender, EventArgs e)
         {

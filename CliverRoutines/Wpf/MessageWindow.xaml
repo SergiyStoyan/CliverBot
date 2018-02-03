@@ -5,31 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Cliver.Wpf"
              mc:Ignorable="d"
-        Background="#f3f6e7" MinHeight="50" MinWidth="100"
+        Background="#f3f6e7" MinHeight="50" MinWidth="100" SizeToContent="WidthAndHeight"
+        ResizeMode="CanResize"
              >
     <Window.Resources>
-        <Style TargetType="{x:Type Label}">
-            <Setter Property="HorizontalAlignment" Value="Left"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-            <Setter Property="Margin"  Value="0,10,10,0"/>
-        </Style>
-        <Style TargetType="{x:Type RichTextBox}">
-            <Setter Property="MinHeight" Value="{Binding ActualHeight, ElementName=Monitors}"/>
-            <Setter Property="VerticalAlignment" Value="{Binding VerticalAlignment, ElementName=Monitors}"/>
-            <Setter Property="HorizontalAlignment" Value="{Binding HorizontalAlignment, ElementName=Monitors}"/>
-            <Setter Property="Margin" Value="{Binding Margin, ElementName=Monitors}"/>
-            <Setter Property="MinWidth" Value="{Binding MinWidth, ElementName=Monitors}"/>
-            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, ElementName=Monitors}"/>
-            <Setter Property="AcceptsReturn" Value="True"/>
-        </Style>
-        <Style TargetType="{x:Type Button}">
-            <Setter Property="Margin" Value="10,0,0,0"/>
-            <Setter Property="Padding" Value="10,0,10,0"/>
-            <Setter Property="MinHeight" Value="{Binding ActualHeight, ElementName=Monitors}"/>
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="BorderBrush" Value="#268"/>
-        </Style>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -44,10 +23,13 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="10" />
         </Grid.RowDefinitions>
-        <Image Grid.Row="1" Grid.Column="1" Name="image" ></Image>
-        <RichTextBox Grid.Row="1" Grid.Column="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Name="message">
+        <Image Grid.Row="1" Grid.Column="1" Name="image" Stretch="None" VerticalAlignment="Top" Margin="0,0,10,0"></Image>
+        <RichTextBox HorizontalAlignment="Center" VerticalAlignment="Top" 
+                     Grid.Row="1" Grid.Column="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" 
+                     Name="message" AcceptsReturn="True">
         </RichTextBox>
-        <UniformGrid HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Rows="1" Margin="0, 20, 0, 0" DockPanel.Dock="Bottom" Name="buttons">
+        <UniformGrid HorizontalAlignment="Right" VerticalAlignment="Top" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Rows="1" Margin="0, 20, 0, 0" DockPanel.Dock="Bottom" Name="buttons">
+           
         </UniformGrid>
     </Grid>
 </Window>
