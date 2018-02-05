@@ -158,6 +158,7 @@
     <Compile Include="Config.cs" />
     <Compile Include="ListDb.IndexedTable.cs" />
     <Compile Include="ListDb.Table.cs" />
+    <Compile Include="Misc\FirewallRoutines.cs" />
     <Compile Include="Misc\Crypto.cs" />
     <Compile Include="Db\DbCommand.cs" />
     <Compile Include="Db\DbConnection.cs" />

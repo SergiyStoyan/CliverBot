@@ -81,11 +81,17 @@ namespace Cliver.Wpf
 
             double h = RenderSize.Height - maxSize.Height;
             if (h > 0)
-                s.Height -= h;
+                if (s.Height > h)
+                    s.Height -= h;
+                else
+                    s.Height = 100;
 
             double w = RenderSize.Width - maxSize.Width;
             if (w > 0)
-                s.Width -= w;
+                if (s.Width > w)
+                    s.Width -= w;
+                else
+                    s.Width = 100;
 
             if (s.Height > s.Width)
             {
