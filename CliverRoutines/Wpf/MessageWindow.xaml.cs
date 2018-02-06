@@ -39,8 +39,12 @@ namespace Cliver.Wpf
             this.message.AppendText(message);
             //TextRange tr = new TextRange(this.message.Document.ContentEnd, this.message.Document.ContentEnd);
             //tr.Text = message;
-
-            this.SizeChanged += messageWindow_SizeChanged;
+            
+            this.Loaded += delegate 
+            {
+                this.SizeToContent = SizeToContent.Manual;
+                this.TrimWindowSize(0.8);
+            };
 
             if (buttons != null)
             {
@@ -74,40 +78,7 @@ namespace Cliver.Wpf
                 //}
             }
         }
-
-        private void messageWindow_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            System.Windows.Size s = message.RenderSize;
-
-            double h = RenderSize.Height - maxSize.Height;
-            if (h > 0)
-                if (s.Height > h)
-                    s.Height -= h;
-                else
-                    s.Height = 100;
-
-            double w = RenderSize.Width - maxSize.Width;
-            if (w > 0)
-                if (s.Width > w)
-                    s.Width -= w;
-                else
-                    s.Width = 100;
-
-            if (s.Height > s.Width)
-            {
-                double d = 100;
-                if(s.Height <= d)
-                    d = s.Height/2;
-                s.Height -= d;
-                s.Width += d;
-            }
-
-            //message.RenderSize = s;
-            message.Height = s.Height;
-            message.Width = s.Width;
-        }
-        readonly static System.Windows.Size maxSize = new System.Windows.Size(System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width * 3 / 4, System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height * 3 / 4);
-
+        
         void b_Click(object sender, EventArgs e)
         {
             clicked_button = (int)((Button)sender).Tag;
