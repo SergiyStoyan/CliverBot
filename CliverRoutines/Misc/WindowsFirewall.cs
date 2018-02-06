@@ -42,6 +42,8 @@ namespace Cliver
             string stdout = null;
             string stderr = "";
             performNetsh("advfirewall firewall add rule name=\"" + programDisplayName + "\" dir=" + direction.ToString() + " action=allow program=\"" + programExeFileName + "\"", out stdout, out stderr);
+            //if (!Regex.IsMatch(stdout, "Ok."))
+            //    throw new Exception(stdout + "\r\nstderr: " + stderr);
             if (!string.IsNullOrEmpty(stderr))
                 throw new Exception(stderr);
         }
@@ -54,15 +56,21 @@ namespace Cliver
             if (programExeFileName != null)
                 arguments += " program=\"" + programExeFileName + "\"";
             performNetsh(arguments, out stdout, out stderr);
+            //if (!Regex.IsMatch(stdout, "Ok."))
+            //    throw new Exception(stdout + "\r\nstderr: " + stderr);
             if (!string.IsNullOrEmpty(stderr))
                 throw new Exception(stderr);
         }
 
         public static void BlockProgram(string programDisplayName, string programExeFileName, Direction direction)
         {
+            DeleteRule(programDisplayName, programExeFileName);
+
             string stdout;
             string stderr;
             performNetsh("advfirewall firewall add rule name=\"" + programDisplayName + "\" dir=" + direction.ToString() + " action=block program=\"" + programExeFileName + "\"", out stdout, out stderr);
+            //if (!Regex.IsMatch(stdout, "Ok."))
+            //    throw new Exception(stdout + "\r\nstderr: " + stderr);
             if (!string.IsNullOrEmpty(stderr))
                 throw new Exception(stderr);
         }
