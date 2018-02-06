@@ -37,10 +37,8 @@ namespace Cliver
 
         public static void AllowProgram(string programDisplayName, string programExeFileName, Direction direction)
         {
-            DeleteRule(programDisplayName, programExeFileName);
-
-            string stdout = null;
-            string stderr = "";
+            string stdout;
+            string stderr;
             performNetsh("advfirewall firewall add rule name=\"" + programDisplayName + "\" dir=" + direction.ToString() + " action=allow program=\"" + programExeFileName + "\"", out stdout, out stderr);
             //if (!Regex.IsMatch(stdout, "Ok."))
             //    throw new Exception(stdout + "\r\nstderr: " + stderr);
@@ -83,6 +81,7 @@ namespace Cliver
                       FileName = "netsh",
                       Arguments = arguments,
                       WindowStyle = ProcessWindowStyle.Hidden,
+                      CreateNoWindow = true,
                       RedirectStandardOutput = true,
                       RedirectStandardError = true,
                       UseShellExecute = false,
