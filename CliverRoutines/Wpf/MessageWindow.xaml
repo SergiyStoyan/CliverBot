@@ -24,7 +24,7 @@
             <RowDefinition Height="10" />
         </Grid.RowDefinitions>
         <Image Grid.Row="1" Grid.Column="1" Name="image" Stretch="None" VerticalAlignment="Top" Margin="0,0,10,0"></Image>
-        <TextBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch"        Grid.Row="1" Grid.Column="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"              Name="message">        </TextBox>
+        <TextBox HorizontalAlignment="Stretch" VerticalAlignment="Stretch"   Background="Transparent"     Grid.Row="1" Grid.Column="2" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"              Name="message">        </TextBox>
         <UniformGrid HorizontalAlignment="Right" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Rows="1" Margin="0, 20, 0, 0" DockPanel.Dock="Bottom" Name="buttons">        </UniformGrid>
     </Grid>
 </Window>
