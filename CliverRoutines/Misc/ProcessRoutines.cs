@@ -85,7 +85,7 @@ namespace Cliver
             Environment.Exit(0);
         }
 
-        public static void Restart(bool as_administarator = false)
+        public static void Restart(bool as_administarator = false, string arguments = null)
         {
             ProcessStartInfo psi = new ProcessStartInfo();
             psi.UseShellExecute = true;
@@ -93,6 +93,7 @@ namespace Cliver
             psi.FileName = Application.ExecutablePath;
             if (as_administarator)
                 psi.Verb = "runas";
+            psi.Arguments = arguments;
             if (GLOBAL_SINGLE_PROCESS_MUTEX != null)
                 GLOBAL_SINGLE_PROCESS_MUTEX.ReleaseMutex();
             try
