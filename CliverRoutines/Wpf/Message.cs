@@ -90,7 +90,7 @@ namespace Cliver.Wpf
 
         public static void Error(Exception e, Window owner = null)
         {
-            if(!ShowDetailsOnException)
+            if (!ShowDetailsOnException)
                 Error(e.Message, owner);
             else
                 ShowDialog(ProductName, SystemIcons.Error, GetExceptionDetails(e), new string[1] { "OK" }, 0, owner);
@@ -170,6 +170,11 @@ namespace Cliver.Wpf
             }
 
             MessageWindow mf = new MessageWindow(title, icon, message, buttons, default_button, owner/*, button_autosize ?? ButtonAutosize*/);
+            if (ResourceDictionary != null)
+            {
+                mf.Resources.MergedDictionaries.Clear();
+                mf.Resources.MergedDictionaries.Add(ResourceDictionary);
+            }
             mf.ShowInTaskbar = ShowInTaskbar;
             mf.Topmost = topmost ?? TopMost;
             //mf.TopLevel = topmost ?? TopMost;
@@ -194,7 +199,7 @@ namespace Cliver.Wpf
         }
         static Icon get_icon(Icons icon)
         {
-            switch(icon)
+            switch (icon)
             {
                 case Icons.Information:
                     return SystemIcons.Information;
@@ -209,6 +214,27 @@ namespace Cliver.Wpf
                 default: throw new Exception("No option: " + icon);
             }
         }
+
+        public static ResourceDictionary ResourceDictionary = null;//set style
+        public static string ResourceDictionaryPath
+        {
+            get
+            {
+                return resourceDictionaryPath;
+            }
+            set
+            {
+                resourceDictionaryPath = value;
+                if (resourceDictionaryPath != null)
+                {
+                    ResourceDictionary = new ResourceDictionary();
+                    Uri u = new System.Uri(resourceDictionaryPath, System.UriKind.Absolute);
+                    System.Windows.Application.LoadComponent(ResourceDictionary, u);
+                }
+                else
+                    ResourceDictionary = null;
+            }
+        }
+        static string resourceDictionaryPath = null;
     }
 }
-

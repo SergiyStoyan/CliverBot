@@ -62,7 +62,7 @@ namespace Cliver
         /// <returns></returns>
         public static string GetFileNameFromPath(string path)
         {
-            return Regex.Replace(path, @".*\\", "", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
+            return Regex.Replace(path, @".*[\/]", "", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
         }
 
         public static string GetFileNameWithoutExtentionFromPath(string path)
