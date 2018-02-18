@@ -272,7 +272,7 @@ namespace Cliver.BotWeb
             {                
                 int datasize = 8192 * 16;
                 StringBuilder cookie = new StringBuilder(datasize);
-                if (!Win32.InternetGetCookie(uri.AbsoluteUri, null, cookie, ref datasize))
+                if (!WinApi.Wininet.InternetGetCookie(uri.AbsoluteUri, null, cookie, ref datasize))
                 //if (!Win32.InternetGetCookieEx(uri.ToString(), null, cookie, ref datasize, Win32.InternetCookieHttponly, IntPtr.Zero))
                 {
                     //string t = (new Win32Exception(Win32.GetLastError())).Message;

@@ -35,7 +35,7 @@ namespace Cliver.Bot
             override public void Loaded()
             {
                 if (!File.Contains(":"))
-                    File = Cliver.Log.GetAppCommonDataDir() + "\\" + File;
+                    File = Cliver.Log.AppCommonDataDir + "\\" + File;
                 if (!System.IO.File.Exists(File))
                 {
                     string file0 = Cliver.Log.AppDir + "\\" + PathRoutines.GetFileNameFromPath(File);

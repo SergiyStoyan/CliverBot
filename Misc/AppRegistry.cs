@@ -148,7 +148,7 @@ namespace Cliver.Bot
                 || e is System.UnauthorizedAccessException
                 )
             {
-                if (ProcessRoutines.IsElevated())
+                if (ProcessRoutines.ProcessHasElevatedPrivileges())
                     LogMessage.Exit("Despite the app is running with elevated privileges, it still cannot write to the resgistry. Please fix the problem before using the app.");
                 LogMessage.Inform(Program.AppName + " needs administatrator privileges to create an initial configuration in the registry. So it will restart now and ask for elevated privileges.");
                 try
