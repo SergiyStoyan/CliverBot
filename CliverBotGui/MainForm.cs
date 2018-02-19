@@ -195,12 +195,10 @@ namespace Cliver.BotGui
             try
             {
                 closing = true;
-                Application.Exit();
+                //Application.Exit();//on Win10 gives a system error (proabably due to loop while closing window)
             }
             catch { }
-            Environment.Exit(0);
-            //Thread.Sleep(1000);
-            //System.Diagnostics.Process.GetCurrentProcess().Kill();
+            // Environment.Exit(0);//on Win10 gives a system error (proabably due to loop while closing window)
         }
         bool closing = false;
 

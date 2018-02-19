@@ -24,7 +24,7 @@ namespace Cliver.BotWeb
             public int MaxDownloadedFileLength = 1000000;
             public int MaxHttpRedirectionCount = 20;
             public int MaxAttemptCount = 1;
-            public string HttpUserAgent = "CliverBot 3.*";
+            public string HttpUserAgent = "CliverBot 4.*";
             public bool UseFilesFromCache = true;
             public bool LogDownloadedFiles = true;
             public bool LogPostRequestParameters = true;

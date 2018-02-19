@@ -29,8 +29,12 @@ namespace Cliver.BotWeb
         {
             IeRoutines.Invoke(browser, () =>
             {
-                browser.Stop();
-                browser.Dispose();
+                try
+                {
+                    browser.Stop();
+                    browser.Dispose();
+                }
+                catch { }
             });
         }
 
