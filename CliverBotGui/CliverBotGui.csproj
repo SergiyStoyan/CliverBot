@@ -77,9 +77,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="AboutForm.cs" />
     <Compile Include="BotThreadControls\BotThreadControl.Api.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -126,9 +124,7 @@
     <Compile Include="Config\ProxyConfigControl.designer.cs">
       <DependentUpon>ProxyConfigControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Config\SessionsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Config\SessionsForm.cs" />
     <Compile Include="Config\SessionsForm.Designer.cs">
       <DependentUpon>SessionsForm.cs</DependentUpon>
     </Compile>
@@ -144,9 +140,7 @@
     <Compile Include="BotThreadControls\BotThreadControl.designer.cs">
       <DependentUpon>BotThreadControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="BotThreadManagerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="BotThreadManagerForm.cs" />
     <Compile Include="BotThreadManagerForm.designer.cs">
       <DependentUpon>BotThreadManagerForm.cs</DependentUpon>
     </Compile>
@@ -156,9 +150,7 @@
     <Compile Include="Config\ConfigControl.designer.cs">
       <DependentUpon>ConfigControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Config\ConfigForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Config\ConfigForm.cs" />
     <Compile Include="Config\ConfigForm.designer.cs">
       <DependentUpon>ConfigForm.cs</DependentUpon>
     </Compile>
@@ -168,9 +160,7 @@
     <Compile Include="Config\SpiderConfigControl.designer.cs">
       <DependentUpon>SpiderConfigControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="MainForm.cs" />
     <Compile Include="MainForm.designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
