@@ -167,12 +167,12 @@ namespace Cliver.BotWeb
             return browser.WaitForCompletion(timeout_in_mss);
         }
 
-        public static void ClickHtmlElement(this WebBrowser browser, HtmlElement he)
+        public static void ClickHtmlElement(this HtmlElement he)
         {
             he.InvokeMember("click");
         }
 
-        public static HtmlElement GetHtmlFirstElementContainingFragment(HtmlElement parent, string tag, string fragment)
+        public static HtmlElement GetHtmlFirstElementContainingFragment(this HtmlElement parent, string tag, string fragment)
         {
             HtmlElementCollection hec;
             if (tag == null)
@@ -185,7 +185,7 @@ namespace Cliver.BotWeb
             return null;
         }
 
-        public static IEnumerable<HtmlElement> GetHtmlElementsByAttr(HtmlElement parent_he, string attribute, string value = null, string tag = null)
+        public static IEnumerable<HtmlElement> GetHtmlElementsByAttr(this HtmlElement parent_he, string attribute, string value = null, string tag = null)
         {
             HtmlElementCollection hec;
             if (tag == null)
@@ -204,12 +204,12 @@ namespace Cliver.BotWeb
             }
         }
 
-        public static HtmlElement GetFirstHtmlElementByAttr(HtmlElement parent, string tag, string attribute, string value)
+        public static HtmlElement GetFirstHtmlElementByAttr(this HtmlElement parent, string tag, string attribute, string value)
         {
             return GetHtmlElementsByAttr(parent, tag, attribute, value).FirstOrDefault();
         }
 
-        public static List<HtmlElement> GetHtmlElementsByPath(HtmlElement parent, string path)
+        public static List<HtmlElement> GetHtmlElementsByPath(this HtmlElement parent, string path)
         {
             string[] tag_index_pairs = path.Split('/');
             List<HtmlElement> level_hes = new List<HtmlElement>();

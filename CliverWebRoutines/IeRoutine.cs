@@ -608,7 +608,7 @@ namespace Cliver.BotWeb
 
         public void ClickHtmlElement(HtmlElement he)
         {
-            browser.ClickHtmlElement(he);
+            he.ClickHtmlElement();
         }
 
         delegate IntPtr _MouseLeftClick(Point p, string window_class);
