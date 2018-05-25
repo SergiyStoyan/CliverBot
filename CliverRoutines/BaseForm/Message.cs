@@ -113,11 +113,22 @@ namespace Cliver
             return string.Join("\r\n=>\r\n", ms);
         }
 
+        /// <summary>
+        /// Display exception without tracing inforamation.
+        /// </summary>
+        /// <param name="e"></param>
+        /// <param name="owner"></param>
         public static void Error2(Exception e, Form owner = null)
         {
             Error(e.Message, owner);
         }
 
+        /// <summary>
+        /// Display exception without tracing inforamation.
+        /// </summary>
+        /// <param name="subtitle"></param>
+        /// <param name="e"></param>
+        /// <param name="owner"></param>
         public static void Error2(string subtitle, Exception e, Form owner = null)
         {
             Error(subtitle + "\r\n\r\n" + e.Message, owner);
