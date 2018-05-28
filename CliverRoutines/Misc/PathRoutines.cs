@@ -30,7 +30,7 @@ namespace Cliver
             return p1 == p2;
         }
 
-        public static string GetNormalizedPath(string path)
+        public static string GetNormalizedPath(string path, bool upper_case = true)
         {
             return Path.GetFullPath(new Uri(path).LocalPath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).ToUpperInvariant();
         }
@@ -106,19 +106,24 @@ namespace Cliver
             return Regex.Replace(path, @"\.[^\.]+$", "." + extention, RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
         }
 
-        public static string CreateDirectory(string path, bool unique = false)
+        public static string GetDirMirroredInDir(string dir, string mirror_dir)
         {
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
-            else if (unique)
-            {
-                int i = 1;
-                string p = path + "_" + i;
-                for (; Directory.Exists(p); p = p + "_" + (++i)) ;
-                path = p;
-                Directory.CreateDirectory(path);
-            }
-            return path;
+            string d = GetNormalizedPath(dir, false);
+            string md = GetNormalizedPath(mirror_dir, false);
+            string[] ds = d.Split('\\');
+            string[] mds = md.Split('\\');
+            int l = ds.Length >= mds.Length ? mds.Length : ds.Length;
+            int i = 0;
+            for (; i < l; i++)
+                if (ds[i].ToUpper() != mds[i].ToUpper())
+                    break;
+            if (i == mds.Length)
+                throw new Exception("Either directory '" + mirror_dir + "' contains directory to be mirrored: '" + dir + "' or vise versa.");
+            i++;
+            string rd = mirror_dir;
+            for (; i < ds.Length; i++)
+                rd += "\\" + ds[i];
+            return rd;
         }
     }
 }
