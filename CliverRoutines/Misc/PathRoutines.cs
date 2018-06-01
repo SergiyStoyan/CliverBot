@@ -32,7 +32,10 @@ namespace Cliver
 
         public static string GetNormalizedPath(string path, bool upper_case = true)
         {
-            return Path.GetFullPath(new Uri(path).LocalPath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar).ToUpperInvariant();
+            string p = Path.GetFullPath(new Uri(path).LocalPath).TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            if (upper_case)
+                return p.ToUpperInvariant();
+            return p;
         }
 
         public static string GetAbsolutePath(string path)
