@@ -38,5 +38,11 @@ namespace Cliver
             Directory.Delete(path, recursive);
             Directory.CreateDirectory(path);
         }
+
+        public static void CopyFile(string file1, string file2, bool overwrite = false)
+        {
+            CreateDirectory(PathRoutines.GetDirFromPath(file2), false);
+            File.Copy(file1, file2, overwrite);
+        }
     }
 }

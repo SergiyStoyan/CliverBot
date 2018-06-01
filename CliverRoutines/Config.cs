@@ -119,8 +119,32 @@ namespace Cliver
                         Serializable t;
                         string file = StorageDir + "\\" + name + "." + st.FullName + "." + FILE_EXTENSION;
                         if (reset)
-                            t = Serializable.Create(st, file);
+                        {
+                            string init_file = Log.AppDir + "\\" + name + "." + st.FullName + "." + FILE_EXTENSION;
+                            if (File.Exists(init_file))
+                            {
+                                FileSystemRoutines.CopyFile(init_file, file, true);
+                                try
+                                {
+                                    t = Serializable.Load(st, file);
+                                }
+                                catch (Exception e)
+                                {
+                                    LogMessage.Error2(e);
+                                    t = Serializable.Create(st, file);
+                                }
+                            }
+                            else
+                                t = Serializable.Create(st, file);
+                        }
                         else
+                        {
+                            if (!File.Exists(file))
+                            {
+                                string init_file = Log.AppDir + "\\" + name + "." + st.FullName + "." + FILE_EXTENSION;
+                                if (File.Exists(init_file))
+                                    FileSystemRoutines.CopyFile(init_file, file, true);
+                            }
                             try
                             {
                                 t = Serializable.Load(st, file);
@@ -130,6 +154,7 @@ namespace Cliver
                                 LogMessage.Error2(e);
                                 t = Serializable.Create(st, file);
                             }
+                        }
 
                         fi.SetValue(null, t);
 
