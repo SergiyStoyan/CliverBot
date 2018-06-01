@@ -7,9 +7,9 @@ using System.IO;
 
 namespace Cliver
 {
-   public class FileSystemRoutines
+    public class FileSystemRoutines
     {
-       static public List<string> GetFiles(string directory, bool include_subfolders = true)
+        static public List<string> GetFiles(string directory, bool include_subfolders = true)
         {
             List<string> fs = Directory.EnumerateFiles(directory).ToList();
             if (include_subfolders)
@@ -31,6 +31,12 @@ namespace Cliver
                 Directory.CreateDirectory(path);
             }
             return path;
+        }
+
+        public static void ClearDirectory(string path, bool recursive = true)
+        {
+            Directory.Delete(path, recursive);
+            Directory.CreateDirectory(path);
         }
     }
 }
