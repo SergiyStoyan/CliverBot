@@ -5,25 +5,38 @@
 //********************************************************************************************
 using System;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 
 namespace Cliver
 {
     public static class ImageRoutines
     {
-        public static Image GetScaledImage(Image image, Size max_size)
+        public static Bitmap GetScaledBitmap(Image image, Size max_size)
         {
             var ratio = Math.Min((double)max_size.Width / image.Width, (double)max_size.Height / image.Height);
-            var w = (int)(image.Width * ratio);
-            var h = (int)(image.Height * ratio);
-            var i = new Bitmap(w, h);
+            var i = new Bitmap((int)(image.Width * ratio), (int)(image.Height * ratio));
             using (var graphics = Graphics.FromImage(i))
             {
                 graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 graphics.SmoothingMode = SmoothingMode.HighQuality;
                 graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
                 graphics.CompositingQuality = CompositingQuality.HighQuality;
-                graphics.DrawImage(image, 0, 0, w, h);
+                graphics.DrawImage(image, 0, 0, i.Width, i.Height);
+            }
+            return i;
+        }
+
+        public static Bitmap GetScaledBitmap(Image image, float ratio)
+        {
+            var i = new Bitmap((int)(image.Width * ratio), (int)(image.Height * ratio));
+            using (var graphics = Graphics.FromImage(i))
+            {
+                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                graphics.SmoothingMode = SmoothingMode.HighQuality;
+                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                graphics.CompositingQuality = CompositingQuality.HighQuality;
+                graphics.DrawImage(image, 0, 0, i.Width, i.Height);
             }
             return i;
         }
@@ -119,5 +132,25 @@ namespace Cliver
                 System.Windows.Int32Rect.Empty,
                 System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
         }
+
+        //public static Bitmap GetResizedImage(Image image, float factor)
+        //{
+        //    var image2 = new Bitmap((int)(image.Width * factor), (int)(image.Height * factor));
+        //    using (var graphics = Graphics.FromImage(image2))
+        //    {
+        //        graphics.CompositingMode = CompositingMode.SourceCopy;
+        //        graphics.CompositingQuality = CompositingQuality.HighQuality;
+        //        graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+        //        graphics.SmoothingMode = SmoothingMode.HighQuality;
+        //        graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
+
+        //        using (var wrapMode = new ImageAttributes())
+        //        {
+        //            wrapMode.SetWrapMode(WrapMode.TileFlipXY);
+        //            graphics.DrawImage(image, new Rectangle(0, 0, image2.Width, image2.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
+        //        }
+        //    }
+        //    return image2;
+        //}
     }
 }
