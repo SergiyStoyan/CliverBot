@@ -12,7 +12,7 @@ namespace Cliver
 {
     public static class ImageRoutines
     {
-        public static Bitmap GetScaledBitmap(Image image, Size max_size)
+        public static Bitmap GetScaled(Image image, Size max_size)
         {
             var ratio = Math.Min((double)max_size.Width / image.Width, (double)max_size.Height / image.Height);
             var i = new Bitmap((int)(image.Width * ratio), (int)(image.Height * ratio));
@@ -27,7 +27,7 @@ namespace Cliver
             return i;
         }
 
-        public static Bitmap GetScaledBitmap(Image image, float ratio)
+        public static Bitmap GetScaled(Image image, float ratio)
         {
             var i = new Bitmap((int)(image.Width * ratio), (int)(image.Height * ratio));
             using (var graphics = Graphics.FromImage(i))
@@ -41,7 +41,7 @@ namespace Cliver
             return i;
         }
 
-        public static Image GetCroppedByColor(Image image, Color color)
+        public static Bitmap GetCroppedByColor(Image image, Color color)
         {
             Bitmap b = new Bitmap(image);
             int y = b.Height, height = 0, x = b.Width, width = 0;
