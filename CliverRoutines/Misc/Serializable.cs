@@ -15,56 +15,77 @@ namespace Cliver
     {
         static public T Load<T>(string file) where T : Serializable, new()
         {
-            T t = get<T>(file, false);
+            T t = get<T>(file, InitMode.LOAD);
+            t.Loaded();
+            return t;
+        }
+
+        static public T LoadOrCreate<T>(string file) where T : Serializable, new()
+        {
+            T t = get<T>(file, InitMode.LOAD_OR_CREATE);
             t.Loaded();
             return t;
         }
 
         static public T Create<T>(string file) where T : Serializable, new()
         {
-            T t = get<T>(file, true);
+            T t = get<T>(file, InitMode.CREATE);
             t.Loaded();
             return t;
         }
 
-        static T get<T>(string file, bool ignore_file_content) where T : Serializable, new()
+        static T get<T>(string file, InitMode init_mode) where T : Serializable, new()
         {
             if (!file.Contains(":"))
                 file = Log.AppCommonDataDir + "\\" + file;
             T s;
-            if (!ignore_file_content && File.Exists(file))
-                s = Cliver.SerializationRoutines.Json.Load<T>(file);
-            else
+            if (init_mode == InitMode.CREATE || (init_mode == InitMode.LOAD_OR_CREATE && !File.Exists(file)))
                 s = new T();
+            else
+                s = Cliver.SerializationRoutines.Json.Load<T>(file);
             s.__File = file;
             return s;
         }
 
         static public Serializable Load(Type serializable_type, string file)
         {
-            Serializable t = get(serializable_type, file, false);
+            Serializable t = get(serializable_type, file, InitMode.LOAD);
+            t.Loaded();
+            return t;
+        }
+
+        static public Serializable LoadOrCreate(Type serializable_type, string file)
+        {
+            Serializable t = get(serializable_type, file, InitMode.LOAD_OR_CREATE);
             t.Loaded();
             return t;
         }
 
         static public Serializable Create(Type serializable_type, string file)
         {
-            Serializable t = get(serializable_type, file, true);
+            Serializable t = get(serializable_type, file,  InitMode.CREATE);
             t.Loaded();
             return t;
         }
 
-        static Serializable get(Type serializable_type, string file, bool ignore_file_content)
+        static Serializable get(Type serializable_type, string file, InitMode init_mode)
         {
             if (!file.Contains(":"))
                 file = Log.AppCommonDataDir + "\\" + file;
             Serializable s;
-            if (!ignore_file_content && File.Exists(file))
-                s = (Serializable)Cliver.SerializationRoutines.Json.Load(serializable_type, file);
-            else
+            if (init_mode == InitMode.CREATE || (init_mode == InitMode.LOAD_OR_CREATE  && !File.Exists(file)))
                 s = (Serializable)Activator.CreateInstance(serializable_type);
+            else                   
+                s = (Serializable)Cliver.SerializationRoutines.Json.Load(serializable_type, file);
             s.__File = file;
             return s;
+        }
+
+        public enum InitMode
+        {
+            LOAD,
+            LOAD_OR_CREATE,
+            CREATE
         }
 
         //[ScriptIgnore]

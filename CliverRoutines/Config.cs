@@ -32,7 +32,7 @@ namespace Cliver
 
         public void Reload()
         {
-            Serializable s = Load(GetType(), __File);
+            Serializable s = LoadOrCreate(GetType(), __File);
             foreach (FieldInfo fi in GetType().GetFields(BindingFlags.Public | BindingFlags.Instance))
                 fi.SetValue(this, fi.GetValue(s));
         }
@@ -98,6 +98,7 @@ namespace Cliver
                 sas.Add(Assembly.GetEntryAssembly());
                 foreach (AssemblyName an in Assembly.GetEntryAssembly().GetReferencedAssemblies().Where(an => assembly_name_regex_pattern != null ? Regex.IsMatch(an.Name, assembly_name_regex_pattern) : true))
                     sas.Add(Assembly.Load(an));
+                //bool ignore_load_error = false;
                 foreach (Assembly sa in sas)
                 {
                     Type[] ets = sa.GetTypes();
@@ -124,15 +125,7 @@ namespace Cliver
                             if (File.Exists(init_file))
                             {
                                 FileSystemRoutines.CopyFile(init_file, file, true);
-                                try
-                                {
-                                    t = Serializable.Load(st, file);
-                                }
-                                catch (Exception e)
-                                {
-                                    LogMessage.Error2(e);
-                                    t = Serializable.Create(st, file);
-                                }
+                                t = Serializable.LoadOrCreate(st, file);
                             }
                             else
                                 t = Serializable.Create(st, file);
@@ -145,12 +138,15 @@ namespace Cliver
                             }
                             catch (Exception e)
                             {
-                                LogMessage.Error2(e);
+                                //if (!ignore_load_error && !Directory.Exists(StorageDir))//it is newly installed and so files are not expected to be there
+                                //    ignore_load_error = true;
+                                //if (!ignore_load_error)
+                                //    LogMessage.Error2(e);
                                 string init_file = Log.AppDir + "\\" + name + "." + st.FullName + "." + FILE_EXTENSION;
                                 if (File.Exists(init_file))
                                 {
                                     FileSystemRoutines.CopyFile(init_file, file, true);
-                                    t = Serializable.Load(st, file);
+                                    t = Serializable.LoadOrCreate(st, file);
                                 }
                                 else
                                     t = Serializable.Create(st, file);
@@ -183,11 +179,18 @@ namespace Cliver
 
         static public bool ReadOnly { get; private set; }
 
-        static public void Reset()
+        static public void Reset(string storage_dir = null)
         {
-            StorageDir = DefaultStorageDir;
+            StorageDir = storage_dir != null ? storage_dir : DefaultStorageDir;
             get(true);
         }
+
+        //static public void IfNewThenResetElseReload(string storage_dir = null)
+        //{
+        //    StorageDir = storage_dir != null ? storage_dir : DefaultStorageDir;
+
+        //    get(true);
+        //}
 
         static public void Save(string storage_dir = null)
         {
