@@ -157,6 +157,7 @@
     <Compile Include="BaseService.cs" />
     <Compile Include="Config.cs" />
     <Compile Include="ListDb.IndexedTable.cs" />
+    <Compile Include="HandyDictionary.cs" />
     <Compile Include="ListDb.Table.cs" />
     <Compile Include="Misc\FileSystemRoutines.cs" />
     <Compile Include="Misc\WindowsFirewall.cs" />
