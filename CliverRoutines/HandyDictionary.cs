@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Cliver
 {
-    public class HandyDictionary<KT,VT> : IDisposable
+    public class HandyDictionary<KT,VT> : IDisposable //where VT: class
     {
         public HandyDictionary(Func<KT, VT> get_object)
         {
@@ -23,13 +23,13 @@ namespace Cliver
             Dispose();
         }
 
-        public void Dispose()
+        virtual  public void Dispose()
         {
             lock (this)
             {
                 if (keys2values != null)
                 {
-                    if (typeof(VT) is IDisposable)
+                    if (IsDisposable(typeof(VT)))
                         foreach (VT v in keys2values.Values)
                             ((IDisposable)v).Dispose();
                     keys2values = null;
@@ -37,11 +37,16 @@ namespace Cliver
             }
         }
 
-        public void Clear()
+        static bool IsDisposable(Type t)
+        {
+            return typeof(IDisposable).IsAssignableFrom(t);
+        }
+
+        virtual public void Clear()
         {
             lock (this)
             {
-                if (typeof(VT) is IDisposable)
+                if (IsDisposable(typeof(VT)))
                     foreach (VT v in keys2values.Values)
                         ((IDisposable)v).Dispose();
                 keys2values.Clear();
