@@ -18,25 +18,50 @@ namespace Cliver
             return fs;
         }
 
-        public static string CreateDirectory(string path, bool unique = false)
+        public static string CreateDirectory(string directory, bool unique = false)
         {
-            if (!Directory.Exists(path))
-                Directory.CreateDirectory(path);
+            if (!Directory.Exists(directory))
+                Directory.CreateDirectory(directory);
             else if (unique)
             {
                 int i = 1;
-                string p = path + "_" + i;
+                string p = directory + "_" + i;
                 for (; Directory.Exists(p); p = p + "_" + (++i)) ;
-                path = p;
-                Directory.CreateDirectory(path);
+                directory = p;
+                Directory.CreateDirectory(directory);
             }
-            return path;
+            return directory;
         }
 
-        public static void ClearDirectory(string path, bool recursive = true)
+        public static void ClearDirectory(string directory, bool recursive = true)
         {
-            Directory.Delete(path, recursive);
-            Directory.CreateDirectory(path);
+            if(!Directory.Exists(directory))
+            {
+                Directory.CreateDirectory(directory);
+                return;
+            }
+
+            foreach (string file in Directory.GetFiles(directory))
+            {
+                File.SetAttributes(file, FileAttributes.Normal);
+                File.Delete(file);
+            }
+            if (recursive)
+                foreach (string dir in Directory.GetDirectories(directory))
+                    DeleteDirectory(directory, recursive);
+        }
+
+        public static void DeleteDirectory(string directory, bool recursive = true)
+        {
+            foreach (string file in Directory.GetFiles(directory))
+            {
+                File.SetAttributes(file, FileAttributes.Normal);
+                File.Delete(file);
+            }
+            if (recursive)
+                foreach (string dir in Directory.GetDirectories(directory))
+                    DeleteDirectory(directory, recursive);
+            Directory.Delete(directory, false);
         }
 
         public static void CopyFile(string file1, string file2, bool overwrite = false)
