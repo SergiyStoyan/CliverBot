@@ -33,7 +33,7 @@ namespace Cliver
             return directory;
         }
 
-        public static void ClearDirectory(string directory, bool recursive = true)
+        public static void ClearDirectory(string directory, bool touch_subfolders = true)
         {
             if(!Directory.Exists(directory))
             {
@@ -46,21 +46,21 @@ namespace Cliver
                 File.SetAttributes(file, FileAttributes.Normal);
                 File.Delete(file);
             }
-            if (recursive)
+            if (touch_subfolders)
                 foreach (string dir in Directory.GetDirectories(directory))
-                    DeleteDirectory(directory, recursive);
+                    DeleteDirectory(directory, touch_subfolders);
         }
 
-        public static void DeleteDirectory(string directory, bool recursive = true)
+        public static void DeleteDirectory(string directory, bool touch_subfolders = true)
         {
             foreach (string file in Directory.GetFiles(directory))
             {
                 File.SetAttributes(file, FileAttributes.Normal);
                 File.Delete(file);
             }
-            if (recursive)
+            if (touch_subfolders)
                 foreach (string dir in Directory.GetDirectories(directory))
-                    DeleteDirectory(directory, recursive);
+                    DeleteDirectory(directory, touch_subfolders);
             Directory.Delete(directory, false);
         }
 
