@@ -156,6 +156,7 @@ namespace Cliver
         //    return image2;
         //}
 
+        //bool h = ImageProcessor.BitmapsAreEqual(new Bitmap(@"d:\temp\b2.png"), new Bitmap(@"d:\temp\b1.png"), 0.2f);
         public static bool BitmapsAreEqual(Bitmap b1, Bitmap b2, float tolerance, int hashResolution = 16)
         {
             //bool g = Microsoft.VisualStudio.TestTools.UITesting.ImageComparer.Compare(b1, b2, new Microsoft.VisualStudio.TestTools.UITesting.ColorDifference(tolerance), out System.Drawing.Image oi);
@@ -183,6 +184,7 @@ namespace Cliver
             return lResult;
         }
 
+        //var g = Convert.ToBase64String(ImageProcessor.GetBitmapHash(new Bitmap(@"d:\temp\b2.png")));
         public static byte[] GetBitmapHash(Bitmap bitmap, int hashResolution = 16)
         {
             byte[] rawImageData = new byte[hashResolution * hashResolution];
