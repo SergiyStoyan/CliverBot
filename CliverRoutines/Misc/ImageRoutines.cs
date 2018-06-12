@@ -7,6 +7,9 @@ using System;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
+using System.Runtime.InteropServices;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Cliver
 {
@@ -152,5 +155,42 @@ namespace Cliver
         //    }
         //    return image2;
         //}
+
+        public static bool BitmapsAreEqual(Bitmap b1, Bitmap b2, float tolerance, int hashResolution = 16)
+        {
+            //bool g = Microsoft.VisualStudio.TestTools.UITesting.ImageComparer.Compare(b1, b2, new Microsoft.VisualStudio.TestTools.UITesting.ColorDifference(tolerance), out System.Drawing.Image oi);
+
+            List<byte> iHash1 = GetBitmapHash2(b1, hashResolution);
+            List<byte> iHash2 = GetBitmapHash2(b2, hashResolution);
+
+            int equalElements = iHash1.Zip(iHash2, (a, b) => (float)Math.Abs(a - b) / 255 < tolerance).Count(a => a);
+            //int equalElements = iHash1.Zip(iHash2, (a, b) => a == b).Count(a => a);
+            return (float)equalElements / (hashResolution * hashResolution) > 1f - tolerance;
+        }
+
+        public static List<byte> GetBitmapHash2(Bitmap bitmap, int hashResolution = 16)
+        {
+            List<byte> lResult = new List<byte>();
+            Bitmap bmpMin = new Bitmap(bitmap, new Size(hashResolution, hashResolution));
+            for (int j = 0; j < bmpMin.Height; j++)
+            {
+                for (int i = 0; i < bmpMin.Width; i++)
+                {
+                    Color c = bmpMin.GetPixel(i, j);
+                    lResult.Add((byte)(c.GetBrightness() * 255));
+                }
+            }
+            return lResult;
+        }
+
+        public static byte[] GetBitmapHash(Bitmap bitmap, int hashResolution = 16)
+        {
+            byte[] rawImageData = new byte[hashResolution * hashResolution];
+            BitmapData bd = bitmap.LockBits(new Rectangle(0, 0, hashResolution, hashResolution), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            Marshal.Copy(bd.Scan0, rawImageData, 0, hashResolution * hashResolution);
+            bitmap.UnlockBits(bd);
+            System.Security.Cryptography.MD5CryptoServiceProvider md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
+            return md5.ComputeHash(rawImageData);
+        }
     }
 }
