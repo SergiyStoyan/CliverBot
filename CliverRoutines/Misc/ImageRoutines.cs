@@ -15,33 +15,29 @@ namespace Cliver
 {
     public static class ImageRoutines
     {
-        public static Bitmap GetScaled(Image image, Size max_size)
+        public static Bitmap GetResized(Image image, int width, int height)
         {
-            var ratio = Math.Min((double)max_size.Width / image.Width, (double)max_size.Height / image.Height);
-            var i = new Bitmap((int)(image.Width * ratio), (int)(image.Height * ratio));
-            using (var graphics = Graphics.FromImage(i))
+            var b = new Bitmap(width, height);
+            using (var graphics = Graphics.FromImage(b))
             {
                 graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
                 graphics.SmoothingMode = SmoothingMode.HighQuality;
                 graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
                 graphics.CompositingQuality = CompositingQuality.HighQuality;
-                graphics.DrawImage(image, 0, 0, i.Width, i.Height);
+                graphics.DrawImage(image, 0, 0, b.Width, b.Height);
             }
-            return i;
+            return b;
+        }
+
+        public static Bitmap GetScaled(Image image, Size max_size)
+        {
+            var ratio = Math.Min((double)max_size.Width / image.Width, (double)max_size.Height / image.Height);
+            return GetResized(image, (int)(image.Width * ratio), (int)(image.Height * ratio));
         }
 
         public static Bitmap GetScaled(Image image, float ratio)
         {
-            var i = new Bitmap((int)(image.Width * ratio), (int)(image.Height * ratio));
-            using (var graphics = Graphics.FromImage(i))
-            {
-                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                graphics.SmoothingMode = SmoothingMode.HighQuality;
-                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                graphics.CompositingQuality = CompositingQuality.HighQuality;
-                graphics.DrawImage(image, 0, 0, i.Width, i.Height);
-            }
-            return i;
+            return GetResized(image, (int)(image.Width * ratio), (int)(image.Height * ratio));
         }
 
         public static Bitmap GetCroppedByColor(Image image, Color color)
@@ -136,26 +132,6 @@ namespace Cliver
                 System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
         }
 
-        //public static Bitmap GetResizedImage(Image image, float factor)
-        //{
-        //    var image2 = new Bitmap((int)(image.Width * factor), (int)(image.Height * factor));
-        //    using (var graphics = Graphics.FromImage(image2))
-        //    {
-        //        graphics.CompositingMode = CompositingMode.SourceCopy;
-        //        graphics.CompositingQuality = CompositingQuality.HighQuality;
-        //        graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-        //        graphics.SmoothingMode = SmoothingMode.HighQuality;
-        //        graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-
-        //        using (var wrapMode = new ImageAttributes())
-        //        {
-        //            wrapMode.SetWrapMode(WrapMode.TileFlipXY);
-        //            graphics.DrawImage(image, new Rectangle(0, 0, image2.Width, image2.Height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, wrapMode);
-        //        }
-        //    }
-        //    return image2;
-        //}
-
         //bool h = ImageProcessor.BitmapsAreEqual(new Bitmap(@"d:\temp\b2.png"), new Bitmap(@"d:\temp\b1.png"), 0.2f);
         public static bool BitmapsAreEqual(Bitmap b1, Bitmap b2, float tolerance, int hashResolution = 16)
         {
@@ -171,17 +147,18 @@ namespace Cliver
 
         public static List<byte> GetBitmapHash2(Bitmap bitmap, int hashResolution = 16)
         {
-            List<byte> lResult = new List<byte>();
-            Bitmap bmpMin = new Bitmap(bitmap, new Size(hashResolution, hashResolution));
-            for (int j = 0; j < bmpMin.Height; j++)
+            bitmap = GetResized(bitmap, hashResolution, hashResolution);
+            Int32[] rawImageData = new Int32[hashResolution * hashResolution];
+            BitmapData bd = bitmap.LockBits(new Rectangle(0, 0, hashResolution, hashResolution), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            Marshal.Copy(bd.Scan0, rawImageData, 0, hashResolution * hashResolution);
+            bitmap.UnlockBits(bd);
+            List<byte> hash = new List<byte>();
+            foreach (Int32 i in rawImageData)
             {
-                for (int i = 0; i < bmpMin.Width; i++)
-                {
-                    Color c = bmpMin.GetPixel(i, j);
-                    lResult.Add((byte)(c.GetBrightness() * 255));
-                }
+                Color c = Color.FromArgb(i);
+                hash.Add((byte)(c.GetBrightness() * 255));
             }
-            return lResult;
+            return hash;
         }
 
         //var g = Convert.ToBase64String(ImageProcessor.GetBitmapHash(new Bitmap(@"d:\temp\b2.png")));
@@ -189,7 +166,7 @@ namespace Cliver
         {
             byte[] rawImageData = new byte[hashResolution * hashResolution];
             BitmapData bd = bitmap.LockBits(new Rectangle(0, 0, hashResolution, hashResolution), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-            Marshal.Copy(bd.Scan0, rawImageData, 0, hashResolution * hashResolution);
+            Marshal.Copy(bd.Scan0, rawImageData, 0, hashResolution * hashResolution * 4);
             bitmap.UnlockBits(bd);
             System.Security.Cryptography.MD5CryptoServiceProvider md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
             return md5.ComputeHash(rawImageData);
