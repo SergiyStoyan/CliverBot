@@ -137,15 +137,15 @@ namespace Cliver
         {
             //bool g = Microsoft.VisualStudio.TestTools.UITesting.ImageComparer.Compare(b1, b2, new Microsoft.VisualStudio.TestTools.UITesting.ColorDifference(tolerance), out System.Drawing.Image oi);
 
-            List<byte> iHash1 = GetBitmapHash2(b1, hashResolution);
-            List<byte> iHash2 = GetBitmapHash2(b2, hashResolution);
+            byte[] iHash1 = GetBitmapHash2(b1, hashResolution);
+            byte[] iHash2 = GetBitmapHash2(b2, hashResolution);
 
             int equalElements = iHash1.Zip(iHash2, (a, b) => (float)Math.Abs(a - b) / 255 < tolerance).Count(a => a);
             //int equalElements = iHash1.Zip(iHash2, (a, b) => a == b).Count(a => a);
             return (float)equalElements / (hashResolution * hashResolution) > 1f - tolerance;
         }
 
-        public static List<byte> GetBitmapHash2(Bitmap bitmap, int hashResolution = 16)
+        public static byte[] GetBitmapHash2(Bitmap bitmap, int hashResolution = 16)
         {
             bitmap = GetResized(bitmap, hashResolution, hashResolution);
             Int32[] rawImageData = new Int32[hashResolution * hashResolution];
@@ -158,7 +158,7 @@ namespace Cliver
                 Color c = Color.FromArgb(i);
                 hash.Add((byte)(c.GetBrightness() * 255));
             }
-            return hash;
+            return hash.ToArray();
         }
 
         //var g = Convert.ToBase64String(ImageProcessor.GetBitmapHash(new Bitmap(@"d:\temp\b2.png")));
