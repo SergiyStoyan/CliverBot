@@ -15,16 +15,47 @@ namespace Cliver
 {
     public static class ImageRoutines
     {
+        public static Bitmap GetCopy1(Image image)
+        {
+            Rectangle r = new Rectangle(0, 0, image.Width, image.Height);
+            Bitmap b = new Bitmap(r.Width, r.Height);
+            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(b))
+            {
+                g.DrawImage(image, 0, 0, r, GraphicsUnit.Pixel);
+            }
+            return b;
+        }
+
+        public static Bitmap GetCopy1(Image image, Rectangle r)
+        {
+            Bitmap b = new Bitmap(r.Width, r.Height);
+            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(b))
+            {
+                g.DrawImage(image, 0, 0, r, GraphicsUnit.Pixel);
+            }
+            return b;
+        }
+
+        public static Bitmap GetCopy1(Image image, RectangleF r)
+        {
+            Bitmap b = new Bitmap((int)r.Width, (int)r.Height);
+            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(b))
+            {
+                g.DrawImage(image, 0, 0, r, GraphicsUnit.Pixel);
+            }
+            return b;
+        }
+
         public static Bitmap GetResized(Image image, int width, int height)
         {
             var b = new Bitmap(width, height);
-            using (var graphics = Graphics.FromImage(b))
+            using (var g = Graphics.FromImage(b))
             {
-                graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
-                graphics.SmoothingMode = SmoothingMode.HighQuality;
-                graphics.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                graphics.CompositingQuality = CompositingQuality.HighQuality;
-                graphics.DrawImage(image, 0, 0, b.Width, b.Height);
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g.SmoothingMode = SmoothingMode.HighQuality;
+                g.PixelOffsetMode = PixelOffsetMode.HighQuality;
+                g.CompositingQuality = CompositingQuality.HighQuality;
+                g.DrawImage(image, 0, 0, b.Width, b.Height);
             }
             return b;
         }
