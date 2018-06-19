@@ -210,7 +210,7 @@ namespace Cliver
             return hash;
         }
 
-        public static Point? FindBitmapFragmentByHash(Bitmap bitmap, byte[,] hash, float hashImageRatio, float brightnessTolerance, float differentPixelNumberTolerance, Point? startPoint = null)
+        public static PointF? FindBitmapFragmentByHash(Bitmap bitmap, byte[,] hash, float hashImageRatio, float brightnessTolerance, float differentPixelNumberTolerance, Point? startPoint = null)
         {
             int brightnessMaxDifference = (int)(brightnessTolerance * 255);
             int differentPixelMaxNumber = (int)(hash.Length * differentPixelNumberTolerance);
@@ -222,7 +222,7 @@ namespace Cliver
             for (int x = 0; x < bw; x++)
                 for (int y = 0; y < bh; y++)
                     if (isHashMatch(bHash, x, y, hash, w, h, brightnessMaxDifference, differentPixelMaxNumber))
-                        return new Point(x, y);
+                        return new PointF(x/ hashImageRatio, y/ hashImageRatio);
             return null;
         }
 
