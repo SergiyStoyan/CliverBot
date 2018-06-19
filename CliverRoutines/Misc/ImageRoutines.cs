@@ -15,18 +15,7 @@ namespace Cliver
 {
     public static class ImageRoutines
     {
-        public static Bitmap GetCopy1(Image image)
-        {
-            Rectangle r = new Rectangle(0, 0, image.Width, image.Height);
-            Bitmap b = new Bitmap(r.Width, r.Height);
-            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(b))
-            {
-                g.DrawImage(image, 0, 0, r, GraphicsUnit.Pixel);
-            }
-            return b;
-        }
-
-        public static Bitmap GetCopy1(Image image, Rectangle r)
+        public static Bitmap GetCopy(Image image, Rectangle r)
         {
             Bitmap b = new Bitmap(r.Width, r.Height);
             using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(b))
@@ -36,14 +25,14 @@ namespace Cliver
             return b;
         }
 
-        public static Bitmap GetCopy1(Image image, RectangleF r)
+        public static Bitmap GetCopy(Image image)
         {
-            Bitmap b = new Bitmap((int)r.Width, (int)r.Height);
-            using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(b))
-            {
-                g.DrawImage(image, 0, 0, r, GraphicsUnit.Pixel);
-            }
-            return b;
+            return GetCopy(image, new Rectangle(0, 0, image.Width, image.Height));
+        }
+
+        public static Bitmap GetCopy(Image image, RectangleF r)
+        {
+            return GetCopy(image, new Rectangle((int)r.X, (int)r.Y, (int)r.Width, (int)r.Height));
         }
 
         public static Bitmap GetResized(Image image, int width, int height)
@@ -60,10 +49,16 @@ namespace Cliver
             return b;
         }
 
+        public static Bitmap GetScaled(Image image, Size max_size, out float ratio)
+        {
+            ratio = Math.Min((float)max_size.Width / image.Width, (float)max_size.Height / image.Height);
+            return GetResized(image, (int)(image.Width * ratio), (int)(image.Height * ratio));
+        }
+
         public static Bitmap GetScaled(Image image, Size max_size)
         {
-            var ratio = Math.Min((double)max_size.Width / image.Width, (double)max_size.Height / image.Height);
-            return GetResized(image, (int)(image.Width * ratio), (int)(image.Height * ratio));
+            float ratio;
+            return GetScaled(image, max_size, out ratio);
         }
 
         public static Bitmap GetScaled(Image image, float ratio)
@@ -163,37 +158,8 @@ namespace Cliver
                 System.Windows.Media.Imaging.BitmapSizeOptions.FromEmptyOptions());
         }
 
-        //bool h = ImageProcessor.BitmapsAreEqual(new Bitmap(@"d:\temp\b2.png"), new Bitmap(@"d:\temp\b1.png"), 0.2f);
-        public static bool BitmapsAreEqual(Bitmap b1, Bitmap b2, float tolerance, int hashResolution = 16)
-        {
-            //bool g = Microsoft.VisualStudio.TestTools.UITesting.ImageComparer.Compare(b1, b2, new Microsoft.VisualStudio.TestTools.UITesting.ColorDifference(tolerance), out System.Drawing.Image oi);
-
-            byte[] iHash1 = GetBitmapHash2(b1, hashResolution);
-            byte[] iHash2 = GetBitmapHash2(b2, hashResolution);
-
-            int equalElements = iHash1.Zip(iHash2, (a, b) => (float)Math.Abs(a - b) / 255 < tolerance).Count(a => a);
-            //int equalElements = iHash1.Zip(iHash2, (a, b) => a == b).Count(a => a);
-            return (float)equalElements / (hashResolution * hashResolution) > 1f - tolerance;
-        }
-
-        public static byte[] GetBitmapHash2(Bitmap bitmap, int hashResolution = 16)
-        {
-            bitmap = GetResized(bitmap, hashResolution, hashResolution);
-            Int32[] rawImageData = new Int32[hashResolution * hashResolution];
-            BitmapData bd = bitmap.LockBits(new Rectangle(0, 0, hashResolution, hashResolution), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
-            Marshal.Copy(bd.Scan0, rawImageData, 0, hashResolution * hashResolution);
-            bitmap.UnlockBits(bd);
-            List<byte> hash = new List<byte>();
-            foreach (Int32 i in rawImageData)
-            {
-                Color c = Color.FromArgb(i);
-                hash.Add((byte)(c.GetBrightness() * 255));
-            }
-            return hash.ToArray();
-        }
-
         //var g = Convert.ToBase64String(ImageProcessor.GetBitmapHash(new Bitmap(@"d:\temp\b2.png")));
-        public static byte[] GetBitmapHash(Bitmap bitmap, int hashResolution = 16)
+        public static byte[] GetBitmapMd5Hash(Bitmap bitmap, int hashResolution = 16)
         {
             byte[] rawImageData = new byte[hashResolution * hashResolution];
             BitmapData bd = bitmap.LockBits(new Rectangle(0, 0, hashResolution, hashResolution), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
@@ -201,6 +167,76 @@ namespace Cliver
             bitmap.UnlockBits(bd);
             System.Security.Cryptography.MD5CryptoServiceProvider md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
             return md5.ComputeHash(rawImageData);
+        }
+
+        //public static bool BitmapHasSimilarHash(Bitmap bitamp, byte[,] hash, float hashImageRatio, float brightnessTolerance, float differentPixelNumberTolerance)
+        //{
+        //    return FindBitmapFragmentByHash(bitamp, hash, hashImageRatio, brightnessTolerance, differentPixelNumberTolerance) != null;
+        //}
+
+        public static bool BitmapHashesAreSimilar(byte[,] hash1, byte[,] hash2, float brightnessTolerance, float differentPixelNumberTolerance)
+        {
+            int brightnessMaxDifference = (int)(brightnessTolerance * 255);
+            int differentPixelMaxNumber = (int)(hash2.Length * differentPixelNumberTolerance);
+            int w2 = hash2.GetLength(0);
+            int h2 = hash2.GetLength(1);
+            return isHashMatch(hash1, 0, 0, hash2, w2, h2, brightnessMaxDifference, differentPixelMaxNumber);
+        }
+
+        public static byte[,] GetBitmapHash(Bitmap bitmap, out float hashImageRatio, int maxHashImageLegnth = 16)
+        {
+            hashImageRatio = Math.Min((float)maxHashImageLegnth / bitmap.Width, (float)maxHashImageLegnth / bitmap.Height);
+            return GetBitmapHash(bitmap, hashImageRatio);
+        }
+
+        public static byte[,] GetBitmapHash(Bitmap bitmap, float hashImageRatio)
+        {
+            int w = (int)(bitmap.Width * hashImageRatio);
+            int h = (int)(bitmap.Height * hashImageRatio);
+            bitmap = GetResized(bitmap, w, h);
+            Int32[] rawImageData = new Int32[w * h];
+            BitmapData bd = bitmap.LockBits(new Rectangle(0, 0, w, h), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            Marshal.Copy(bd.Scan0, rawImageData, 0, w * h);
+            bitmap.UnlockBits(bd);
+            byte[,] hash = new byte[w, h];
+            for (int x = 0; x < w; x++)
+            {
+                for (int y = 0; y < h; y++)
+                {
+                    Color c = Color.FromArgb(rawImageData[y * w + x]);
+                    hash[x, y] = (byte)(c.GetBrightness() * 255);
+                }
+            }
+            return hash;
+        }
+
+        public static Point? FindBitmapFragmentByHash(Bitmap bitmap, byte[,] hash, float hashImageRatio, float brightnessTolerance, float differentPixelNumberTolerance, Point? startPoint = null)
+        {
+            int brightnessMaxDifference = (int)(brightnessTolerance * 255);
+            int differentPixelMaxNumber = (int)(hash.Length * differentPixelNumberTolerance);
+            byte[,] bHash = GetBitmapHash(bitmap, hashImageRatio);
+            int w = hash.GetLength(0);
+            int h = hash.GetLength(1);
+            int bw = bHash.GetLength(0) - w;
+            int bh = bHash.GetLength(1) - h;
+            for (int x = 0; x < bw; x++)
+                for (int y = 0; y < bh; y++)
+                    if (isHashMatch(bHash, x, y, hash, w, h, brightnessMaxDifference, differentPixelMaxNumber))
+                        return new Point(x, y);
+            return null;
+        }
+
+        static bool isHashMatch(byte[,] bHash, int x, int y, byte[,] hash, int w, int h, int brightnessMaxDifference, int differentPixelMaxNumber)
+        {
+            int differentPixelNumber = 0;
+            for (int i = 0; i < w; i++)
+                for (int j = 0; j < h; j++)
+                {
+                    if (Math.Abs(bHash[x + i, y + j] - hash[i, j]) > brightnessMaxDifference)
+                        if (++differentPixelNumber > differentPixelMaxNumber)
+                            return false;
+                }
+            return true;
         }
     }
 }
