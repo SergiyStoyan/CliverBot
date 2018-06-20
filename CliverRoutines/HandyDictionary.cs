@@ -69,6 +69,13 @@ namespace Cliver
                     return v;
                 }
             }
+            protected set
+            {
+                lock (this)
+                {
+                    keys2values[k] = value;
+                }
+            }
         }
         Dictionary<KT, VT> keys2values = new Dictionary<KT, VT>();
 
