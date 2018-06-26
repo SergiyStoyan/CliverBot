@@ -52,7 +52,7 @@ namespace Cliver
         public static Bitmap GetScaled(Image image, Size max_size, out float ratio)
         {
             ratio = Math.Min((float)max_size.Width / image.Width, (float)max_size.Height / image.Height);
-            return GetResized(image, (int)(image.Width * ratio), (int)(image.Height * ratio));
+            return GetResized(image, (int)Math.Round(image.Width * ratio, 0), (int)Math.Round(image.Height * ratio, 0));
         }
 
         public static Bitmap GetScaled(Image image, Size max_size)
@@ -63,7 +63,7 @@ namespace Cliver
 
         public static Bitmap GetScaled(Image image, float ratio)
         {
-            return GetResized(image, (int)(image.Width * ratio), (int)(image.Height * ratio));
+            return GetResized(image, (int)Math.Round(image.Width * ratio, 0), (int)Math.Round(image.Height * ratio, 0));
         }
 
         public static Bitmap GetCroppedByColor(Image image, Color color)

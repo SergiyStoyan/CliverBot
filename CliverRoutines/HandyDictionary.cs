@@ -17,7 +17,7 @@ namespace Cliver
         {
             getObject = get_object;
         }
-        Func<KT, VT> getObject;
+        protected  Func<KT, VT> getObject;
 
         ~HandyDictionary()
         {
@@ -28,12 +28,12 @@ namespace Cliver
         {
             lock (this)
             {
-                if (keys2values != null)
+                if (keys2value != null)
                 {
                     if (IsDisposable(typeof(VT)))
-                        foreach (VT v in keys2values.Values)
+                        foreach (VT v in keys2value.Values)
                             ((IDisposable)v).Dispose();
-                    keys2values = null;
+                    keys2value = null;
                 }
             }
         }
@@ -48,9 +48,9 @@ namespace Cliver
             lock (this)
             {
                 if (IsDisposable(typeof(VT)))
-                    foreach (VT v in keys2values.Values)
+                    foreach (VT v in keys2value.Values)
                         ((IDisposable)v).Dispose();
-                keys2values.Clear();
+                keys2value.Clear();
             }
         }
 
@@ -61,10 +61,10 @@ namespace Cliver
                 lock (this)
                 {
                     VT v;
-                    if (!keys2values.TryGetValue(k, out v))
+                    if (!keys2value.TryGetValue(k, out v))
                     {
                         v = getObject(k);
-                        keys2values[k] = v;
+                        keys2value[k] = v;
                     }
                     return v;
                 }
@@ -73,15 +73,15 @@ namespace Cliver
             {
                 lock (this)
                 {
-                    keys2values[k] = value;
+                    keys2value[k] = value;
                 }
             }
         }
-        Dictionary<KT, VT> keys2values = new Dictionary<KT, VT>();
+        Dictionary<KT, VT> keys2value = new Dictionary<KT, VT>();
 
         public IEnumerator<KeyValuePair<KT, VT>> GetEnumerator()
         {
-            return keys2values.GetEnumerator();
+            return keys2value.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
@@ -93,7 +93,7 @@ namespace Cliver
         {
             get
             {
-                return keys2values.Keys;
+                return keys2value.Keys;
             }
         }
 
@@ -101,7 +101,7 @@ namespace Cliver
         {
             get
             {
-                return keys2values.Values;
+                return keys2value.Values;
             }
         }
     }
