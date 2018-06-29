@@ -138,6 +138,8 @@ namespace Cliver
                             }
                             catch (Exception e)
                             {
+                                //if (!Message.YesNo("Error while loading config file " + file + "\r\n\r\n" + e.Message + "\r\n\r\nWould you like to proceed with restoring the initial config?", null, Message.Icons.Error))
+                                //    Environment.Exit(0);
                                 //if (!ignore_load_error && !Directory.Exists(StorageDir))//it is newly installed and so files are not expected to be there
                                 //    ignore_load_error = true;
                                 //if (!ignore_load_error)

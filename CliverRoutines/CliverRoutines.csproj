@@ -160,6 +160,8 @@
     <Compile Include="HandyDictionary.cs" />
     <Compile Include="ListDb.Table.cs" />
     <Compile Include="Misc\FileSystemRoutines.cs" />
+    <Compile Include="Misc\SerializationRoutines.Json.cs" />
+    <Compile Include="Misc\SerializationRoutines.Xml.cs" />
     <Compile Include="Misc\WindowsFirewall.cs" />
     <Compile Include="Misc\Crypto.cs" />
     <Compile Include="Db\DbCommand.cs" />
@@ -182,7 +184,7 @@
     <Compile Include="Misc\ConvertionRoutines.cs" />
     <Compile Include="Misc\Serializable.cs" />
     <Compile Include="Misc\SettingsBase.cs" />
-    <Compile Include="Misc\SerializationRoutines.cs" />
+    <Compile Include="Misc\SerializationRoutines.Binary.cs" />
     <Compile Include="Log\Log.constants.cs" />
     <Compile Include="Log\Log.static.cs" />
     <Compile Include="Log\Log.Writer.cs" />
