@@ -15,36 +15,23 @@ namespace Cliver
     {
         static public T Load<T>(string file) where T : Serializable, new()
         {
-            T t = get<T>(file, InitMode.LOAD);
+            T t = (T)get(typeof(T), file, InitMode.LOAD);
             t.Loaded();
             return t;
         }
 
         static public T LoadOrCreate<T>(string file) where T : Serializable, new()
         {
-            T t = get<T>(file, InitMode.LOAD_OR_CREATE);
+            T t = (T)get(typeof(T), file, InitMode.LOAD_OR_CREATE);
             t.Loaded();
             return t;
         }
 
         static public T Create<T>(string file) where T : Serializable, new()
         {
-            T t = get<T>(file, InitMode.CREATE);
+            T t = (T)get(typeof(T), file, InitMode.CREATE);
             t.Loaded();
             return t;
-        }
-
-        static T get<T>(string file, InitMode init_mode) where T : Serializable, new()
-        {
-            if (!file.Contains(":"))
-                file = Log.AppCommonDataDir + "\\" + file;
-            T s;
-            if (init_mode == InitMode.CREATE || (init_mode == InitMode.LOAD_OR_CREATE && !File.Exists(file)))
-                s = new T();
-            else
-                s = Cliver.SerializationRoutines.Json.Load<T>(file);
-            s.__File = file;
-            return s;
         }
 
         static public Serializable Load(Type serializable_type, string file)
@@ -73,9 +60,9 @@ namespace Cliver
             if (!file.Contains(":"))
                 file = Log.AppCommonDataDir + "\\" + file;
             Serializable s;
-            if (init_mode == InitMode.CREATE || (init_mode == InitMode.LOAD_OR_CREATE  && !File.Exists(file)))
+            if (init_mode == InitMode.CREATE || (init_mode == InitMode.LOAD_OR_CREATE && !File.Exists(file)))
                 s = (Serializable)Activator.CreateInstance(serializable_type);
-            else                   
+            else
                 s = (Serializable)Cliver.SerializationRoutines.Json.Load(serializable_type, file);
             s.__File = file;
             return s;
