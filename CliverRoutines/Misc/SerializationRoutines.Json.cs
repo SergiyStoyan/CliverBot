@@ -25,13 +25,13 @@ namespace Cliver
             /// </summary>
             /// <param name="o"></param>
             /// <returns></returns>
-            static public string Serialize(object o)
+            static public string Serialize(object o, bool indented = true)
             {
 #if UseNetJsonSerialization
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
                 return serializer.Serialize(o);
 #else
-                return JsonConvert.SerializeObject(o, Newtonsoft.Json.Formatting.Indented);
+                return JsonConvert.SerializeObject(o, indented ? Newtonsoft.Json.Formatting.Indented : Newtonsoft.Json.Formatting.None);
 #endif
             }
 

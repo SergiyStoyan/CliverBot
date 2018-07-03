@@ -109,24 +109,12 @@ namespace Cliver
             return Regex.Replace(path, @"\.[^\.]+$", "." + extention, RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
         }
 
-        public static string GetDirMirroredInDir(string dir, string mirror_dir)
+        public static string GetDirMirroredInDir(string dir, string root_dir, string mirror_dir)
         {
             string d = GetNormalizedPath(dir, false);
+            string rd = GetNormalizedPath(root_dir, false);
             string md = GetNormalizedPath(mirror_dir, false);
-            string[] ds = d.Split('\\');
-            string[] mds = md.Split('\\');
-            int l = ds.Length >= mds.Length ? mds.Length : ds.Length;
-            int i = 0;
-            for (; i < l; i++)
-                if (ds[i].ToUpper() != mds[i].ToUpper())
-                    break;
-            if (i == mds.Length)
-                throw new Exception("Either directory '" + mirror_dir + "' contains directory to be mirrored: '" + dir + "' or vise versa.");
-            i++;
-            string rd = mirror_dir;
-            for (; i < ds.Length; i++)
-                rd += "\\" + ds[i];
-            return rd;
+            return Regex.Replace(d, Regex.Escape(rd), md);
         }
     }
 }
