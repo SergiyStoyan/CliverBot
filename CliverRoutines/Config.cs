@@ -172,6 +172,58 @@ namespace Cliver
         }
         static Dictionary<string, Serializable> object_names2serializable = new Dictionary<string, Serializable>();
 
+        /// <summary>
+        /// Can be called from code when ordered load is required due to dependencies.
+        /// </summary>
+        static public void PreloadField(string name)
+        {
+            List<Assembly> sas = new List<Assembly>();
+            sas.Add(Assembly.GetEntryAssembly());
+            foreach (AssemblyName an in Assembly.GetEntryAssembly().GetReferencedAssemblies().Where(an => assembly_name_regex_pattern != null ? Regex.IsMatch(an.Name, assembly_name_regex_pattern) : true))
+                sas.Add(Assembly.Load(an));
+            foreach (Assembly sa in sas)
+            {
+                Type[] ets = sa.GetTypes();
+                foreach (Type st in ets.Where(t => t.IsSubclassOf(typeof(Settings))))
+                {
+                    foreach (Type et in ets)
+                    {
+                        FieldInfo fi = et.GetFields(BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public).Where(a => a.FieldType == st && a.Name == name).FirstOrDefault();
+                        if (fi != null)
+                        {
+                            Serializable t;
+                            string file = StorageDir + "\\" + name + "." + st.FullName + "." + FILE_EXTENSION;
+                            try
+                            {
+                                t = Serializable.Load(st, file);
+                            }
+                            catch (Exception e)
+                            {
+                                //if (!Message.YesNo("Error while loading config file " + file + "\r\n\r\n" + e.Message + "\r\n\r\nWould you like to proceed with restoring the initial config?", null, Message.Icons.Error))
+                                //    Environment.Exit(0);
+                                //if (!ignore_load_error && !Directory.Exists(StorageDir))//it is newly installed and so files are not expected to be there
+                                //    ignore_load_error = true;
+                                //if (!ignore_load_error)
+                                //    LogMessage.Error2(e);
+                                string init_file = Log.AppDir + "\\" + name + "." + st.FullName + "." + FILE_EXTENSION;
+                                if (File.Exists(init_file))
+                                {
+                                    FileSystemRoutines.CopyFile(init_file, file, true);
+                                    t = Serializable.LoadOrCreate(st, file);
+                                }
+                                else
+                                    t = Serializable.Create(st, file);
+                            }
+
+                            fi.SetValue(null, t);
+                            return;
+                        }
+                    }
+                }
+            }
+            throw new Exception("Field '" + name + "' was not found.");
+        }
+
         static public void Reload(string storage_dir = null, bool read_only = false)
         {
             StorageDir = storage_dir != null ? storage_dir : DefaultStorageDir;
@@ -186,13 +238,6 @@ namespace Cliver
             StorageDir = storage_dir != null ? storage_dir : DefaultStorageDir;
             get(true);
         }
-
-        //static public void IfNewThenResetElseReload(string storage_dir = null)
-        //{
-        //    StorageDir = storage_dir != null ? storage_dir : DefaultStorageDir;
-
-        //    get(true);
-        //}
 
         static public void Save(string storage_dir = null)
         {
