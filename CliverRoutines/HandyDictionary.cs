@@ -13,11 +13,11 @@ namespace Cliver
 {
     public class HandyDictionary<KT, VT> : IDisposable, IEnumerable<KeyValuePair<KT, VT>> //where VT: class
     {
-        public HandyDictionary(Func<KT, VT> get_object)
+        public HandyDictionary(Func<KT, VT> get_value)
         {
-            getObject = get_object;
+            getValue = get_value;
         }
-        protected  Func<KT, VT> getObject;
+        protected Func<KT, VT> getValue;
 
         ~HandyDictionary()
         {
@@ -32,7 +32,8 @@ namespace Cliver
                 {
                     if (IsDisposable(typeof(VT)))
                         foreach (VT v in keys2value.Values)
-                            ((IDisposable)v).Dispose();
+                            if (v != null)
+                                ((IDisposable)v).Dispose();
                     keys2value = null;
                 }
             }
@@ -49,8 +50,24 @@ namespace Cliver
             {
                 if (IsDisposable(typeof(VT)))
                     foreach (VT v in keys2value.Values)
-                        ((IDisposable)v).Dispose();
+                        if (v != null)
+                            ((IDisposable)v).Dispose();
                 keys2value.Clear();
+            }
+        }
+
+        public void Unset(KT k)
+        {
+            lock (this)
+            {
+                if (IsDisposable(typeof(VT)))
+                {
+                    VT v;
+                    if (keys2value.TryGetValue(k, out v))
+                        if (v != null)
+                            ((IDisposable)v).Dispose();
+                }
+                keys2value.Remove(k);
             }
         }
 
@@ -63,7 +80,7 @@ namespace Cliver
                     VT v;
                     if (!keys2value.TryGetValue(k, out v))
                     {
-                        v = getObject(k);
+                        v = getValue(k);
                         keys2value[k] = v;
                     }
                     return v;
