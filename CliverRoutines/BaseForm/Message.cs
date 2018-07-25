@@ -147,6 +147,8 @@ namespace Cliver
         public static int ShowDialog(string title, Icon icon, string message, string[] buttons, int default_button, Form owner, bool? button_autosize = null, bool? no_duplicate = null, bool? topmost = null)
         {
             owner = owner ?? Owner;
+            if (owner != null && !owner.Visible)
+                owner = null;
             if (owner == null || !owner.InvokeRequired)
                 return show_dialog(title, icon, message, buttons, default_button, owner, button_autosize, no_duplicate, topmost);
 

@@ -102,7 +102,7 @@ namespace Cliver
             }
             catch
             { //if the user cancelled
-            }
+            }            
             Environment.Exit(0);
         }
 
