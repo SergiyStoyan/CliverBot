@@ -81,7 +81,10 @@ namespace Cliver
 
         public static string InsertSuffixBeforeFileExtension(string path, string suffix)
         {
-            return Regex.Replace(path, @"(.*\\.*)(\..*)", "$1" + suffix + "$2", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
+            Match m = Regex.Match(path, @"(.*)(\.[^\\\/]*)$", RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
+            if (m.Success)
+                return m.Groups[1].Value + suffix + m.Groups[2].Value;
+            return path + suffix;
         }
 
         /// <summary>

@@ -48,26 +48,23 @@ namespace Cliver
         /// <summary>
         /// Receives owner window handle. It is needed to do message box owned.
         /// </summary>
-        static Form owner = null;
-        public static Form Owner
-        {
-            set
-            {
-                lock (lock_variable)
-                {
-                    owner = value;
-                }
-            }
-            get
-            {
-                //if (owner == null) 
-                //    return MainForm.ActiveForm;// !!! cross-thread exception here !!!
-                //else
-                return owner;
-            }
-        }
+        public static Form Owner;
+        //{
+        //    set
+        //    {
+        //            _Owner = value;
+        //    }
+        //    get
+        //    {
+        //        //if (_Owner == null) 
+        //        //    return MainForm.ActiveForm;// !!! cross-thread exception here !!!
+        //        //else
+        //        return _Owner;
+        //    }
+        //}
+        //static Form _Owner = null;
 
-        public static bool AskYesNo(string message, bool automatic_yes, bool write2log = true)
+        public static bool AskYesNo(string message, bool automatic_yes, bool write2log = true, Form owner = null)
         {
             lock (lock_variable)
             {
@@ -77,11 +74,11 @@ namespace Cliver
                 if (!DisableStumblingDialogs)
                 {
                     if (!Output2Console)
-                    {                        
+                    {
                         //Cliver.MessageForm mf = new Cliver.MessageForm(Application.ProductName, System.Drawing.SystemIcons.Question, message, new string[2] { "Yes", "No" }, automatic_yes ? 0 : 1, Owner);
                         //mf.ShowInTaskbar = Cliver.Message.ShowInTaskbar;
                         //return mf.ShowDialog() == 0;
-                        return 0 == Cliver.Message.ShowDialog(Application.ProductName, System.Drawing.SystemIcons.Question, message, new string[2] { "Yes", "No" }, automatic_yes ? 0 : 1, Owner);
+                        return 0 == Cliver.Message.ShowDialog(Application.ProductName, System.Drawing.SystemIcons.Question, message, new string[2] { "Yes", "No" }, automatic_yes ? 0 : 1, owner != null ? owner : Owner);
                     }
                     else
                     {
@@ -114,26 +111,26 @@ namespace Cliver
             }
         }
 
-        public static void Error(string message)
+        public static void Error(string message, Form owner = null)
         {
             Log.Main.Error(message);
-            Error_(message);
+            Error_(message, owner);
         }
 
-        public static void Error2(string message)
+        public static void Error2(string message, Form owner = null)
         {
             Log.Main.Error2(message);
-            Error_(message);
+            Error_(message, owner);
         }
 
-        static void Error_(string message)
+        static void Error_(string message, Form owner = null)
         {
             lock (lock_variable)
             {
                 if (!DisableStumblingDialogs)
                 {
                     if (!Output2Console)
-                        Cliver.Message.Error(message, Owner);
+                        Cliver.Message.Error(message, owner == null ? owner : Owner);
                     else
                         Console.WriteLine("ERROR: " + message);
                 }
@@ -145,36 +142,36 @@ namespace Cliver
             }
         }
 
-        public static void Error(Exception e)
+        public static void Error(Exception e, Form owner = null)
         {
-            Error(Log.GetExceptionMessage(e));
+            Error(Log.GetExceptionMessage(e), owner);
         }
 
-        public static void Error2(Exception e)
+        public static void Error2(Exception e, Form owner = null)
         {
-            Error2(Log.GetExceptionMessage(e));
+            Error2(Log.GetExceptionMessage(e), owner);
         }
 
-        public static void Exit(string message)
+        public static void Exit(string message, Form owner = null)
         {
-            Exit_(message);
+            Exit_(message, owner);
             Log.Main.Exit(message);
         }
 
-        public static void Exit2(string message)
+        public static void Exit2(string message, Form owner = null)
         {
-            Exit_(message);
+            Exit_(message, owner);
             Log.Main.Exit2(message);
         }
 
-        public static void Exit_(string message)
+        public static void Exit_(string message, Form owner = null)
         {
             lock (lock_variable)
             {
                 if (!DisableStumblingDialogs)
                 {
                     if (!Output2Console)
-                        Cliver.Message.Error(message, Owner);
+                        Cliver.Message.Error(message, owner != null ? owner : Owner);
                     else
                     {
                         Console.WriteLine("EXIT: " + message);
@@ -193,9 +190,9 @@ namespace Cliver
         public static void Exit(Exception e)
         {
             Exit(Log.GetExceptionMessage(e));
-        }       
+        }
 
-        public static void Inform(string message)
+        public static void Inform(string message, Form owner = null)
         {
             Log.Main.Inform(message);
             lock (lock_variable)
@@ -203,7 +200,7 @@ namespace Cliver
                 if (!DisableStumblingDialogs)
                 {
                     if (!Output2Console)
-                        Cliver.Message.Inform(message, Owner);
+                        Cliver.Message.Inform(message, owner != null ? owner : Owner);
                     else
                         Console.WriteLine(message);
                 }
@@ -215,12 +212,12 @@ namespace Cliver
             }
         }
 
-        public static void Inform(Exception e)
+        public static void Inform(Exception e, Form owner = null)
         {
-            Inform(e.Message);
+            Inform(e.Message, owner);
         }
 
-        public static void Warning(string message)
+        public static void Warning(string message, Form owner = null)
         {
             Log.Main.Warning(message);
             lock (lock_variable)
@@ -228,7 +225,7 @@ namespace Cliver
                 if (!DisableStumblingDialogs)
                 {
                     if (!Output2Console)
-                        Cliver.Message.Warning(message, Owner);
+                        Cliver.Message.Warning(message, owner != null ? owner : Owner);
                     else
                         Console.WriteLine(message);
                 }
@@ -240,7 +237,7 @@ namespace Cliver
             }
         }
 
-        public static void Exclaim(string message)
+        public static void Exclaim(string message, Form owner = null)
         {
             Log.Main.Warning(message);
             lock (lock_variable)
@@ -248,7 +245,7 @@ namespace Cliver
                 if (!DisableStumblingDialogs)
                 {
                     if (!Output2Console)
-                        Cliver.Message.Exclaim(message, Owner);
+                        Cliver.Message.Exclaim(message, owner != null ? owner : Owner);
                     else
                         Console.WriteLine(message);
                 }
@@ -260,12 +257,12 @@ namespace Cliver
             }
         }
 
-        public static void Warning(Exception e)
+        public static void Warning(Exception e, Form owner = null)
         {
-            Warning(e.Message);
+            Warning(e.Message, owner);
         }
 
-        public static void Write(string message)
+        public static void Write(string message, Form owner = null)
         {
             Log.Main.Write(message);
             lock (lock_variable)
@@ -273,7 +270,7 @@ namespace Cliver
                 if (!DisableStumblingDialogs)
                 {
                     if (!Output2Console)
-                        Cliver.Message.Inform(message, Owner);
+                        Cliver.Message.Inform(message, owner != null ? owner : Owner);
                     else
                         Console.WriteLine(message);
                 }
