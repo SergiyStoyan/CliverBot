@@ -15,6 +15,8 @@ using System.Text;
 //using System.Configuration;
 using Cliver;
 using System.Text.RegularExpressions;
+using System.Linq;
+
 
 namespace Cliver
 {
@@ -52,14 +54,13 @@ namespace Cliver
         //{
         //    set
         //    {
-        //            _Owner = value;
+        //        _Owner = value;
         //    }
         //    get
         //    {
-        //        //if (_Owner == null) 
-        //        //    return MainForm.ActiveForm;// !!! cross-thread exception here !!!
-        //        //else
-        //        return _Owner;
+        //        if (_Owner != null)
+        //            return _Owner;
+        //        return Application.OpenForms.Cast<Form>().Last();
         //    }
         //}
         //static Form _Owner = null;

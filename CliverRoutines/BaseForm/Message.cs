@@ -14,6 +14,7 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace Cliver
 {
@@ -35,7 +36,20 @@ namespace Cliver
         /// <summary>
         /// Owner that is used by default
         /// </summary>
-        public static Form Owner = null;
+        public static Form Owner;
+        //{
+        //    set
+        //    {
+        //        _Owner = value;
+        //    }
+        //    get
+        //    {
+        //        if (_Owner != null)
+        //            return _Owner;
+        //        return Application.OpenForms.Cast<Form>().Last();
+        //    }
+        //}
+        //static Form _Owner = null;
 
         /// <summary>
         /// Autosize buttons by text
@@ -139,9 +153,9 @@ namespace Cliver
             ShowDialog(AppName, SystemIcons.Error, message, new string[1] { "OK" }, 0, owner);
         }
 
-        public static bool YesNo(string question, Form owner = null, Icons icon = Icons.Question)
+        public static bool YesNo(string question, Form owner = null, Icons icon = Icons.Question, bool default_yes = true)
         {
-            return ShowDialog(AppName, get_icon(icon), question, new string[2] { "Yes", "No" }, 0, owner) == 0;
+            return ShowDialog(AppName, get_icon(icon), question, new string[2] { "Yes", "No" }, default_yes ? 0 : 1, owner) == 0;
         }
 
         public static int ShowDialog(string title, Icon icon, string message, string[] buttons, int default_button, Form owner, bool? button_autosize = null, bool? no_duplicate = null, bool? topmost = null)
