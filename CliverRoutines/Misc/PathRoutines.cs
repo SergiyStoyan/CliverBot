@@ -112,12 +112,12 @@ namespace Cliver
             return Regex.Replace(path, @"\.[^\.]+$", "." + extention, RegexOptions.IgnoreCase | RegexOptions.Singleline | RegexOptions.Compiled);
         }
 
-        public static string GetDirMirroredInDir(string dir, string root_dir, string mirror_dir)
+        public static string GetPathMirroredInDir(string path, string root_dir, string mirror_dir)
         {
-            string d = GetNormalizedPath(dir, false);
+            string p = GetNormalizedPath(path, false);
             string rd = GetNormalizedPath(root_dir, false);
             string md = GetNormalizedPath(mirror_dir, false);
-            return Regex.Replace(d, Regex.Escape(rd), md);
+            return Regex.Replace(p, Regex.Escape(rd), md);
         }
     }
 }

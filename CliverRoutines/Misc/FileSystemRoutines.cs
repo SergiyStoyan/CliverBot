@@ -69,5 +69,29 @@ namespace Cliver
             CreateDirectory(PathRoutines.GetDirFromPath(file2), false);
             File.Copy(file1, file2, overwrite);
         }
+
+        //public static void Copy(string path1, string path2, bool overwrite = false)
+        //{
+        //    if (Directory.Exists(path1))
+        //    {
+        //        CreateDirectory(path2, false);
+        //        foreach (string f in Directory.GetFiles(path1))
+        //        {
+        //            string f2 = PathRoutines.GetPathMirroredInDir(f, path1, path2);
+        //            File.Copy(f, f2, overwrite);
+        //        }
+        //        foreach (string d in Directory.GetDirectories(path1))
+        //        {
+        //            string d2 = PathRoutines.GetPathMirroredInDir(d, path1, path2);
+        //            Copy(d, d2, overwrite);
+        //        }
+        //        CreateDirectory(PathRoutines.GetDirFromPath(path2), false);
+        //    }
+        //    else
+        //    {
+        //        string f2 = PathRoutines.GetPathMirroredInDir(f, path1, path2);
+        //        File.Copy(f, f2, overwrite);
+        //    }
+        //}
     }
 }
