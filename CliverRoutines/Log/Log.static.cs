@@ -256,6 +256,14 @@ namespace Cliver
             return m + " \r\n\r\n" + d;
         }
 
+        public static string GetExceptionMessage2(Exception e)
+        {
+            string m;
+            string d;
+            GetExceptionMessage(e, out m, out d);
+            return m;
+        }
+
         //        static public void GetExceptionMessage(Exception e, out string message, out string details)
         //        {
         //            for (; e.InnerException != null; e = e.InnerException) ;
