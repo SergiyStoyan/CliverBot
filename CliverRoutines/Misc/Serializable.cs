@@ -87,6 +87,7 @@ namespace Cliver
                     __File = file;
                 Saving();
                 Cliver.SerializationRoutines.Json.Save(__File, this);
+                Saved();
             }
         }
 
@@ -96,6 +97,11 @@ namespace Cliver
         }
 
         virtual public void Saving()
+        {
+
+        }
+
+        virtual public void Saved()
         {
 
         }
