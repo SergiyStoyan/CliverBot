@@ -27,6 +27,8 @@ namespace Cliver
             /// <returns></returns>
             static public string Serialize(object o, bool indented = true)
             {
+                if (o == null)
+                    return null;
 #if UseNetJsonSerialization
                 JavaScriptSerializer serializer = new JavaScriptSerializer();
                 return serializer.Serialize(o);

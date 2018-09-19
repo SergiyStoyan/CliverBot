@@ -36,6 +36,16 @@ namespace Cliver
 
     public static class ControlRoutines
     {
+        public static void EnumControls(this Control control, Action<Control> function, bool recoursive)
+        {
+            foreach (Control c in control.Controls)
+            {
+                function(c);
+                if (recoursive)
+                    EnumControls(c, function, true);
+            }
+        }
+
         /// <summary>
         /// Set text to the control thread-safely.
         /// </summary>
