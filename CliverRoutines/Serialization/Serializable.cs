@@ -1,3 +1,8 @@
+//********************************************************************************************
+//Author: Sergey Stoyan
+//        sergey.stoyan@gmail.com
+//        http://www.cliversoft.com
+//********************************************************************************************
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -86,10 +91,12 @@ namespace Cliver
                 if (file != null)
                     __File = file;
                 Saving();
-                Cliver.SerializationRoutines.Json.Save(__File, this);
+                Cliver.SerializationRoutines.Json.Save(__File, this, true, __Indented);
                 Saved();
             }
         }
+        [Newtonsoft.Json.JsonIgnore]
+        public bool __Indented = true;
 
         virtual public void Loaded()
         {
