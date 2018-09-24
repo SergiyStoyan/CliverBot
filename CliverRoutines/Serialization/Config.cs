@@ -175,7 +175,7 @@ namespace Cliver
         /// <summary>
         /// Can be called from code when ordered load is required due to dependencies.
         /// </summary>
-        static public void PreloadField(string name)
+        static public void ReloadField(string name)
         {
             List<Assembly> sas = new List<Assembly>();
             sas.Add(Assembly.GetEntryAssembly());
