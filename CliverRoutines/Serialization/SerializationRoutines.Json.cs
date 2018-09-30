@@ -79,6 +79,11 @@ namespace Cliver
             {
                 return Deserialize(type, File.ReadAllText(file), polymorphic);
             }
+
+            static public T Clone<T>(T o)
+            {
+                return Deserialize<T>(Serialize(o, false, true));
+            }
         }
     }
 }
