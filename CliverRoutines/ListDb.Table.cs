@@ -217,25 +217,28 @@ namespace Cliver
 
             public void Dispose()
             {
-                try
+                lock (this)
                 {
-                    if (disposed)
-                        return;
-                    disposed = true;
+                    try
+                    {
+                        if (disposed)
+                            return;
+                        disposed = true;
 
-                    if (table_keys2table.ContainsKey(key))
-                        table_keys2table.Remove(key);
+                        if (table_keys2table.ContainsKey(key))
+                            table_keys2table.Remove(key);
 
-                    if ((Mode & Modes.FLUSH_TABLE_ON_CLOSE) == Modes.FLUSH_TABLE_ON_CLOSE)
-                        Flush();
-                    if (file_writer != null)
-                        file_writer.Dispose();
-                    if (log_writer != null)
-                        log_writer.Dispose();
-                }
-                catch
-                {
-                    //when Dispose is called from finalizer, files may be already closed and so exception thrown
+                        if ((Mode & Modes.FLUSH_TABLE_ON_CLOSE) == Modes.FLUSH_TABLE_ON_CLOSE)
+                            Flush();
+                        if (file_writer != null)
+                            file_writer.Dispose();
+                        if (log_writer != null)
+                            log_writer.Dispose();
+                    }
+                    catch
+                    {
+                        //when Dispose is called from finalizer, files may be already closed and so exception thrown
+                    }
                 }
             }
             protected bool disposed = false;
