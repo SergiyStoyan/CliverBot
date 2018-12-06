@@ -72,22 +72,45 @@ namespace Cliver
             }
         }
 
-        public static List<ProcessorInfo> GetProcessorInfo()
+        public static List<string> GetMACs()
+        {
+            List<string> ms = new List<string>();
+            using (ManagementObjectSearcher mos = new ManagementObjectSearcher("Select * From Win32_NetworkAdapterConfiguration"))
+                foreach (ManagementObject mac in mos.Get())
+                {
+                    ms.Add(mac["MACAddress"].ToString());
+                }
+            return ms;
+        }
+
+        public static List<string> GetMotherboardIds()
+        {
+            List<string> ms = new List<string>();
+            using (ManagementObjectSearcher mos = new ManagementObjectSearcher("Select * From Win32_BaseBoard"))
+                foreach (ManagementObject mac in mos.Get())
+                {
+                    ms.Add(mac["SerialNumber"].ToString());
+                }
+            return ms;
+        }
+
+        public static List<ProcessorInfo> GetProcessorInfos()
         {
             List<ProcessorInfo> pis = new List<ProcessorInfo>();
-            using (ManagementObjectSearcher win32Proc = new ManagementObjectSearcher("select * from Win32_Processor")
+            using (ManagementObjectSearcher mos = new ManagementObjectSearcher("select * from Win32_Processor")
                 //win32CompSys = new ManagementObjectSearcher("select * from Win32_ComputerSystem"),
                 //win32Memory = new ManagementObjectSearcher("select * from Win32_PhysicalMemory")
                 )
             {
-                foreach (ManagementObject mo in win32Proc.Get())
+                foreach (ManagementObject mo in mos.Get())
                 {
                     pis.Add(new ProcessorInfo
                     {
-                        clockSpeed = mo["CurrentClockSpeed"].ToString(),
-                        procName = mo["Name"].ToString(),
-                        manufacturer = mo["Manufacturer"].ToString(),
-                        version = mo["Version"].ToString(),
+                        Id = mo["ProcessorID"].ToString(),
+                        ClockSpeed = mo["CurrentClockSpeed"].ToString(),
+                        ProcName = mo["Name"].ToString(),
+                        Manufacturer = mo["Manufacturer"].ToString(),
+                        Version = mo["Version"].ToString(),
                     });
                 }
             }
@@ -95,10 +118,11 @@ namespace Cliver
         }
         public class ProcessorInfo
         {
-            public string clockSpeed;
-            public string procName;
-            public string manufacturer;
-            public string version;
+            public string Id;
+            public string ClockSpeed;
+            public string ProcName;
+            public string Manufacturer;
+            public string Version;
         }
 
         public static Dictionary<string, DiskInfo> GetDiskInfo()
