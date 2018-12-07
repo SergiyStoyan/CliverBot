@@ -62,9 +62,7 @@ namespace Cliver
 
             public Aes(string key)
             {
-                if (key == null)
-                    throw new ArgumentNullException("key");
-                this.key = key;
+                this.key = key ?? throw new ArgumentNullException("key");
             }
 
             public string Encrypt(string str)
