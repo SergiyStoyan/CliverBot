@@ -33,6 +33,8 @@ namespace Cliver
         /// </summary>
         public static bool TopMost = false;
 
+        public static bool TopLevel = false;
+
         /// <summary>
         /// Owner that is used by default
         /// </summary>
@@ -172,7 +174,7 @@ namespace Cliver
            });
         }
 
-        static int show_dialog(string title, Icon icon, string message, string[] buttons, int default_button, Form owner, bool? button_autosize = null, bool? no_duplicate = null, bool? topmost = null)
+        static int show_dialog(string title, Icon icon, string message, string[] buttons, int default_button, Form owner, bool? button_autosize = null, bool? no_duplicate = null, bool? top_most = null)
         {
             string caller = null;
             if (no_duplicate ?? NoDuplicate)
@@ -198,8 +200,10 @@ namespace Cliver
 
             MessageForm mf = new MessageForm(title, icon, message, buttons, default_button, owner, button_autosize ?? ButtonAutosize);
             mf.ShowInTaskbar = ShowInTaskbar;
-            mf.TopMost = topmost ?? TopMost;
-            //mf.TopLevel = topmost ?? TopMost;
+            mf.TopMost = top_most ?? TopMost;
+            mf.TopLevel = top_most ?? TopLevel;
+            if (mf.TopMost || mf.TopLevel)
+                mf.BringToFront();
             int result = mf.ShowDialog();
 
             if (no_duplicate ?? NoDuplicate)
