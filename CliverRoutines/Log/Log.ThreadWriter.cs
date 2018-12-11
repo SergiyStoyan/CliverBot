@@ -156,7 +156,7 @@ namespace Cliver
                             if (log_id < 0)
                                 log_name += "_" + MainSession.TimeMark + ".log";
                             else
-                                log_name += "_" + log_id.ToString() + "_" + MainSession.TimeMark + ".log";
+                                log_name += "_" + MainSession.TimeMark + "_" + log_id.ToString() + ".log";
 
                             tw = new ThreadWriter(log_id, log_name);
                             thread2tws.Add(thread, tw);
