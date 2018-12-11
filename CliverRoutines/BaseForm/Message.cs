@@ -202,8 +202,9 @@ namespace Cliver
             mf.ShowInTaskbar = ShowInTaskbar;
             mf.TopMost = top_most ?? TopMost;
             mf.TopLevel = top_most ?? TopLevel;
-            if (mf.TopMost || mf.TopLevel)
-                mf.BringToFront();
+
+            //WinApi.User32.SetWindowPos(mf.Handle,new IntPtr( WinApi.User32.HWND_TOPMOST), 0, 0, 0, 0, WinApi.User32.WindowPositionFlags.SWP_HIDEWINDOW);
+
             int result = mf.ShowDialog();
 
             if (no_duplicate ?? NoDuplicate)

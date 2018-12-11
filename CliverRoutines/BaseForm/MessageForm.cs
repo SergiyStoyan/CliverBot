@@ -24,6 +24,8 @@ namespace Cliver
         public MessageForm(string caption, Icon icon, string message, string[] buttons, int default_button, Form owner, bool button_auto_size = false)
         {
             InitializeComponent();
+            
+            CreateHandle();
 
             this.Icon = AssemblyRoutines.GetAppIcon();
 
