@@ -202,9 +202,15 @@ namespace Cliver
             mf.ShowInTaskbar = ShowInTaskbar;
             mf.TopMost = top_most ?? TopMost;
             mf.TopLevel = top_most ?? TopLevel;
-
-            //WinApi.User32.SetWindowPos(mf.Handle,new IntPtr( WinApi.User32.HWND_TOPMOST), 0, 0, 0, 0, WinApi.User32.WindowPositionFlags.SWP_HIDEWINDOW);
-
+            //mf.Show();
+            //mf.BringToFront();
+            //WinApi.User32.SetWindowPos(mf.Handle, new IntPtr( WinApi.User32.HWND_TOPMOST), 0, 0, 0, 0, WinApi.User32.WindowPositionFlags.SWP_NOMOVE | WinApi.User32.WindowPositionFlags.SWP_NOSIZE);
+            //AttachedThreadInputAction(() =>
+            //{
+            //    WinApi.User32.BringWindowToTop(mf.Handle);
+            //    WinApi.User32.ShowWindow(mf.Handle, WinApi.User32.SW_SHOW);
+            //});
+            //Application.Run(mf);
             int result = mf.ShowDialog();
 
             if (no_duplicate ?? NoDuplicate)
@@ -215,6 +221,26 @@ namespace Cliver
 
             return result;
         }
+        //public static void AttachedThreadInputAction(Action action)
+        //{
+        //    uint pid;
+        //    var foreThread = WinApi.User32.GetWindowThreadProcessId(WinApi.User32.GetForegroundWindow(), out pid);
+        //    var appThread = WinApi.Kernel32.GetCurrentThreadId();
+        //    bool threadsAttached = false;
+        //    try
+        //    {
+        //        threadsAttached = foreThread == appThread || WinApi.User32.AttachThreadInput(foreThread, appThread, true);
+        //        if (threadsAttached)
+        //            action();
+        //        else
+        //            throw new Exception("AttachThreadInput failed.");
+        //    }
+        //    finally
+        //    {
+        //        if (threadsAttached)
+        //            WinApi.User32.AttachThreadInput(foreThread, appThread, false);
+        //    }
+        //}
         static Dictionary<string, string> callers2message = new Dictionary<string, string>();
         public enum Icons
         {

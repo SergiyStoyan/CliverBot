@@ -288,7 +288,7 @@ namespace Cliver
                             log_writer = new StreamWriter(Path, true);
 
                         details = string.IsNullOrWhiteSpace(details) ? "" : "\r\n\r\n" + details;
-                        message = type + ": " + message + details;
+                        message = (type == MessageType.LOG ? "" : type.ToString()) + ": " + message + details;
                         //switch (type)
                         //{
                         //    case Log.MessageType.INFORM:

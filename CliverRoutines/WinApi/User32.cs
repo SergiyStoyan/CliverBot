@@ -15,23 +15,32 @@ namespace Cliver.WinApi
 {
     public partial class User32
     {
+        [DllImport("user32.dll", EntryPoint = "ShowWindow", SetLastError = true)]
+        static public extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        [DllImport("user32.dll", SetLastError = true)]
+        static public extern bool BringWindowToTop(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        static public extern bool AttachThreadInput(uint idAttach, uint idAttachTo, bool fAttach);
+
         public class WindowPositionFlags
         {
-            public const int SWP_ASYNCWINDOWPOS = 0x4000;
-            public const int SWP_DEFERERASE = 0x2000;
-            public const int SWP_DRAWFRAME = 0x0020;
-            public const int SWP_FRAMECHANGED = 0x0020;
-            public const int SWP_HIDEWINDOW = 0x0080;
-            public const int SWP_NOACTIVATE = 0x0010;
-            public const int SWP_NOCOPYBITS = 0x0100;
-            public const int SWP_NOMOVE = 0x0002;
-            public const int SWP_NOOWNERZORDER = 0x0200;
-            public const int SWP_NOREDRAW = 0x0008;
-            public const int SWP_NOREPOSITION = 0x0200;
-            public const int SWP_NOSENDCHANGING = 0x0400;
-            public const int SWP_NOSIZE = 0x0001;
-            public const int SWP_NOZORDER = 0x0004;
-            public const int SWP_SHOWWINDOW = 0x0040;
+            public const uint SWP_ASYNCWINDOWPOS = 0x4000;
+            public const uint SWP_DEFERERASE = 0x2000;
+            public const uint SWP_DRAWFRAME = 0x0020;
+            public const uint SWP_FRAMECHANGED = 0x0020;
+            public const uint SWP_HIDEWINDOW = 0x0080;
+            public const uint SWP_NOACTIVATE = 0x0010;
+            public const uint SWP_NOCOPYBITS = 0x0100;
+            public const uint SWP_NOMOVE = 0x0002;
+            public const uint SWP_NOOWNERZORDER = 0x0200;
+            public const uint SWP_NOREDRAW = 0x0008;
+            public const uint SWP_NOREPOSITION = 0x0200;
+            public const uint SWP_NOSENDCHANGING = 0x0400;
+            public const uint SWP_NOSIZE = 0x0001;
+            public const uint SWP_NOZORDER = 0x0004;
+            public const uint SWP_SHOWWINDOW = 0x0040;
         }
 
         public const int HWND_TOP = 0;
@@ -41,7 +50,7 @@ namespace Cliver.WinApi
 
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, int uFlags);
+        public static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int y, int cx, int cy, uint uFlags);
 
         //public class MemoryProtection
         //{
