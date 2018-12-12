@@ -145,10 +145,7 @@ namespace Cliver
             /// <param name="e"></param>
             public void Trace(object message = null)
             {
-                if (message != null)
-                    Write(MessageType.TRACE, message.ToString(), GetStackString());
-                else
-                    Write(MessageType.TRACE, null, GetStackString());
+                Write(MessageType.TRACE, message == null ? null : message.ToString(), GetStackString());
             }
 
             /// <summary>
@@ -201,6 +198,11 @@ namespace Cliver
             /// <param name="e"></param>
             public void Warning(string message)
             {
+                Write(MessageType.WARNING, message, GetStackString());
+            }
+
+            public void Warning2(string message)
+            {
                 Write(MessageType.WARNING, message);
             }
 
@@ -233,9 +235,19 @@ namespace Cliver
                 Write(MessageType.INFORM, message);
             }
 
+            public void Inform0(string message)
+            {
+                Write(MessageType.INFORM, message, GetStackString());
+            }
+
             public void Write(string line)
             {
-                Write(Log.MessageType.LOG, line);
+                Write(MessageType.LOG, line);
+            }
+
+            public void Write0(string message)
+            {
+                Write(MessageType.LOG, message, GetStackString());
             }
 
             /// <summary>
