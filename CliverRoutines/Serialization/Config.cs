@@ -52,6 +52,12 @@ namespace Cliver
         /// </summary>
         public class Obligatory : Attribute
         { }
+
+        /// <summary>
+        /// this object is located in user domain
+        /// </summary>
+        //public class UserDependent : Attribute
+        //{ }
     }
 
     /// <summary>
