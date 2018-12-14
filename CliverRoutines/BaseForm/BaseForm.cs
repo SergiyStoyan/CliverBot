@@ -29,7 +29,7 @@ namespace Cliver
 
         public static Size GetRecommendedWindowSize(double factor = 0.8)
         {
-            Size s = SystemInfo.GetPrimaryScreenSize();
+            Size s = SystemInfo.GetPrimaryScreenSize(false);
             return new Size((int)((float)s.Width * factor), (int)((float)s.Height * factor));
         }
     }

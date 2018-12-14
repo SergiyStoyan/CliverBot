@@ -155,6 +155,9 @@
       <DependentUpon>MessageForm.cs</DependentUpon>
     </Compile>
     <Compile Include="BaseService.cs" />
+    <Compile Include="Misc\WebClient.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Misc\ProcessRoutines.GetLockingProcesses.cs" />
     <Compile Include="Serialization\Config.cs" />
     <Compile Include="ListDb.IndexedTable.cs" />

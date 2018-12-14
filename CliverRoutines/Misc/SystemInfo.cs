@@ -12,14 +12,22 @@ namespace Cliver
 {
     public static class SystemInfo
     {
-        public static Size GetPrimaryScreenSize()
+        public static Size GetCurrentScreenSize(Point windowPosition, bool getWorkingArea)
+        {
+            Screen s = Screen.FromPoint(windowPosition);
+            if (s != null)
+                return getWorkingArea ? new Size(s.WorkingArea.Width, s.WorkingArea.Height): new Size(s.Bounds.Width, s.Bounds.Height);
+            return new Size();
+        }
+
+        public static Size GetPrimaryScreenSize(bool getWorkingArea)
         {
             Screen s = Screen.AllScreens.Where(x => x.Primary).FirstOrDefault();
             if (s != null)
                 return new Size(s.Bounds.Width, s.Bounds.Height);
             s = Screen.AllScreens.FirstOrDefault();
             if (s != null)
-                return new Size(s.Bounds.Width, s.Bounds.Height);
+                return getWorkingArea ? new Size(s.WorkingArea.Width, s.WorkingArea.Height) : new Size(s.Bounds.Width, s.Bounds.Height);
             return new Size();
         }
 

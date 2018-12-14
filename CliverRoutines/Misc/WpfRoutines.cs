@@ -49,7 +49,7 @@ namespace Cliver
 
         public static void TrimWindowSize(this System.Windows.Window window, double screen_factor = 0.8)
         {
-            System.Drawing.Size s = SystemInfo.GetPrimaryScreenSize();
+            System.Drawing.Size s = SystemInfo.GetPrimaryScreenSize(false);
             int v = (int)((float)s.Width * screen_factor);
             if (window.Width > v)
                 window.Width = v;
