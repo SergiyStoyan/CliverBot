@@ -36,7 +36,7 @@ namespace Cliver.BotCustomization
         {
             try
             {
-                Cliver.Config.Initialize(new string[] { "Engine", "Input", "Output", "Web", "Spider", "Log" });
+                Cliver.Config.Initialize(@"^Cliver", new string[] { "Engine", "Input", "Output", "Web", "Spider", "Log" });
 
                 //Cliver.Bot.Program.Run();//It is the entry when the app runs as a console app.
                 Cliver.BotGui.Program.Run();//It is the entry when the app uses the default GUI.
@@ -89,9 +89,9 @@ Developed by: www.cliversoft.com";
         /// <summary>
         /// Invoked when a fatal error happened and session is aborting.
         /// </summary>
-        public override void __FatalError(string message)
-        {
-        }
+        //public override void __FatalError(string message)
+        //{
+        //}
 
         public override void __Creating()
         {
