@@ -115,6 +115,10 @@
     <Compile Include="WebRoutine.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CliverRoutines\CliverRoutines.csproj">
+      <Project>{aca94788-bed1-4b8e-94ef-e54293e8d139}</Project>
+      <Name>CliverRoutines</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CliverBot.csproj">
       <Project>{5283eea1-5f94-4379-bdf3-975ca4adbbf4}</Project>
       <Name>CliverBot</Name>
@@ -122,10 +126,6 @@
     <ProjectReference Include="..\CliverBotGui\CliverBotGui.csproj">
       <Project>{ccd9744f-aa5d-4d39-bd63-0451c3e1e16a}</Project>
       <Name>CliverBotGui</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CliverRoutines\CliverRoutines.csproj">
-      <Project>{aca94788-bed1-4b8e-94ef-e54293e8d139}</Project>
-      <Name>CliverRoutines</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

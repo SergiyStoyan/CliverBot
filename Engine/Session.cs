@@ -75,7 +75,7 @@ namespace Cliver.Bot
             Log.Main.Inform("Loading configuration from " + Config.DefaultStorageDir);
             Config.Reload(Config.DefaultStorageDir);
 
-            Dir = PathRoutines.CreateDirectory(Log.WorkDir + "\\Data");
+            Dir = FileSystemRoutines.CreateDirectory(Log.WorkDir + "\\Data");
             Directory.SetLastWriteTime(Dir, DateTime.Now);//to avoid cleaning up
             ConfigurationDir = Dir + "\\" + Config.CONFIG_FOLDER_NAME;
 
@@ -125,7 +125,7 @@ namespace Cliver.Bot
                     Storage.Close();
                     if(Directory.Exists(Dir))
                         Directory.Move(Dir, old_dir_new_path);
-                    PathRoutines.CreateDirectory(Dir);
+                    FileSystemRoutines.CreateDirectory(Dir);
                     Storage = new SessionStorage();
                 }
 

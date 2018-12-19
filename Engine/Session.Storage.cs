@@ -35,7 +35,7 @@ namespace Cliver.Bot
 
             internal StorageBase(string file)
             {
-                PathRoutines.CreateDirectory(PathRoutines.GetDirFromPath(file));//done because cleanup can remove the dir
+                FileSystemRoutines.CreateDirectory(PathRoutines.GetDirFromPath(file));//done because cleanup can remove the dir
                 this.file = file;
                 //fs = File.Open(file, FileMode.OpenOrCreate, FileAccess.ReadWrite);
             }
