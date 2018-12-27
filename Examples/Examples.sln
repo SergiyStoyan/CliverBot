@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkChecker", "LinkChecker\LinkChecker.csproj", "{B8C035E1-156D-4FE9-B84C-75634B5761AE}"
 EndProject
@@ -15,9 +15,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliverBot", "..\CliverBot.c
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliverBotGui", "..\CliverBotGui\CliverBotGui.csproj", "{CCD9744F-AA5D-4D39-BD63-0451C3E1E16A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliverRoutines", "..\..\CliverRoutines\CliverRoutines.csproj", "{ACA94788-BED1-4B8E-94EF-E54293E8D139}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliverWebRoutines", "..\CliverWebRoutines\CliverWebRoutines.csproj", "{114B1616-75E2-40D6-8E43-FBF2F6EE9390}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliverRoutines", "..\CliverRoutines\CliverRoutines.csproj", "{ACA94788-BED1-4B8E-94EF-E54293E8D139}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,16 +101,6 @@ Global
 		{CCD9744F-AA5D-4D39-BD63-0451C3E1E16A}.Release|Mixed Platforms.Build.0 = Release|x86
 		{CCD9744F-AA5D-4D39-BD63-0451C3E1E16A}.Release|x86.ActiveCfg = Release|x86
 		{CCD9744F-AA5D-4D39-BD63-0451C3E1E16A}.Release|x86.Build.0 = Release|x86
-		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Release|Any CPU.Build.0 = Release|Any CPU
-		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Release|x86.ActiveCfg = Release|Any CPU
 		{114B1616-75E2-40D6-8E43-FBF2F6EE9390}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{114B1616-75E2-40D6-8E43-FBF2F6EE9390}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{114B1616-75E2-40D6-8E43-FBF2F6EE9390}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -123,8 +113,23 @@ Global
 		{114B1616-75E2-40D6-8E43-FBF2F6EE9390}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{114B1616-75E2-40D6-8E43-FBF2F6EE9390}.Release|x86.ActiveCfg = Release|Any CPU
 		{114B1616-75E2-40D6-8E43-FBF2F6EE9390}.Release|x86.Build.0 = Release|Any CPU
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Debug|x86.Build.0 = Debug|Any CPU
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Release|x86.ActiveCfg = Release|Any CPU
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3DD39E37-5135-4031-ABD1-F7C5567A3932}
 	EndGlobalSection
 EndGlobal

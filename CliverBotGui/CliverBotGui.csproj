@@ -240,13 +240,13 @@
     <Content Include="computers308.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CliverRoutines\CliverRoutines.csproj">
-      <Project>{aca94788-bed1-4b8e-94ef-e54293e8d139}</Project>
-      <Name>CliverRoutines</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CliverBot.csproj">
       <Project>{5283eea1-5f94-4379-bdf3-975ca4adbbf4}</Project>
       <Name>CliverBot</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CliverRoutines\CliverRoutines.csproj">
+      <Project>{aca94788-bed1-4b8e-94ef-e54293e8d139}</Project>
+      <Name>CliverRoutines</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
