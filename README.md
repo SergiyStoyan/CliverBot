@@ -5,4 +5,4 @@ Multithreaded custom item processing framework in C#. Provides:
 - storing session information so that a broken session can be restarted from the breaking point;
 - threaded logging;
 
-(No relation to web bots! It was named those old days when 'bot' could mean almost anything.)
+
