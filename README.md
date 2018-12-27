@@ -1,2 +1,7 @@
 # CliverBot
-Multithreaded item processor framework
+Multithreaded custom item processing framework in C#. Provides:
+- abstract item that must be defined customly;
+- multithreaded pipeline for custom processing queues of custom items;
+- storing session information so that a broken session can be restarted from the breaking point;
+- threaded logging;
+(No relation to web bots! It was named those old days when 'bot' could mean almost anything.)
