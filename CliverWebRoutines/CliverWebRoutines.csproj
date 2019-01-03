@@ -34,6 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DataSifter, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>References\DataSifter\DataSifter.exe</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\Examples\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -107,10 +111,6 @@
     <Compile Include="WebRoutine.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DataSifter\DataSifter.csproj">
-      <Project>{1c93a1e3-2825-41a3-9f0f-dee78c3dfbd6}</Project>
-      <Name>DataSifter</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CliverBot.csproj">
       <Project>{5283eea1-5f94-4379-bdf3-975ca4adbbf4}</Project>
       <Name>CliverBot</Name>
