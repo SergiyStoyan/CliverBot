@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliverWebRoutines", "..\Cli
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliverRoutines", "..\CliverRoutines\CliverRoutines.csproj", "{ACA94788-BED1-4B8E-94EF-E54293E8D139}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataSifter", "..\..\DataSifter\DataSifter.csproj", "{1C93A1E3-2825-41A3-9F0F-DEE78C3DFBD6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,6 +127,18 @@ Global
 		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Release|x86.ActiveCfg = Release|Any CPU
 		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Release|x86.Build.0 = Release|Any CPU
+		{1C93A1E3-2825-41A3-9F0F-DEE78C3DFBD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C93A1E3-2825-41A3-9F0F-DEE78C3DFBD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C93A1E3-2825-41A3-9F0F-DEE78C3DFBD6}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{1C93A1E3-2825-41A3-9F0F-DEE78C3DFBD6}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{1C93A1E3-2825-41A3-9F0F-DEE78C3DFBD6}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1C93A1E3-2825-41A3-9F0F-DEE78C3DFBD6}.Debug|x86.Build.0 = Debug|Any CPU
+		{1C93A1E3-2825-41A3-9F0F-DEE78C3DFBD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C93A1E3-2825-41A3-9F0F-DEE78C3DFBD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C93A1E3-2825-41A3-9F0F-DEE78C3DFBD6}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{1C93A1E3-2825-41A3-9F0F-DEE78C3DFBD6}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{1C93A1E3-2825-41A3-9F0F-DEE78C3DFBD6}.Release|x86.ActiveCfg = Release|Any CPU
+		{1C93A1E3-2825-41A3-9F0F-DEE78C3DFBD6}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
