@@ -1,13 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.21005.1
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29230.47
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LinkChecker", "LinkChecker.csproj", "{B8C035E1-156D-4FE9-B84C-75634B5761AE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliverBot", "..\..\CliverBot.csproj", "{5283EEA1-5F94-4379-BDF3-975CA4ADBBF4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliverBotGui", "..\..\CliverBotGui\CliverBotGui.csproj", "{CCD9744F-AA5D-4D39-BD63-0451C3E1E16A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliverRoutines", "..\..\CliverRoutines\CliverRoutines.csproj", "{ACA94788-BED1-4B8E-94EF-E54293E8D139}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CliverWebRoutines", "..\..\CliverWebRoutines\CliverWebRoutines.csproj", "{114B1616-75E2-40D6-8E43-FBF2F6EE9390}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,8 +53,35 @@ Global
 		{CCD9744F-AA5D-4D39-BD63-0451C3E1E16A}.Release|Mixed Platforms.Build.0 = Release|x86
 		{CCD9744F-AA5D-4D39-BD63-0451C3E1E16A}.Release|x86.ActiveCfg = Release|x86
 		{CCD9744F-AA5D-4D39-BD63-0451C3E1E16A}.Release|x86.Build.0 = Release|x86
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Debug|x86.Build.0 = Debug|Any CPU
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Release|x86.ActiveCfg = Release|Any CPU
+		{ACA94788-BED1-4B8E-94EF-E54293E8D139}.Release|x86.Build.0 = Release|Any CPU
+		{114B1616-75E2-40D6-8E43-FBF2F6EE9390}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{114B1616-75E2-40D6-8E43-FBF2F6EE9390}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{114B1616-75E2-40D6-8E43-FBF2F6EE9390}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{114B1616-75E2-40D6-8E43-FBF2F6EE9390}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{114B1616-75E2-40D6-8E43-FBF2F6EE9390}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{114B1616-75E2-40D6-8E43-FBF2F6EE9390}.Debug|x86.Build.0 = Debug|Any CPU
+		{114B1616-75E2-40D6-8E43-FBF2F6EE9390}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{114B1616-75E2-40D6-8E43-FBF2F6EE9390}.Release|Any CPU.Build.0 = Release|Any CPU
+		{114B1616-75E2-40D6-8E43-FBF2F6EE9390}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{114B1616-75E2-40D6-8E43-FBF2F6EE9390}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{114B1616-75E2-40D6-8E43-FBF2F6EE9390}.Release|x86.ActiveCfg = Release|Any CPU
+		{114B1616-75E2-40D6-8E43-FBF2F6EE9390}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FF7F441B-3506-4F16-AF70-1727724CCF54}
 	EndGlobalSection
 EndGlobal
