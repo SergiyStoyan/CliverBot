@@ -222,9 +222,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="CliverRoutines\CliverRoutines.csproj">
+    <ProjectReference Include="CliverRoutines0\CliverRoutines0.csproj">
       <Project>{aca94788-bed1-4b8e-94ef-e54293e8d139}</Project>
-      <Name>CliverRoutines</Name>
+      <Name>CliverRoutines0</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

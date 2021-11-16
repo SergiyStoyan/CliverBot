@@ -29,8 +29,16 @@ namespace Cliver.Bot
 
         static Program()
         {
-            Config.Reload();
-            Log.Initialize(Log.Mode.SESSIONS, Settings.Log.PreWorkDir, Settings.Log.WriteLog, Settings.Log.DeleteLogsOlderDays, LogSessionPrefix);
+            try
+            {
+                Config.Reload();
+                Log.Initialize(Log.Mode.SESSIONS, Settings.Log.PreWorkDir, Settings.Log.WriteLog, Settings.Log.DeleteLogsOlderDays, LogSessionPrefix);
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                if (!Cliver.ProcessRoutines.ProcessHasElevatedPrivileges())
+                    Cliver.ProcessRoutines.Restart(true);
+            }
 
             LogMessage.DisableStumblingDialogs = true;
 
