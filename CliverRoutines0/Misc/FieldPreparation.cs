@@ -1,10 +1,9 @@
 //********************************************************************************************
 //Author: Sergey Stoyan
 //        sergey.stoyan@gmail.com
-//        sergey_stoyan@yahoo.com
+//        sergey.stoyan@hotmail.com
+//        stoyan@cliversoft.com
 //        http://www.cliversoft.com
-//        26 September 2006
-//Copyright: (C) 2006, Sergey Stoyan
 //********************************************************************************************
 
 using System.Text.RegularExpressions;
@@ -30,7 +29,7 @@ namespace Cliver
                 value = Regex.Replace(value, "<!--.*?-->|<script .*?</script>", "", RegexOptions.Compiled | RegexOptions.Singleline);
                 value = Regex.Replace(value, "<.*?>", " ", RegexOptions.Compiled | RegexOptions.Singleline);
                 value = HttpUtility.HtmlDecode(value);
-                value = RemoveNonPrintablesRegex.Replace(value, " ");
+                value = ReplaceNonPrintableChars(value);
                 value = Regex.Replace(value, @"\s+", " ", RegexOptions.Compiled | RegexOptions.Singleline);//strip from more than 1 spaces
                 value = value.Trim();
                 return value;
@@ -56,7 +55,7 @@ namespace Cliver
                 value = Regex.Replace(value, "<!--.*?-->|<script .*?</script>", "", RegexOptions.Compiled | RegexOptions.Singleline);
                 value = Regex.Replace(value, "<.*?>", " ", RegexOptions.Compiled | RegexOptions.Singleline);
                 value = HttpUtility.HtmlDecode(value);
-                value = RemoveNonPrintablesRegex.Replace(value, " ");
+                value = ReplaceNonPrintableChars(value);
                 value = Regex.Replace(value, @"\s+", " ", RegexOptions.Compiled | RegexOptions.Singleline);//strip from more than 1 spaces	
                 value = value.Trim();
                 return value;
@@ -124,7 +123,7 @@ namespace Cliver
                 value = Regex.Replace(value, @"<(p|br|\/tr)(\s[^>]*>|>)", "\r\n", RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
                 value = Regex.Replace(value, "<.*?>", " ", RegexOptions.Compiled | RegexOptions.Singleline);
                 value = HttpUtility.HtmlDecode(value);
-                value = RemoveNonPrintablesRegex.Replace(value, " ");
+                value = ReplaceNonPrintableChars(value);
                 value = Regex.Replace(value, @"[ ]+", " ", RegexOptions.Compiled | RegexOptions.Singleline);//strip from more than 1 spaces	
                 value = value.Trim();
                 return (HttpUtility.HtmlDecode(value)).Trim();
@@ -135,7 +134,7 @@ namespace Cliver
         {
             if (value == null)
                 return "";
-            value = RemoveNonPrintablesRegex.Replace(value, " ");
+            value = ReplaceNonPrintableChars(value);
             value = Regex.Replace(value, @"\s+", " ", RegexOptions.Compiled | RegexOptions.Singleline);
             value = value.Trim();
             return value;
@@ -166,7 +165,7 @@ namespace Cliver
             if (value == null)
                 return default_value;
 
-            value = RemoveNonPrintablesRegex.Replace(value, " ");
+            value = ReplaceNonPrintableChars(value);
             value = Regex.Replace(value, @"\s+", " ", RegexOptions.Compiled | RegexOptions.Singleline);//strip from more than 1 spaces	
             value = value.Trim();
             if (value == "")
@@ -242,9 +241,11 @@ namespace Cliver
             return d;
         }
 
-        //static Regex RemoveNonPrintablesRegex = new Regex(@"[^\u0000-\u007F]", RegexOptions.Compiled | RegexOptions.Singleline);
-        public readonly static Regex RemoveNonPrintablesRegex = new Regex(@"[^\u0000-\u00b0]", RegexOptions.Compiled | RegexOptions.Singleline);
-        //static Regex RemoveNonPrintablesRegex = new Regex(@"[^\x20-\x7E]", RegexOptions.Compiled | RegexOptions.Singleline);
+        public static string ReplaceNonPrintableChars(string s, string substitution = " ")
+        {
+            return NonPrintableCharsRegex.Replace(s, substitution);
+        }
+        public static Regex NonPrintableCharsRegex = new Regex(@"\p{C}+", RegexOptions.Singleline);
 
         public static string Trim(string s, int length, string ending = "...")
         {
