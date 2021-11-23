@@ -14,15 +14,16 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Reflection;
 using Cliver.Bot;
+using Cliver.Win;
 
 namespace Cliver.BotGui
 {
-	/// <summary>
-	/// Summary description for About.
-	/// </summary>
+    /// <summary>
+    /// Summary description for About.
+    /// </summary>
     public class AboutForm : Cliver.BaseForm
-	{
-		private System.Windows.Forms.Label lCopyright;
+    {
+        private System.Windows.Forms.Label lCopyright;
         private System.Windows.Forms.Button button1;
         private LinkLabel linkLabel1;
         private LinkLabel linkLabel2;
@@ -32,42 +33,42 @@ namespace Cliver.BotGui
         private RichTextBox CustomBox;
         private Label label2;
         private Label label22;
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.Container components = null;
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.Container components = null;
 
         public AboutForm()
-		{
-			//
-			// Required for Windows Form Designer support
-			//
-			InitializeComponent();
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-		}
+        {
+            //
+            // Required for Windows Form Designer support
+            //
+            InitializeComponent();
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+        }
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		protected override void Dispose( bool disposing )
-		{
-			if( disposing )
-			{
-				if(components != null)
-				{
-					components.Dispose();
-				}
-			}
-			base.Dispose( disposing );
-		}
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (components != null)
+                {
+                    components.Dispose();
+                }
+            }
+            base.Dispose(disposing);
+        }
 
-		#region Windows Form Designer generated code
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
+        #region Windows Form Designer generated code
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutForm));
             this.lCopyright = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -205,8 +206,8 @@ namespace Cliver.BotGui
             this.ResumeLayout(false);
             this.PerformLayout();
 
-		}
-		#endregion
+        }
+        #endregion
 
         private void About_Load(object sender, System.EventArgs e)
         {
@@ -224,18 +225,20 @@ namespace Cliver.BotGui
             {
                 LogMessage.Error(ex);
             }
+
+            label1.Text = Bot.Program.Name + "-" + Bot.Program.Version.ToString(3);
         }
 
         public virtual string GetAbout()
         {
-            return @"Compiled: " + Bot.Program.GetCustomizationCompiledTime().ToString() + @"
+            return Bot.Program.Name + @"
 Developed by: www.cliversoft.com";
         }
 
-		private void close(object sender, System.EventArgs e)
-		{
-			this.Close();
-		}
+        private void close(object sender, System.EventArgs e)
+        {
+            this.Close();
+        }
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -244,17 +247,17 @@ Developed by: www.cliversoft.com";
 
         private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("mailto:sergey.stoyan@gmail.com");            
+            Process.Start("mailto:sergey.stoyan@gmail.com");
         }
 
         private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("mailto:sergey_stoyan@yahoo.com");                 
+            Process.Start("mailto:sergey.stoyan@hotmail.com");
         }
 
         private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("mailto:stoyan@cliversoft.com");            
+            Process.Start("mailto:stoyan@cliversoft.com");
         }
-	}
+    }
 }

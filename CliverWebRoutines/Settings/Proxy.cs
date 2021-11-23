@@ -15,7 +15,7 @@ namespace Cliver.BotWeb
     {
         public static readonly ProxyClass Proxy;
 
-        public class ProxyClass : Cliver.Settings
+        public class ProxyClass : Cliver.UserSettings
         {
             public int MaxAttemptCountWithNewProxy = 3;
             public string ProxiesFileUri;

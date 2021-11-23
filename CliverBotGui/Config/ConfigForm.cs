@@ -20,6 +20,7 @@ using System.Configuration;
 using Cliver.Bot;
 using System.Linq;
 using System.Diagnostics;
+using Cliver.Win;
 
 namespace Cliver.BotGui
 {
@@ -76,10 +77,10 @@ namespace Cliver.BotGui
                 //storage_dir = d.SelectedPath;
                 //}
                 //Config.Save(storage_dir);
-                if (Cliver.Config.ReadOnly && !LogMessage.AskYesNo("The current config was loaded from a not default location and will replace the config stored in the default location. Are you sure to proceed?", false))
+
+                if (Bot.Config.ReadOnly && !LogMessage.AskYesNo("The current config was loaded from a not default location and will replace the config stored in the default location. Are you sure to proceed?", false))
                     return;
-                Config.Save();
-                //Config.Reload();
+                Bot.Config.Save();
                 Close();
             }
             catch (Exception ex)
@@ -96,7 +97,7 @@ namespace Cliver.BotGui
 
         private void Cancel_Click(object sender, EventArgs e)
         {
-            Config.Reload(Cliver.Config.DefaultStorageDir);
+            Config.Reload();
             this.Close();
         }
 
@@ -200,7 +201,7 @@ namespace Cliver.BotGui
 
         private void bStore_Click(object sender, EventArgs e)
         {
-            Process.Start(Cliver.Config.StorageDir);
+            Process.Start(Settings.Gui.__StorageDir);
         }
 
         private void bLoad_Click(object sender, EventArgs e)
@@ -209,7 +210,7 @@ namespace Cliver.BotGui
             d.ShowDialog();
             if (d.SessionDir == null)
                 return;
-            Config.Reload(d.SessionDir, true);
+            Config.Reload(d.SessionDir + "\\" + Bot.Session.ConfigFileName);
             ConfigForm_Load(null, null);
         }
     }

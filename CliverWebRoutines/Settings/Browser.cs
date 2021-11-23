@@ -15,7 +15,7 @@ namespace Cliver.BotWeb
     {
         public static readonly BrowserClass Browser;
 
-        public class BrowserClass : Cliver.Settings
+        public class BrowserClass : Cliver.UserSettings
         {
             public int PageCompletedTimeoutInSeconds = 60;
             public bool CloseWebBrowserDialogsAutomatically = true;

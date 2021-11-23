@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Net;
+using Cliver.Win;
 
 namespace Cliver.BotWeb
 {

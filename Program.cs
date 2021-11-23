@@ -7,17 +7,16 @@ using System.Configuration;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Cliver.Win;
 
 namespace Cliver.Bot
 {
-    public class CommandLineParameters : ProgramRoutines.CommandLineParameters
+    public class CommandLineParameters
     {
-        public static readonly CommandLineParameters PRODUCTION = new CommandLineParameters("-production");
-        public static readonly CommandLineParameters NOT_RESTORE_SESSION = new CommandLineParameters("-not_restore_session");
-
-        public CommandLineParameters(string value) : base(value) { }
+        public const string PRODUCTION = "-production";
+        public const string NOT_RESTORE_SESSION = "-not_restore_session";
     }
-    
+
     public static class Program
     {
         public static void Initialize()
@@ -25,51 +24,40 @@ namespace Cliver.Bot
             //to force static constructor
         }
 
-        public const string LogSessionPrefix = "Log";
+        //public const string LogSessionPrefix = "Log";
 
         static Program()
         {
-            try
-            {
-                Config.Reload();
-                Log.Initialize(Log.Mode.SESSIONS, Settings.Log.PreWorkDir, Settings.Log.WriteLog, Settings.Log.DeleteLogsOlderDays, LogSessionPrefix);
-            }
-            catch (UnauthorizedAccessException e)
-            {
-                if (!Cliver.ProcessRoutines.ProcessHasElevatedPrivileges())
-                    Cliver.ProcessRoutines.Restart(true);
-            }
-
-            LogMessage.DisableStumblingDialogs = true;
-
-            if (ProgramRoutines.IsParameterSet(CommandLineParameters.PRODUCTION))
-            {
-                Settings.Engine.RestoreBrokenSession = true;
-                Settings.Engine.RestoreErrorItemsAsNew = false;
-                Settings.Engine.WriteSessionRestoringLog = true;
-            }
-            
-            AssemblyName ean = Assembly.GetEntryAssembly().GetName();
-            string customization_title = ean.Name;
-            if (ean.Version.Major > 0 || ean.Version.Minor > 0)
-                customization_title += ean.Version.Major + "." + ean.Version.Minor;
-            //CustomizationModificationTime = File.GetLastWriteTime(Log.AppDir + "\\" + ean);
-            AssemblyName can = Assembly.GetExecutingAssembly().GetName();
-            string CliverBot_title = can.Name;
-            if (can.Version.Major > 0 || can.Version.Minor > 0)
-                CliverBot_title += can.Version.Major + "." + can.Version.Minor;
-            Title = customization_title + @" / " + CliverBot_title;
-
             AppDomain.CurrentDomain.UnhandledException += delegate (object sender, UnhandledExceptionEventArgs args)
             {
                 Exception e = (Exception)args.ExceptionObject;
                 LogMessage.Exit(e);
             };
-        }
 
-        static public readonly string Title;
-        //static public readonly DateTime CustomizationModificationTime = File.GetLastWriteTime(Application.ExecutablePath);
-        static readonly public string AppName = Application.ProductName;
+            if (!Settings.Log.WriteLog)
+                Log.DefaultLevel = Log.Level.NONE;
+            Log.Initialize(Log.Mode.FOLDER_PER_SESSION, new List<string> { Settings.Log.PreWorkDir }, Settings.Log.DeleteLogsOlderDays);
+
+            LogMessage.DisableStumblingDialogs = true;
+
+            if (CommandLine.IsParameterSet(CommandLineParameters.PRODUCTION))
+            {
+                Settings.Engine.RestoreBrokenSession = true;
+                Settings.Engine.RestoreErrorItemsAsNew = false;
+                Settings.Engine.WriteSessionRestoringLog = true;
+            }
+
+            AssemblyRoutines.AssemblyInfo ai = new AssemblyRoutines.AssemblyInfo();
+            Name = ai.Product;
+            Version = ai.Version;
+            AssemblyRoutines.AssemblyInfo cai = new AssemblyRoutines.AssemblyInfo(Assembly.GetEntryAssembly());
+            FullName = cai.Product + "-" + cai.Version.ToString(3) + " [" + Name + "-" + Version.ToString(3) + "]";
+
+            Config.Reload();
+        }
+        public static readonly string Name;
+        public static readonly Version Version;
+        public static readonly string FullName;
 
         public static DateTime GetCustomizationCompiledTime()
         {
@@ -105,8 +93,8 @@ namespace Cliver.Bot
         {
             try
             {
-                if (Properties.App.Default.SingleProcessOnly)
-                    ProcessRoutines.RunSingleProcessOnly();
+                if (Settings.App.SingleProcessOnly)
+                    ProcessRoutines.RunMeInSingleProcessOnly((string m) => { LogMessage.Inform(m); });
                 Session.Start();
                 //         MainForm.This.Text = Program.Title;
                 //       MainForm.This.ShowDialog();
@@ -121,7 +109,7 @@ namespace Cliver.Bot
         {
             try
             {
-                Process.Start(Properties.App.Default.HelpUri);
+                Process.Start(Settings.App.HelpUri);
             }
             catch (Exception ex)
             {

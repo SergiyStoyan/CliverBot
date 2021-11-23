@@ -16,7 +16,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 using Cliver.Bot;
-using Cliver;
+using Cliver.Win;
 
 namespace Cliver.BotGui
 {

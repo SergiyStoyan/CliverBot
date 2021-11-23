@@ -31,7 +31,7 @@ namespace Cliver.BotWeb
         {
             Cliver.Bot.Session.Closing += clear_session;
             
-            if (ProgramRoutines.IsParameterSet(Cliver.Bot.CommandLineParameters.PRODUCTION))
+            if (CommandLine.IsParameterSet(Cliver.Bot.CommandLineParameters.PRODUCTION))
                 Settings.Web.UseFilesFromCache = false;
         }
 

@@ -15,6 +15,7 @@ using System.Text.RegularExpressions;
 using System.Configuration;
 using System.Web;
 using System.Collections.Generic;
+using Cliver.Win;
 
 namespace Cliver.Bot
 {
@@ -35,7 +36,7 @@ namespace Cliver.Bot
                     if (_this == null)
                     {
                         _this = new FileWriter(
-                            (Settings.Output.Write2CommonFolder ? Log.WorkDir + @"\":"") + Settings.Output.FileName,
+                            (Settings.Output.Write2CommonFolder ? Log.RootDir + @"\":"") + Settings.Output.FileName,
                             Settings.Output.Append,
                             !Settings.Output.Write2CommonFolder,
                             Settings.Output.FileChunkSizeInBytes
@@ -86,7 +87,7 @@ namespace Cliver.Bot
         {
             string file_abs_path = file;
             if (!file_abs_path.Contains(":"))
-                file_abs_path = FileSystemRoutines.CreateDirectory((Session.This != null ? Session.This.Dir : Log.WorkDir) + "\\" + OUTPUT_DIR_NAME) + "\\" + file_abs_path;
+                file_abs_path = FileSystemRoutines.CreateDirectory((Session.This != null ? Session.This.Dir : Log.RootDir) + "\\" + OUTPUT_DIR_NAME) + "\\" + file_abs_path;
 
             if (add_time_mark)
             {

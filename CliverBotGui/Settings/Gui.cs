@@ -13,10 +13,9 @@ namespace Cliver.BotGui
 {
     public partial class Settings
     {
-        [Cliver.Settings.Obligatory]
-        public static readonly GuiClass Gui;
+        public static readonly GuiSettings Gui;
 
-        public class GuiClass : Cliver.Settings
+        public class GuiSettings : Cliver.UserSettings
         {
             public System.Drawing.Size ConfigFormSize = System.Drawing.Size.Empty;
             public int LastOpenConfigTabIndex = -1;

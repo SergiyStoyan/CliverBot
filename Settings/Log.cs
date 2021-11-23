@@ -8,22 +8,22 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web.Script.Serialization;
+using Cliver.Win;
 
 namespace Cliver.Bot
 {
     public partial class Settings
     {
-        [Cliver.Settings.Obligatory]
-        public static readonly LogClass Log;
+        public static readonly LogSettings Log;
 
-        public class LogClass : Cliver.Settings
+        public class LogSettings : Cliver.UserSettings
         {
             public int DeleteLogsOlderDays = 3;
             public string PreWorkDir = null;
             public string PrefWorkDirName = "CliverBotSessions";
             public bool WriteLog = true;
 
-            override public void Loaded()
+            override protected void Loaded()
             {
                 if (string.IsNullOrEmpty(PreWorkDir))
                 {

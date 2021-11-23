@@ -39,7 +39,7 @@ namespace Cliver.BotWeb
             try
             {
                 cycle_identifier = clear_path.Replace(cycle_identifier, "_");
-                file = CacheDir + "\\" + Log.Id.ToString() + "_" + page_count.ToString() + "_" + cycle_identifier;
+                file = CacheDir + "\\" + Log.Thread.Id.ToString() + "_" + page_count.ToString() + "_" + cycle_identifier;
 
                 if (content_is_text)
                     file += ".html";
@@ -94,7 +94,7 @@ namespace Cliver.BotWeb
             try
             {
                 cycle_identifier = clear_path.Replace(cycle_identifier, "_");
-                file = CacheDir + "/" + Log.Id.ToString() + "_" + page_count.ToString() + "_" + cycle_identifier + ".html";
+                file = CacheDir + "/" + Log.Thread.Id.ToString() + "_" + page_count.ToString() + "_" + cycle_identifier + ".html";
                 File.WriteAllText(file, text);
             }
             catch (Exception e)
@@ -121,7 +121,7 @@ namespace Cliver.BotWeb
             string file = null;
             try
             {
-                file = CacheDir + "/" + Log.Id.ToString() + "_" + name + "_" + DateTime.Now.ToString("yyMMddHHmmss") + ".html";
+                file = CacheDir + "/" + Log.Thread.Id.ToString() + "_" + name + "_" + DateTime.Now.ToString("yyMMddHHmmss") + ".html";
                 File.WriteAllText(file, text);
             }
             catch (Exception e)

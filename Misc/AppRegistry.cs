@@ -19,6 +19,7 @@ using System.Windows.Forms;
 using System.Diagnostics;
 using System.Security.AccessControl;
 using System.Security.Principal;
+using Cliver.Win;
 
 namespace Cliver.Bot
 {
@@ -27,22 +28,22 @@ namespace Cliver.Bot
         static AppRegistry()
         {
             string p;
-            if (ProgramRoutines.IsWebContext)
-                p = System.Web.Compilation.BuildManager.GetGlobalAsaxType().BaseType.Assembly.GetName(false).CodeBase;
-            else
+            //if (ProgramRoutines.IsWebContext)
+            //    p = System.Web.Compilation.BuildManager.GetGlobalAsaxType().BaseType.Assembly.GetName(false).CodeBase;
+            //else
                 p = System.Reflection.Assembly.GetEntryAssembly().GetName(false).CodeBase;
 
-            if (string.IsNullOrWhiteSpace(Properties.App.Default.RegistryAppSubkeyNameRegexForBaseDirectory))
-                AppRegistryPath = Properties.App.Default.RegistryGeneralSubkey.Trim('\\', '/');
+            if (string.IsNullOrWhiteSpace(Settings.App.RegistryAppSubkeyNameRegexForBaseDirectory))
+                AppRegistryPath = Settings.App.RegistryGeneralSubkey.Trim('\\', '/');
             else
             {
-                Match m = Regex.Match(p, Properties.App.Default.RegistryAppSubkeyNameRegexForBaseDirectory, RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.RightToLeft);
+                Match m = Regex.Match(p, Settings.App.RegistryAppSubkeyNameRegexForBaseDirectory, RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.RightToLeft);
                 if (!m.Success)
                     throw new Exception("Cannot parse binary path.");
                 string app_rsk_name = m.Groups[1].Value;
-                AppRegistryPath = Properties.App.Default.RegistryGeneralSubkey.Trim('\\', '/') + @"\" + app_rsk_name;
+                AppRegistryPath = Settings.App.RegistryGeneralSubkey.Trim('\\', '/') + @"\" + app_rsk_name;
             }
-            if (!ProgramRoutines.IsWebContext)
+            //if (!ProgramRoutines.IsWebContext)
                 Log.Main.Write("App registry key: " + AppRegistryPath);
         }
         static readonly string AppRegistryPath;
@@ -51,10 +52,10 @@ namespace Cliver.Bot
         {
             return RegistryKey.OpenBaseKey(base_registry_hive, Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32);
         }
-        readonly static RegistryHive base_registry_hive = Properties.App.Default.RegistryHiveIsUserDependent ? RegistryHive.CurrentUser : RegistryHive.LocalMachine;
+        readonly static RegistryHive base_registry_hive = Settings.App.RegistryHiveIsUserDependent ? RegistryHive.CurrentUser : RegistryHive.LocalMachine;
         
         static object lock_object = new object();
-        readonly static public string DefaultRegistryPath = get_base_key().ToString() + @"\" + Properties.App.Default.RegistryGeneralSubkey;
+        readonly static public string DefaultRegistryPath = get_base_key().ToString() + @"\" + Settings.App.RegistryGeneralSubkey;
 
         public static string GetString(string name, bool look_in_app_key_if_not_found_in_union_key = false, string default_value = null)
         {
@@ -67,7 +68,7 @@ namespace Cliver.Bot
                     if (look_in_app_key_if_not_found_in_union_key)
                     {
                         rk = get_base_key();
-                        rk = rk.open_subkey(Properties.App.Default.RegistryGeneralSubkey);
+                        rk = rk.open_subkey(Settings.App.RegistryGeneralSubkey);
                     }
                     if (rk == null)
                         return default_value;
@@ -103,7 +104,7 @@ namespace Cliver.Bot
             {
                 try
                 {
-                    if (!ProgramRoutines.IsWebContext)
+                    //if (!ProgramRoutines.IsWebContext)
                         Log.Main.Write("Creating registry key: " + rk.ToString() + @"\" + subkey_path);
                     return rk.CreateSubKey(subkey_path);
                 }
@@ -121,7 +122,7 @@ namespace Cliver.Bot
             {
                 try
                 {
-                    if (!ProgramRoutines.IsWebContext)
+                    //if (!ProgramRoutines.IsWebContext)
                         Log.Main.Write("Setting registry key: " + rk.ToString() + @"\" + name + " = '" + value.ToString() + "'");
                     //RegistryAccessRule rule = new RegistryAccessRule(WindowsIdentity.GetCurrent().User, RegistryRights.FullControl, AccessControlType.Allow);
                     //RegistrySecurity Security = new RegistrySecurity();
@@ -139,8 +140,8 @@ namespace Cliver.Bot
 
         static void process_exception(Exception e)
         {
-            if (ProgramRoutines.IsWebContext)
-                throw e;
+            //if (ProgramRoutines.IsWebContext)
+            //    throw e;
             
             LogMessage.Error(e);
 
@@ -148,9 +149,9 @@ namespace Cliver.Bot
                 || e is System.UnauthorizedAccessException
                 )
             {
-                if (ProcessRoutines.ProcessHasElevatedPrivileges())
+                if (Win.ProcessRoutines.ProcessHasElevatedPrivileges())
                     LogMessage.Exit("Despite the app is running with elevated privileges, it still cannot write to the resgistry. Please fix the problem before using the app.");
-                LogMessage.Inform(Program.AppName + " needs administatrator privileges to create an initial configuration in the registry. So it will restart now and ask for elevated privileges.");
+                LogMessage.Inform(Program.Name + " needs administatrator privileges to create an initial configuration in the registry. So it will restart now and ask for elevated privileges.");
                 try
                 {
                     ProcessRoutines.Restart(true);

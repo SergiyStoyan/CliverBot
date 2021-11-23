@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Cliver.BotWeb</RootNamespace>
     <AssemblyName>CliverWebRoutines</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
@@ -111,6 +111,14 @@
     <Compile Include="WebRoutine.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CliverRoutines\CliverRoutines.csproj">
+      <Project>{a68bd9d9-179f-4bd5-8264-b3e680af9f7a}</Project>
+      <Name>CliverRoutines</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\CliverWinRoutines\CliverWinRoutines.csproj">
+      <Project>{51f2df13-41f1-4f22-890f-c3b50c813909}</Project>
+      <Name>CliverWinRoutines</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CliverBot.csproj">
       <Project>{5283eea1-5f94-4379-bdf3-975ca4adbbf4}</Project>
       <Name>CliverBot</Name>
@@ -119,13 +127,8 @@
       <Project>{ccd9744f-aa5d-4d39-bd63-0451c3e1e16a}</Project>
       <Name>CliverBotGui</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CliverRoutines0\CliverRoutines0.csproj">
-      <Project>{aca94788-bed1-4b8e-94ef-e54293e8d139}</Project>
-      <Name>CliverRoutines0</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

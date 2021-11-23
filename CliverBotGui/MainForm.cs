@@ -22,7 +22,7 @@ using System.Data.Odbc;
 using System.Reflection;
 //using System.Timers;
 using Cliver.Bot;
-
+using Cliver.Win;
 
 namespace Cliver.BotGui
 {
@@ -31,9 +31,9 @@ namespace Cliver.BotGui
         public MainForm()
         {
             InitializeComponent();
-            this.Text = Cliver.Bot.Program.Title;
+            this.Text = Cliver.Bot.Program.FullName;
 
-            if (ProgramRoutines.IsParameterSet(CommandLineParameters.CONFIGURE))
+            if (CommandLine.IsParameterSet(CommandLineParameters.CONFIGURE))
                 this.buttonStart.Enabled = false;
 
             ProgressBarInputItemQueueName = Session.GetFirstDeclaredInputItemType().Name;
@@ -128,7 +128,7 @@ namespace Cliver.BotGui
                     {
                         try
                         {
-                            Process.Start(Bot.Properties.App.Default.HelpUri);
+                            Process.Start(Bot.Settings.App.HelpUri);
                         }
                         catch (Exception ex)
                         {
@@ -152,7 +152,7 @@ namespace Cliver.BotGui
                     {
                         try
                         {
-                            Process.Start(Log.WorkDir);
+                            Process.Start(Log.RootDir);
                         }
                         catch (Exception ex)
                         {

@@ -17,6 +17,7 @@ using System.Threading;
 //using MSHTML;
 using System.Windows.Forms;
 using System.Collections;
+using Cliver.Win;
 
 namespace Cliver.BotWeb
 {

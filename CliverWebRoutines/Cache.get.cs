@@ -15,6 +15,7 @@ using System.Configuration;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.Script.Serialization;
+using Cliver.Win;
 
 namespace Cliver.BotWeb
 {
@@ -58,7 +59,7 @@ namespace Cliver.BotWeb
         {
             Cliver.Bot.Session.Closing += clear_session;
             
-            if (ProgramRoutines.IsParameterSet(Cliver.Bot.CommandLineParameters.PRODUCTION))
+            if (CommandLine.IsParameterSet(Cliver.Bot.CommandLineParameters.PRODUCTION))
                 Settings.Web.LogDownloadedFiles = false;
         }
 
@@ -194,7 +195,7 @@ namespace Cliver.BotWeb
                 {
                     cache_map = new Dictionary<string, CacheInfo>();
                     //custom_cache = (ICustomCache)CustomizationApi.CreateCustomCache();
-                    DirectoryInfo wdi = new DirectoryInfo(Log.WorkDir);
+                    DirectoryInfo wdi = new DirectoryInfo(Log.RootDir);
                     DirectoryInfo[] session_dis = wdi.GetDirectories("*", SearchOption.TopDirectoryOnly);
                     Array.Sort(session_dis, new CompareDirectoryInfo());
                     for (int i = session_dis.Length - 1; i >= 0; i--)
@@ -202,7 +203,7 @@ namespace Cliver.BotWeb
                         DirectoryInfo sdi = session_dis[i];
                         if (!Directory.Exists(sdi.FullName + "\\" + CACHE_DIR_NAME))
                             continue;
-                        if (sdi.FullName == Log.SessionDir)
+                        if (sdi.FullName == Log.Head.Dir)
                             continue;
                         string cm_file = sdi.FullName + "\\" + CACHE_DIR_NAME + "\\" + CACHE_MAP_FILE_NAME;
                         if (!File.Exists(cm_file))
@@ -302,7 +303,7 @@ namespace Cliver.BotWeb
                         cached_file = null;
                         return false;
                     }
-                    cached_file = Log.WorkDir + "\\" + ci.path;
+                    cached_file = Log.RootDir + "\\" + ci.path;
                     binary = File.ReadAllBytes(cached_file);
                     if (ci.response_url != null)
                         response_url = ci.response_url;

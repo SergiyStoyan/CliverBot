@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Reflection;
 using System.Diagnostics;
 using Cliver.Bot;
+using Cliver.Win;
 
 namespace Cliver.BotGui
 {
@@ -64,7 +65,7 @@ namespace Cliver.BotGui
         private void ChooseInputFile_Click(object sender, EventArgs e)
         {
             OpenFileDialog d = new OpenFileDialog();
-            d.InitialDirectory = PathRoutines.GetDirFromPath(File.Text);
+            d.InitialDirectory = PathRoutines.GetFileDir(File.Text);
             d.ShowDialog();
             if (!string.IsNullOrWhiteSpace(d.FileName))
                 File.Text = d.FileName;

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Security;
 using Microsoft.Win32;
+using Cliver.Win;
 
 // Configuring the emulation mode of an Internet Explorer WebBrowser control
 // http://cyotek.com/blog/configuring-the-emulation-mode-of-an-internet-explorer-webbrowser-control

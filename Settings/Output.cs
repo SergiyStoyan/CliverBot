@@ -13,9 +13,9 @@ namespace Cliver.Bot
 {
     public partial class Settings
     {
-        public static readonly OutputClass Output;
+        public static readonly OutputSettings Output;
 
-        public class OutputClass : Cliver.Settings
+        public class OutputSettings : Cliver.UserSettings
         {
             public string FileName = null;
             public FileFormatEnum FileFormat = FileFormatEnum.NULL;
@@ -26,7 +26,7 @@ namespace Cliver.Bot
             [Newtonsoft.Json.JsonIgnore]
             public Cliver.FieldPreparation.FieldSeparator FieldSeparator;
 
-            override public void Loaded()
+            override protected void Loaded()
             {
                 if (FileName == null)
                 {
@@ -51,7 +51,7 @@ namespace Cliver.Bot
                 {
                     if (FileFormat == FileFormatEnum.NULL)
                     {
-                        switch (PathRoutines.GetFileExtensionFromPath(FileName).ToLower())
+                        switch (PathRoutines.GetFileExtension(FileName).ToLower())
                         {
                             case "csv":
                                 FileFormat = FileFormatEnum.CSV;
@@ -62,7 +62,7 @@ namespace Cliver.Bot
                                 FileFormat = FileFormatEnum.TSV;
                                 break;
                             default:
-                                throw new Exception("Unknown option: " + PathRoutines.GetFileExtensionFromPath(FileName).ToLower());
+                                throw new Exception("Unknown option: " + PathRoutines.GetFileExtension(FileName).ToLower());
                         }
                     }
                 }

@@ -18,6 +18,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Linq;
 using System.Reflection;
+using Cliver.Win;
 
 /*
 TBD:
@@ -34,11 +35,11 @@ namespace Cliver.Bot
     {
         static Session()
         {
-            Log.Writer.Exitig += (string message) =>
-            {
-                //CustomizationApi.FatalError();
-                Close();
-            };
+            //Log.Main.Warning.Writer..Exitig += (string message) =>
+            //{
+            //    //CustomizationApi.FatalError();
+            //    Close();
+            //};
 
             input_item_type_names2input_item_type = (from t in Assembly.GetEntryAssembly().GetTypes() where t.BaseType == typeof(InputItem) select t).ToDictionary(t => t.Name, t => t);
             Cliver.Bot.InputItem.Initialize(input_item_type_names2input_item_type.Values.ToList());
@@ -67,17 +68,18 @@ namespace Cliver.Bot
         }
         static Session This_;
 
+        public const string ConfigFileName = "config.json";
+
         protected Session()
         {
             This_ = this;
             State = SessionState.STARTING;
 
-            Log.Main.Inform("Loading configuration from " + Config.DefaultStorageDir);
-            Config.Reload(Config.DefaultStorageDir);
+            Config.Reload();
 
-            Dir = FileSystemRoutines.CreateDirectory(Log.WorkDir + "\\Data");
+            Dir = FileSystemRoutines.CreateDirectory(Log.RootDir + "\\Data");
             Directory.SetLastWriteTime(Dir, DateTime.Now);//to avoid cleaning up
-            ConfigurationDir = Dir + "\\" + Config.CONFIG_FOLDER_NAME;
+            ConfigFile = Dir + "\\" + ConfigFileName;
 
             Restored = false;
             Storage = new SessionStorage();
@@ -98,15 +100,15 @@ namespace Cliver.Bot
                 case SessionState.UNCOMPLETED:
                 case SessionState.BROKEN:
                 case SessionState.NONFATAL_ERROR:
-                    if (Settings.Engine.RestoreBrokenSession && !ProgramRoutines.IsParameterSet(CommandLineParameters.NOT_RESTORE_SESSION))
+                    if (Settings.Engine.RestoreBrokenSession && !CommandLine.IsParameterSet(CommandLineParameters.NOT_RESTORE_SESSION))
                     {
                         if (LogMessage.AskYesNo("Previous session " + old_time_mark + " is not completed. Restore it?", true))
                         {
                             StartTime = old_start_time;
                             TimeMark = old_time_mark;
                             Storage.WriteState(SessionState.RESTORING, new { restoring_time = RestoreTime, restoring_session_time_mark = get_time_mark(RestoreTime) });
-                            Log.Main.Inform("Loading configuration from " + ConfigurationDir);
-                            Config.Reload(ConfigurationDir);
+                            Log.Main.Inform("Loading configuration from " + ConfigFile);
+                            Config.Reload(ConfigFile);
                             Storage.RestoreSession();
                             Restored = true;
                         }
@@ -120,7 +122,7 @@ namespace Cliver.Bot
             {
                 if (old_state != SessionState.NULL)
                 {
-                    string old_dir_new_path = Log.WorkDir + "\\Data" + "_" + old_time_mark + "_" + old_state;
+                    string old_dir_new_path = Log.RootDir + "\\Data" + "_" + old_time_mark + "_" + old_state;
                     Log.Main.Write("The old session folder moved to " + old_dir_new_path);
                     Storage.Close();
                     if(Directory.Exists(Dir))
@@ -129,11 +131,11 @@ namespace Cliver.Bot
                     Storage = new SessionStorage();
                 }
 
-                StartTime = Log.MainSession.CreatedTime;// DateTime.Now;
+                StartTime = Log.Head.CreatedTime;// DateTime.Now;
                 TimeMark = get_time_mark(StartTime);
                 Storage.WriteState(SessionState.STARTING, new { session_start_time = StartTime, session_time_mark = TimeMark });
                 read_input_file();
-                Config.CopyFiles(Dir);
+                Config.Save(ConfigFile);
             }
 
             Creating?.Invoke();
@@ -172,13 +174,16 @@ namespace Cliver.Bot
 
         public readonly bool Restored;
 
-        public readonly string ConfigurationDir;
+        public readonly string ConfigFile;
 
         public static void Start()
         {
             try
             {
-                Log.Initialize(Log.Mode.SESSIONS, Settings.Log.PreWorkDir, Settings.Log.WriteLog, Settings.Log.DeleteLogsOlderDays, Program.LogSessionPrefix);
+                if (!Settings.Log.WriteLog)
+                    Log.DefaultLevel = Log.Level.NONE;
+                Log.Initialize(Log.Mode.FOLDER_PER_SESSION, new List<string> { Settings.Log.PreWorkDir }, Settings.Log.DeleteLogsOlderDays);
+
                 Log.Main.Inform("Version compiled: " + Program.GetCustomizationCompiledTime().ToString());
                 Log.Main.Inform("Command line parameters: " + string.Join("|", Environment.GetCommandLineArgs()));
 
@@ -207,7 +212,7 @@ namespace Cliver.Bot
         /// </summary>
         public static void Close()
         {
-            lock (Log.MainThread)
+            lock (Log.Main)
             {
                 if (This == null)
                     return;
@@ -296,7 +301,7 @@ namespace Cliver.Bot
                             throw new Exception("Unknown option: " + State);
                     }
                     This_ = null;
-                    Cliver.Log.ClearSession();
+                    Cliver.Log.Head.Close(false);
                 }
             }
 

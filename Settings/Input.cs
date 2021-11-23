@@ -8,15 +8,16 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Web.Script.Serialization;
+using Cliver;
 
 namespace Cliver.Bot
 {
     public partial class Settings
     {
-        //[Cliver.Settings.Obligatory]
-        public static readonly InputClass Input;
+        public static readonly InputSettings Input;
 
-        public class InputClass : Cliver.Settings
+        //[Cliver.SettingsAttributes.Config(Optional = true)]
+        public class InputSettings : Cliver.UserSettings
         {
             public string File = "input.csv";
             //public string File = "input.txt";
@@ -32,22 +33,25 @@ namespace Cliver.Bot
             //    }
             //}
 
-            override public void Loaded()
+            override protected void Loaded()
             {
                 if (!File.Contains(":"))
-                    File = Cliver.Log.AppCommonDataDir + "\\" + File;
+                    File = Cliver.Log.AppCompanyUserDataDir + "\\" + File;
                 if (!System.IO.File.Exists(File))
                 {
-                    string file0 = Cliver.Log.AppDir + "\\" + PathRoutines.GetFileNameFromPath(File);
+                    string file0 = Cliver.Log.AppDir + "\\" + PathRoutines.GetFileName(File);
                     if (!System.IO.File.Exists(file0))
                         throw new Exception("Cannot find the original Input file: " + file0);
+                    string d = PathRoutines.GetFileDir(File);
+                    if (!Directory.Exists(d))
+                        throw new Exception("Input file directory '" + d + "' does not exist. Modify its path in the settings file.");
                     System.IO.File.Copy(file0, File);
                     Save();
                 }
 
                 if (FileFormat == FileFormatEnum.NULL)
                 {
-                    switch (PathRoutines.GetFileExtensionFromPath(File).ToLower())
+                    switch (PathRoutines.GetFileExtension(File).ToLower())
                     {
                         case "csv":
                             FileFormat = FileFormatEnum.CSV;
@@ -58,7 +62,7 @@ namespace Cliver.Bot
                             FileFormat = FileFormatEnum.TSV;
                             break;
                         default:
-                            throw new Exception("Unknown option: " + PathRoutines.GetFileExtensionFromPath(File).ToLower());
+                            throw new Exception("Unknown option: " + PathRoutines.GetFileExtension(File).ToLower());
                     }
                 }
             }

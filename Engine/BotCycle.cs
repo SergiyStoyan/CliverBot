@@ -119,7 +119,7 @@ namespace Cliver.Bot
             //        if (Id <= bc.Id)
             //            Id = bc.Id + 1;
             //}
-            Id = Log.Id;
+            Id = Log.Thread.Id;
         }
         internal readonly int Id = -1;
         bool run = true;

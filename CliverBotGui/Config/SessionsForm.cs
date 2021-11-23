@@ -20,9 +20,9 @@ namespace Cliver.BotGui
 
             Sessions.ValueMember = "Value";
             Sessions.DisplayMember = "Name";
-            foreach (string d in Directory.EnumerateDirectories(Log.WorkDir))
+            foreach (string d in Directory.EnumerateDirectories(Log.RootDir))
                 if (Directory.Exists(d + "\\" + Cliver.Config.CONFIG_FOLDER_NAME))
-                    Sessions.Items.Add(new { Value = d, Name = PathRoutines.GetDirNameFromPath(d) });
+                    Sessions.Items.Add(new { Value = d, Name = PathRoutines.GetDirName(d) });
         }
 
         public string SessionDir { get; private set; }

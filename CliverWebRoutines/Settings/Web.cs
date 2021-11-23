@@ -15,7 +15,7 @@ namespace Cliver.BotWeb
     {
         public static readonly WebClass Web;
 
-        public class WebClass : Cliver.Settings
+        public class WebClass : Cliver.UserSettings
         {
             public string TextModeDownloadableContentTypePattern = "text|json";
             public string TextModeHttpRequestAcceptHeader = "text/xml,text/html;q=0.9,text/plain;q=0.8";

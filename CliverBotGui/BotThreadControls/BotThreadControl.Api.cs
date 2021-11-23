@@ -32,7 +32,7 @@ namespace Cliver.BotGui
 
         public static BotThreadControl GetInstanceForThisThread()
         {
-            return GetBotThreadControlById(Log.Id);
+            return GetBotThreadControlById(Log.Thread.Id);
         }
     }
 }

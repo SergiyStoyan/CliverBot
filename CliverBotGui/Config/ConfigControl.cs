@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using Cliver.Bot;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Cliver.Win;
 
 namespace Cliver.BotGui
 {
@@ -57,7 +58,7 @@ namespace Cliver.BotGui
                 SetToolTip();
                 Set();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 LogMessage.Error(ex);
             }
@@ -77,7 +78,7 @@ namespace Cliver.BotGui
                 Type t = c.GetType();
                 if (t == typeof(System.Windows.Forms.TextBox))
                 {
-                    object o = Config.Get(group_box.Text, c.Name);
+                    object o = Bot.Config.Get(group_box.Text, c.Name);
                     if (o != null)
                         c.Text = o.ToString();
                     else
@@ -85,7 +86,7 @@ namespace Cliver.BotGui
                 }
                 else if (t == typeof(System.Windows.Forms.CheckBox))
                 {
-                    object o = Config.Get(group_box.Text, c.Name);
+                    object o = Bot.Config.Get(group_box.Text, c.Name);
                     if (o != null)
                         ((System.Windows.Forms.CheckBox)c).Checked = (bool)o;
                     else
@@ -93,7 +94,7 @@ namespace Cliver.BotGui
                 }
                 else if (t == typeof(System.Windows.Forms.RadioButton))
                 {
-                    object o = Config.Get(group_box.Text, c.Name);
+                    object o = Bot.Config.Get(group_box.Text, c.Name);
                     if (o != null)
                         ((System.Windows.Forms.RadioButton)c).Checked = (bool)o;
                     else
@@ -101,13 +102,13 @@ namespace Cliver.BotGui
                 }
                 else if (t == typeof(System.Windows.Forms.DateTimePicker))
                 {
-                    object o = Config.Get(group_box.Text, c.Name);
+                    object o = Bot.Config.Get(group_box.Text, c.Name);
                     if (o != null)
                         ((System.Windows.Forms.DateTimePicker)c).Value = (DateTime)o;
                 }
             }
         }
-        
+
         virtual protected bool Get()
         {
             put_control_values_to_config(Name, group_box);
@@ -140,8 +141,9 @@ namespace Cliver.BotGui
                     }
                     object o = get_value_for_config(c);
                     if (o != null)
-                        Config.Set(section, c.Name, o);
+                        Bot.Config.Set(section, c.Name, o);
                 }
+                //Bot.Config.Save();
             }
             catch (Exception ex)
             {

@@ -19,6 +19,7 @@ using System.Reflection;
 using System.Text;
 using System.ComponentModel;
 using System.Runtime.Serialization;
+using Cliver.Win;
 
 namespace Cliver.Bot
 {
@@ -100,7 +101,7 @@ namespace Cliver.Bot
             {
                 validate_fields(item_type);
                 //item_type2field_name2field_fis[item_type] = (from x in item_type.GetFields() where !x.IsStatic select x).ToDictionary(x => x.Name, x => x);
-                if (item_type.IsSubclassOfRawGeneric(typeof(SingleValueWorkItem<>)))
+                if (item_type.IsSubclassOf(typeof(SingleValueWorkItem<>)))
                     item_types2serialized_field_names2serialized_field_fi[item_type] = (from x in item_type.GetFields(BindingFlags.Instance | BindingFlags.Public) where x.Name == "__Value" && (x.GetCustomAttributes(typeof(ConstructedField)).FirstOrDefault() == null) select x).ToDictionary(x => x.Name, x => x);
                 else
                     item_types2serialized_field_names2serialized_field_fi[item_type] = (from x in item_type.GetFields(BindingFlags.DeclaredOnly | BindingFlags.Instance | BindingFlags.Public) where !x.FieldType.IsSubclassOf(typeof(Item)) && (x.GetCustomAttributes(typeof(ConstructedField)).FirstOrDefault() == null) select x).ToDictionary(x => x.Name, x => x);

@@ -8,16 +8,15 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Threading;
 using Cliver.Bot;
+using Cliver.Win;
 
 namespace Cliver.BotGui
 {
-    public class CommandLineParameters : ProgramRoutines.CommandLineParameters
+    public class CommandLineParameters 
     {
-        public static readonly CommandLineParameters WINDOWLESS = new CommandLineParameters("-windowless");
-        public static readonly CommandLineParameters CONFIGURE = new CommandLineParameters("-configure");//used only to edit settings while its performance is disabled
-        public static readonly CommandLineParameters AUTOMATIC = new CommandLineParameters("-automatic");
-
-        public CommandLineParameters(string value) : base(value) { }
+        public const string WINDOWLESS ="-windowless";
+        public const string CONFIGURE = "-configure";//used only to edit settings while its performance is disabled
+        public const string AUTOMATIC = "-automatic";
     }
 
     public static class Program
@@ -36,17 +35,17 @@ namespace Cliver.BotGui
         {
             Cliver.Bot.Program.Initialize();
 
-            if (ProgramRoutines.IsParameterSet(CommandLineParameters.CONFIGURE))
+            if (CommandLine.IsParameterSet(CommandLineParameters.CONFIGURE))
             {
                 Mode = ProgramMode.CONFIGURE;
                 return;
             }
-            if (ProgramRoutines.IsParameterSet(CommandLineParameters.WINDOWLESS))
+            if (CommandLine.IsParameterSet(CommandLineParameters.WINDOWLESS))
             {
                 Mode = ProgramMode.WINDOWLESS;
                 return;
             }
-            if (ProgramRoutines.IsParameterSet(CommandLineParameters.AUTOMATIC))
+            if (CommandLine.IsParameterSet(CommandLineParameters.AUTOMATIC))
             {
                 Mode = ProgramMode.AUTOMATIC;
                 return;
@@ -81,7 +80,6 @@ namespace Cliver.BotGui
                     case ProgramMode.AUTOMATIC:
                         LogMessage.Output2Console = false;
                         LogMessage.DisableStumblingDialogs = true;
-                        Config.Initialize();
                         Application.Run(MainForm.This);
                         return;
                     case ProgramMode.WINDOWLESS:
@@ -92,13 +90,11 @@ namespace Cliver.BotGui
                     case ProgramMode.CONFIGURE:
                         LogMessage.Output2Console = false;
                         LogMessage.DisableStumblingDialogs = false;
-                        Config.Initialize();
                         Application.Run(MainForm.This);
                         return;
                     case ProgramMode.DIALOG:
                         LogMessage.Output2Console = false;
                         LogMessage.DisableStumblingDialogs = false;
-                        Config.Initialize();
                         Application.Run(MainForm.This);
                         break;
                     default:

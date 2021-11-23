@@ -15,21 +15,21 @@ namespace Cliver.BotWeb
     {
         public static readonly SpiderClass Spider;
 
-        public class SpiderClass : Cliver.Settings
+        public class SpiderClass : Cliver.UserSettings
         {
             public bool ComplyRobotProtocol = false;
             public int MaxDownloadLinkDepth = 3;
             public int MaxPageCountPerSite = 1000;
             public int UnchangableDomainPartNumber = 2;
 
-            override public void Loaded()
+            override protected void Loaded()
             {
                 if (UnchangableDomainPartNumber <= 1)
-                    if (!LogMessage.AskYesNo("UnchangableDomainPartNumber is < 2. That will make the bot crawl through external links of sites. This may consume all RAM on your comp and hang the app. Are you sure to proceed?", false))
+                    if (!Win.LogMessage.AskYesNo("UnchangableDomainPartNumber is < 2. That will make the bot crawl through external links of sites. This may consume all RAM on your comp and hang the app. Are you sure to proceed?", false))
                         Cliver.Log.Exit("Exit since UnchangableDomainPartNumber < 2");
 
                 if (MaxPageCountPerSite < 0)
-                    if (!LogMessage.AskYesNo("MaxPageCountPerSite is < 0. That will make the bot crawl through all links of the site independently on their quantity. This may consume all RAM on your comp and hang the app. Are you sure to proceed?", false))
+                    if (!Win.LogMessage.AskYesNo("MaxPageCountPerSite is < 0. That will make the bot crawl through all links of the site independently on their quantity. This may consume all RAM on your comp and hang the app. Are you sure to proceed?", false))
                         Cliver.Log.Exit("MaxPageCountPerSite is < 0");
             }
         }
