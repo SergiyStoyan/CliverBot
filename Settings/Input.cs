@@ -39,7 +39,7 @@ namespace Cliver.Bot
                     File = Cliver.Log.AppCompanyUserDataDir + "\\" + File;
                 if (!System.IO.File.Exists(File))
                 {
-                    string file0 = Cliver.Log.AppDir + "\\" + PathRoutines.GetFileName(File);
+                    string file0 = Cliver.Log.AppDir + "\\" + PathRoutines.GetFileName(File); 
                     if (!System.IO.File.Exists(file0))
                         throw new Exception("Cannot find the original Input file: " + file0);
                     string d = PathRoutines.GetFileDir(File);
