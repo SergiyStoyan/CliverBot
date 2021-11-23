@@ -34,10 +34,6 @@ namespace Cliver.Bot
                 LogMessage.Exit(e);
             };
 
-            if (!Settings.Log.WriteLog)
-                Log.DefaultLevel = Log.Level.NONE;
-            Log.Initialize(Log.Mode.FOLDER_PER_SESSION, new List<string> { Settings.Log.PreWorkDir }, Settings.Log.DeleteLogsOlderDays);
-
             LogMessage.DisableStumblingDialogs = true;
 
             if (CommandLine.IsParameterSet(CommandLineParameters.PRODUCTION))
@@ -54,10 +50,19 @@ namespace Cliver.Bot
             FullName = cai.Product + "-" + cai.Version.ToString(3) + " [" + Name + "-" + Version.ToString(3) + "]";
 
             Config.Reload();
+
+            if (!Settings.Log.WriteLog)
+                Log.DefaultLevel = Log.Level.NONE;
+            Log.Initialize(Log.Mode.FOLDER_PER_SESSION, new List<string> { Settings.Log.PreWorkDir }, Settings.Log.DeleteLogsOlderDays);
         }
         public static readonly string Name;
         public static readonly Version Version;
         public static readonly string FullName;
+
+        public static Assembly GetAssembly()
+        {
+            return Assembly.GetExecutingAssembly();
+        }
 
         public static DateTime GetCustomizationCompiledTime()
         {
@@ -93,6 +98,8 @@ namespace Cliver.Bot
         {
             try
             {
+                Bot.Config.Reload();
+
                 if (Settings.App.SingleProcessOnly)
                     ProcessRoutines.RunMeInSingleProcessOnly((string m) => { LogMessage.Inform(m); });
                 Session.Start();

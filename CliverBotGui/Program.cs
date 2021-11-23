@@ -75,6 +75,8 @@ namespace Cliver.BotGui
         {
             try
             {
+                Bot.Config.Reload();
+
                 switch (Mode)
                 {
                     case ProgramMode.AUTOMATIC:
@@ -105,6 +107,11 @@ namespace Cliver.BotGui
             {
                 LogMessage.Exit(e);
             }
+        }
+
+        public static Assembly GetAssembly()
+        {
+            return Assembly.GetExecutingAssembly();
         }
     }
 }

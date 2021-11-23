@@ -99,6 +99,7 @@
     <Compile Include="IeRoutine.cs" />
     <Compile Include="IeRoutines.static.cs" />
     <Compile Include="MhtmlRoutines.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proxies.cs" />
     <Compile Include="Settings\Browser.cs" />

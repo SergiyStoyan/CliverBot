@@ -15,16 +15,15 @@ namespace Cliver.Bot
     {
         public static bool ReadOnly { get; private set; } = true;
 
-        static internal void Reload(string configfile = null)
+        static public void Reload(string configfile = null)
         {
-
+            Cliver.Config.Reload();
             foreach (SettingsFieldInfo sfi in Cliver.Config.GetSettingsFieldInfos())
                 sections2SettingsFieldInfo[sfi.Name] = sfi;
 
             if (configfile == null)
             {
                 ReadOnly = false;
-                Cliver.Config.Reload();
             }
             else
             {

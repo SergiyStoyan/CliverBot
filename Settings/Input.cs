@@ -19,7 +19,7 @@ namespace Cliver.Bot
         //[Cliver.SettingsAttributes.Config(Optional = true)]
         public class InputSettings : Cliver.UserSettings
         {
-            public string File = "input.csv";
+            public string File = "input.tsv";
             //public string File = "input.txt";
             public FileFormatEnum FileFormat = FileFormatEnum.NULL;
 
